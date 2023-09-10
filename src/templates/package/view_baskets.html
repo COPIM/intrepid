@@ -1,0 +1,130 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static %}
+
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Quotations
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'oa_inits_header' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text_no_edit 'baskets_header' %}</li>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">{% get_site_text 'baskets_header' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'baskets_sub_header' %}</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+                                alt="Quotations logo"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row catalogue-main">
+        <div class="col">
+            <h2>{% get_site_text 'baskets_active_quote' %}</h2>
+            {% if not request.site.enable_signup %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                {{ request.site.signup_disabled_notification }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if not request.user.is_authenticated %}
+        <div class="bd-callout bd-callout-danger">
+            <i class="fas fa-exclamation-triangle"></i> {% get_site_text 'baskets_anon' %}
+        </div>
+    {% endif %}
+    <table class="table package-table">
+        <tr class="header-row">
+            <th>Quotation Name</th>
+            <th>Number of Packages</th>
+            <th>View</th>
+            <th>Delete</th>
+        </tr>
+        {% for basket in baskets %}
+            <tr>
+                <td>{{ basket.name }}</td>
+                <td>{{ basket.package_set|length }}</td>
+                <td>
+                    <a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary btn-obc-blue">View Quote</a></td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button name="basket_to_delete" value="{{ basket.pk }}" class="btn btn-danger delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No active quotes to display.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock body %}
+
+<!-- Mobile -->
+{% block header-mobile %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/quotation_group.png" %}"
+                 alt="Build your quote image"/>
+            <h1>{% get_site_text 'baskets_header' %}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header-mobile %}
+
+{% block body-mobile %}
+    <h1 class="packages-header">{% get_site_text 'baskets_active_quote' %}</h1>
+    <p class="lead">{% get_site_text 'baskets_sub_header' %}</p>
+
+    {% if not request.user.is_authenticated %}
+        <div class="bd-callout bd-callout-danger">
+            <i class="fas fa-exclamation-triangle"></i> {% get_site_text 'baskets_anon' %}
+        </div>
+    {% endif %}
+    <table class="table package-table">
+        <tr class="header-row">
+            <th>Quotation Name</th>
+            <th>Number of Packages</th>
+            <th>View</th>
+            <th>Delete</th>
+        </tr>
+        {% for basket in baskets %}
+            <tr>
+                <td>{{ basket.name }}</td>
+                <td>{{ basket.package_set|length }}</td>
+                <td><a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary">View Quote</a></td>
+                <td>
+                    <button class="btn btn-danger delete">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No active quotes.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock body-mobile %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock js %}

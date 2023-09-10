@@ -1,0 +1,63 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">Platform Management</li>
+    <li class="breadcrumb-item active" aria-current="page">Form Elements Setup</li>
+{% endblock %}
+
+{% block dashboard_js %}
+   {% include 'elements/sortable.html' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="form_elements">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% block title %}Form Elements Setup{% endblock %}</h1>
+                <p class="lead">This page allows platform managers to specify form elements that will be available to initiatives.</p>
+                <p><a href="{% url 'form_element_create' %}" class="btn btn-success float-end">
+                <i class="fa fa-plus"> </i> Add New</a></p>
+            </div>
+            <div class="col-md-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Choices</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="sortable">
+                        {% for element in form_elements %}
+                            <tr id="form_element-{{ element.id }}">
+                                <td><i class="fas fa-sort"></i></td>
+                                <td>{{ element.name }}</td>
+                                <td>{{ element.get_kind_display }}</td>
+                                <td>{% if element.required %}<i class="far fa-check-square"></i>{% else %}<i class="far fa-square"></i>{% endif %}</td>
+                                <td>{{ element.choices }}</td>
+                                <td><a href="{% url 'form_element_edit' element.id %}" class="btn btn-primary">Edit</a></td>
+                                <td><form method="POST" action="{% url 'form_element_delete' element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

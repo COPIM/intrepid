@@ -1,0 +1,37 @@
+{% load crispy_forms_tags cost_calculator %}
+
+<div class="row catalogue-main spacer-top-20">
+    <div class="col-1"></div>
+    <div class="col">
+        <p class="lead">Your reference number is {{ order.pk }}, please quote it if you need to get in touch with us.</p>
+
+        <h2 class="text-left" style="margin-top: 0;">{% get_site_text 'order_form_details_h' %}</h2>
+        {% get_site_text 'order_form_details' %}
+        <div class="card form-card">
+            <div class="card-body">
+                {% crispy form form.helper %}
+            </div>
+        </div>
+
+        <h2 class="text-left" style="margin-top: 0;">{% get_site_text 'order_form_packages' %}</h2>
+
+        <p class="package-styled-text">{% get_site_text 'order_form_pack_text' %} </p>
+        <ul class="list-unstyled">
+            {% for package in order.package_set %}
+                <li class="package-styled-text">{{ package.name }}</li>
+            {% endfor %}
+        </ul>
+        <div class="package-styled-text">
+            {% get_site_text 'order_form_totals' %}
+
+            <p>
+                {{ order_amount }}<br />
+                {{ platform_fee }}<br />
+                <strong>{{ total }}</strong>
+            </p>
+
+            {% get_site_text 'order_form_footer' %}
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>

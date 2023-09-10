@@ -1,0 +1,221 @@
+[
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 1,
+    "fields": {
+        "view_name": "page_update_feed",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 2,
+    "fields": {
+        "view_name": "manage_accounts",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 3,
+    "fields": {
+        "view_name": "initiative_delete",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 4,
+    "fields": {
+        "view_name": "setup",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 6,
+    "fields": {
+        "view_name": "package_approval",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 7,
+    "fields": {
+        "view_name": "form_element_create",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 8,
+    "fields": {
+        "view_name": "form_element_delete",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 9,
+    "fields": {
+        "view_name": "form_elements_setup",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 10,
+    "fields": {
+        "view_name": "vocab_list",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 11,
+    "fields": {
+        "view_name": "vocab_delete",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 12,
+    "fields": {
+        "view_name": "vocab_new",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 13,
+    "fields": {
+        "view_name": "list_meta_packages",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 14,
+    "fields": {
+        "view_name": "manage_meta_package",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 15,
+    "fields": {
+        "view_name": "order_list",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 16,
+    "fields": {
+        "view_name": "order_detail",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 17,
+    "fields": {
+        "view_name": "order_edit",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 18,
+    "fields": {
+        "view_name": "form_elements_order",
+        "groups": [
+            [
+                "Administrator"
+            ],
+            [
+                "Staff"
+            ]
+        ]
+    }
+},
+{
+    "model": "fluid_permissions.viewgroup",
+    "pk": 19,
+    "fields": {
+        "view_name": "order_add_package",
+        "groups": [
+            [
+                "Administrator"
+            ]
+        ]
+    }
+}
+]

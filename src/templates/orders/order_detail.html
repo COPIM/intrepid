@@ -1,0 +1,140 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 permissions %}
+
+{% block title %}Order {{ order.order_number }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'order_list' %}">Order Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Order {{ order.order_number }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Order {{ order.order_number }}</h1>
+                    <p class="lead">Detailed view of an order.</p>
+                </div>
+                <div class="col-md-12">
+                    <h2>Basic Information<a href="{% url 'order_edit' order.pk %}" class="float-right btn btn-primary">Edit</a></h2>
+                    <table class="table">
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Internal Order ID</th>
+                            <th>Order Status</th>
+                            <th>Order Owner</th>
+                            <th>Order Institution</th>
+                        </tr>
+                        <tr>
+                            <td>{{ order.order_number }}</td>
+                            <td>{{ order.pk }}</td>
+                            <td>{{ order.get_status_display }}</td>
+
+                            <td>{% if order.associated_user %}{{ order.associated_user.profile.full_name }}{% else %}{{ order.email_address }}{% endif %}</td>
+                            <td>{{ order.associated_user.profile.institution.institution_name }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="1">Order Date</th>
+                            <th colspan="2">Order Valid Period</th>
+                            <th colspan="2">Initiative</th>
+                        </tr>
+                        <tr>
+                            <td colspan="1">{{ order.order_date }}</td>
+                            <td colspan="2">{{ order.valid_period }}</td>
+                            <td colspan="2">{{ order.initiative }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Documents</th>
+                            <th colspan="2">RebuildDocuments</th>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                {% if order.document %}
+                                <a href="{% url 'frozen_document' order.document.pk %}"
+                                               class="btn btn-primary">Download
+                                Order Documents</a>
+                                {% else %}
+                                Order has no documents, if you've added packages use the rebuild button to generate them.
+                                {% endif %}
+                            </td>
+                            <td colspan="2">
+                                <form method="POST">{% csrf_token %}
+                                    <button class="btn btn-primary" name="rebuild_docs">Rebuild Order Documents</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Collected Answers</h2>
+                    <ul>
+                    {% for answer in order.orderformanswer_set.all %}
+                        <li>{{ answer.form_element_name }}: {{ answer.answer }}</li>
+                    {% endfor %}
+                    </ul>
+                    <h2>Packages</h2>
+                    <p class="lead">The packages that constitute the order are listed below. Please note removing a
+                        package for provisional or complete order may cause problems. Documents will be regenerated.</p>
+                    <p>
+                        {% if initiative %}
+                            <a href="{% url 'initiative_order_add_package' initiative.pk order.pk %}"
+                               class="btn btn-success"><span class="fas fa-plus"></span> Add Package to Order </a>
+                        {% else %}
+                            <a href="{% url 'order_add_package' order.pk %}" class="btn btn-success"><span
+                                    class="fas fa-plus"></span> Add Package to Order</a>
+                        {% endif %}
+                    </p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table">
+                            <tr>
+                                <th>Package Name</th>
+                                <th>Package Initiative</th>
+                                <th>Cost</th>
+                                <th>Payment Processor</th>
+                                <th>Invoice Status</th>
+                                <th>Remove</th>
+                            </tr>
+                            {% for signup in order.packagesignup_set.all %}
+                                <tr>
+                                    <td>{{ signup.associated_package.name }}</td>
+                                    <td>{{ signup.associated_package.initiative.name }}</td>
+                                    <td>{{ signup.formatted_price }}</td>
+                                    <td>
+                                        {% if signup.payment_processor.payment_processor %}
+                                            <a href="{% url 'detail_invoice' signup.payment_processor.payment_processor.pk order.pk %}">{{ signup.payment_processor.payment_processor }}</a>
+                                        {% else %}
+                                            <a href="{% url 'detail_invoice_initiative' signup.associated_package.initiative.pk order.pk %}">{{ signup.associated_package.initiative }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{% if signup.signupinvoice %}{{ signup.signupinvoice.get_status_display }}{% else %}No status to display{% endif %}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm delete" name="remove"
+                                                value="{{ signup.pk }}">Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+
+                    <h2>Proxy Information</h2>
+                    <p class="lead">Information stored related to proxy signups.</p>
+
+                    <p>Proxy signup text:</p>
+                    {{ order.proxy_signup_information|safe }}
+
+                    <p>Proxy images:</p>
+                    <ul>
+                        {% for image in order.private_images.all %}
+                            <li><a href="{% url 'order_serve_image' order.pk image.pk %}">{{ image.image.name }}</a></li>
+                        {% empty %}
+                        <li>No images.</li>
+                        {% endfor %}
+                        <li><a href="{% url 'order_add_image' order.pk %}">Upload Image</a></li>
+                    </ul>
+                    {% user_has_fluid_permission 'order_serve_image' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 crispy_forms_tags %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
+    <li class="breadcrumb-item" aria-current="page">Contacts</li>
+    <li class="breadcrumb-item" aria-current="page">{% if contact %}Edit {{ contact.name }}{% else %}Create New Contact{% endif %}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<span id="active_page" class="contacts">&nbsp;</span>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% if package %}Edit {{ contact.name }}{% else %}Add New Contact{% endif %}</h1>
+                <p class="lead">Add new and edit existing contacts.</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2>Contact Details</h2>
+                            {{ form|crispy }}
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row text-left">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">Initiatives</h1>
+            <p class="subhead-no-offset">At the core of the Open Book Collective are our initiatives. These range from open-access book publishers to indexing services and directories. You can find out more about these initiatives here.</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/collective_five.svg" %}"
+                                alt="Collections and Collectives"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row catalogue-main">
+        <div class="col">
+            <h2>Publishers and Service Providers</h2>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="row row-spacer">
+            {% for initiative in initiatives %}
+                <div class="col-12 package-col">
+                    {% include "base/frontend/quote/elements/initiative.html" %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}
+
+<!-- Mobile -->
+{% block header-mobile %}
+
+    <div class="row catalogue-main">
+        <div class="col">
+            <h1>Publishers and Service Providers</h1>
+        </div>
+    </div>
+
+
+{% endblock header-mobile %}
+
+{% block body-mobile %}
+
+   <div class="content">
+    {% for initiative in initiatives %}
+        <div class="row row-mobile">
+            <div class="col-12 package-col">
+                {% include "base/frontend/quote/elements/initiative_mobile.html" %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock body-mobile %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock js %}

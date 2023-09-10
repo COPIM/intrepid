@@ -1,0 +1,97 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+List Documents
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">Documents</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Documents Affiliated with “{{ package.name }}” ({{ initiative.name }})</h1>
+            <p class="lead">Warning: all documents here will be public and visible to everybody. These are designed to be contracts and other details of the package.</p>
+            <a href="{% url 'add_document' package.pk initiative.pk %}?return={{ request.path|urlencode }}" class="btn btn-success">
+                <i class="fa fa-plus"> </i> Add New Document
+            </a>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="initiatives">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>View</th>
+                        <th>Revise</th>
+                        <th>Versions</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for document in documents %}
+                    <tr>
+                        <td>{{ document.name }}</td>
+                        <td><a href="{% url 'view_document' package.id initiative.id document.id %}">View Document</a></td>
+                        <td><a href="{% url 'upload_new_document' package.id initiative.id document.id %}">Revise Document</a></td>
+                        <td><a href="#" data-toggle="modal" data-target="#document-{{ document.pk }}">View Versions</a></td>
+                        <td><form method="POST" action="{% url 'delete_document' package.id initiative.id document.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete Document"/></form></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {% for document in documents %}
+        <div class="modal fade" id="document-{{ document.pk }}" tabindex="-1" aria-labelledby="document-{{ document.pk }}ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="document-{{ document.pk }}ModalLabel">Document #{{ document.pk }} Versions</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Reverting will overwrite the current document details with the verison's.w</p>
+                        <table class="table">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Download</th>
+                                <th>Revert</th>
+                            </tr>
+                            {% for version in document.packagedocumenthistorical_set.all %}
+                                <tr>
+                                    <td>#{{ version.pk }}</td>
+                                    <td>{{ version.name }}</td>
+                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">Download</a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'revert_document_version' package.pk initiative.pk document.pk %}">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">Revert Document to this Version</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="4">No versions recorded for this document.</td></tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}

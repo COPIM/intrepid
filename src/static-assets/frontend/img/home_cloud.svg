@@ -1,0 +1,15 @@
+<svg id="Group_4070" data-name="Group 4070" xmlns="http://www.w3.org/2000/svg" width="157.271" height="176.515" viewBox="0 0 157.271 176.515">
+  <line id="Line_14867" data-name="Line 14867" y2="70.713" transform="translate(78.671 14.135)" fill="none" stroke="#f577c3" stroke-linecap="round" stroke-width="6"/>
+  <line id="Line_14868" data-name="Line 14868" x2="61.24" y2="35.357" transform="translate(17.431 49.492)" fill="none" stroke="#a3166b" stroke-linecap="round" stroke-width="6"/>
+  <line id="Line_14869" data-name="Line 14869" y1="35.357" x2="61.24" transform="translate(17.431 84.849)" fill="none" stroke="#e71e85" stroke-linecap="round" stroke-width="6"/>
+  <line id="Line_14870" data-name="Line 14870" y1="70.713" transform="translate(78.671 84.849)" fill="none" stroke="#86c3e0" stroke-linecap="round" stroke-width="6"/>
+  <line id="Line_14871" data-name="Line 14871" x1="61.24" y1="35.357" transform="translate(78.671 84.849)" fill="none" stroke="#2396d4" stroke-linecap="round" stroke-width="6"/>
+  <line id="Line_14872" data-name="Line 14872" x1="61.24" y2="35.357" transform="translate(78.671 49.492)" fill="none" stroke="#9b4493" stroke-linecap="round" stroke-width="6"/>
+  <path id="Union_11" data-name="Union 11" d="M64.284,49.12H16.27a16.578,16.578,0,0,1,0-33.15,15.994,15.994,0,0,1,4.726.71C21.443,7.4,29.676,0,39.77,0c10.38,0,18.793,7.824,18.793,17.477q0,.109,0,.217a16.267,16.267,0,1,1,5.9,31.427Z" transform="translate(38.274 58.909)" fill="#fff"/>
+  <ellipse id="Ellipse_562" data-name="Ellipse 562" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(65.118 0)" fill="#f577c3"/>
+  <ellipse id="Ellipse_563" data-name="Ellipse 563" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(0.618 36.527)" fill="#a3166b"/>
+  <ellipse id="Ellipse_564" data-name="Ellipse 564" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(0 110.649)" fill="#e71e85"/>
+  <ellipse id="Ellipse_565" data-name="Ellipse 565" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(63.884 148.245)" fill="#86c3e0"/>
+  <ellipse id="Ellipse_566" data-name="Ellipse 566" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(128.384 111.718)" fill="#2396d4"/>
+  <ellipse id="Ellipse_567" data-name="Ellipse 567" cx="14.135" cy="14.135" rx="14.135" ry="14.135" transform="translate(129.001 37.596)" fill="#9b4493"/>
+</svg>

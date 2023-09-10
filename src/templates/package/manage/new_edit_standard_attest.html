@@ -1,0 +1,43 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Standard Attestation Configuration{% endblock title %}
+
+{% block breadcrumb %}
+        <li class="breadcrumb-item" aria-current="page">Platform Management</li>
+        <li class="breadcrumb-item" aria-current="page">Standard Attestation Configuration</li>
+    {% endblock breadcrumb %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+<section class="content">
+    <div class="container-fluid">
+        <h2>{{ standard.standard_name }}</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">Add a new or edit an existing standard attestation</p>
+                {{ standard.text|safe }}
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                          {{form.details_url|as_crispy_field}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <button type="submit" name="set_current" class="btn btn-success">Save Attestation</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

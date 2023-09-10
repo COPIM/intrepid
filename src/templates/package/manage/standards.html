@@ -1,0 +1,56 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }} Packages</li>
+    <li class="breadcrumb-item active" aria-current="page">Standards</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='standards_attested' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Standards Attested to by “{{ package.name }}”</h1>
+            <p class="lead">The following standards are attested to by this package.</p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ standards_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Attest to this standard"></input>
+            </form>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="standards_attested">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>URL</th>
+                        <th>Edit Attestation</th>
+                        <th>Remove Attestation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for attest in standard_attests %}
+                    <tr>
+                        <td>{{ attest.standard.standard_name }}</td>
+                        <td>{{ attest.details_url }}</td>
+                        <td><a href="{% url 'package_standards_attest' attest.package.id attest.package.initiative.id attest.standard.pk %}" class="btn btn-success">Edit Attestation</a></td>
+                        <td><form method="POST" action="{% url 'package_standards_attest_delete' attest.package.id attest.package.initiative.id attest.standard.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove Attestation"/></form></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='contact_list' %}
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="contacts">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+            <h1>Contacts for your initiatives</h1>
+            <p class="lead">Contacts for the initiative can be assigned to receive notifications on signups and on changes to access controls. Note that anybody listed here can use their access code to view signups and access controls for the listed initiative.</p>
+            <p><a href="{% url 'create_contact' %}" class="btn btn-success">
+                <i class="fa fa-plus"> </i> Add New Contact
+            </a></p>
+
+            <table class="table table-striped" id="contact_list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Initiative</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.initiative }}</td>
+                        <td><a href="{% url 'edit_contact' contact.pk %}">Edit</a></td>
+                        <td><form method="POST" action="{% url 'delete_contact' contact.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Contact"/></form></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+    </section>
+{% endblock content %}
+
+{% block js %}
+{% include "elements/datatables.js.html" with target='initiatives' %}
+{% endblock js %}

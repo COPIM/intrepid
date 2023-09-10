@@ -1,0 +1,28 @@
+- name: Generate SSH key
+  hosts: all
+  tasks:
+  - name: mount point install
+    become: true
+    mount:
+      name: "/var/www/media"
+      src: "/dev/nvme1n1p1"
+      fstype: "ext4"
+      opts: "auto"
+      state: present
+
+  - name: Mount it
+    become: true
+    ansible.posix.mount:
+      path: /var/www/media
+      fstype: ext4
+      src: /dev/nvme1n1p1
+      state: mounted
+
+  - name: Change file ownership, group and permissions
+    become: true
+    ansible.builtin.file:
+      path: /var/www/media
+      owner: www-data
+      group: obc
+      mode: u=rwx,g=rwx,o=rx
+      recurse: yes

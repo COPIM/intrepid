@@ -1,0 +1,74 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+
+{% block title %}Site-Wide News Configuration{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Site-Wide News Configuration</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables-and-sortable.js.html" with target='pages' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+<span id="active_page" class="homepage_news">&nbsp;</span>
+<!-- this span expands the CMS tab -->
+<span id="expand_content_manager">&nbsp;</span>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">Configures Site-Wide News Items</p>
+                <table class="table table-hover" id="updates">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Page</th>
+                            <th>Initiative</th>
+                            <th>Order</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sortable">
+                    {% for news_item in news_items %}
+                        <tr id="news-items-{{ news_item.id }}">
+                            <td><i class="fas fa-sort"></i></td>
+                            <td>{{ news_item.update_item.title }}</td>
+                            <td>{{ news_item.update_item.initiative.name }}</td>
+                            <td>{{ news_item.order }}</td>
+                            <td><form method="POST" action="{% url 'sitewide_news_delete' news_item.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove from Homepage"/></form></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <table class="table table-hover" id="pages">
+                    <thead>
+                    <tr>
+                        <th>Page ID</th>
+                        <th>Title</th>
+                        <th>Initiative</th>
+                        <th>Date/Time</th>
+                        <th>Edit</th>
+                        <th>Add to Homepage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for page in pages %}
+                        <tr>
+                            <td>{{ page.pk }}</td>
+                            <td>{{ page.title }}</td>
+                            <td>{{ page.initiative.name }}</td>
+                            <td>{{ page.current_version.created }}</td>
+                            <td><a href="{% url 'page_edit' page.initiative.pk 'update' page.pk %}">Edit</a></td>
+                            <td><form method="POST">{% csrf_token %}<input type="hidden" value="{{ page.pk }}" name="page_to_add"></input><input type="submit" class="btn btn-success" value="Add to Homepage"></input></form></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

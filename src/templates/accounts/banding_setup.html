@@ -1,0 +1,46 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor account_tags %}
+
+{% block title %}{% trans "Profile" %}{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_information">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% trans "Banding Setup" %}</h1>
+            </div>
+            <div class="col-md-12">
+            <form method="POST">
+            {% csrf_token %}
+            <table class="table table-borderless">
+                {% for banding in banding_types %}
+                    <tr>
+                        <td style="width:33%"><h3>{{ banding }}</h3></td>
+                        <td>
+                        <select name="banding-{{ banding.pk }}" id="banding-{{ banding.pk }}">
+                            <option value="0">Unspecified</option>
+                        {% for vocab in banding.vocabs.all %}
+                            {% is_current_banding_for_user banding vocab request as is_selected %}
+                            <option {% if is_selected %}selected="selected"{% endif %} value="{{ vocab.pk }}">{{ vocab }}</option>
+                        {% endfor %}
+                        </select>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" class="btn btn-success" value="Save to Profile">
+            </form>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

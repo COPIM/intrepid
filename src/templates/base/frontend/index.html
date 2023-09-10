@@ -1,0 +1,532 @@
+{% extends "base/frontend/base_index.html" %}
+{% load static %}
+
+{% block body-mobile %}
+    <div id="youTubeModalMobile" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="OBCVideo" class="embed-responsive-item" width="560" height="315" src="{{ request.site.youtube_embed }}" allowfullscreen></iframe>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- mobile/responsive -->
+    <div class="main-mobile container-fluid d-sm-block d-xs-block d-md-none">
+        <div class="main-mobile">
+            <div class="row">
+                <div class="col text-center"><img src="{% static "frontend/img/home_orb.svg" %}" alt="Open Book Collective"
+                                                  class="img-fluid logo-mobile">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">{% get_site_text 'index_header' %}</div>
+            </div>
+            <div class="row">
+                <div class="col text-center"><span class="blurb">{% get_site_text 'index_sub_header' %}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center video">
+                    <button class="pill_button video-pill" href="#youTubeModalMobile" data-toggle="modal">Watch Video</button>
+                </div>
+            </div>
+
+            <!-- home chart -->
+            <div class="row">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Stronger OA communities" src="{% static "frontend/img/home_chart.svg" %}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_1_header' %}</h2></div>
+            </div>
+            <div class="row">
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_1_body' %}</p></div>
+            </div>
+
+            <!-- flower chart -->
+            <div class="row">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Sustainable funding model" src="{% static "frontend/img/home_flower.svg" %}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_2_header' %}</h2></div>
+            </div>
+            <div class="row">
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_2_body' %}</p></div>
+            </div>
+
+            <!-- cloud chart -->
+            <div class="row">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Robust infrastructure" src="{% static "frontend/img/home_cloud.svg" %}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_3_header' %}</h2></div>
+            </div>
+            <div class="row">
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_3_body' %}</p></div>
+            </div>
+
+            <!-- clip chart -->
+            <div class="row">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Diversity in OA" src="{% static "frontend/img/home_clip.svg" %}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_4_header' %}</h2></div>
+            </div>
+            <div class="row">
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_4_header' %}</p></div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center video">
+                    <button class="pill_button video-pill">How We Support Libraries</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid d-sm-block d-xs-block d-md-none">
+        <div class="take-action-mobile text-center">
+            <h1>{% get_site_text 'action_header' %}</h1>
+            <div class="row purple-foreground white-background libraries-mobile">
+                <div class="col">
+                    <h2>{% get_site_text 'action_col_1_header' %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' %}</p>
+                    <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="Libraries"></img></p>
+                    <ul class="benefit text-left">
+                        {% get_site_text 'action_col_1_list' %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row bright-blue-foreground white-background authors-mobile">
+                <div class="col">
+                    <h2>{% get_site_text 'action_col_2_header' %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' %}</p>
+                    <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="Authors and readers"></img></p>
+                    <ul class="benefit text-left">
+                        {% get_site_text 'action_col_2_list' %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="row dark-blue-foreground white-background publishers-mobile">
+                <div class="col">
+                    <h2>{% get_site_text 'action_col_3_header' %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' %}</p>
+                    <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="Publishers"></img>
+                    </p>
+                    <ul class="benefit text-left">
+                        {% get_site_text 'action_col_2_list' %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {%  if quotes.0.quotation %}
+    <div class="working-together-mobile container-fluid d-sm-block d-xs-block d-md-none">
+        <div class="working-together-mobile text-center working-together-mobile-1">
+            <h1>{% get_site_text 'working_together' %}</h1>
+
+            <div class="working-together-mobile-block-1 working-together-mobile-block">
+                <div class="row working-together-image-mobile">
+                    <div class="col">{% if quotes.0.organization_logo %}<img src="{{ quotes.0.organization_logo.url }}" alt="{{ quotes.0.organization_attribution }}">{% endif %}</div>
+                </div>
+                <div class="row working-together-blurb-mobile">
+                    <div class="col">
+                        <span>“{{ quotes.0.quotation }}”</span>
+                    </div>
+                </div>
+                <div class="row working-together-credit-mobile">
+                    <div class="col">
+                        <span><span class="font-weight-bold">{{ quotes.0.person_attribution }}, </span>{{ quotes.0.organization_attribution }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="working-together-mobile-block-2 working-together-mobile-block">
+                <div class="row working-together-image-mobile">
+                    <div class="col">{% if quotes.1.organization_logo %}<img src="{{ quotes.1.organization_logo.url }}" alt="{{ quotes.1.organization_attribution }}">{% endif %}</div>
+                </div>
+                <div class="row working-together-blurb-mobile">
+                    <div class="col">
+                        <span>“{{ quotes.1.quotation }}”</span>
+                    </div>
+                </div>
+                <div class="row working-together-credit-mobile">
+                    <div class="col">
+                        <span><span class="font-weight-bold">{{ quotes.1.person_attribution }}, </span>{{ quotes.1.organization_attribution }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="working-together-mobile-block-3 working-together-mobile-block">
+                <div class="row working-together-image-mobile">
+                    <div class="col">{% if quotes.2.organization_logo %}<img src="{{ quotes.2.organization_logo.url }}" alt="{{ quotes.2.organization_attribution }}">{% endif %}</div>
+                </div>
+                <div class="row working-together-blurb-mobile">
+                    <div class="col">
+                        <span>“{{ quotes.2.quotation }}”</span>
+                    </div>
+                </div>
+                <div class="row working-together-credit-mobile">
+                    <div class="col">
+                        <span><span class="font-weight-bold">{{ quotes.2.person_attribution }}, </span>{{ quotes.2.organization_attribution }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="working-together-mobile-block-4 working-together-mobile-block">
+                <div class="row working-together-image-mobile">
+                    <div class="col">{% if quotes.2.organization_logo %}<img src="{{ quotes.3.organization_logo.url }}" alt="{{ quotes.2.organization_attribution }}">{% endif %}</div>
+                </div>
+                <div class="row working-together-blurb-mobile">
+                    <div class="col">
+                        <span>“{{ quotes.3.quotation }}”</span>
+                    </div>
+                </div>
+                <div class="row working-together-credit-mobile">
+                    <div class="col">
+                        <span><span class="font-weight-bold">{{ quotes.3.person_attribution }}, </span>{{ quotes.3.organization_attribution }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row working-together-dots-mobile">
+                <div class="col">
+                    <span class="dot active dot-1" id="dot-1"></span>
+                    <span class="dot dot-2" id="dot-2"></span>
+                    <span class="dot dot-3" id="dot-3"></span>
+                    <span class="dot dot-4" id="dot-4"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if news_items.count > 0 %}
+    <div class="news-mobile container-fluid d-sm-block d-xs-block d-md-none">
+        <div class="news-mobile">
+            <h1>News</h1>
+            {% for news_item in news_items %}
+                <div class="row news-cards">
+                    <div class="col">
+                        <div class="card">
+                          <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                          <div class="card-body">
+                            <p class="card-text">{{ news_item.update_item.title }}</p>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container-fluid d-sm-block d-xs-block d-md-none">
+        <div class="take-action-mobile text-center white-background">
+            <h1>Funders</h1>
+            <p>The open book collective is funded by:</p>
+            <div class="row news-cards">
+                    <div class="col-12">
+                        <img class="img-fluid" src="/media/funders/UKRI.png">
+                    </div>
+                    <div class="col-12">
+                        <img class="img-fluid" src="/media/funders/Arcadia.png">
+                    </div>
+                </div>
+        </div>
+
+    </div>
+
+    {% endblock %}
+
+    {% block body %}
+    <!-- Modal HTML -->
+    <div id="youTubeModal" class="modal fade">
+        <div class="modal-dialog full_modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="OBCVideo" class="embed-responsive-item" width="560" height="315" src="{{ request.site.youtube_embed }}" allowfullscreen></iframe>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- desktop -->
+    <div class="container-fluid main d-none d-md-block">
+
+        <div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-5 home-text">
+                    {% get_site_text 'index_header' %}
+                    <br/>
+                    <span class="blurb">{% get_site_text 'index_sub_header' %}</span>
+                    <br/><br/>
+                    <button class="pill_button video-button" href="#youTubeModal" data-toggle="modal">Watch Video</button>
+                </div>
+                <div class="col-6">
+                    <img src="{% static "frontend/img/home_orb.svg" %}" alt="Open Book Collective" class="img-fluid">
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="row">
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_chart.svg" %}" alt="An image representing community"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_flower.svg" %}" alt="An image representing sustainability"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_cloud.svg" %}" alt="An image representing infrastructure"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_clip.svg" %}" alt="An image representing diversity"></div>
+            </div>
+            <div class="row home_heads">
+                <div class="col-3"><h2>{% get_site_text 'index_col_1_header' %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_2_header' %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_3_header' %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_4_header' %}</h2></div>
+            </div>
+
+            <div class="row home_blurbs">
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_1_body' %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_2_body' %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_3_body' %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_4_body' %}</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pale-blue d-none d-md-block">
+
+        <div class="take-action">
+            <div class="row">
+                <div class="col text-center"><h1>{% get_site_text 'action_header' %}</h1></div>
+            </div>
+
+            <!-- headings -->
+
+            <div class="row action-section">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-top-action">
+                            <h2 class="action-heading">{% get_site_text 'action_col_1_header' %}</h2>
+                        </div>
+                        <div class="col-4 white-background bright-blue-foreground text-center dash-right-border middle-border-top-action">
+                            <h2 class="action-heading">{% get_site_text 'action_col_2_header' %}</h2>
+                        </div>
+                        <div class="col-4 white-background dark-blue-foreground text-center right-border-top-action">
+                            <h2 class="action-heading">{% get_site_text 'action_col_3_header' %}</h2></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- descriptions -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-only-action">
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' %}</p>
+                        </div>
+                        <div class="col-4 white-background bright-blue-foreground dash-right-border middle-border-action">
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' %}</p>
+                        </div>
+                        <div class="col-4 white-background dark-blue-foreground right-border-action">
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- images -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-only-action">
+                            <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="Libraries"></img></p>
+                        </div>
+                        <div class="col-4 white-background bright-blue-foreground dash-right-border text-center middle-border-action">
+                            <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="Authors and Readers"></img>
+                            </p>
+                        </div>
+                        <div class="col-4 white-background dark-blue-foreground text-center right-border-action">
+                            <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="Publishers"></img>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- bullets -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4 text-left white-background purple-foreground dash-right-border left-border-only-action">
+                            <ul class="benefit">
+                                {% get_site_text 'action_col_1_list' %}
+                            </ul>
+                        </div>
+                        <div class="col-4 white-background bright-blue-foreground dash-right-border text-left middle-border-action">
+                            <ul class="benefit">
+                                {% get_site_text 'action_col_2_list' %}
+                            </ul>
+                        </div>
+                        <div class="col-4 white-background dark-blue-foreground text-left right-border-action">
+                            <ul class="benefit">
+                                {% get_site_text 'action_col_3_list' %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- action pills -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-bottom-action">
+                            <a href="{% url 'package_list' %}" class="pill-button-library">Build Your Subscription</a>
+                        </div>
+                        <div class="col-4 white-background dash-right-border middle-border-bottom-action">
+                            <a href="{% url 'all_books' %}" class="pill-button-author">Search the Catalogue</a>
+                        </div>
+                        <div class="col-4 white-background right-border-bottom-action">
+                            <a href="{% url 'dashboard_index' %}" class="pill-button-publisher">Create Your Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if quotes.0.quotation %}
+    <div class="container-fluid light-blue d-none d-md-block">
+        <div class="working-together">
+            <h1>{% get_site_text 'working_together' %}</h1>
+            <div class="row pill-row">
+                <div class="col">
+                    {% for quote in quotes %}{% if forloop.first %}<button class="first-pill punctum publisher-pill" id="working-together-1">{{ quote.pill_name}}</button>{% else %}<button id="working-together-{{ forloop.counter }}" class="publisher-pill mid-pill mattering publisher-pill">{{ quote.pill_name}}</button>{% endif %}{% endfor %}<button onclick="location.href='{% url "public_initiative_list" %}'" class="last-pill publisher-pill">&gt;</button>
+                </div>
+            </div>
+            <div class="working-together-info-1 working-together-info">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-2">{% if quotes.0.organization_logo %}<img class="img-fluid" src="{{ quotes.0.organization_logo.url }}" alt="{{ quotes.0.organization_attribution }}">{% endif %}</div>
+                    <div class="col-8"><span>“{{ quotes.0.quotation }}”</span></div>
+                    <div class="col-1"></div>
+                </div>
+                <div class="row working-together-credit">
+                    <div class="col-1"></div>
+                    <div class="col-2"></div>
+                    <div class="col-8"><span><span class="font-weight-bold">{{ quotes.0.person_attribution }}, </span>&nbsp;{{ quotes.0.organization_attribution }}</span></div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+
+            <div class="working-together-info-2 working-together-info">
+                <div class="row">
+                <div class="col-1"></div>
+                    <div class="col-2">{% if quotes.1.organization_logo %}<img class="img-fluid" src="{{ quotes.1.organization_logo.url }}" alt="{{ quotes.1.organization_attribution }}">{% endif %}</div>
+                    <div class="col-8"><span>“{{ quotes.1.quotation }}”</span></div>
+                <div class="col-1"></div>
+                </div>
+                <div class="row working-together-credit">
+                    <div class="col-1"></div>
+                    <div class="col-2"></div>
+                    <div class="col-8"><span><span class="font-weight-bold">{{ quotes.1.person_attribution }}, </span>&nbsp;{{ quotes.1.organization_attribution }}</span></div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+
+            <div class="working-together-info-3 working-together-info">
+                <div class="row">
+                <div class="col-1"></div>
+                    <div class="col-2">{% if quotes.2.organization_logo %}<img class="img-fluid" src="{{ quotes.2.organization_logo.url }}" alt="{{ quotes.2.organization_attribution }}">{% endif %}</div>
+                    <div class="col-8"><span>“{{ quotes.2.quotation }}”</span></div>
+                <div class="col-1"></div>
+                </div>
+                <div class="row working-together-credit">
+                    <div class="col-1"></div>
+                    <div class="col-2"></div>
+                    <div class="col-8"><span><span class="font-weight-bold">{{ quotes.2.person_attribution }}, </span>&nbsp;{{ quotes.2.organization_attribution }}</span></div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+
+            <div class="working-together-info-4 working-together-info">
+                <div class="row">
+                <div class="col-1"></div>
+                    <div class="col-2">{% if quotes.3.organization_logo %}<img class="img-fluid" src="{{ quotes.3.organization_logo.url }}" alt="{{ quotes.3.organization_attribution }}">{% endif %}</div>
+                    <div class="col-8"><span>“{{ quotes.3.quotation }}”</span></div>
+                <div class="col-1"></div>
+                </div>
+                <div class="row working-together-credit">
+                    <div class="col-1"></div>
+                    <div class="col-2"></div>
+                    <div class="col-8"><span><span class="font-weight-bold">{{ quotes.3.person_attribution }}, </span>&nbsp;{{ quotes.3.organization_attribution }}</span></div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+    {% if news_items.count > 0 %}
+    <div class="container-fluid pale-blue d-none d-md-block">
+        <div class="news">
+            <a href="{% url 'sitewide_news' %}"><h1>News</h1></a>
+            <div class="row news-cards">
+                {% for news_item in news_items %}
+                    <div class="col-3">
+                    <a href="{% url 'news_item' news_item.update_item.pk %}">
+                        <div class="card">
+                            <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                            <div class="card-body">
+                                <p class="card-text">{{ news_item.update_item.title }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+        <div class="container-fluid pale-blue d-none d-md-block">
+            <div class="news">
+                <h1>Funders</h1>
+                <div class="row news-cards">
+                    <div class="col-6">
+                        <img class="img-fluid" src="/media/funders/UKRI.png">
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid" src="/media/funders/Arcadia.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock body %}

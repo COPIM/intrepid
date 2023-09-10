@@ -1,0 +1,80 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Price Debugger
+{% endblock title %}
+
+{% block page-title %}
+    Price Debugger
+{% endblock page-title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Price Debugger</a></li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="debugger">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <p>The pricing structure in OBC is complicated. This tool allows you to test your pricing logic works as expected.</p>
+
+                    <p>Understanding how OBC pricings are controlled is a prerequisite:</p>
+
+                    <ol>
+                        <li>Platform Managers at OBC setup bandings that have tiers that are either banded or based on FTE (“Jisc Collections” → “Band 1”, “Band 2” / “Carnegie” → “Big (1000 FTE)”, “Medium (500 FTE)”, “Small (100 FTE)”).</li>
+                        <li>Packages have associated bandings (“Open Book Publishers Membership” can say it uses “Jisc” and “Carnegie”).</li>
+                        <li>Packages can specify which currencies they provide an associated banding in. So Jisc Collections, “Band 1”, could be paid for in GBP or USD.</li>
+                        <li>Packages can set the default banding that they wish to use.</li>
+                        <li>Packages set prices for currency-associated-bandings (BandingTypeCurrencyEntries). (E.g. a price for Jisc Band 1 in GBP).</li>
+                        <li>Payment processors are associated with a currency-associated banding. So LYRASIS are set to handle all prices in Jisc Band 1 in USD.</li>
+                    </ol>
+
+                    <p>The default flow for applying prices is:</p>
+                    <ol>
+                        <li>Find any/all prices in the user’s preferred currency.</li>
+                        <li>Check if we can match this against the user’s stored information (FTE/bandings).</li>
+                        <li>If not, fall back to package default banding and currency.</li>
+                        <li>Check if we can match this against the user’s stored information (FTE/bandings).</li>
+                        <li>If not, ask user to give their details.</li>
+                    </ol>
+
+                        <select class="form-control" aria-label="user to test" id="user" name="user">
+                            {% for user in user_list %}
+                                <option id="user-{{ user.pk }}" value="{{ user.pk }}" {% if user.pk == user_to_test.pk %}selected="selected"{% endif %}>{{ user.profile.full_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+
+                        <select class="form-control" aria-label="package to test" id="package" name="package">
+                            {% for package in packages %}
+                                <option id="package-{{ package.pk }}" value="{{ package.pk }}" {% if package.pk == package_to_test.pk %}selected="selected"{% endif %}>{{ package.name }}</option>
+                            {% endfor %}
+                        </select>
+                    <p>
+                        <input class="form-control" type="submit" value="Debug" name="Debug"/>
+                    </p>
+                </div>
+            </div>
+
+            {% if result %}
+                <div class="row">
+                    <div class="col">
+                        <p>Debug result</p>
+                        <textarea aria-label="debug result" style="width:100%; height:500px">{{ result }}</textarea>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tasks:
+    - name: copy nginx site.conf
+      become: true
+      template:
+        src: ./templates/nginx_site.tpl
+        dest: /etc/nginx/sites-enabled/intrepid
+        owner: root
+        group: root
+        mode: '0644'
+        force: no
+    - name: restart nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted

@@ -1,0 +1,21 @@
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ package.name }}</h5>
+        {% if meta %}
+            <h6 class="card-subtitle mb-2 text-muted">
+                {% for package_link in package.packages.all %}
+                {{ package_link.package.initiative.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </h6>
+        {% else %}
+            <h6 class="card-subtitle mb-2 text-muted">Initiative: {{ package.initiative.name }}</h6>
+        {% endif %}
+        <p class="card-text">{{ package.description|safe }}</p>
+        <p class="card-text">{{ package.display_price }}</p></p>
+        {% if meta %}
+        <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary">Add to Basket</a>
+        {% else %}
+        <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary">Add to Basket</a>
+        {% endif %}
+    </div>
+</div>

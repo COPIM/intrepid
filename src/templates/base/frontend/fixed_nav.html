@@ -1,0 +1,8 @@
+<li {% if 'values' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a></li>
+<li {% if 'who' in request.path %}class="active"{% endif %}><a href="{% url 'who_we_are' %}">Who We Are</a></li>
+<li {% if 'why' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'why_support_oa' %}">Membership</a></li>
+<li {% if 'governance' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'governance' %}">Governance</a></li>
+<li><a href="https://openbookcollective.pubpub.org/documents" target="_blank">Documents</a></li>
+<li {% if 'news' in request.path %}class="active"{% endif %}><a href="https://openbookcollective.pubpub.org/news">News</a></li>
+<li {% if 'what' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
+<li {% if 'funding' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>

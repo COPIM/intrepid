@@ -1,0 +1,50 @@
+---
+- hosts: all
+  tasks:
+  - name: Migrate initial sites framework
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python manage.py migrate sites'
+    args:
+      chdir: /home/obc/intrepid/src
+  - name: Run main migrations
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python manage.py migrate'
+    args:
+      chdir: /home/obc/intrepid/src
+  - name: Make migrations fluidpermissions
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python manage.py makemigrations fluid_permissions'
+    args:
+      chdir: /home/obc/intrepid/src
+  - name: Migrate fluidpermissions
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python manage.py migrate fluid_permissions'
+    args:
+      chdir: /home/obc/intrepid/src
+  - name: Collect static
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python manage.py collectstatic --noinput'
+    args:
+      chdir: /home/obc/intrepid/src
+  - name: copy static files
+    become: true
+    copy:
+      src: /home/obc/intrepid/src/static/
+      dest: /var/www/static/
+      remote_src: yes
+      directory_mode: yes
+      owner: obc
+      group: www-data
+  - name: Create files directory
+    become: true
+    file:
+      path: /home/obc/intrepid/src/files
+      state: directory
+      owner: obc
+      group: obc
+      mode: 0775

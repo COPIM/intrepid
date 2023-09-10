@@ -1,0 +1,19 @@
+{% load static %}
+<div class="row">
+    <div class="col">
+        <div class="pill-row">
+            {% include "summary/buttons.html" with active="pricing" %}
+        </div>
+    </div>
+</div>
+<div class="row catalogue-main">
+    <div class="col-1"></div>
+    <div class="col-8">
+        <div class="larger-package-styled-text">
+            {{ package.description|safe }}
+        </div>
+    </div>
+    <div class="col-3">
+        {% include "summary/sidebar.html" %}
+    </div>
+</div>

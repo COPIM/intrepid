@@ -1,0 +1,24 @@
+---
+- name: Mount media directory
+  import_playbook: fstab/mount_ebs.yml
+
+- name: Update dependencies
+  import_playbook: virtualenv/dependencies.yaml
+
+- name: Update requirements
+  import_playbook: virtualenv/setup_pip.yml
+
+- name: Pull from github
+  import_playbook: pull/pull_from_github.yml
+
+- name: Symlink settings
+  import_playbook: virtualenv/symlink_settings.yml
+
+- name: Run migrations and collect static
+  import_playbook: migrations/migrate.yml
+
+- name: Import fixtures
+  import_playbook: migrations/fixtures.yml
+
+- name: Restart Gunicorn and nginx
+  import_playbook: gunicorn/restart_gunicorn.yml

@@ -1,0 +1,70 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Thoth Sync
+{% endblock title %}
+
+{% block page-title %}
+    Thoth Sync
+{% endblock page-title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Thoth Sync</a></li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="thoth_sync">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <p>Syncing with Thoth is a multi-stage process:</p>
+
+                    <ol>
+                        <li>Run a test import. This verifies that the remote Thoth server is compatible.</li>
+                        <li>Run a full import. This pulls data into the local Thoth database.</li>
+                        <li>Notify users.</li>
+                    </ol>
+                    <p>
+                        {% if test %}<input type="submit" value="Run test" name="test"/>{% endif %}
+                        {%  if not test %}<input type="submit" value="Run import" name="import"/>{% endif %}
+                    </p>
+                    <p>
+                        <input type="submit" value="Notify users" name="notify"/>
+                    </p>
+                </div>
+            </div>
+
+            {% if result %}
+            <div class="row">
+                <div class="col">
+                    <p>Test results</p>
+                    <textarea style="width:100%; height:500px">{{ result }}</textarea>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if request.site.last_thoth_log %}
+                <div class="row">
+                    <div class="col">
+                        <p>Last real Thoth import ({{ request.site.last_thoth_log_date }})</p>
+                        <textarea style="width:100%; height:500px">{{ request.site.last_thoth_log }}</textarea>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

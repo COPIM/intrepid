@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item active" aria-current="page">Packages</li>
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Packages</h1>
+        <p class="lead">View and select packages available for signup.</p>
+    </div>
+    <div class="col-md-6">
+        <h2>Packages</h2>
+        <p>Individual packages.</p>
+        {% for package in packages %}
+            {% include "package/elements/package.html" %}
+        {% empty %}
+            <p class="lead">There are no Packages to display.</p>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        <h2>Meta Packages</h2>
+        <p>Groups of packages.</p>
+        {% for package in meta_packages %}
+            {% include "package/elements/package.html" with meta="meta" %}
+        {% empty %}
+            <p class="lead">There are no Meta Packages to display.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

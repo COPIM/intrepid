@@ -1,0 +1,45 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block page-title %}
+    Site Setup
+{% endblock page-title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Site Setup</a></li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="site_setup">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Note: Disabling all signups will overrule the individual options.</p>
+                    {{ form|crispy }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="submit"/>
+                </div>
+            </div>
+        </form>
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

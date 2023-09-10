@@ -1,0 +1,104 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}Package Approval{% endblock %}
+{% block page-title %}Package Approval{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Package Approval</li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="package_approval">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                Listed here are packages that have not been approved for display.
+            </p>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table table-striped" id="approvals">
+                    <thead>
+                        <tr>
+                            <th>Package Name</th>
+                            <th>Initiative</th>
+                            <th>Banding Type</th>
+                            <th>Default Country/Currency</th>
+                            <th>Description</th>
+                            <th>Approve</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for package in packages_awaiting_approval %}
+                        <tr>
+                            <td>{{ package.name }}</td>
+                            <td>{{ package.initiative.name }}</td>
+                            <td>{{ package.banding_type }}</td>
+                            <td>{{ package.default_country }}</td>
+                            <td>
+                                <a type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#package-{{ package.pk }}">
+                                    View
+                                </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-success" name="approve" value="{{ package.pk }}">Approve</button>
+                            </td>
+                            <td>
+                                <a target="_blank" href="{% url 'manage_package' package.initiative.pk package.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                            <td>
+                                <button name="delete" value="{{ package.pk }}" class="btn btn-sm btn-danger delete">Delete</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </section>
+
+    {% for package in packages_awaiting_approval %}
+        <div class="modal" id="package-{{ package.pk }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ package.name}} Description</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        {{ package.description|safe }}
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
+
+{% block dashboard_js %}
+
+    {% include "elements/datatables.js.html" with target='approvals' %}
+
+<script>
+    $(document).ready(function () {
+        $(".delete").click(function () {
+            if (!confirm("Are you sure you want to delete this package?")) {
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}

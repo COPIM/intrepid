@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+  - name: Install email check cron job
+    become: true
+    become_user: obc
+    ansible.builtin.cron:
+      name: "Update email log"
+      minute: "0"
+      job: "/home/obc/intrepid-venv/bin/python /home/obc/intrepid/src/manage.py update_email_status"
+  - name: Install email check cron job
+    become: true
+    become_user: obc
+    ansible.builtin.cron:
+      name: "Run backup"
+      hour: "0"
+      minute: "15"
+      job: "/usr/bin/bash -c \"/home/obc/intrepid/.backup.sh\""

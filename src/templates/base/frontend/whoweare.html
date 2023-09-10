@@ -1,0 +1,294 @@
+{% extends "base/frontend/base_header_overlap.html" %}
+{% load static %}
+
+{% block title %}
+Open Book Collective | Who We Are
+{% endblock title %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col pull-left">
+            <h1>Who We Are</h1>
+            <p class="subhead-no-offset">We are a team of librarians, publishers, publishing service providers and academics committed to collectively reimagining and reconfiguring the funding and circulation of open access monographs.</p>
+        </div>
+        <div class="col-3"><img src="{% static "frontend/img/whoweare.svg" %}" alt="Open Book Collective"
+                                                  class="img-fluid img-right"></div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    {% if stewards.count > 0 %}
+    <div class="row pill-row">
+        <div class="col-3">
+            <ul class="side-menu">
+                {% include "base/frontend/fixed_nav.html" %}
+            </ul>
+        </div>
+        <div class="col-9 text-center board-of-stewards">
+            <button class="left-pill-blue" onclick="location.href='#board-of-stewards'">Board of Stewards</button><button onclick="location.href='#membership-committee'" class="mid-pill-blue">Membership Committee</button><button onclick="location.href='#management-team'" class="mid-pill-blue">Management Team</button><button onclick="location.href='#secretariat'" class="right-pill-blue">Secreteriat</button>
+
+            <h2>Board of Stewards</h2><a id="board-of-stewards"></a>
+
+            <div class="row">
+                {% for steward in stewards %}
+                    <div class="col-4">
+                        <div class="row circle-row">
+                            <div class="col-12">{% if steward.police_mugshot %}<img src="{{ steward.police_mugshot.url }}" class="circle-image" alt="{{ steward.display_name}}" />{% endif %}</div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12"><p class="person">{{ steward.display_name }}</p>
+                            <p class="institution">{{ steward.affiliation_line }}{% if steward.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ steward.pk }}">View Biography</a>{% endif %}</p></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.board_of_stewards_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+    {% endif %}
+    {% if members.count > 0 %}
+                <div class="row pill-row">
+                    <div class="col-3"></div>
+                    <div class="col-9 text-center board-of-stewards">
+                        <h2>Membership Committee</h2><a id="membership-committee"></a>
+                         <div class="row">
+                            {% for member in members %}
+                                <div class="col-4">
+                                    <div class="row circle-row">
+                                        <div class="col-12">{% if member.police_mugshot %}<img src="{{ member.police_mugshot.url }}" class="circle-image" alt="{{ member.display_name}}" />{% endif %}</div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-12"><p class="person">{{ member.display_name }}</p>
+                                        <p class="institution">{{ member.affiliation_line }}{% if member.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ member.pk }}">View Biography</a>{% endif %}</p></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.membership_committee_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+    {% endif %}
+
+    {% if managers.count > 0 %}
+                <div class="row pill-row">
+                    <div class="col-3"></div>
+                    <div class="col-9 text-center board-of-stewards">
+                        <h2>Management Team</h2><a id="management-team"></a>
+                        <div class="row">
+
+                           {% for manager in managers %}
+                                <div class="col-4">
+                                    <div class="row circle-row">
+                                        <div class="col-12">{% if manager.police_mugshot %}<img src="{{ manager.police_mugshot.url }}" class="circle-image" alt="{{ manager.display_name}}" />{% endif %}</div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-12"><p class="person">{{ manager.display_name }}</p>
+                                        <p class="institution">{{ manager.affiliation_line }}{% if manager.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ manager.pk }}">View Biography</a>{% endif %}</p></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+         <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.secretariat_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+    {% endif %}
+    {% if secretariat.count > 0 %}
+                <div class="row pill-row">
+                    <div class="col-3"></div>
+                    <div class="col-9 text-center board-of-stewards">
+                        <h2>Secretariat</h2><a id="secretariat"></a>
+                         <div class="row">
+                            {% for sec in secretariat %}
+                                <div class="col-4">
+                                    <div class="row circle-row">
+                                        <div class="col-12">{% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image" alt="{{ sec.display_name}}" />{% endif %}</div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-12"><p class="person">{{ sec.display_name }}</p>
+                                        <p class="institution">{{ sec.affiliation_line }}{% if sec.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ sec.pk }}">View Biography</a>{% endif %}</p></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.membership_committee_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+    {% endif %}
+
+    {% for steward in stewards %}
+    {% include "base/frontend/bio_modal.html" with who=steward %}
+    {% endfor %}
+
+    {% for member in members %}
+    {% include "base/frontend/bio_modal.html" with who=member %}
+    {% endfor %}
+
+    {% for manager in managers %}
+    {% include "base/frontend/bio_modal.html" with who=manager %}
+    {% endfor %}
+
+    {% for sec in secretariat %}
+    {% include "base/frontend/bio_modal.html" with who=sec %}
+    {% endfor %}
+
+{% endblock body %}
+
+{% block body-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-12 who-we-are-header-mobile">
+            <img src="{% static "frontend/img/whoweare.svg" %}" alt="Who We Are" class="img-fluid"/><br/>
+            <h1>{% trans "Who We Are" %}</h1>
+        </div>
+
+    </div>
+
+    <div class="row white-background blue-text">
+        <div class="col">
+           <p>Find out more about the OBC and who is behind it.</p>
+        </div>
+    </div>
+
+    <div class="row grey-background blue-text">
+        <div class="col">
+            <h2>Board of Stewards</h2>
+            {% for steward in stewards %}
+            <div class="person-block-mobile">
+                {% if steward.police_mugshot %}<img src="{{ steward.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ steward.display_name }}" />{% endif %}
+                <p class="person">{{ steward.display_name }}</p>
+                <p class="institution">{{ steward.affiliation_line }}</p>
+            </div>
+            {% endfor %}
+
+            <h2>Membership Committee</h2>
+            {% for member in members %}
+                <div class="person-block-mobile">
+                    {% if memnber.police_mugshot %}<img src="{{ member.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ member.display_name }}" />{% endif %}
+                    <p class="person">{{ member.display_name }}</p>
+                    <p class="institution">{{ member.affiliation_line }}</p>
+                </div>
+            {% endfor %}
+
+            <h2>Management Team</h2>
+            {% for manager in managers %}
+                <div class="person-block-mobile">
+                    {% if manager.police_mugshot %}<img src="{{ manager.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ manager.display_name}}" />{% endif %}
+                    <p class="person">{{ manager.display_name }}</p>
+                    <p class="institution">{{ manager.affiliation_line }}</p>
+                </div>
+            {% endfor %}
+
+            <h2>Secretariat</h2>
+            {% for sec in secretariat %}
+                <div class="person-block-mobile">
+                    {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
+                    <p class="person">{{ sec.display_name }}</p>
+                    <p class="institution">{{ sec.affiliation_line }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock body-mobile %}

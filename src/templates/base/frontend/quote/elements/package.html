@@ -1,0 +1,66 @@
+{% load static %}
+
+<div class="card collective-card package-card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <h5 class="card-title"><a href="{% url 'summary_package_initiative' 'package' package.pk %}">{{ package.name }}</a></h5>
+                <span class="package-styled-text">{{ package.initiative.description|safe|truncatechars_html:400 }}</span>
+                <p class="package-styled-text"><i class="fa fa-arrow-right"></i>
+                    <a href="{% url 'summary_package_initiative' 'package' package.pk %}">More Information</a>
+                    {% if request.user.is_staff %}&nbsp;<i class="fa fa-arrow-right"></i> <a href="{% url 'manage_package' package.initiative.pk package.pk %}">Edit Package</a>{% endif %}
+                </p>
+            </div>
+            <div class="col-3 dashed-border-right">
+                <ul class="list-unstyled package-styled-text">
+                    {% if package.recommended %}
+                        <li><i class="fa fa-check-circle"></i> Recommended
+                        </li>
+                    {% endif %}
+                    <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract
+                    </li>
+                    <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+                    {% if package.meta_packages %}
+                        <li>
+                            <i class="fa fa-box"> </i> Included in
+                            {% for mp in package.meta_packages %}{{ mp.name }}{% if not forloop.last %},
+                            {% endif %}{% endfor %}
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-3">
+                <a href="{% url 'summary_package_initiative' 'initiative' package.initiative.pk %}">
+                <img class="img-fluid" src="{% if package.image %}{{ package.image.url }}{% else %}{% static "frontend/img/logo.svg" %}{% endif %}"
+                     alt="{{ package.name }} icon."/></a>
+                {% if request.site.enable_signup and request.site.enable_individual_package_signup %}
+                <div class="dropdown">
+                    <button class="btn btn-primary btn-obc-blue btn-package float-right m-t-40 dropdown-toggle"
+                            type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add to Quote <span class="fa fa-plus"></span>
+                    </button>
+                    <div class="dropdown-menu package-dropdown" aria-labelledby="dropdownMenuButton">
+                        {% if request.site.enable_meta_package_signup %}
+                            {% for mp in package.meta_packages %}
+                                <a class="package-dropdown-item"
+                                   href="{% url 'manage_basket_meta_package' mp.pk %}">{{ mp.name }}</a><br/>
+                            {% endfor %}
+                        {% endif %}
+                        {% if not package.meta_only %}
+                        <a class="package-dropdown-item" href="{% url 'manage_basket_package' package.pk %}">Initiative
+                            only</a>
+                        {% endif %}
+
+                    </div>
+                </div>
+                {% else %}
+                    <br /><br />
+                    Initiative package signup is disabled.
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>

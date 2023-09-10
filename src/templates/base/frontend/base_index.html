@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    {% include "base/frontend/header.html" %}
+    {% block css %}
+    {% endblock css %}
+    {% block js %}
+    {% endblock js %}
+    <title>{% block title %}Open Book Collective{% endblock %}</title>
+    <link rel="icon" type="image/ico" href="{% static "img/favicon.ico" %}"/>
+</head>
+<body>
+    <div class="container nav-container">
+        {% include "base/frontend/nav.html" with additional_nav=additional_nav %}
+    </div>
+
+    <div class="container-fluid container-main d-none d-md-block">
+        {% block body %}
+        {% endblock body %}
+    </div>
+
+    <div class="container d-sm-block d-xs-block d-md-none">
+        {% block body-mobile %}
+        {% endblock body-mobile %}
+    </div>
+
+    {% include "base/frontend/footer.html" %}
+
+</body>
+</html>

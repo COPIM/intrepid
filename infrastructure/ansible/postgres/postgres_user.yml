@@ -1,0 +1,24 @@
+- name: Setup the database
+  hosts: all
+  tasks:
+    - name: Create a new database with name "intrepid"
+      become: true
+      become_user: postgres
+      postgresql_db:
+        name: intrepid
+    - name: Check postgres intrepid user exists and set password
+      become: true
+      become_user: postgres
+      postgresql_user:
+        db: intrepid
+        name: intrepid
+        password: "{{ lookup('env', 'OBC_DB_PASSWORD') }}"
+    - name: Grant permissions to intrepid user
+      become: true
+      become_user: postgres
+      postgresql_privs:
+        db: intrepid
+        privs: ALL
+        type: database
+        obj: intrepid
+        role: intrepid

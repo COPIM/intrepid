@@ -1,0 +1,46 @@
+---
+- hosts: all
+  tasks:
+  - name: Install fixtures
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python src/manage.py loaddata fixtures/email_templates.json'
+    args:
+      chdir: /home/obc/intrepid
+  - name: Touch state file
+    become: true
+    become_user: obc
+    ansible.builtin.file:
+      path: /home/obc/lock/email_fixtures_imported
+      state: touch
+      mode: u=rw,g=r,o=r
+
+  - name: Install groups fixtures
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python src/manage.py loaddata fixtures/groups.json'
+    args:
+      creates: /home/obc/lock/groups_fixtures_imported
+      chdir: /home/obc/intrepid
+  - name: Touch state file for groups
+    become: true
+    become_user: obc
+    ansible.builtin.file:
+      path: /home/obc/lock/groups_fixtures_imported
+      state: touch
+      mode: u=rw,g=r,o=r
+
+  - name: Install viewgroups fixtures
+    become: true
+    become_user: obc
+    shell: '/home/obc/intrepid-venv/bin/python src/manage.py loaddata fixtures/viewgroups.json'
+    args:
+      creates: /home/obc/lock/viewgroups_fixtures_imported
+      chdir: /home/obc/intrepid
+  - name: Touch state file for groups
+    become: true
+    become_user: obc
+    ansible.builtin.file:
+      path: /home/obc/lock/viewgroups_fixtures_imported
+      state: touch
+      mode: u=rw,g=r,o=r

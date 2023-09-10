@@ -1,0 +1,3 @@
+---
+- name: Setup cron
+  import_playbook: cron/install_cron_tasks.yml

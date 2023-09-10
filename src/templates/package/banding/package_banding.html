@@ -1,0 +1,87 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }} Packages</li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Bandings</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='bandings' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Bandings for “{{ package.name }}”</h1>
+            {% if not has_default %}
+                <div class="alert-warning">
+                    <p><i class="fa fa-exclamation-triangle"></i> This package does not have pricing information set for the default currency ({{ package.default_country.currency }}).</p>
+                </div>
+            {% endif %}
+            <p class="lead">The following bandings are associated with this package.</p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ bandings_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this banding"></input>
+            </form>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="bandings">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Edit Currencies</th>
+                        <th>Remove Banding and Prices</th>
+                        <th>Edit Redirect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for banding in bandings %}
+                    <tr>
+                        <td>{{ banding.banding_type.name }}</td>
+                        <td><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding.pk %}" class="btn btn-success">Edit Currencies</a></td>
+                        <td><form method="POST" action="{% url 'delete_package_banding' package.pk initiative.pk banding.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove Banding and Currencies"/></form></td>
+                        <td><a href="{% url 'edit_redirect_for_banding' package.pk initiative.pk banding.pk %}" class="btn btn-warning">Edit Redirect</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        <br/> <br/> <hr/>
+
+        <div class="row">
+            <div class="col-12">
+                <h1>Basic Price Overview</h1>
+                <p class="lead">Here you can see, at a glance, all prices associated with this package.</p>
+            </div>
+        </div>
+
+        {% for key, val in package.price_bandings.items %}
+            <div class="row">
+                <div class="col-12">
+                    <hr/>
+                    <h3>{{ key.banding_type_entry.banding_type }}</h3>
+                    {% for country, prices in val.items %}
+                        <hr/>
+                        <p><b>{{ country }}</b></p>
+                        {% for price in prices %}
+                            <a href="{% url 'manage_package_banding_currencies_prices' package.pk initiative.pk key.banding_type_entry.pk key.pk %}">{{ price.banding.name }}: {{ price.value }} {{ price.country.currency }}</a><br/>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+        </div>
+    </section>
+{% endblock content %}

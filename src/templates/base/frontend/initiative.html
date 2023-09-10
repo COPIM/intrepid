@@ -1,0 +1,356 @@
+{% extends "base/frontend/base_header_overlap.html" %}
+{% load static %}
+
+{% block title %}
+{{ initiative.name }} | {{ current_page.title }} | Open Book Collective
+{% endblock title %}
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static "frontend/js/highlight_pill.js" %}"></script>
+    <script src="{% static "frontend/js/equalize-height.js" %}"></script>
+{% endblock %}
+
+<!-- mobile -->
+{% block header-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-12 who-we-are-header-mobile">
+            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="{{ initiative.name }}" class="img-fluid"/><br/>
+            <h1 class="text-center">{{ initiative.name }}</h1>
+            <p><span class="authors">{{ initiative.description }}</span></p>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block body-mobile %}
+     <div>
+        <div class="row">
+            <div class="col cms-col first-row-mobile">
+                <h2>{{ current_page.title }}</h2>
+                <p class="abstract-para">{% if current_page.abstract_paragraph %}{{ current_page.abstract_paragraph }}{% endif %}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col cms-col">
+                <p class="cms-para-mobile"><span class="firstcharacter">{{ current_page.first_character }}</span>{{ current_page.first_paragraph_minus_first_character|safe }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col cms-col">
+                {{ current_page.current_version.pre_break_content }}
+            </div>
+        </div>
+
+    {% if current_page.current_version.pull_quote %}
+       <div class="row blue-row grey-border pull-quote-mobile">
+            <div class="col-1"></div>
+            <div class="col-10">
+                {% if current_page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                {% endif %}
+                <p class="pull-quote">{{ current_page.current_version.pull_quote|striptags }}</p>
+                {% if current_page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+        </div>
+     {% endif %}
+
+        <div class="row">
+            <div class="col cms-col">
+                {{ current_page.current_version.body }}
+            </div>
+        </div>
+
+
+     <div class="row row-spacer">
+        <div class="col">
+        <h1>Packages</h1>
+        </div>
+        {% for package in initiative.packages.all %}
+            <div class="col-12 package-col">
+                {% include "base/frontend/quote/elements/package_mobile.html" %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+
+    {% if featured_books %}
+     <div class="row row-spacer catalogue-main-mobile catalogue-main-mobile-initiative">
+        <div class="col">
+        <h1>Featured Books</h1>
+        </div>
+     </div>
+        <div class="row catalogue-main-mobile catalogue-main-mobile-initiative">
+        {% for work in featured_books %}
+            <div class="col-12  book-item-row-mobile">
+                <a class="book-item-link" href="{% url 'book' work.book.pk %}">
+                    <div class="row book-item book-item-mobile ">
+                        <div class="col-4">
+                                {% if work.book.cover_url %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{{ work.book.cover_url }}" alt="{{ work.book }}"/>
+                                {% else %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work.book }}"/>
+                                {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h3 class="publisher">{{ work.book.publisher }}</h3>
+                            <h3 class="book-title">{{ work.book.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">
+                                {% for contribution in work.book.contribution_set.all %}
+                                    <span>{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% if not forloop.first %}{% if forloop.last %}, and {% else %}, {% endif %}{% endif %}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if news_items %}
+     <div class="news-mobile">
+        <h1>News</h1>
+        {% for news_item in news_items %}
+            <div class="row news-cards">
+                <div class="col news-item">
+                <a href="{% url 'news_item' news_item.pk %}">
+                    <div class="card">
+                        <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                        <div class="card-body">
+                            <p class="small-date-mobile">{{ news_item.created }}</p>
+                            <p class="card-text">{{ news_item.title }}</p>
+                        </div>
+                    </div>
+                </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col">
+            <h1 class="text-center">{{ initiative.name }}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row book-info-row">
+        <div class="col-1"></div>
+        <div class="col">
+            <span class="authors">{{ initiative.description }}</span>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <!-- a row to host navigation items -->
+    <div class="row pill-row">
+        <div class="col-12 text-center board-of-stewards">
+            {% if pages.count > 1 %}
+                {% for page in pages %}{% if forloop.counter0 == 0 %}<a href="{% url 'public_initiative_page' initiative.pk page.pk %}" class="left-pill-initiative all-pills pill-{{ page.pk }}">{{ page.title }}</a>{% elif forloop.counter0 == 2 %}<a onclick="location.href='#packages'" class="right-pill-blue all-pills">Packages</a><a href="{% url 'public_initiative_page' initiative.pk page.pk %}" class="left-pill-initiative all-pills second-row pill-{{ page.pk }}">{{ page.title }}</a>{% elif forloop.counter0 == 4 %}<a href="{% url 'public_initiative_page' initiative.pk page.pk %}" class="right-pill-blue all-pills pill-{{ page.pk }}">{{ page.title }}</a>{% else %}<a href="{% url 'public_initiative_page' initiative.pk page.pk %}" class="mid-pill-initiative all-pills second-row pill-{{ page.pk }}">{{ page.title }}</a>{% endif %}{% endfor %}
+            {% endif %}
+            {% if current_page %}
+            <h2>{{ current_page.title }}</h2><a id="board-of-stewards"></a>
+
+             <div class="row">
+                <div class="col">
+                    <p class="abstract-para">{% if current_page.abstract_paragraph %}{{ current_page.abstract_paragraph }}{% endif %}</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col cms-col cms-body">
+                    <p class="cms-para"><span class="firstcharacter">{{ current_page.first_character }}</span>{{ current_page.first_paragraph_minus_first_character|safe }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    {% if current_page %}
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-12 image-col">
+                {% if not current_page.mid_page_image %}
+                    <img src="{% static "frontend/img/default_cms.png" %}" alt="News" class="img-fluid cms-image"/>
+                {% else %}
+                    <img src="{{ current_page.mid_page_image.url }}" alt="News" class="img-fluid cms-image"/>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if current_page %}
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border-sides">
+                <div class="row">
+                <div class="col cms-col">
+                    {{ current_page.current_version.pre_break_content }}
+                </div>
+
+            </div>
+
+        <div class="row">
+            <div class="col-12">
+            <!-- back to main flow here -->
+
+                <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    {% if current_page.current_version.pull_quote|striptags %}
+    <div class="container d-none d-md-block grey-border blue-row pull-quote-block">
+
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                {% if current_page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                {% endif %}
+                <p class="pull-quote">{{ current_page.current_version.pull_quote|striptags }}</p>
+                {% if current_page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border-sides">
+        <div class="row">
+            <div class="col-12">
+                <!-- back to main flow here -->
+                <div class="row">
+                    <div class="col-12 cms-col">
+                        <div class="row">
+                            <div class="col cms-col cms-body">
+                                {{ current_page.current_version.body }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if initiative.packages.all %}
+        <div class="container d-none d-md-block grey-border">
+            <div class="row row-spacer">
+                <div class="col">
+                    <a id="packages">&nbsp;</a>
+                    <h2 class="packages-header">Packages</h2>
+                </div>
+            </div>
+            <div class="row row-spacer">
+                {% for package in initiative.packages.all %}
+                    <div class="col-12 package-col">
+                        {% include "base/frontend/quote/elements/package.html" %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if featured_books %}
+    <div class="container d-none d-md-block grey-border">
+        <div class="row row-spacer">
+            <div class="col">
+                <a id="packages">&nbsp;</a>
+                <h2 class="packages-header">Featured Books</h2>
+            </div>
+        </div>
+        <div class="row catalogue-main">
+            {% for work in featured_books %}
+                <div class="col-4 row-eq-height book-item-row">
+                    <a class="book-item-link" href="{% url 'book' work.book.pk %}">
+                        <div class="row book-item row-eq-height">
+                            <div class="col-4">
+                                    {% if work.book.cover_url %}
+                                        <img class="img-fluid book-cover-catalogue" src="{{ work.book.cover_url }}" alt="{{ work.book }}"/>
+                                    {% else %}
+                                        <img class="img-fluid book-cover-catalogue" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                    {% endif %}
+                            </div>
+                            <div class="col-8">
+                                <h3 class="publisher">{{ work.book.publisher }}</h3>
+                                <h3 class="book-title">{{ work.book.full_title|truncatechars:35 }}</h3>
+                                <p class="author-list">
+                                    {% for contribution in work.book.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if news_items %}
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col">
+                <a id="packages">&nbsp;</a>
+                <h2 class="packages-header">News Updates</h2>
+            </div>
+        </div>
+        <div class="row row-spacer">
+            <div class="col text-center news-col">
+               <div class="row news-cards">
+                    {% for news_item in news_items %}
+                        <div class="col-4 news-item">
+                        <a href="{% url 'news_item' news_item.pk %}">
+                            <div class="card">
+                                <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                                <div class="card-body">
+                                    <p class="small-date">{{ news_item.created }}</p>
+                                    <p class="card-text">{{ news_item.title }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+{% endblock body %}

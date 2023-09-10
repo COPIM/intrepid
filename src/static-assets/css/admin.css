@@ -1,0 +1,24 @@
+.green {
+    color: forestgreen;
+}
+
+.red {
+    color: darkred;
+}
+
+.content-wrapper {
+    padding-bottom: 20px;
+}
+
+.select2-selection--single {
+    height: calc(2.25rem + 2px) !important;
+}
+
+.white-link-text {
+  color: white;
+}
+
+.white-link-text:hover {
+    color: white;
+    text-decoration: underline;
+}

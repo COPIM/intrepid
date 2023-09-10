@@ -1,0 +1,82 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">Signups</a></li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='signups' sort=9 order="desc" %}
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="list_signups">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Signups</h1>
+            <p class="lead">Signups to Your Initiatives</p>
+            <p>You can also <a href="{% url 'export_csv' 'signups' %}">export this data to CSV</a>.
+            <br/><small>(Warning: This file may contain sensitive personal data subject to GDPR or other data protection legislation.)</small></p>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="signups">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Order No.</th>
+                        <th>Package</th>
+                        <th>Initiative</th>
+                        <th>Price</th>
+                        <th>User</th>
+                        <th>View Data</th>
+                        <th>Signup Date</th>
+                        <th>Approved by Org</th>
+                        <th>Approved by Initiative</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for signup in signups %}
+                    <tr>
+                        <td>{{ signup.pk }}</td>
+                        <td>{{ signup.associated_order.order_number }}</td>
+                        <td>{{ signup.associated_package.name }}</td>
+                        <td>{{ signup.associated_package.initiative.name }}</td>
+                        <td>{{ signup.formatted_price }}</td>
+                        <td>{{ signup.associated_user.first_name }} {{ signup.associated_user.last_name }}</td>
+                        <td><a href="{% url 'process_signup' signup.associated_package.pk signup.associated_package.initiative.pk signup.pk %}">View Data</a></td>
+                        <td>{{ signup.signup_date }}</td>
+                        <td>
+                            {% if signup.organisation_approved %}
+                                <i class="fa fa-check-circle"></i> {{ signup.organisation_approved }}
+                            {% else %}
+                                 <i class="fa fa-times-circle"></i> Not approved
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if signup.initiative_approved %}
+                                <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
+                            {% else %}
+                                <i class="fa fa-times-circle"></i> Not approved
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-success"
+                               href="{% url 'process_signup' signup.associated_package.pk signup.associated_package.initiative.pk signup.pk %}">
+                                {% if signup.organisation_approved and signup.initiative_approved %}View Signup{% else %}Process Signup{% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock content %}

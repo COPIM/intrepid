@@ -1,0 +1,56 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor crispy_forms_tags %}
+
+{% block title %}{% trans "Profile" %}{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block dashboard_js %}
+    <script>
+        $( document ).ready(function() {
+            $('#inst_lookup').val('{{ initial_value }}');
+            $('#institution_ROR').val('{{ initial_ror }}');
+        });
+    </script>
+    <script src="{% static "frontend/js/institution-autocomplete.js" %}"></script>
+    <script>
+        activate_autocomplete("{% url 'ror_ajax' %}")
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% trans "Profile" %}</h1>
+            </div>
+            <div class="col-md-3">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form.first_name|as_crispy_field }}
+                    {{ user_form.last_name|as_crispy_field }}
+                    {{ user_form.email|as_crispy_field }}
+                    {{ form.default_currency|as_crispy_field }}
+                    {{ form.image|as_crispy_field }}
+                    {{ form.fte|as_crispy_field }}
+
+                    <label for="inst_lookup" class=" requiredField">
+                        Institution
+                    </label>
+                    <input class="emailinput form-control" id="inst_lookup" name="inst_lookup"/><input id="institution_ROR" name="institution_ROR" type="hidden" value=""/>
+
+                    <br/>{{ form.notify_new_books|as_crispy_field }}
+                    {{ form.notify_targeted_updates|as_crispy_field }}
+
+                    <br/><input type="submit" class="btn-success" value="Save"/>
+                </form>
+            </div>
+
+        </div>
+      </div>
+    </section>
+{% endblock content %}

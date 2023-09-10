@@ -1,0 +1,19 @@
+---
+- hosts: all
+  vars:
+    ansible_ssh_user: obc
+  tasks:
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: 'git@github.com:dqprogramming/intrepid.git'
+      dest: /home/obc/intrepid
+      accept_hostkey: yes
+      force: yes
+
+  - name: Git checkout production
+    ansible.builtin.git:
+      repo: 'git@github.com:dqprogramming/intrepid-production.git'
+      dest: /home/obc/settings
+      accept_hostkey: yes
+      ssh_opts: '-i ~/.ssh/id_ed25519'
+      force: yes

@@ -1,0 +1,100 @@
+{% load static %}
+
+<div class="footer-mobile container-fluid d-sm-block d-xs-block d-md-none">
+    <div class="footer-mobile">
+        <div class="row">
+            <div class="col">
+                <img class="footer-logo-mobile" src="{% static "frontend/img/footer_logo.png" %}" alt="Open Book Collective">
+            </div>
+        </div>
+
+        <div class="row footer-menu-section-mobile">
+            <div class="col">
+                <h2>OBC</h2>
+                <ul class="footer-menu-mobile">
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'who_we_are' %}">Who We Are</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'why_support_oa' %}">Membership</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'governance' %}">Governance</a></li>
+                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/documents">Documents</a></li>
+                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/news">News</a></li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h2>Platform</h2>
+                <ul class="footer-menu-mobile">
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'supporters' %}">Supporters</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'package_list' %}">Packages</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'initiative_list' %}">Initiatives</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url "all_books" %}">Catalogue</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row footer-menu-section-mobile">
+            <div class="col">
+                <h2>Contact</h2>
+                <ul class="footer-menu-mobile">
+                    <li class="footer-menu-item-mobile"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">Twitter</a></li>
+                    <li class="footer-menu-item-mobile"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">Email</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row rock-bottom-mobile">
+        <div class="col">Terms of use | Privacy policy | Accessibility | {{ request.site.base_copyright_notice|safe }}.
+        </div>
+    </div>
+
+</div>
+
+<div class="container footer d-none d-md-block">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-1"><img class="footer-logo" src="{% static "frontend/img/footer_logo.png" %}" alt="Open Book Collective"></div>
+        <div class="col-2"></div>
+        <div class="col-7">
+            <div class="row">
+                <div class="col-4">
+                    <h2>OBC</h2>
+                    <ul class="footer-menu">
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'who_we_are' %}">Who We Are</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'why_support_oa' %}">Membership</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'governance' %}">Governance</a></li>
+                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/documents">Documents</a></li>
+                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/news">News</a></li>
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <h2><a href="{% url 'who_we_are' %}">Platform</a></h2>
+                    <ul class="footer-menu">
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'supporters' %}">Supporters</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'package_list' %}">Packages</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'initiative_list' %}">Initiatives</a></li>
+                        <li class="footer-menu-item"><a href="{% url "all_books" %}">Catalogue</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <h2>Contact</h2>
+                    <ul class="footer-menu">
+                        <li class="footer-menu-item"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">Twitter</a></li>
+                        <li class="footer-menu-item"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row rock-bottom">
+        <div class="col-2"></div>
+        <div class="col-10"><a href="{% url 'fixed_page' 'terms' %}">Terms of use</a> | <a href="{% url 'fixed_page' 'privacy' %}">Privacy policy</a> | <a href="{% url 'fixed_page' 'accessibility' %}">Accessibility</a> | {{ request.site.base_copyright_notice|safe }}
+        </div>
+    </div>
+</div>

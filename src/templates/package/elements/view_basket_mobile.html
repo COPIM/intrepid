@@ -1,0 +1,115 @@
+{% load static conflicts currency_display %}
+<div class="row catalogue-main spacer-top-40">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h3>{% get_site_text 'quotation_packages' %}</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table package-table">
+                            <tr class="header-row">
+                                <th>Offer</th>
+                                <th>Remove</th>
+                            </tr>
+                            {% for package in basket.packages.all %}
+                                <tr>
+                                    <td><strong>{{ package.name }}</strong></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link"
+                                                formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% for package in basket.meta_packages.all %}
+                                <tr>
+                                    <td><strong>{{ package.name }}</strong></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-link"
+                                                formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+                    <h3>{% get_site_text 'quotation_breakdown' %}</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table package-table">
+                            <tr class="header-row">
+                                <th>Package</th>
+                                <th class="text-right">Price</th>
+                            </tr>
+                            {% for cost in package_costs %}
+                                <tr{% if cost.package in basket.list_of_conflicting_packages %}
+                                    class="in_conflict"{% endif %}>
+                                    <td>
+                                        <strong>{% if cost.package in basket.list_of_conflicting_packages %}
+                                            <i class="fa fa-exclamation-triangle"></i> {% endif %}{{ cost.package.name }}
+                                        </strong>
+                                        {% if cost.package in basket.list_of_conflicting_packages %}<br/>
+                                            <small>{% conflict_statement cost.package basket %}</small>{% endif %}
+                                        <br/>
+                                        <i class="fa fa-calendar-alt">&nbsp; </i>{{ cost.package.display_contract_length_months }}
+                                        Months
+                                         {% for document in cost.package.packagedocument_set.all %}
+                                            {% if document.pdf_file %}<a href="{{ document.pdf_file.url }}"><img class="fluid-image"
+                                                                                       src="{% static "frontend/img/contract.png" %}" alt="Contract document"></a> Contract{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="text-right">{% if cost.banding and cost.cost %}{{ cost.cost.value }}
+                                        {% if cost.cost.country %}{{ cost.cost.country.currency }}{% else %}
+                                            {{ cost.cost.default_currency }}{% endif %}
+                                    {% else %}
+                                        No banding or price found.
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="total">
+                                <td>
+                                    <strong>Totals</strong>
+                                    {% if basket.conflicts %}
+                                        <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
+                                        </p>{% endif %}
+                                </td>
+                                <td class="text-right" colspan="3">
+                                    {% for k,v in currency_totals.items %}
+                                        {{ v }} {{ k }}<br/>
+                                    {% endfor %}
+
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="col">
+                        <h3>{% get_site_text 'quotation_additional' %}</h3>
+                        {% get_site_text 'quotation_add_text' %}
+                        <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                    </div>
+
+                    {% if basket.package_set %}
+                    {% include "package/elements/basket_form.html" %}
+                    {% endif %}
+
+                </div>
+                <div class="col-12 spacer-top-20">
+                    <div class="card contact-us-card">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Want to discuss your quote?</h3>
+                            <div class="text-center">
+                                <img class="img-fluid text-center"
+                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
+                            </div>
+                            <div class="text-center spacer-top-20">
+                                <button class="contact-us-button">Contact Us</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

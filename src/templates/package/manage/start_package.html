@@ -1,0 +1,45 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 crispy_forms_tags %}
+{% block title %}Create New Package{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
+    <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
+    <li class="breadcrumb-item" aria-current="page">Packages</li>
+    <li class="breadcrumb-item" aria-current="page">Create New Package</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Create New Package</h1>
+                <p class="lead">Select a banding type for this package{% if user.is_staff %} or <a href="{% url 'package_banding_type_list' %}">manage available bandings</a>{% endif %}.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Uses FTE</th>
+                                    <th>Select</th>
+                                </tr>
+                                {% for type in banding_types %}
+                                    <tr>
+                                        <td>{{ type.name }}</td>
+                                        <td>{{ type.is_fte_display }}</td>
+                                        <td><a href="{% url 'create_package' initiative.pk type.pk %}" class="btn btn-sm btn-success">Select</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

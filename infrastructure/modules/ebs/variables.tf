@@ -1,0 +1,3 @@
+variable "instances" {
+  type = list
+}

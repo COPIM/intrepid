@@ -1,0 +1,9 @@
+---
+- name: Mount media directory
+  import_playbook: fstab/mount_ebs.yml
+
+- name: Run migrations
+  import_playbook: migrations/migrate.yml
+
+- name: Import fixtures
+  import_playbook: migrations/fixtures.yml

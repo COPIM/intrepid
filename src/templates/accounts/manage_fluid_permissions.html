@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Permissions
+{% endblock title %}
+
+{% block breadcrumb %}
+
+    
+    <li class="breadcrumb-item" aria-current="page">Manager</li>
+    <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h1>Permission Management</h1>
+<p class="lead">Manage permissions across the system by granting groups access to views.</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button name="save" class="btn btn-success float-end">Save</button>
+    <table class="table" id="groups">
+        <thead>
+        <tr>
+            <th>View Name</th>
+            {% for group in groups %}
+            <th>{{ group }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for vg in view_groups %}
+        <tr>
+            <td>{{ vg.view_name }}</td>
+            {% for group in groups %}
+            <td><input name="permissions[]" value="{{ vg.pk }}-{{ group.pk }}" type="checkbox" {% if group in vg.groups.all %}checked="checked" {% endif %}></td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button name="save" class="btn btn-success float-end">Save</button>
+</form>
+{% endblock content %}

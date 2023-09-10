@@ -1,0 +1,91 @@
+{% extends "base/frontend/base.html" %}
+{% load i18n two_factor static %}
+
+{% block js %}
+    <script src="{% static "frontend/js/configure_login.js" %}"></script>
+{% endblock js %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 login-row-header">
+            <div class="row">
+                <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Login" class="img-fluid login-padlock"/></div>
+                <div class="col-8 login-header">
+                    <h1>{% block title %}{% trans "Register for Open Book Collective" %}{% endblock %}</h1>
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-2"></div>
+            <div class="col-8 login-row">
+              <form action="" method="post">{% csrf_token %}
+                  <input type="text" id="username" value="" placeholder="Username" class="username" />
+
+                  <input type="text" id="email1" value="" placeholder="Email" class="email" />
+                  <input type="text" id="email2" value="" placeholder="Repeat email" class="email" />
+
+                  <input type="text" id="password1" value="" placeholder="Password" class="password" />
+                  <input type="text" id="password2" value="" placeholder="Repeat password" class="password" />
+
+                  {# hidden submit button to enable [enter] key #}
+                  <input type="submit" value="" class="d-none" />
+
+                  <input class="submit_button" type="submit" value="{% translate 'Sign Up' %}"></input>
+
+              </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 login-row-bottom"></div>
+            <div class="col-2"></div>
+    </div>
+
+    <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 signup"></div>
+            <div class="col-2"></div>
+    </div>
+{% endblock %}
+
+{% block body-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Login" class="img-fluid login-padlock"/></div>
+        <div class="col-8 login-header">
+            <h1>{% trans "Register for Open Book Collective" %}</h1>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="row login-row">
+        <div class="col top-pad">
+          <form action="" method="post">{% csrf_token %}
+          <input type="text" id="username" value="" placeholder="Username" class="username" />
+
+          <input type="text" id="email1" value="" placeholder="Email" class="email" />
+          <input type="text" id="email2" value="" placeholder="Repeat email" class="email" />
+
+          <input type="text" id="password1" value="" placeholder="Password" class="password" />
+          <input type="text" id="password2" value="" placeholder="Repeat password" class="password" />
+
+          {# hidden submit button to enable [enter] key #}
+          <input type="submit" value="" class="d-none" />
+
+          <input class="submit_button" type="submit" value="{% translate 'Sign Up' %}"></input>
+
+          </form>
+        </div>
+    </div>
+
+    <div class="row login-row-bottom-mobile">
+        <div class="col">
+        </div>
+    </div>
+{% endblock %}

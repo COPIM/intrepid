@@ -1,0 +1,55 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}New Form Element{% endblock title %}
+
+{% block breadcrumb %}
+        <li class="breadcrumb-item" aria-current="page">Platform Management</li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'form_element_setup' %}">Form Elements Setup</a></li>
+        <li class="breadcrumb-item" aria-current="page">New Form Element</li>
+    {% endblock breadcrumb %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">Add a new or edit an existing form element</p>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                          {{form.name|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                          {{form.kind|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                          {{form.choices|as_crispy_field}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            {{form.required|as_crispy_field}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <button type="submit" name="set_current" class="btn btn-success">Save Element</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

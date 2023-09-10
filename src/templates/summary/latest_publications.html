@@ -1,0 +1,53 @@
+{% load static %}
+
+{% block js %}
+    <script src="{% static "frontend/js/equalize-height.js" %}"></script>
+{% endblock js %}
+
+<div class="magenta-bg highlights d-sm-block d-xs-block d-md-block" style="width: 73%;">
+    <h2 class="text-center white-text highlights-title">
+        {% get_site_text 'latest_publications' %}
+    </h2>
+    <div class="highlights-inner">
+        <div class="row">
+            {% for work in works %}
+                    <div class="col-md-4 row-eq-height book-item-row">
+                        <a class="book-item-link" href="{% url 'book' work.pk %}">
+                            <div class="row book-item row-eq-height">
+                                <div class="col-4">
+                                    {% if work.cover_url %}
+                                        <img class="img-fluid book-cover-catalogue" src="{{ work.cover_url }}"
+                                             alt="{{ work }}"/>
+                                    {% else %}
+                                        <img class="img-fluid book-cover-catalogue "
+                                             src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                    {% endif %}
+                                </div>
+                                <div class="col-8">
+                                    <p class="publisher"></p>
+                                    <p class="book-title">{{ work.full_title|truncatechars:60 }}</p>
+                                    <p class="author-list">
+                                        {% for contribution in work.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                {% if package_type and package_type == 'meta' %}
+                    <a href="{% url 'all_books' %}"
+                       class="megenta-pill-button-more">View Our Full
+                        Catalogue</a>
+                {% else %}
+                    <a href="{% url 'all_books' %}?initiative={{ initiative.pk }}"
+                       class="megenta-pill-button-more">View Our Full
+                        Catalogue</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

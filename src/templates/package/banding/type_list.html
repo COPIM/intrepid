@@ -1,0 +1,52 @@
+{% extends "base/admin_base.html" %}
+{% load booleans %}
+
+{% block title %}Banding Types{% endblock %}
+{% block page-title %}Banding Types{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Banding Types</li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='types' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="banding_types">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                A list of all of the Banding Types available for package creation.
+            </p>
+            <p class="alert-warning">Warning: package banding types cannot be changed after they are created as this will destroy current quotations.</p>
+            <p><a href="{% url 'package_banding_type_create' %}" class="btn btn-success">Add New Banding Type</a></p>
+            <table class="table table-striped" id="types">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Is FTE?</th>
+                        <th>Active?</th>
+                        <th># Linked Vocabs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bt in banding_types %}
+                        <tr id="banding-type-{{ bt.pk }}">
+                            <td>{{ bt.name }}</td>
+                            <td>{% boolean_font_awesome bt.is_fte %}</td>
+                            <td>{% boolean_font_awesome bt.active %}</td>
+                            <td><a href="{% url 'package_banding_type_vocabs' bt.pk %}">{{ bt.vocabs.count }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock content %}

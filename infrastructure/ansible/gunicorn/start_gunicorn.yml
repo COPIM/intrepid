@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+  - name: Copy service file to remote
+    become: true
+    ansible.builtin.copy:
+      src: ./templates/service.tpl
+      dest: /etc/systemd/system/intrepid.service
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Start intrepid service
+    become: true
+    ansible.builtin.systemd:
+      name: intrepid.service
+      state: started
+      enabled: yes
+      daemon_reload: yes

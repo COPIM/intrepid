@@ -1,0 +1,70 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+
+{% block title %}{% trans "Profile" %}{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_information">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% trans "Profile" %}</h1>
+            </div>
+            <div class="col-md-3">
+                {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" class="img-fluid" alt="Image of {{ user.profile.full_name }}">
+                {% else %}
+                    <img src="{% static 'img/avatar.png' %}" class="img-fluid" alt="Image of {{ user.profile.full_name }}">
+                {% endif %}
+                <br /><br />
+                <div class="d-grid gap-2">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% trans 'Edit Profile' %}</a>
+                    <a href="{% url 'two_factor:profile' %}" class="btn btn-secondary">{% trans 'Manage Account Security' %}</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h2>{{ user.profile.full_name }}</h2>
+                {% if user.profile.affiliation %}
+                    <p class="lead">
+                        {{ user.profile.affiliation }}
+                    </p>
+                {% endif %}
+                <table class="table table-borderless">
+                    <tr>
+                        <th>{% trans 'Username' %}</th>
+                        <td>{{ request.user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Full Name' %}</th>
+                        <td>{{ user.profile.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Email' %}</th>
+                        <td>{{ request.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Institution' %}</th>
+                        <td>{{ user.profile.institution.institution_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Two Factor Authentication Enabled' %}</th>
+                        <td>{% if default_device %}{% trans 'Enabled' %}{% else %}{% trans '2FA is not enabled' %}.{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans 'Bandings' %}</th>
+                        <td><a href="{% url 'manage_account_bandings' %}">{% trans 'Configure bandings' %}</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

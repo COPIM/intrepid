@@ -1,0 +1,12 @@
+---
+- hosts: all
+  vars:
+    ansible_ssh_user: obc
+  tasks:
+  - name: Create a symbolic link to settings
+    ansible.builtin.file:
+      src: /home/obc/settings/prod_settings.py
+      dest: /home/obc/intrepid/src/intrepid/settings.py
+      owner: obc
+      group: obc
+      state: link

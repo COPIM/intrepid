@@ -1,0 +1,282 @@
+{% load static conflicts currency_display cost_calculator %}
+<html>
+<meta charset="utf-8">
+<head>
+    {% for c in css %}
+        <link rel="stylesheet" href="{{ c }}">
+    {% endfor %}
+    <style>
+        table tr {
+            page-break-inside: avoid
+        }
+        .no-border td {
+            border: 0;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table no-border" style="border: 0;">
+            <tr>
+                <td width="33%"></td>
+                <td width="33%"><img style="width: 300px;" class="text-center img-fluid"
+                                     src="https://openbookcollective.org/static/frontend/img/logo.svg"></td>
+                <td width="33%"></td>
+            </tr>
+            <tr>
+                <td width="33%"></td>
+                <td width="33%"><h1 class="text-center">Quotation</h1></td>
+                <td width="33%"></td>
+            </tr>
+        </table>
+
+    </div>
+    <br/><br/>
+    <div class="row">
+        <div class="col-md-12">
+            <p>Open Access Book Collective<br/>
+                One Bartholomew Close<br/>
+                London<br/>
+                EC1A 7BL<br/>
+                United Kingdom<br/>
+            </p>
+            <p>Date: {% now "jS F Y" %}</p>
+            <p>
+                {% for detail in order.get_order_form_details %}
+                    {{ detail.question }}: {{ detail.answer }}<br/>
+                {% endfor %}
+                Contact Email: {{ order.email_address }}<br/>
+            </p>
+            <p><strong>Reference Number: {{ order.pk }}</strong></p>
+        </div>
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th>OBC Offer Selection</th>
+                    <th>Amount</th>
+                </tr>
+
+                {% for meta_package in order.basket.meta_packages.all %}
+                    {% meta_package_cost package_costs meta_package converted_currency as calculated_meta_package_cost %}
+                    <tr>
+                        <td>
+                            <strong>{{ meta_package.name }}</strong><br/>
+                            Including:
+                            <ul>
+                                {% for package in meta_package.packages.all %}
+                                    <li>{{ package.name }} ({% get_banding package_costs package %})</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            {% for currency, amount in calculated_meta_package_cost.items %}
+                                {% format_price amount currency %}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% for package in order.basket.packages.all %}
+                    <tr>
+                        <td><strong>{{ package.name }}</strong> ({% get_banding package_costs package %})</td>
+                        <td>{% package_cost package_costs package converted_currency %}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>OBC processing fee 5%</td>
+                    <td>{{ processing_fee }}</td>
+                </tr>
+                <tr>
+                    <td>VAT - not payable (VAT exempt)</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTAL AMOUNT</strong></td>
+                    <td><strong>{{ total }}</strong></td>
+                </tr>
+
+            </table>
+            <p><strong>TERMS AND CONDITIONS</strong></p>
+            <p>THESE TERMS AND CONDITIONS SET OUT THE TERMS THAT WILL APPLY WHERE AN INSTITUTION SUBSCRIBES FOR A
+                SUPPORTER SCHEME THROUGH THE OPEN BOOK COLLECTIVE&rsquo;S ORDERING PROCESS.</p>
+            <p>THE INSTITUTION&rsquo;S ATTENTION IS PARTICULARLY DRAWN TO THE PROVISIONS OF CLAUSE 8 (LIABILITY)</p>
+            <p><strong>BACKGROUND</strong></p>
+            <p>1. The Providers publish academic books and other learned publications on an open access basis and/or
+                provide infrastructure to support the publication and dissemination of open access books. OBC has
+                developed an online platform through which the Providers are able to seek financial support for their
+                publishing and/or infrastructural activities.&nbsp;</p>
+            <p>2. Each Provider has created an individual Supporter Scheme to support the Provider&rsquo;s activities
+                within the open access monograph publishing ecosystem. The Supporter Scheme reflects the Providers&rsquo;
+                aims and ethos. By subscribing to this scheme, institutions will be supporting those aims and ethos.</p>
+            <p>3. OBC includes a subscription service; the &lsquo;OBC Supporter Service&rsquo;, through which
+                institutions can subscribe to Supporter Schemes in order to support the work of their chosen Providers.
+                This can be done via the OBC platform or via direct correspondence. </p>
+            <p>4.&nbsp;Each Provider has appointed OBC to collect the Supporter Contribution on its behalf.</p>
+            <p>5.&nbsp;The terms of this Agreement and each Provider&rsquo;s supporter offer were negotiated and agreed
+                between each Provider and OBC.</p>
+            <p><strong>IT IS AGREED AS FOLLOWS</strong></p>
+            <p><strong>1. DEFINITIONS</strong></p>
+            <p>1.1&nbsp;In these terms and conditions, the following terms shall have the following meanings:</p>
+            <p>&nbsp;&ldquo;<strong>Agreement&rdquo;</strong> means the agreement between the Institution, OBC and each
+                Provider under which the Institution subscribes to that Provider&rsquo;s Supporter Scheme.</p>
+            <p>&ldquo;<strong>OBC&rdquo;</strong> means Open Access Book Collective (operating as Open Book Collective)
+                (Company Number 14118614), a company limited by guarantee incorporated in England and Wales whose
+                registered office is at One Bartholomew Close, London, United Kingdom, EC1A 7BL ("OBC")&nbsp;</p>
+            <p>&ldquo;<strong>OBC Supporter Service&rdquo;</strong> means the subscription service developed by OBC.
+                Prices for OBC&rsquo;s Supporter Service can be found at openbookcollective.org</p>
+            <p>&ldquo;<strong>OBC Supporter Service Fee&rdquo;</strong> means a fee equal to five percent (5%) of any
+                Provider Supporter Contribution payable by the Institution under the Agreement.</p>
+            <p>&nbsp;&ldquo;<strong>Provider&rdquo;</strong> means an open access publisher that has created a Supporter
+                Scheme identified in the Quotation.</p>
+            <p>&nbsp;&ldquo;<strong>Provider Supporter Contribution&rdquo;</strong>&nbsp;means the supporter
+                contribution for each named Provider as set out in Quotation. The fee will be in line with the Supporter
+                Scheme.</p>
+            <p>&nbsp;&ldquo;<strong>Support Period&rdquo; </strong>means the duration of the Institution&rsquo;s
+                subscription to the Supporter Scheme as confirmed by the Institution in the Acceptance Form. </p>
+            <p>&nbsp;&ldquo;<strong>Invoice (Institution)&rdquo; </strong>means the invoice to the Institution,
+                generated by the OBC after receiving the completed Acceptance Form, confirming the start date and
+                duration of the Support Period, that the Institution accepts the pricing detailed in the Quotation, and
+                that the Institution has agreed to the terms and conditions of this Agreement.</p>
+            <p>&ldquo;<strong>Quotation&rdquo;</strong> means the above Supporter Scheme pricing sent by the OBC
+                identifying the Supporter Schemes to be subscribed to by the Institution.</p>
+            <p>&ldquo;<strong>Acceptance Form&rdquo;</strong> means the form used by OBC to confirm the Supporter
+                Schemes subscribed to by the Institution.</p>
+            <p>&ldquo;<strong>Supporter Scheme&rdquo;</strong> means a scheme for supporting a Provider, to which an
+                Institution may subscribe via the OBC, as described in the OBC Supporter Service.</p>
+            <p>1.2&nbsp;Headings in these terms and conditions are for reference purposes only and shall not be deemed
+                to be an indication of the meaning of the clause to which they relate.</p>
+            <p>1.3&nbsp;Where the context so implies, words importing the singular number shall include the plural and
+                vice versa and words importing the masculine shall include the feminine and vice versa.</p>
+            <p>1.4&nbsp;Any words following the terms &lsquo;including&rsquo;, &lsquo;include&rsquo;, &lsquo;in
+                particular&rsquo;, &lsquo;for example&rsquo; or any similar expression, shall be construed as
+                illustrative and shall not limit the sense of the words, description, definition, phrase or term
+                preceding those terms.</p>
+            <p><strong>2. AGREEMENT</strong></p>
+            <p>2.1&nbsp;The Agreement consists of these terms and conditions, the above Quotation, and the completed
+                Acceptance Form. If more than one Supporter Scheme is identified in the Quotation then a separate
+                Agreement shall take effect in relation to each of the Supporter Schemes, and references to the Provider
+                in the context of the Agreement are to the Provider that offers the relevant Supporter Scheme.</p>
+            <p>2.2&nbsp;By completing and sending to the OBC the Acceptance Form, confirming that the Institution agrees
+                to proceed on the basis of the Quotation, the Institution offers to subscribe for the Supporter Scheme
+                identified in the Quotation on these terms and conditions, which shall apply to the exclusion of any
+                other terms that the Institution seeks to impose or incorporate, or which are implied by law, trade
+                custom, practice or course of dealing.</p>
+            <p>2.3&nbsp;The Agreement takes effect when OBC issues the Invoice (Institution) and shall continue until it
+                expires or is terminated in accordance with Clause 5 (Term and Termination).</p>
+            <p>2.4&nbsp;OBC enters into the Agreement as agent on behalf of the relevant Provider insofar as the
+                Agreement purports to create any rights or obligations for the Provider. OBC enters into the Agreement
+                as principal insofar as the Agreement purports to create any rights or obligations for OBC.</p>
+            <p>2.5 Access to and use of any materials published or digital services made available by the Provider or
+                OBC shall be subject to any licence terms specified by the Provider or OBC at the point of access, which
+                shall not form part of the Agreement. Nothing in the Agreement shall constitute the grant of a licence
+                in respect of the intellectual property rights of either the Provider or OBC.</p>
+            <p>&nbsp;<strong>3. SUBSCRIPTION</strong></p>
+            <p>3.1&nbsp;The Provider will publish an acknowledgment via the OBC platform of the Institutions&rsquo;
+                support for the Supporter Scheme, except where the Institution has indicated in the Subscription
+                Acceptance Form that the Institution would prefer that the Provider does not do this.</p>
+            <p><strong>4.&nbsp;RESPONSIBILITIES OF INSTITUTION</strong></p>
+            <p>4.1&nbsp;The Institution agrees to pay the Provider the Provider Supporter Contribution for the Support
+                Period.</p>
+            <p>4.2&nbsp;The Provider has appointed OBC as its agent to collect the Provider Supporter Contribution. OBC
+                (as agent for the Provider) or the Provider (as principal) will invoice the Institution for the Provider
+                Supporter Contribution and the Institution shall pay the invoice no later than 30 days after the date of
+                issue.</p>
+            <p>4.3&nbsp;The Institution agrees to pay OBC the OBC Supporter Service Fee in consideration for OBC
+                arranging the Agreement. OBC will invoice the Institution for the OBC Supporter Service Fee and the
+                Institution shall pay the invoice no later than 30 days after the date of issue.</p>
+            <p>4.4&nbsp;The sums payable by the Institution under the Agreement are stated exclusive of VAT. Where VAT
+                is payable in respect of any sum under the Agreement the Institution shall pay the VAT in addition to
+                that sum at the applicable rate subject to receipt of a valid VAT invoice.</p>
+            <p><strong>5.&nbsp;TERM AND TERMINATION</strong></p>
+            <p>5.1&nbsp;The Agreement will remain in full force and effect until the end of the Supporter Period as set
+                out in by the Institution in the Subscription Acceptance Form, unless terminated earlier as provided for
+                in this Clause 5.</p>
+            <p>5.2&nbsp;Any party may terminate this Agreement at any time on the material breach or repeated other
+                breaches by the other of any obligation on its part under this Agreement by serving a written notice on
+                the other identifying the nature of the breach. The termination will become effective thirty days after
+                receipt of the written notice unless during the relevant period of thirty (30) days the defaulting party
+                remedies the breach.</p>
+            <p><strong>6. FORCE MAJEURE</strong></p>
+            <p>6.1&nbsp;In this Clause 6 an event of "Force Majeure" means circumstances beyond the control of the
+                relevant party (including, war, strikes, flood, governmental restrictions, and power, telecommunications
+                or Internet failures or damages to or destruction of any network facilities.</p>
+            <p>6.2&nbsp;If a party to the Agreement is prevented or delayed in the performance of any of its obligations
+                under the Agreement by Force Majeure and if such party gives written notice thereof to the other party
+                specifying the matters constituting Force Majeure together with such evidence as it reasonably can give
+                and specifying the period for which it is estimated that such prevention or delay will continue, then
+                the party in question shall be excused the performance or the punctual performance as the case may be as
+                from the date of such notice for so long as such cause of prevention or delay shall continue.</p>
+            <p><strong>7. ASSIGNMENT</strong></p>
+            <p>7.1&nbsp;Except as permitted for under this Agreement, neither this Agreement nor any of the rights and
+                obligations under it may be assigned by a party without obtaining the prior written consent of the other
+                parties, such consent shall not unreasonably be withheld or delayed. In any permitted assignment, the
+                assignor shall procure and ensure that the assignee shall assume all rights and obligations of the
+                assignor under this Agreement and agrees to be bound to all the terms of this Agreement.</p>
+            <p><strong>8. LIABILITY</strong></p>
+            <p>8.1&nbsp;In this Clause 8 reference to &lsquo;liability&rsquo; include all liability whether in contract,
+                tort (including negligence) or otherwise.</p>
+            <p>8.2&nbsp;Except as provided for in Clause 8.5, neither the Institution nor the Provider nor OBC will have
+                any liability arising out of or in connection with the Agreement, for:</p>
+            <p>i) any indirect or consequential loss;</p>
+            <p>ii) loss of profits or revenue;</p>
+            <p>(iii)&nbsp;loss of business, contracts, or opportunity;</p>
+            <p>(iv)&nbsp;loss of anticipated savings; or</p>
+            <p>&nbsp;iii)&nbsp;wasted expenditure.</p>
+            <p>8.3&nbsp;Except as set out in Clause 8.5, the total liability of the Provider arising out of or in
+                connection with any and all Agreements shall not exceed the total amount of the Provider Supporter
+                Contribution received by the Provider under those Agreements.</p>
+            <p>8.4&nbsp;Except as set out in Clause 8.5, the total liability of OBC arising out of or in connection with
+                any and all Agreements shall not exceed the total amount of the OBC Supporter Service Fees received by
+                the OBC under those Agreements.</p>
+            <p>8.5&nbsp;No party limits its liability for:</p>
+            <p>&nbsp;i)&nbsp;death or personal injury to the extent it results from its negligence, or of its employees
+                or agents in the course of their engagement; and</p>
+            <p>ii)&nbsp;its own fraud or that of its employees or agents in the course of their engagement; or</p>
+            <p>(iii)&nbsp;any other liability which cannot lawfully be limited.</p>
+            <p>8.6&nbsp;The rights and obligations of OBC and the Provider under the Agreement are on a several basis.
+                Neither OBC nor the Provider shall have any liability for the actions or omissions of the other under or
+                in connection with the Agreement.</p>
+            <p>8.7&nbsp;Nothing in the Agreement limits or excludes the Institution&rsquo;s liability to pay the
+                Provider Supporter Contribution or the OBC Supporter Service Fee in accordance with the Agreement.</p>
+            <p><strong>9. GOVERNING LAW AND DISPUTE RESOLUTION</strong></p>
+            <p>9.1&nbsp;The Agreement and any dispute arising out of or in connection with it (including non-contractual
+                disputes) shall be governed by and construed in accordance with English law and the parties irrevocably
+                agree that any dispute arising out of or in connection with this Agreement will be subject to the
+                exclusive jurisdiction of the English courts.</p>
+            <p><strong>10. NOTICES</strong></p>
+            <p>10.1 All notices required to be given under the Agreement shall be given in writing in English and sent
+                by email, courier, or special delivery to the relevant addressee at its address set out below, or to
+                such other address as may be notified by either party to the other from time to time under this
+                Agreement, and all such notices shall be deemed to have been received one (1) day after the date of
+                sending in the case of email or three (3) days after the date of posting in the case of special delivery
+                or despatch in the case of courier: if to the Institution to the address or email address stated in the
+                Subscription Acceptance Form if to the Provider to the address stated in the Supporter Scheme if to the
+                OBC: Dr Joe Deville, Chair, OBC Address, <a href="mailto:info@openbookcollective.org" target="_blank">info@openbookcollective.org</a>
+            </p>
+            <p><strong>11. GENERAL</strong></p>
+            <p>11.1&nbsp;The Agreement constitutes the entire agreement between the parties and supersedes all prior
+                communications, understandings and agreements (whether written or oral) relating to its subject matter
+                and may not be amended or modified except by agreement of the parties in writing.</p>
+            <p>11.2&nbsp;The invalidity or unenforceability of any provision of this Agreement shall not affect the
+                continuation in force of the remainder of this Agreement.</p>
+            <p>11.3&nbsp;The rights of the parties arising under this Agreement shall not be waived except in writing.
+                Any waiver of any of a party's rights under this Agreement or of any breach of this Agreement by the
+                other party shall not be construed as a waiver of any other rights or of any other or further breach.
+                Failure by a party to exercise or enforce any rights conferred upon it by this Agreement shall not be
+                deemed to be a waiver of any such rights or operate so as to bar the exercise or enforcement thereof at
+                any subsequent time or times.</p>
+            <p>Open Access Book Collective, One Bartholomew Close, London EC1A 7BL, United Kingdom</p>
+            <div title="footer">
+                <p>Open Access Book Collective (operating as Open Book Collective) is a company limited by guarantee
+                    incorporated in England and Wales, Company Number 14118614</p>
+                <p>Email: <a href="mailto:info@openbookcollective.org">info@openbookcollective.org</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

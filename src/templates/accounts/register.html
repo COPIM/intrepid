@@ -1,0 +1,75 @@
+{% extends "base/frontend/base.html" %}
+{% load i18n two_factor static crispy_forms_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">Register</li>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "frontend/js/configure_login.js" %}"></script>
+{% endblock js %}
+
+{% block body %}
+    <div class="container-fluid main d-none d-md-block white-background grey-border">
+        <div>
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 login-row-header">
+                            <div class="row">
+                                <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}"
+                                                        alt="Register" class="img-fluid login-padlock"/></div>
+                                <div class="col-8 login-header">
+                                    <h1>{% block title %}{% trans "Register a new account" %}{% endblock %}</h1>
+                                </div>
+                            </div>
+                            <div class="col-4"></div>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 login-row">
+                            <form action="" method="post">{% csrf_token %}
+                                <p>Please note that after initial account creation an email will be sent to the address you supply, please click the link in this email to activate your account. You will not be able to login until you have activated your account.</p>
+                                {{ form|crispy }}
+                                <button class="btn btn-primary">Create Account</button>
+                            </form>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 login-row-bottom"></div>
+                        <div class="col-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Register"
+                                class="img-fluid login-padlock"/></div>
+        <div class="col-8 login-header">
+            <h1>{% trans "Register a new account" %}</h1>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="row login-row">
+        <div class="col">
+            <form action="" method="post">{% csrf_token %}
+                <p>Please note that after initial account creation an email will be sent to the address you supply, please click the link in this email to activate your account. You will not be able to login until you have activated your account.</p>
+                {{ form|crispy }}
+                <button class="btn btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>>
+{% endblock %}

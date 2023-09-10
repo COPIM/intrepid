@@ -1,0 +1,95 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">Edit Bandings</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ banding_type_entry.banding_type.name }}</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='currency' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Currencies for {{ banding_type_entry.banding_type.name }} in “{{ package.name }}”</h1>
+            <p class="lead">The following currencies are associated with this banding.</p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ country_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this currency">
+            </form>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="currency">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Edit Prices</th>
+                        <th>Remove Currency and Prices</th>
+                        <th>Payment Processor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for banding_currency in banding_type_currencies %}
+                    <tr>
+                        <td>{{ banding_currency.country }}</td>
+                        <td><a href="{% url 'manage_package_banding_currencies_prices' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}" class="btn btn-success">Edit Prices</a></td>
+                        <td><form method="POST" action="{% url 'delete_package_banding_currency' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove Banding and Prices"/></form></td>
+                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#paymentprocessor-{{ banding_currency.pk }}">{{ banding_currency.payment_processor|default_if_none:"Select a Payment Processor" }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {% for banding_currency in banding_type_currencies %}
+    <div class="modal" id="paymentprocessor-{{ banding_currency.pk }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Manage Payment Processor for {{ banding_currency.country }}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <p>Listed below are payment processors for {{ banding_currency.country }}. You can set one or leave it empty to handle billing yourself.</p>
+                        {% if banding_currency.payment_processor %}<p>For this banding and currency the payment processor is currently set to <strong>{{ banding_currency.payment_processor }}</strong></p>{% endif %}
+                        <label for="select_payment_processor">Select a Payment Processor</label><br/>
+                        <select name="select_payment_processor" id="select_payment_processor" class="form-control">
+                            <option value="">----------</option>
+                            {% for processor in banding_currency.country.paymentprocessor_set.all %}
+                                <option value="{{ processor.pk }}">{{ processor }}</option>
+                            {% endfor %}
+                        </select>
+                        <br />
+                        <button name="payment_processor" value="{{ banding_currency.pk }}" class="btn btn-success form-control">Save Payment Processor</button>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Edit Site Text: {{ site_text.key }}</h1>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

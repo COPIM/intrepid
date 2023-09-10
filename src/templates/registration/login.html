@@ -1,0 +1,37 @@
+{% extends "base/frontend/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1>Login</h1>
+                <p>Your username will be the email address you used to register your account.</p>
+                {% if form.errors %}
+                <p>Your username and password didn't match. Please try again.</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+                    {% else %}
+                    <p>Please login to see this page.</p>
+                    {% endif %}
+                {% endif %}
+
+                <form method="post" action="{% url 'two_factor:login' %}">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="hidden" name="next" value="{{ next }}">
+                <div class="d-grid gap-2">
+                    <button value="Login" class="btn btn-primary">Login</button>
+                    <a href="{% url 'password_reset' %}" class="btn btn-secondary">Reset Password</a>
+                </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,241 @@
+{% extends "base/frontend/base_header_overlap.html" %}
+{% load static %}
+
+{% block title %}
+{{ book.full_title }}
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'all_books' %}">Books</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ book.full_title }}</li>
+{% endblock breadcrumb %}
+
+{% block css %}
+    {% if book.full_title|length > 180 %}
+    <style>
+        .blue-header h1 {
+            margin-top: 45px;
+            text-align: center;
+            font: normal normal bold 22px/26px rubrik-edge-new;
+            letter-spacing: 0px;
+        }
+
+        @media only screen and (max-width: 1200px) {
+            .blue-header h1 {
+                font: normal normal bold 18px/20px rubrik-edge-new;
+            }
+        }
+    </style>
+    {% endif %}
+{% endblock css %}
+
+<!-- mobile -->
+{% block header-mobile %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h1>{{ book.full_title }}</h1>
+            <p>
+                {% for contribution in book.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+            </p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="publisher-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p><i class="fa-solid fa-book"></i> {{ book.publisher }}</p>
+            <p><i class="fa-solid fa-calendar"></i> {{ book.published_date }}</p>
+            <p><span>{% if 'http' in book.license %}
+                    <span class="book-license-mobile">
+                        <a href="{{ book.license }}">
+                            <i class="fab fa-creative-commons"></i>{% if 'by' in book.license %}<i class="fab fa-creative-commons-by"></i>{% endif %}{% if 'nc' in book.license %}<i class="fab fa-creative-commons-nc"></i>{% endif %}{% if 'nd' in book.license %}<i class="fab fa-creative-commons-nd"></i>{% endif %}{% if 'sa' in book.license %}<i class="fab fa-creative-commons-sa"></i>{% endif %}
+                            CC {% if 'by' in book.license %} BY{% endif %}{% if 'nc' in book.license %}-NC</i>{% endif %}{% if 'nd' in book.license %}-ND{% endif %}{% if 'sa' in book.license %}-SA{% endif %}
+                        </a>
+                    </span>
+                {% else %}
+                    {{ book.license }}
+                {% endif %}</span></p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="cover-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            {% if book.cover_url %}
+                {% if book.doi %}
+                    <a href="{{ book.doi }}">
+                {% elif book.landing_page %}
+                    <a href="{{ book.landing_page }}">
+                {% endif %}
+                <img class="book-cover img-fluid" src="{{ book.cover_url }}" alt="{{ work }}"/>
+                {% if book.doi or book.landing_page %}</a>{% endif %}
+            {% else %}
+                <img class="book-cover img-fluid" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+            {% endif %}
+
+            {% if book.long_abstract %}
+                <p class="abstract-mobile">{{ book.long_abstract|linebreaksbr }}</p>
+            {% elif book.short_abstract %}
+                <p class="abstract-mobile">{{ book.short_abstract|linebreaksbr }}</p>
+            {% else %}
+                <p class="abstract-mobile">No abstract.</p>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="metadata-row-mobile row">
+    <div class="col-1"></div>
+        <div class="col-10">
+            <h2>Download Formats</h2>
+            <ul class="metadata-mobile">
+                <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::project_muse/work/{{ book.thoth_id }}">ONIX (Project MUSE)</a></li>
+                <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::oapen/work/{{ book.thoth_id }}">ONIX (OAPEN)</a></li>
+                <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/csv::thoth/work/{{ book.thoth_id }}">CSV</a></li>
+            </ul>
+
+            <h2>Included in Packages</h2>
+            <ul class="metadata-mobile">
+                {% for package in packages %}
+                    <li><i class="fa-solid fa-box"></i> <a href="{% url 'package_info' package.id %}>{{ package }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <h2>Publisher Links</h2>
+            <ul class="metadata-mobile">
+                {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">Publisher landing page</a></li>{% endif %}
+                {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">DOI</a></li>{% endif %}
+            </ul>
+
+            <h2>Topics</h2>
+            <ul>
+                {% for keyword in subjects %}
+                    <li><i class="fa-solid fa-tag"></i> {{ keyword.subject_display }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    <div class="col-1"></div>
+    </div>
+{% endblock %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col">
+            <h1>{{ book.full_title|truncatechars_html:340 }}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row book-info-row">
+        <div class="col-3"></div>
+        <div class="col">
+            {% for contribution in book.contribution_set.all %}<span class="authors">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="row book-info-row">
+        <div class="col-2"></div>
+        <div class="col">
+            <span class="bookinfo"><i class="fa-solid fa-book"></i> {{ book.publisher }}</span>
+        </div>
+        <div class="col">
+            <span class="bookinfo"><i class="fa-solid fa-calendar"></i> {{ book.published_date }}</span>
+        </div>
+        <div class="col">
+            <span class="bookinfo">{% if 'http' in book.license %}
+                    <span class="book_license">
+                        <a href="{{ book.license }}">
+                            <i class="fab fa-creative-commons"></i>{% if 'by' in book.license %}<i class="fab fa-creative-commons-by"></i>{% endif %}{% if 'nc' in book.license %}<i class="fab fa-creative-commons-nc"></i>{% endif %}{% if 'nd' in book.license %}<i class="fab fa-creative-commons-nd"></i>{% endif %}{% if 'sa' in book.license %}<i class="fab fa-creative-commons-sa"></i>{% endif %}
+                            CC {% if 'by' in book.license %} BY{% endif %}{% if 'nc' in book.license %}-NC</i>{% endif %}{% if 'nd' in book.license %}-ND{% endif %}{% if 'sa' in book.license %}-SA{% endif %}
+                        </a>
+                    </span>
+                {% else %}
+                    {{ book.license }}
+                {% endif %}</span>
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-3">
+            {% if book.cover_url %}
+                {% if book.doi %}
+                    <a href="{{ book.doi }}">
+                {% elif book.landing_page %}
+                    <a href="{{ book.landing_page }}">
+                {% endif %}
+                <img class="book-cover img-fluid" src="{{ book.cover_url }}" alt="{{ work }}"/>
+                {% if book.doi or book.landing_page %}</a>{% endif %}
+            {% else %}
+                <img class="book-cover img-fluid" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+            {% endif %}
+        </div>
+        <div class="col-7 abstract">
+            {% if book.long_abstract %}
+                <p>{{ book.long_abstract|linebreaksbr }}</p>
+            {% elif book.short_abstract %}
+                <p>{{ book.short_abstract|linebreaksbr }}</p>
+            {% else %}
+                <p>No abstract.</p>
+            {% endif %}
+
+        <!-- formats box -->
+            <div class="row formats-box formats-box-upper">
+                <div class="col"><h2>Metadata Formats</h2></div>
+                <div class="col"><h2>Publisher Links</h2></div>
+            </div>
+            <div class="row formats-box formats-box-middle">
+                <div class="col">
+                    <ul class="metadata">
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::project_muse/work/{{ book.thoth_id }}">ONIX (Project MUSE)</a></li>
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::oapen/work/{{ book.thoth_id }}">ONIX (OAPEN)</a></li>
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::jstor/work/{{ book.thoth_id }}">ONIX (JSTOR)</a></li>
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::google_books/work/{{ book.thoth_id }}">ONIX (Google Books)</a></li>
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::overdrive/work/{{ book.thoth_id }}">ONIX (Overdrive)</a></li>
+                            <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/csv::thoth/work/{{ book.thoth_id }}">CSV</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">Publisher landing page</a></li>{% endif %}
+                        {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">DOI</a></li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row formats-box formats-box-middle">
+                <div class="col"><h2>Included in Packages</h2></div>
+                <div class="col"><h2>Keywords</h2></div>
+            </div>
+
+            <div class="row formats-box formats-box-lower">
+                <div class="col">
+                    <ul>
+                        {% for package in packages %}
+                            <li><i class="fa-solid fa-box"></i> <a href="{% url 'package_info' package.id %}">{{ package }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul>
+                        {% for keyword in subjects %}
+                            <li><i class="fa-solid fa-tag"></i> {{ keyword.subject_display }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+
+{% endblock body %}

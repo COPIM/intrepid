@@ -1,0 +1,57 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+
+{% block title %}Update Feed{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Update Feed</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='updates' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+<span id="active_page" class="update_feed">&nbsp;</span>
+<!-- this span expands the CMS tab -->
+<span id="expand_content_manager">&nbsp;</span>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">Lists updates to pages and versions.</p>
+                <table class="table table-hover" id="updates">
+                    <thead>
+                    <tr>
+                        <th>Version ID</th>
+                        <th>Updated By</th>
+                        <th>Date/Time</th>
+                        <th>Page/Update</th>
+                        <th>Edit</th>
+                        <th>Detail</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for version in versions %}
+                        <tr>
+                            <td>{{ version.pk }}</td>
+                            <td>{{ version.created_by.profile.full_name }}</td>
+                            <td>{{ version.created }}</td>
+                            <td>
+                                <strong>{% if version.pageupdate_set.all.0.is_update %}Update {% else %}Page {% endif %}</strong>{{ version.pageupdate_set.all.0.title }}
+                            </td>
+                            <td>
+                                <a target="_blank" href="{{ version.pageupdate_set.all.0.edit_url }}">Edit</a>
+                            </td>
+                            <td>
+                                <a target="_blank" href="{{ version.pageupdate_set.all.0.detail_url }}">Detail</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">Platform Management</li>
+    <li class="breadcrumb-item active" aria-current="page">Form Elements Setup</li>
+{% endblock %}
+
+{% block dashboard_js %}
+   {% include "elements/datatables.js.html" with target='log_table' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="email_logs">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% block title %}Email Log Entries{% endblock %}</h1>
+                <p class="lead">This page allows platform managers to view email logs.</p>
+                <p><i class="fas fa-check"></i> = Success | <i class="fas fa-skull-crossbones"></i> = Failed | <i class="fas fa-retweet"></i> = Sending</p>
+                <p><a href="{% url 'update_email_statuses' %}" class="btn btn-success float-end">
+                <i class="fa fa-retweet"> </i> Update Statuses</a></p>
+            </div>
+            <div class="col-md-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table-striped table" id="log_table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>To</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td><i class="fas fa-envelope"></i></td>
+                                <td>{{ log.to }}</td>
+                                <td>{{ log.subject }}</td>
+                                <td>{% if log.message_status == 'delivered' %}<i class="fas fa-check"></i>{% elif log.message_status == 'failed' %}<i class="fas fa-skull-crossbones"></i>{% else %}<i class="fas fa-retweet"></i>{% endif %}</td>
+                                <td>{{ log.date_sent }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock content %}

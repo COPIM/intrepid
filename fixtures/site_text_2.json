@@ -1,0 +1,72 @@
+[
+{
+    "model": "cms.sitetext",
+    "pk": 60,
+    "fields": {
+        "key": "curr_con_warning",
+        "body": "This price is based on a currency conversion.",
+        "help_text": "Displayed when there is a currency conversion.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 61,
+    "fields": {
+        "key": "totals",
+        "body": "Total",
+        "help_text": "Wording for offer total.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 62,
+    "fields": {
+        "key": "obc_percentage",
+        "body": "OBC Processing Fee",
+        "help_text": "Wording for the platform fee.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 63,
+    "fields": {
+        "key": "has_all_prices_head",
+        "body": "To Proceed",
+        "help_text": "Once all packages have a price this section displays on the checkout.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 64,
+    "fields": {
+        "key": "has_all_prices_text",
+        "body": "To proceed with this order, click the button below. Otherwise you can add more offers or alter your banding information to see an updated offer.",
+        "help_text": "Once all packages have a price this section displays on the checkout.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 65,
+    "fields": {
+        "key": "order_complete_body",
+        "body": "<h3>Thanks!</h3>\r\n<p>Many thanks for your interest in the OBC. We will be in touch shortly. </p>",
+        "help_text": "Appears on the final order page.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 66,
+    "fields": {
+        "key": "order_documents",
+        "body": "<p>Please ensure you download your order documents using the button below. It contains your selected offers, quoted price and order number.</p>",
+        "help_text": "Appears on the final order page.",
+        "rich_text": true
+    }
+}
+]

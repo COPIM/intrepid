@@ -1,0 +1,44 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">Manager</li>
+    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+      <div class="container-fluid">
+        <h1>Initiative List</h1>
+        <p class="lead">View, edit, delete and create initiative objects.</p>
+
+        <table class="table" id="initiatives">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Accounts</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for initiative in initiatives %}
+                <tr>
+                    <td>{{ initiative.name }}</td>
+                    <td>{% for account in initiative.users.all %}{{ account.profile.full_name}}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                    <td><a href="{% url 'initiative_detail' initiative.pk %}" class="btn btn-primary">View Detail</a></td>
+                    <td><a href="" class="btn btn-danger">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </section>
+{% endblock content %}
+
+{% block js %}
+{% include "elements/datatables.js.html" with target='initiatives' %}
+{% endblock js %}

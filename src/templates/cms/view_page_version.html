@@ -1,0 +1,19 @@
+{% extends "base/base.html" %}
+{% load static two_factor %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">{{ page.title }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <p>Viewing version #{{ version.pk }}, created on {{ version.created }} by {{ version.created_by.profile.full_name }}</p>
+        <h1 class="page-header">{{ page.title }}</h1>
+        {{ version.body|safe }}
+    </div>
+</div>
+{% endblock content %}

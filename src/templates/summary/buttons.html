@@ -1,0 +1,7 @@
+<button class="left-pill-blue {% if active == 'summary' %}active-pill{% else %}inactive-blue-pill{% endif %}" onclick="location.href='{% url 'summary_package_initiative' package_or_initiative identifier %}'">
+    Summary
+</button><button class="mid-pill-blue {% if active == 'more_info' %}active-pill{% else %}inactive-blue-pill{% endif %}" onclick="location.href='{% url 'summary_more_info' package_or_initiative identifier %}'">
+    More Info
+</button><button onclick="location.href='{% url 'summary_pricing' package_or_initiative identifier %}'" class="right-pill-blue {% if active == 'pricing' %}active-pill{% else %}inactive-blue-pill{% endif %}">
+    Pricing
+</button>

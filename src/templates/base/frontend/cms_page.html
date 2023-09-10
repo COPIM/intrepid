@@ -1,0 +1,186 @@
+{% extends "base/frontend/base_header_overlap.html" %}
+{% load static %}
+
+{% block title %}
+Open Book Collective | {{ page.title }}
+{% endblock title %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col">
+            <h1>{{ page.title }}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row cms-info-row">
+        <div class="col-1"></div>
+        <div class="col white-text">
+            <!--<p class="subhead">{{ page.created|date:"M d, Y" }} | {{ page.updated_by.profile.full_name }}</p>-->
+        </div>
+        <div class="col-1"></div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-3">
+            <ul class="side-menu">
+                {% include "base/frontend/fixed_nav.html" %}
+            </ul>
+        </div>
+
+        <div class="col-9 text-center cms-col">
+           <div class="row">
+                <div class="col">
+                    <p class="abstract-para">{% if page.abstract_paragraph %}{{ page.abstract_paragraph }}{% endif %}</p>
+                </div>
+               <div class="col-1"></div>
+            </div>
+
+            <div class="row">
+                <div class="col cms-col">
+                    <p class="cms-para"><span class="firstcharacter">{{ page.first_character }}</span>{{ page.first_paragraph_minus_first_character|safe }}</p>
+                </div>
+                <div class="col-1"></div>
+            </div>
+
+            {% if page.current_version.pre_break_content %}
+            <div class="row">
+                <div class="col cms-col">
+                    {{ page.current_version.pre_break_content }}
+                </div>
+                <div class="col-1"></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-12 image-col">
+                {% if not page.mid_page_image %}
+                    <img src="{% static "frontend/img/default_cms.png" %}" alt="News" class="img-fluid cms-image"/>
+                {% else %}
+                    <img src="{{ page.mid_page_image.url }}" alt="News" class="img-fluid cms-image"/>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-12">
+            <!-- back to main flow here -->
+
+
+         <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    {% if page.current_version.pull_quote %}
+    <div class="container d-none d-md-block grey-border blue-row pull-quote-block">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                {% if page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                {% endif %}
+                <p class="pull-quote">{{ page.current_version.pull_quote|striptags }}</p>
+                {% if page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-9 cms-col">
+                        <div class="row">
+                            <div class="col cms-col">
+                                {{ page.current_version.body }}
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+{% endblock body %}
+
+{% block body-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-12 who-we-are-header-mobile">
+            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="News" class="img-fluid"/><br/>
+            <h1>{{ page.title }}</h1>
+        </div>
+
+    </div>
+
+    <div class="row white-background blue-text">
+        <div class="col">
+           <!--<p>{{ page.created|date:"M d, Y" }} | {{ page.updated_by.profile.full_name }}</p>-->
+        </div>
+    </div>
+
+     <div>
+        <div class="row">
+            <div class="col cms-col">
+                <p class="abstract-para">{% if page.abstract_paragraph %}{{ page.abstract_paragraph }}{% endif %}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col cms-col">
+                <p class="cms-para"><span class="firstcharacter">{{ page.first_character }}</span>{{ page.first_paragraph_minus_first_character|safe }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col cms-col">
+                {{ page.current_version.pre_break_content }}
+            </div>
+        </div>
+
+       <div class="row blue-row grey-border pull-quote-mobile">
+            <div class="col-1"></div>
+            <div class="col-10">
+                {% if page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                {% endif %}
+                <p class="pull-quote">{{ page.current_version.pull_quote|striptags }}</p>
+                {% if page.current_version.show_quote_icons %}
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+        </div>
+
+        <div class="row">
+            <div class="col cms-col">
+                {{ page.current_version.body }}
+            </div>
+        </div>
+
+    </div>
+{% endblock body-mobile %}

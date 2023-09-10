@@ -1,0 +1,64 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='initiatives' %}
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+            <h1>Initiative List</h1>
+            <p class="lead">{% if request.user.is_staff %}As a staff member you will see all Initiatives listed here.{% else %}A list of Initiatives for which you are a manager.{% endif %}</p>
+
+            <table class="table table-striped"PageUpdate id="initiatives">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Managers</th>
+                        <th>Active</th>
+                        <th># of Packages</th>
+                        <th>Add New Package</th>
+                        <th>View Packages</th>
+                        <th>Featured Books</th>
+                        <th>Orders</th>
+                        <th>Invoicing</th>
+                        <th>Pages</th>
+                        <th>Updates</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for initiative in users_initiatives %}
+                    <tr>
+                        <td><a href="{% url 'initiative_edit' initiative.pk %}">{{ initiative.name }}</a></td>
+                        <td>{% for account in initiative.users.all %}{{ account.profile.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                        <td>{{ initiative.active_display }}</td>
+                        <td>{{ initiative.packages.count }}</td>
+                        <td><a href="{% url 'start_package' initiative.pk %}">Add New Package</a></td>
+                        <td><a href="{% url 'initiative_packages' initiative.pk %}">View Packages</a></td>
+                        <td><a href="{% url 'featured_books' initiative.pk %}">Featured Books</a></td>
+                        <td><a href="{% url 'initiative_order_list' initiative.pk %}">Orders</a></td>
+                        <td><a href="{% url 'list_order_invoices_initiative' initiative.pk %}">Invoicing</a></td>
+                        <td><a href="{% url 'page_list' initiative.pk 'page' %}">Manage Pages</a></td>
+                        <td><a href="{% url 'page_list' initiative.pk 'update' %}">Manage Updates</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+    </section>
+{% endblock content %}
+
+{% block js %}
+{% include "elements/datatables.js.html" with target='initiatives' %}
+{% endblock js %}

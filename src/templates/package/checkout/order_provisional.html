@@ -1,0 +1,224 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static django_bootstrap5 conflicts %}
+{% load django_bootstrap5 crispy_forms_tags %}
+
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Order No. {{ order.order_number }}
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.order_number }}</li>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">Your quotation</h1>
+            <p class="subhead-no-offset">
+                We have generated a quotation for you to review, with a unique quotation number {{ order.order_number }}. Please refer to this quotation number if you would like to discuss any details with us.
+            </p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+                                alt="Quotations logo"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row catalogue-main spacer-top-40">
+        <div class="col-1"></div>
+        <div class="col package-styled-text">
+            {% get_site_text 'order_text_1' %}
+            <p class="text-center">
+                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
+                    Order
+                    Documents</a>
+            </p>
+            {% get_site_text 'order_text_2' %}
+            <table class="table package-table">
+                <tr class="header-row">
+                    <th>Initiative</th>
+                    <th>Package(s)</th>
+                    <th>Contact Email</th>
+                </tr>
+                {% for k, row in contact_rows.items %}
+                    <tr>
+                        <td><strong>{{ row.initiative.name }}</strong></td>
+                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
+                        {% elif not forloop.first and not forloop.last %}, {% endif %}
+                            {{ package.name }}{% endfor %}</td>
+                        <td>{{ row.contact_email }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% get_site_text 'order_text_3' %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table package-table" id="approval_table">
+                    <tr class="header-row">
+                        <th>Package Name</th>
+                        <th>Cost</th>
+                        <th>Approved by Provider?</th>
+                        <th>Approval</th>
+                        <th>External</th>
+                    </tr>
+                    {% for signup in order.packagesignup_set.all %}
+                        <tr>
+                            <td><strong>{{ signup.associated_package.name }}</strong></td>
+                            <td>{{ signup.formatted_price }}</td>
+                            <td>
+                                {% if signup.initiative_approved %}
+                                    <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
+                                {% else %}
+                                    <i class="fa fa-times-circle"></i> Not approved
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if signup.organisation_approved %}
+                                    <i class="fa fa-check-circle"></i> {{ signup.organisation_approved }}
+                                {% else %}
+                                    <button class="btn btn-sm btn-primary btn-obc-blue" name="approve"
+                                            value="{{ signup.pk }}">
+                                        Agree terms of signup
+                                    </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if signup.external %}
+                                    <a href="{{ signup.external }}">{{ signup.external_display }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+        <div class="col-1"></div>
+
+    </div>
+{% endblock body %}
+
+<!-- Mobile -->
+{% block header-mobile %}
+    <div class="row catalogue-header-mobile">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
+                 alt="Build your quote image"/>
+            <h1>Your quotation</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p>We have generated a quotation for you to review, with a unique quotation number {{ order.order_number }}. Please refer to this quotation number if you would like to discuss any details with us.</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header-mobile %}
+
+{% block body-mobile %}
+    <div class="catalogue-main">
+        <div class="col">
+            <h2>Order Documents</h2>
+            <p class="package-styled-text">
+                We've zipped up the documents for all of the packages you are signing up for. Please read them and then
+                either
+                approve the signup below or contact the initiative to discuss the terms. Also, some types of signup (those going through Jisc Collections) require you to input your details on an external site. Please check the links below carefully under the "external" column.
+            </p>
+            <p>
+                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
+                    Order
+                    Documents</a>
+            </p>
+            <h2>Contact Details</h2>
+            <p class="package-styled-text">Once you have read the order documents you can contact the initiatives to
+                discuss
+                them or approve the signup. If necessary the package manager can upload new terms. Once you and the
+                package
+                manager have both approved the signup terms will be locked in place.</p>
+            <table class="table package-table table-responsive">
+                <tr class="header-row">
+                    <th>Initiative</th>
+                    <th>Package(s)</th>
+                    <th>Contact Email</th>
+                </tr>
+                {% for k, row in contact_rows.items %}
+                    <tr>
+                        <td><strong>{{ row.initiative.name }}</strong></td>
+                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
+                        {% elif not forloop.first and not forloop.last %}, {% endif %}
+                            {{ package.name }}{% endfor %}</td>
+                        <td>{{ row.contact_email }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <h2>Approval</h2>
+            <p class="package-styled-text">When you are happy with the package terms you can mark the signup as
+                approved. You
+                may need to wait for the Initiative to approve the signup also in order to finalise the signup.</p>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table package-table table-responsive">
+                    <tr class="header-row">
+                        <th>Package Name</th>
+                        <th>Cost</th>
+                        <th>Approved by Initiative?</th>
+                        <th>Approval</th>
+                        <th>External</th>
+                    </tr>
+                    {% for signup in order.packagesignup_set.all %}
+                        <tr>
+                            <td><strong>{{ signup.associated_package.name }} {{ signup.pk }}</strong></td>
+                            <td>{{ signup.formatted_price }}</td>
+                            <td>
+                                {% if signup.initiative_approved %}
+                                    <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
+                                {% else %}
+                                    <i class="fa fa-times-circle"></i> Not approved
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if signup.organisation_approved %}
+                                    <i class="fa fa-check-circle"></i> {{ signup.organisation_approved }}
+                                {% else %}
+                                    <button class="btn btn-sm btn-primary btn-obc-blue" name="approve"
+                                            value="{{ signup.pk }}">
+                                        Approve this Signup
+                                    </button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if signup.external %}
+                                    <a href="{{ signup.external }}">{{ signup.external_display }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock body-mobile %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock js %}
+

@@ -1,0 +1,19 @@
+<div class="light-blue highlights d-sm-block d-xs-block d-md-block" style="width: 73%;">
+    <h2 class="text-center white-text highlights-title">
+        {% get_site_text 'highlights' %}
+    </h2>
+    <div class="highlights-inner text-center">
+        <div class="row">
+            {% for highlight in package.highlights %}
+                <div class="col-md-3">
+                    <img class="img-fluid highlight-img" src="{{ highlight.icon.url }}">
+                    <p class="highlight-title"><strong>{{ highlight.title }}</strong></p>
+                    <div class="highlight-text-block">
+                    {{ highlight.body|safe }}
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>

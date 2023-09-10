@@ -1,0 +1,201 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static django_bootstrap5 conflicts %}
+{% load django_bootstrap5 crispy_forms_tags %}
+
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Order No. {{ order.order_number }}
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.order_number }}</li>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">{% get_site_text 'completed_order' %}</h1>
+            <p class="subhead-no-offset">Your order with order number {{ order.order_number }} is now complete. If you
+                require assistance with your order
+                ensure you quote this order number.</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+                                alt="Quotations logo"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row catalogue-main spacer-top-40">
+        <div class="col-1"></div>
+        <div class="col">
+            <h2>{% get_site_text 'order_docs' %}</h2>
+            <div class="text-center package-styled-text">
+                {% get_site_text 'order_docs_info' %}
+                <p>
+                    <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
+                        Order Documents</a>
+                </p>
+
+                {% get_site_text 'order_com_contact' %}
+            </div>
+            <table class="table package-table">
+                <tr class="header-row">
+                    <th>Initiative</th>
+                    <th>Package(s)</th>
+                    <th>Contact Email</th>
+                </tr>
+                {% for k, row in contact_rows.items %}
+                    <tr>
+                        <td><strong>{{ row.initiative.name }}</strong></td>
+                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
+                        {% elif not forloop.first and not forloop.last %}, {% endif %}
+                            {{ package.name }}{% endfor %}</td>
+                        <td>{{ row.contact_email }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <h2>{% get_site_text 'order_approval' %}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table package-table">
+                    <tr class="header-row">
+                        <th>Package Name</th>
+                        <th>Cost</th>
+                        <th>Approved by Initiative?</th>
+                        <th>Approval</th>
+                        <th>Payment Processor</th>
+                        <th>Invoice Status</th>
+                    </tr>
+                    {% for signup in order.packagesignup_set.all %}
+                        <tr>
+                            <td>{{ signup.associated_package.name }}</td>
+                            <td>{{ signup.formatted_price }}</td>
+                            <td>
+                                <i class="fa fa-check-circle"></i> {{ signup.initiative_approved|date:"Y-m-d" }}
+                            </td>
+                            <td>
+                                <i class="fa fa-check-circle"></i> {{ signup.organisation_approved|date:"Y-m-d" }}
+                            </td>
+                            <td>
+                                {% if signup.payment_processor.payment_processor %}
+                                    {{ signup.payment_processor.payment_processor }}
+                                {% else %}
+                                    {{ signup.associated_package.initiative.name }}
+                                {% endif %}
+                            </td>
+                            <td>{% if signup.signupinvoice %}{{ signup.signupinvoice.get_status_display }}{% else %}No
+                                status to display{% endif %}</td>
+
+                        </tr>
+                        {% if signup.associated_package.mediafile_set.all %}
+                            <tr>
+                                <td colspan="6">
+                                    Package Media Files:
+                                    {% for file in signup.associated_package.mediafile_set.all %}
+                                        <a href="{% url 'download_media_file' signup.associated_package.id signup.associated_package.package.initiative.id file.id %}">{{ file.name }}</a>
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+        <div class="col-1"></div>
+
+    </div>
+{% endblock body %}
+
+<!-- Mobile -->
+{% block header-mobile %}
+    <div class="row catalogue-header-mobile">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/quotation_group.png" %}"
+                 alt="Build your quote image"/>
+            <h1>{% get_site_text 'completed_order' %}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p>Your order with order number {{ order.order_number }} is now complete. If you require assistance with
+                your order
+                ensure you quote this order number.</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header-mobile %}
+
+{% block body-mobile %}
+    <div class="col blue-h2">
+        <h2>{% get_site_text 'order_docs' %}</h2>
+        {% get_site_text 'order_docs_info' %}
+        <p>
+            <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download Order
+                Documents</a>
+        </p>
+        {% get_site_text 'order_com_contact' %}
+        <table class="table package-table table-responsive">
+            <tr class="header-row">
+                <th>Initiative</th>
+                <th>Package(s)</th>
+                <th>Contact Email</th>
+            </tr>
+            {% for k, row in contact_rows.items %}
+                <tr>
+                    <td><strong>{{ row.initiative.name }}</strong></td>
+                    <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
+                    {% elif not forloop.first and not forloop.last %}, {% endif %}{{ package.name }}{% endfor %}</td>
+                    <td>{{ row.contact_email }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>{% get_site_text 'order_approval' %}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <table class="table package-table table-responsive">
+                <tr class="header-row">
+                    <th>Package Name</th>
+                    <th>Cost</th>
+                    <th>Approved by Initiative?</th>
+                    <th>Approval</th>
+                </tr>
+                {% for signup in order.packagesignup_set.all %}
+                    <tr>
+                        <td>{{ signup.associated_package.name }}</td>
+                        <td>{{ signup.formatted_price }}</td>
+                        <td>
+                            <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
+                        </td>
+                        <td>
+                            <i class="fa fa-check-circle"></i> {{ signup.organisation_approved }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </div>
+{% endblock body-mobile %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock js %}
+

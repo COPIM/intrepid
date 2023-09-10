@@ -1,0 +1,112 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Collections and Collectives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'oa_inits_header' %}</li>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row text-left">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">{% get_site_text 'oa_inits_header' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'oa_inits_sub_header' %}</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/collective_five.svg" %}"
+                                alt="Collections and Collectives"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="pill-row package-collection-pill-row">
+                <button class="left-pill-blue active-pill" onclick="location.href='{% url 'package_list' %}'">Packages</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue">Initiatives</button>
+            </div>
+                {% if not request.site.enable_signup %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                    {{ request.site.signup_disabled_notification }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col package-collection-text">
+            {% get_site_text 'collection_collectiv' %}
+        </div>
+    </div>
+    <div class="content">
+        <div class="row row-spacer">
+            {% for package in meta_packages %}
+                <div class="col-6 spacer-top-10">
+                    {% include "base/frontend/quote/elements/collective.html" %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}
+
+<!-- Mobile -->
+{% block header-mobile %}
+    <div class="row catalogue-header-mobile">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
+                 alt="Build your quote image"/>
+            <h1>{% get_site_text 'oa_inits_header' %}</h1>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p>{% get_site_text 'oa_inits_sub_header' %}</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+{% endblock header-mobile %}
+
+{% block body-mobile %}
+    {% if not search_on %}
+        <div class="row package-main-mobile">
+            <div class="col package-collection-text">
+                <div class="pill-row">
+                    <button class="left-pill-blue active-pill"
+                            onclick="location.href='{% url 'package_list' %}'">
+                        Packages
+                    </button><button onclick="location.href='{% url 'initiative_list' %}'"
+                            class="right-pill-blue">Initiatives
+                    </button>
+                </div>
+                {% get_site_text 'collection_collectiv' %}
+            </div>
+        </div>
+        <div class="row row-spacer">
+            {% for package in meta_packages %}
+                <div class="col-12 package-col">
+                    {% include "base/frontend/quote/elements/package_mobile.html" with meta="meta" %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock body-mobile %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock js %}

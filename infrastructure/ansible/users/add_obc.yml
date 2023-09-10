@@ -1,0 +1,22 @@
+- name: Add user OBC
+  hosts: all
+  tasks:
+    - name: Add user OBC
+      become: true
+      user:
+        name: obc
+        state: present
+        shell: /bin/bash       # Defaults to /bin/bash
+        system: no             # Defaults to no
+        createhome: yes        # Defaults to yes
+
+- name: Add key for user OBC
+  hosts: all
+  tasks:
+    - name: Add user key for obc
+      become: true
+      authorized_key:
+        user: obc
+        key: '{{ item }}'
+      with_file:
+        - /home/martin/.ssh/id_ed25519.pub

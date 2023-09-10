@@ -1,0 +1,208 @@
+{% load static conflicts currency_display cost_calculator %}
+<div class="row catalogue-main spacer-top-40">
+    <div class="col">
+        <div class="row">
+            {% if not mobile %}
+            <div class="col-3">
+                <div class="card contact-us-card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">{% get_site_text 'discuss_quote' %}</h3>
+                        <div class="text-center">
+                            <img class="img-fluid text-center"
+                                 src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
+                        </div>
+                        <div class="text-center spacer-top-20">
+                            <a class="contact-us-button"
+                               href="mailto:{{ request.site.contact_email }}">{% get_site_text_no_edit 'contact_us' %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="col" id="form_start">
+                <h3>{% get_site_text 'quotation_packages' %}</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table package-table">
+                        <tr class="header-row">
+                            <th>Offer</th>
+                            <th>Cost</th>
+                            <th>Remove</th>
+                        </tr>
+                        {% for package in basket.packages.all %}
+                            <tr>
+                                <td>
+                                    <strong><a class="package-name"
+                                               href="{% url 'package_info' package.pk %}">{{ package.name }}</a></strong><br/>
+                                </td>
+                                <td>
+                                    {% if has_all_prices %}
+                                        {% package_cost package_costs package converted_currency %}
+                                    {% else %}
+                                        --
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-link"
+                                            formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
+                                        <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}"
+                                             alt="Remove from basket"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for package in basket.meta_packages.all %}
+                            <tr>
+                                <td>
+                                    <a class="package-name" href="{% url 'package_info' package.pk %}"><strong>{{ package.name }}</strong></a>
+                                </td>
+                                <td>
+                                    {% if has_all_prices %}
+                                        {% meta_package_cost package_costs package converted_currency as calculated_meta_package_cost %}
+                                        {% for currency, amount in calculated_meta_package_cost.items %}
+                                            {% format_price amount currency %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        --
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-link"
+                                            formaction="{% url 'basket_remove_meta_from_basket' basket.pk package.pk %}">
+                                        <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}"
+                                             alt="Remove from basket"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if not basket.meta_packages.all and not basket.packages.all %}
+                            <tr>
+                                <td colspan="2">There are no offers in this quote.</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </form>
+
+                {% if has_all_prices and basket.package_set %}
+                <table class="table package-table">
+                    {% if basket.list_of_conflicting_packages %}
+                        <tr>
+                            <td colspan="2">
+                                <strong>Duplicate Offers: </strong>Your selection includes one or more duplicate offers. Any duplicate offers are automatically removed from your quote to ensure you are only charged once.
+                            </td>
+                        </tr>
+                        {% for package in basket.list_of_conflicting_packages %}
+                            <tr class="in_conflict">
+                                <td colspan="2">
+                                    <strong>
+                                        <i class="fa fa-exclamation-triangle"></i> {{ package.name }} ({% package_cost package_costs package converted_currency %})<br/>
+                                    </strong>
+                                    <small>{% conflict_statement package basket %}</small>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    <tr class="total">
+                        <td>
+                            <strong>{% get_site_text 'totals' %}</strong>
+                            {% if basket.conflicts %}
+                                <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
+                                </p>{% endif %}
+                        </td>
+                        <td class="text-right" colspan="4">
+                            {% if converted_total %}
+                                {% for k,v in converted_total.items %}
+                                    <em>{{ v|currency_display:k }}*</em><br/>
+                                {% endfor %}
+                            {% else %}
+                                {% if currency_totals.items %}
+                                    {% for k,v in currency_totals.items %}
+                                        {{ v|currency_display:k }}<br/>
+                                    {% endfor %}
+                                {% else %}
+                                    Complete form below to see price.
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if converted_total %}
+                        <tr>
+                            <td colspan="5">
+                                 <small>*{% get_site_text 'curr_con_warning' %}</small>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if site_percentage %}
+                        <tr>
+                            <td>
+                                <strong>{% get_site_text 'obc_percentage' %}</strong>
+                            </td>
+                            <td colspan="4" class="text-right">
+                                {% for k,v in site_percentage.items %}
+                                    {{ v|currency_display:k }}<br/>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <strong>Total</strong>
+                        </td>
+                        <td class="text-right">
+                            {% if converted_total %}
+                                <strong>{% add_total_and_site_fee converted_total site_percentage %}*</strong><br />
+                            {% else %}
+                                <strong>{% add_total_and_site_fee currency_totals site_percentage %}</strong>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                        {% if converted_total %}
+                            {% if not converted_currency == user_currency.currency %}
+                                <tr>
+                                    <td colspan="2">
+                                        <small>*No offers have yet been set up in your chosen currency. Instead, we have provided an indicative price. We recommend you get in touch with us at <a href="mailto:info@openbookcollective.org">info@openbookcollective.org</a> so we can provide you with a custom quotation.</small>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                </table>
+                {% endif %}
+
+                {% if has_all_prices and basket.package_set %}
+                    <h3>{% get_site_text 'has_all_prices_head' %}</h3>
+                    {% get_site_text 'has_all_prices_text' %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <p><button name="complete" class="btn btn-primary btn-obc-magenta">Proceed</button></p>
+                    </form>
+                {% endif %}
+
+                <div class="col no-pad">
+                    <h3>{% get_site_text 'quotation_additional' %}</h3>
+                    {% get_site_text 'quotation_add_text' %}
+                    <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                </div>
+                {% if basket.package_set %}
+                {% include "package/elements/basket_form.html" %}
+                {% endif %}
+            </div>
+            {% if mobile %}
+                <div class="col-12 spacer-top-20">
+                    <div class="card contact-us-card">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Want to discuss your quote?</h3>
+                            <div class="text-center">
+                                <img class="img-fluid text-center"
+                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
+                            </div>
+                            <div class="text-center spacer-top-20">
+                                <button class="contact-us-button">Contact Us</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

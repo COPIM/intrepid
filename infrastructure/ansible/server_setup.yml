@@ -1,0 +1,39 @@
+---
+- name: Mount media directory
+  import_playbook: fstab/mount_ebs.yml
+
+- name: Configure socket directory
+  import_playbook: gunicorn/socket.yml
+
+- name: Setup Users
+  import_playbook: users/setup_users.yml
+
+- name: Add deploy key to OBC account
+  import_playbook: deploykey/generate_key.yml
+
+- name: Setup nginx
+  import_playbook: nginx/setup_nginx.yml
+
+- name: Setup postgres
+  import_playbook: postgres/setup_pg.yml
+
+- name: Generate key
+  import_playbook: deploykey/generate_key.yml
+
+- name: Setup database
+  import_playbook: postgres/postgres_user.yml
+
+- name: Update dependencies
+  import_playbook: virtualenv/dependencies.yaml
+
+- name: Update requirements
+  import_playbook: virtualenv/setup_pip.yml
+
+- name: Start gunicorn service file
+  import_playbook: gunicorn/start_gunicorn.yml
+
+- name: Configure nginx
+  import_playbook: nginx/configure_nginx.yml
+
+- name: Setup cron
+  import_playbook: cron/install_cron_tasks.yml

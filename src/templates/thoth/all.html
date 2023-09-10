@@ -1,0 +1,186 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static %}
+
+{% block js %}
+    <script src="{% static "frontend/js/equalize-height.js" %}"></script>
+    <script src="{% static "frontend/js/catalogue.js" %}"></script>
+    <script src="{% static "frontend/js/paginator.js" %}"></script>
+{% endblock js %}
+
+{% block title %}
+Books
+{% endblock title %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row text-left">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">{% get_site_text 'books_header' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'books_sub_header' %}</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <form method="get">
+        <div class="row search-row">
+            <div class="col-1"></div>
+            <div class="col-2">
+                <h3>Search</h3>
+                <a href="{% url 'advanced_search' %}">Search the catalogue</a>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-2">
+                <h3>Initiative</h3>
+                <select class="initiative-box" type="text" id="initiative" name="initiative" onchange="this.form.submit()">
+                    <option value="0">Select an Initiative</option>
+                    {% for init in initiatives %}
+                        <option value="{{ init.pk }}">{{ init.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-2">
+                <h3>Sort</h3>
+                <select class="sort-box" type="text" name="sort" id="sort" onchange="this.form.submit()">
+                    <option>Date Newest</option>
+                    <option>Date Oldest</option>
+                </select>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </form>
+
+    <div class="row catalogue-main">
+        <div class="col">
+            <h2>Latest Titles</h2>
+        </div>
+    </div>
+
+    <div class="row catalogue-main">
+        {% for work in works %}
+            <div class="col-4 row-eq-height book-item-row">
+                <a class="book-item-link" href="{% url 'book' work.pk %}">
+                    <div class="row book-item row-eq-height">
+                        <div class="col-4">
+                                {% if work.cover_url %}
+                                    <img class="img-fluid book-cover-catalogue" src="{{ work.cover_url }}" alt="{{ work }}"/>
+                                {% else %}
+                                    <img class="img-fluid book-cover-catalogue" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h3 class="publisher">{{ work.publisher }}</h3>
+                            <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">
+                                {% for contribution in work.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination row">
+        <div class="col">
+            <span class="step-links">
+                {% if works.has_previous %}<a onclick="update('page', '1')" class="left-pill-paginator">&laquo; first</a><a onclick="update('page', '{{ works.previous_page_number }}')" class="mid-pill-paginator">previous</a>{% endif %}{% if works.has_next %}<a onclick="update('page', '{{ works.next_page_number }}')" class="mid-pill-paginator">next</a><a onclick="update('page', '{{ num_pages }}')" class="right-pill-paginator">last &raquo;</a>{% endif %}
+            </span>
+
+            <span class="current">
+                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+            </span>
+
+            <span class="current">
+                <br/>Or try the <a class="current" href="{% url 'advanced_search' %}">advanced search</a>.
+            </span>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block header-mobile %}
+    <div class="row catalogue-header-mobile">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/>
+            <h1>{% get_site_text 'books_header' %}</h1>
+            <p>
+                {% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+            </p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p>{% get_site_text 'books_sub_header' %}</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-filter-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                Filters
+              </button>
+              <div class="dropdown-menu catalogue-filters-mobile" aria-labelledby="dropdownMenuButton">
+                <form method="get">
+                    <input class="search-box" type="text" id="search-mobile" name="search" placeholder="Search Title, Author"/><br/>
+                    <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
+                        <option>Date Newest</option>
+                        <option>Date Oldest</option>
+                    </select>
+                </form>
+              </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row catalogue-main-mobile">
+        {% for work in works %}
+            <div class="col-12  book-item-row-mobile">
+                <a class="book-item-link" href="{% url 'book' work.pk %}">
+                    <div class="row book-item book-item-mobile ">
+                        <div class="col-4">
+                                {% if work.cover_url %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{{ work.cover_url }}" alt="{{ work }}"/>
+                                {% else %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h3 class="publisher">{{ work.publisher }}</h3>
+                            <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">
+                                {% for contribution in work.contribution_set.all %}
+                                    <span>{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% if not forloop.first %}{% if forloop.last %}, and {% else %}, {% endif %}{% endif %}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+     <div class="pagination-mobile row">
+        <div class="col">
+            <span class="step-links">
+                {% if works.has_previous %}<a href="?page=1">first</a> | <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% endif %}
+                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">next</a> | <a href="?page={{ works.paginator.num_pages }}">last</a>{% endif %}
+            </span>
+
+            <span class="current">
+                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+            </span>
+        </div>
+    </div>
+{% endblock %}

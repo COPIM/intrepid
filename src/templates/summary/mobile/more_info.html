@@ -1,0 +1,20 @@
+{% load static %}
+<div class="row catalogue-main catalogue-main-mobile">
+    <div class="col">
+        <div class="pill-row">
+            {% include "summary/buttons.html" with active="more_info" %}
+        </div>
+    </div>
+</div>
+<div class="row catalogue-main catalogue-main-mobile">
+    <div class="col">
+        <div class="larger-package-styled-text">
+            {{ initiative.more_info|safe }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {% include "summary/sidebar.html" %}
+    </div>
+</div>

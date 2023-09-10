@@ -1,0 +1,26 @@
+- name: Generate SSH key
+  hosts: all
+  tasks:
+    - name: Generate RSA SSH key
+      become: true
+      community.crypto.openssh_keypair:
+        path: /home/obc/.ssh/id_rsa
+        owner: obc
+      register: ssh
+    - local_action: copy content={{ ssh.public_key }} dest=./deploy_key.pub
+    - debug: var=ssh.public_key
+
+- name: Generate second SSH key
+  hosts: all
+  tasks:
+    - name: Generate ED25519 SSH key
+      become: true
+      community.crypto.openssh_keypair:
+        path: /home/obc/.ssh/id_ed25519
+        type: ed25519
+        owner: obc
+      register: ed
+
+    - local_action: copy content={{ ed.public_key }} dest=./deploy_key_ed.pub
+
+    - debug: var=ed.public_key

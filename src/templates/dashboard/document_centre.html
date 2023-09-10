@@ -1,0 +1,76 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+
+{% block title %}{% trans "Orders and Documents" %}{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Orders and Documents</a></li>
+{% endblock %}
+
+{% block content %}
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="document_centre">&nbsp;</span>
+
+<!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Orders and Documents</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                  <tbody>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Order Date</th>
+                        <th>Number of Packages</th>
+                        <th>Status</th>
+                        <th>Documents</th>
+                        <th>Details</th>
+                    </tr>
+                    {% for order in orders %}
+                        <tr>
+                            <td class="mailbox-name">{{ order.order_number }}</td>
+                            <td class="mailbox-date">{{ order.order_date }}</td>
+                            <td>{{ order.packagesignup_set.all.count }}</td>
+                            <td>{{ order.get_status_display }}</td>
+                            <td class="mailbox-subject">{% if order.document %}<a href="{% url 'frozen_document' order.document.pk %}"><span class="fas fa-download"></span> Order Documents</a>{% else %}Order has no documents{% endif %}</td>
+                            <td>
+                            {% if order.status == 'new' %}
+                                <a href="{% url 'order_form' order.pk %}" class="btn btn-primary">Complete Order Form</a>
+                            {% elif order.status == 'provisional' %}
+                                <a href="{% url 'order_provisional' order.pk %}" class="btn btn-primary">View Order Details</a>
+                            {% elif order.status == 'complete' %}
+                                <a href="{% url 'order_complete' order.pk %}" class="btn btn-primary">View Order Details</a>
+                            {% endif %}
+                        </td>
+                        </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+                <!-- /.table -->
+              </div>
+              <!-- /.mail-box-messages -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer p-0">
+
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+{% endblock content %}

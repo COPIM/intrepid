@@ -1,0 +1,30 @@
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="{% static "js/csrf.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jq-ui.min.js" %}"></script>
+<script>
+    $("#sortable").sortable({
+        update: function (event, ui) {
+            var data = $(this).sortable('serialize');
+            $.ajax({
+                data: data,
+                type: 'POST',
+                url: '{{ sort_url }}'
+            });
+        }
+    });
+
+    $(".sortable").disableSelection();
+        $(".sortable").sortable({
+        update: function (event, ui) {
+            var data = $(this).sortable('serialize');
+            $.ajax({
+                data: data,
+                type: 'POST',
+                url: '{{ sort_url }}'
+            });
+        }
+    });
+    $(".sortable").disableSelection();
+</script>

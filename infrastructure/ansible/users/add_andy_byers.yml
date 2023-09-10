@@ -1,0 +1,22 @@
+- name: Add user Andy Byers
+  hosts: all
+  tasks:
+    - name: Add user Andy Byers
+      become: true
+      user:
+        name: andy
+        state: present
+        shell: /bin/bash       # Defaults to /bin/bash
+        system: no             # Defaults to no
+        createhome: yes        # Defaults to yes
+
+- name: Add key for user Andy Byers
+  hosts: all
+  tasks:
+    - name: Add user key for Andy Byers
+      become: true
+      authorized_key:
+        user: andy
+        key: '{{ item }}'
+      with_file:
+        - /home/martin/.ssh/andy_2.pub

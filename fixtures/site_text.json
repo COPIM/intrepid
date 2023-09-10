@@ -1,0 +1,592 @@
+[
+{
+    "model": "cms.sitetext",
+    "pk": 1,
+    "fields": {
+        "key": "index_header",
+        "body": "<h1>Collective, Connected, Sustainable</h1>",
+        "help_text": "Appears on the home page left had block.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 2,
+    "fields": {
+        "key": "index_sub_header",
+        "body": "We bring together publishers, publishing service providers, and scholarly libraries to secure the diversity and financial futures of open access book production and dissemination.",
+        "help_text": "Displays below the main header on the home page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 3,
+    "fields": {
+        "key": "index_col_1_header",
+        "body": "Prosperous OA Communities",
+        "help_text": "Header section, first column, title.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 4,
+    "fields": {
+        "key": "index_col_2_header",
+        "body": "Sustainable Funding",
+        "help_text": "Index section, column two, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 5,
+    "fields": {
+        "key": "index_col_3_header",
+        "body": "Robust Infrastructures",
+        "help_text": "Index section, column three, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 6,
+    "fields": {
+        "key": "index_col_4_header",
+        "body": "Diversity in OA",
+        "help_text": "Index section, column four, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 7,
+    "fields": {
+        "key": "index_col_1_body",
+        "body": "Creating a space for publishers, service providers, libraries and others to learn, network and support each another.",
+        "help_text": "Index section, column one, body",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 8,
+    "fields": {
+        "key": "index_col_2_body",
+        "body": "Delivering new, more reliable revenue streams to small to medium-sized publishers, helping them move away from relying on book processing charges.",
+        "help_text": "Index section, column two, body",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 9,
+    "fields": {
+        "key": "index_col_3_body",
+        "body": "Delivering new financial resources to the vital infrastructures of OA book publishing and making it easier to integrate OA books into library catalogues.",
+        "help_text": "Index section, column three, body",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 10,
+    "fields": {
+        "key": "index_col_4_body",
+        "body": "Supporting a variety of approaches to OA publishing, while making OA for books more accessible to a wider range of authors and institutions.",
+        "help_text": "Index section, column four, body",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 11,
+    "fields": {
+        "key": "action_header",
+        "body": "Take Action",
+        "help_text": "Header for the action section. Default \"Take Action\"",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 12,
+    "fields": {
+        "key": "action_col_1_header",
+        "body": "Libraries",
+        "help_text": "Action column one, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 13,
+    "fields": {
+        "key": "action_col_2_header",
+        "body": "Readers & Authors",
+        "help_text": "Action column two, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 14,
+    "fields": {
+        "key": "action_col_3_header",
+        "body": "Publishers and Providers",
+        "help_text": "Action column three, header",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 15,
+    "fields": {
+        "key": "action_col_1_sub",
+        "body": "Discover and support initiatives relevant to your interests.",
+        "help_text": "Action column three, subheader",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 16,
+    "fields": {
+        "key": "action_col_2_sub",
+        "body": "Search and access Open Access content from OBC publishers.",
+        "help_text": "Action column two, subheader",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 17,
+    "fields": {
+        "key": "action_col_3_sub",
+        "body": "Find out more about our funding members and how to join as a publisher or initiative.",
+        "help_text": "Action column three, subheader",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 18,
+    "fields": {
+        "key": "action_col_2_list",
+        "body": "<li><span>Search the catalogue</span></li>\r\n<li><span>Find new OA books</span></li>\r\n<li><span>Filter by initiative</span></li>",
+        "help_text": "Ensure you leave the <li> and <span> tags in place or this will not render correctly.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 19,
+    "fields": {
+        "key": "action_col_1_list",
+        "body": "<li><span>Choose or build your subscription package</span></li>\r\n<li><span>Get a price</span></li>\r\n<li><span>Subscribe</span></li>",
+        "help_text": "Ensure you leave the <li> and <span> tags in place or this will not render correctly.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 20,
+    "fields": {
+        "key": "action_col_3_list",
+        "body": "<li><span>Become a member of the OBC</span></li>\r\n<li><span>Offer membership programmes to libraries and other supporters</span></li>\r\n<li><span>Access our publisher and publishing service provider support network</span></li>",
+        "help_text": "Ensure you leave the <li> and <span> tags in place or this will not render correctly.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 21,
+    "fields": {
+        "key": "working_together",
+        "body": "Working Together",
+        "help_text": "Header for the working together section.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 22,
+    "fields": {
+        "key": "books_header",
+        "body": "Collective Catalogue",
+        "help_text": "Header of the books page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 23,
+    "fields": {
+        "key": "books_sub_header",
+        "body": "The collective catalogue displays books that are in the Thoth system and that are supported by the work and funding model of the Open Book Collective.",
+        "help_text": "Subheader of the books page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 24,
+    "fields": {
+        "key": "oa_inits_header",
+        "body": "Support OA Initiatives",
+        "help_text": "Header for the support OA initiatives page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 25,
+    "fields": {
+        "key": "oa_inits_sub_header",
+        "body": "Support individual or collective membership programmes offered by open access book publishers and service providers.",
+        "help_text": "Sub header for the Support OA Initiatives page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 26,
+    "fields": {
+        "key": "baskets_header",
+        "body": "Your Quotations",
+        "help_text": "Appears at the head of the Your Quotes page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 27,
+    "fields": {
+        "key": "baskets_sub_header",
+        "body": "Manage your existing quotations.",
+        "help_text": "Appears below the header on your qoutes page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 28,
+    "fields": {
+        "key": "baskets_active_quote",
+        "body": "Active Quotations",
+        "help_text": "A secondary header on the your quotes page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 29,
+    "fields": {
+        "key": "baskets_anon",
+        "body": "You are not logged in. None of your quotes will be saved unless you register before terminating your session.",
+        "help_text": "Text displayed on the your quotes page when a user is not logged in.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 30,
+    "fields": {
+        "key": "quotation_header",
+        "body": "Quotation",
+        "help_text": "Header for the view quotation page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 31,
+    "fields": {
+        "key": "quotation_sub_header",
+        "body": "View and manage packages in a quote.",
+        "help_text": "Appears as a sub heading on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 32,
+    "fields": {
+        "key": "discuss_quote",
+        "body": "Want to discuss your quote?",
+        "help_text": "Generic text, appears currently on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 33,
+    "fields": {
+        "key": "contact_us",
+        "body": "Contact Us",
+        "help_text": "Generic text, currently appears on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 34,
+    "fields": {
+        "key": "quotation_packages",
+        "body": "Packages in Quotation",
+        "help_text": "Secondary header on the view baskets page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 35,
+    "fields": {
+        "key": "quotation_additional",
+        "body": "Add Additional Offers",
+        "help_text": "Appears on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 36,
+    "fields": {
+        "key": "quotation_breakdown",
+        "body": "Package Cost Breakdown",
+        "help_text": "Appears on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 37,
+    "fields": {
+        "key": "quotation_add_text",
+        "body": "<p>If you wish to add additional membership offers to your quotation you can click the “Add” button below.</p>",
+        "help_text": "Appears on the view basket page.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 38,
+    "fields": {
+        "key": "quotation_proceed",
+        "body": "<p>If you wish to go ahead with this quote you can click the \"Proceed\" button below. We will collect some information and generate your order.</p>",
+        "help_text": "Appears on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 39,
+    "fields": {
+        "key": "quotation_conflict",
+        "body": "<p>\r\n                                    <span class=\"fa fa-exclamation-triangle\"></span> This quotation has conflicting\r\n                                    packages. You should remove either the conflicting packages from your\r\n                                    basket.\r\n                                </p>",
+        "help_text": "Displays on the view basket page when there is a package conflict.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 40,
+    "fields": {
+        "key": "quotation_proceed_h",
+        "body": "Proceed with Quote",
+        "help_text": "Appears on the view basket page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 41,
+    "fields": {
+        "key": "quotation_anongather",
+        "body": "<p><span class=\"fas fa-exclamation-triangle\"></span> To proceed with this quote, we now need to gather information to allow us to provide prices relevant to your institution’s banding type. To continue, please complete the form below, or contact OBC staff at info@openbookcollective.org who will be happy to generate a quote on your behalf.</p>\r\n\r\n                            <p>Some bandings refer to ‘high’, ‘middle’ and ‘low’ income countries, as defined by the World Bank. You can find the latest <a href=\"https://datatopics.worldbank.org/world-development-indicators/the-world-by-income-and-region.html\">Country Classifications by Income here</a>.</p>",
+        "help_text": "Appears when a user is not logged in and tries to get a price for a basket.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 42,
+    "fields": {
+        "key": "order_form",
+        "body": "Order Form",
+        "help_text": "Header for the order form page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 43,
+    "fields": {
+        "key": "order_form_sub_h",
+        "body": "Complete order details.",
+        "help_text": "Subheader for the order form page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 44,
+    "fields": {
+        "key": "order_form_packages",
+        "body": "Packages",
+        "help_text": "Packages header on the order form page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 45,
+    "fields": {
+        "key": "order_form_pack_text",
+        "body": "The following packages are in your order:",
+        "help_text": "Appears on the order form page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 46,
+    "fields": {
+        "key": "order_form_details_h",
+        "body": "Complete Your Details",
+        "help_text": "Appears on the order form page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 47,
+    "fields": {
+        "key": "order_form_details",
+        "body": "<p>Complete the form below so that we can begin processing your\r\n            order.</p>",
+        "help_text": "Instructions for completing the order form.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 48,
+    "fields": {
+        "key": "order_text_1",
+        "body": "<h2>Provider Contract(s): <em>For Review</em></h2>\r\n            <p>\r\n                If you would like to go ahead and support your chosen initiatives via the Open Book Collective, there are two sets of documents for you to review. The first includes the Provider contracts for the Membership Offers you have provisionally chosen to support. <strong>These detail the commitments that Providers have made to us, the Open Book Collective, and to all Supporting Institutions</strong>. We’ve created a zipped up document for all of the packages you have expressed an interest in supporting.\r\n            </p>",
+        "help_text": "First chunk of the order page.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 49,
+    "fields": {
+        "key": "order_text_2",
+        "body": "<h2>Terms and Conditions: <i>For Review</i></h2>\r\n            <p>You should also review the commitments that we, the Open Book Collective, make to you, as a Supporting Institution. You can review our <a href=\"https://openbookcollective.pubpub.org/pub/terms-and-conditions-for-supporters\" target=\"_blank\">Supporter Terms and Conditions</a>.</p>\r\n            <p>If you would like to proceed after having reviewed both the Provider Contracts and our Terms and Conditions, you can go ahead and ‘Approve’ below. </p>\r\n\r\n            <h2>Open Book Collective Contact Details</h2>\r\n            <p>If you would like to discuss any details of your quotation with us, you can contact us at <a target=\"_blank\" href=\"mailto:info@openbookcollective.org\">info@openbookcollective.org</a></p>\r\n\r\n            <h2>Provider Contact Details</h2>\r\n            <p>If you would like to discuss any details of the Membership Offers you have added to your quotation with a Provider, you can contact them using the contact details below.</p>",
+        "help_text": "Second chunk of the order screen text.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 50,
+    "fields": {
+        "key": "order_text_3",
+        "body": "<h2>Approval</h2>\r\n            <p class=\"package-styled-text\"><strong>As detailed in our <a target=\"_blank\" href=\"https://openbookcollective.org/cms/fixed_page/funding_model/\">Funding and Fees</a> page, we add a 5% Supporter Contribution charge to the amounts charged by Providers to Supporters. While the Open Book Collective operates as a not-for-profit, these contributions help us to cover our operating costs. The Supporter Contribution charge is added at the invoicing stage.</strong></p>\r\n            <p class=\"package-styled-text\">When you are happy with both our terms and conditions and the commitments detailed in the Provider contracts, you can go ahead with your order by marking the quotation as ‘Approved’. You may need to wait for the Provider to approve the signup for the process to be completed.</p>\r\n            <p class=\"package-styled-text\">Once all Approvals have been completed, we will go ahead and issue an invoice on behalf of the selected Providers, as well as for our Supporter Contribution charge.</p>",
+        "help_text": "Third chunk of order text.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 51,
+    "fields": {
+        "key": "order_docs",
+        "body": "Order Documents",
+        "help_text": "Displays on the order complete page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 52,
+    "fields": {
+        "key": "order_docs_info",
+        "body": "<p>\r\n                    Documents related to this order are available for download below.\r\n                </p>",
+        "help_text": "Basic order docs info block. displays on the order complete page.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 53,
+    "fields": {
+        "key": "order_com_contact",
+        "body": "<h2>Contact Details</h2>\r\n                <p>Contact information for the initiatives that own the packages you have\r\n                    signed up for are available below.</p>",
+        "help_text": "Displays on the order complete page.",
+        "rich_text": true
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 54,
+    "fields": {
+        "key": "order_approval",
+        "body": "Approval Information",
+        "help_text": "Displays on the order complete page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 55,
+    "fields": {
+        "key": "completed_order",
+        "body": "Completed Order",
+        "help_text": "Header for the order complete page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 56,
+    "fields": {
+        "key": "collection_collectiv",
+        "body": "Collectives and Collections",
+        "help_text": "Appears on the package list page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 57,
+    "fields": {
+        "key": "providers",
+        "body": "Publishers and Service Providers",
+        "help_text": "Appears on the package list page.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 58,
+    "fields": {
+        "key": "membership_offers",
+        "body": "Membership Offer Information",
+        "help_text": "Appears on the package page, header.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 59,
+    "fields": {
+        "key": "standards_info",
+        "body": "<p>Listed below are the standard to which the packages included in this collective adhere.</p>",
+        "help_text": "Appears on the package info page.",
+        "rich_text": true
+    }
+}
+]

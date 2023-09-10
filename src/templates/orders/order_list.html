@@ -1,0 +1,105 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Order Management{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Order Management</h1>
+                    <p class="lead">Add list orders that have been generated.</p>
+                    <form method="GET">
+                        <label>New</label>
+                        <input type="checkbox" name="filter" value="new"{% if 'new' in filters %} checked{% endif %}>&nbsp;
+                        <label>Provisional</label>
+                        <input type="checkbox" name="filter" value="provisional"{% if 'provisional' in filters %}
+                               checked{% endif %}>&nbsp;
+                        <label>Complete</label>
+                        <input type="checkbox" name="filter" value="complete"{% if 'complete' in filters %}
+                               checked{% endif %}>&nbsp;
+                        <label>Lapsed</label>
+                        <input type="checkbox" name="filter" value="lapsed"{% if 'lapsed' in filters %}
+                               checked{% endif %}>
+                        <button class="btn btn-primary btn-sm">Filter</button>
+                    </form>
+                    <p>
+                        <a href="{% url 'order_create' %}" class="btn btn-primary btn-sm"> Add New Order</a>
+                    </p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table" id="orders">
+                            <thead>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Packages</th>
+                                <th>View</th>
+                                <th>Edit</th>
+                                {% if not initiative %}
+                                <th>Delete</th>
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.pk }}</td>
+                                    <td>{% if not order.associated_user %}
+                                        {{ order.email_address }}
+                                        {% elif order.associated_user.profile.institution %}
+                                        {{ order.associated_user.profile.institution.institution_name }}
+                                        ({{ order.associated_user.profile.full_name }})
+                                    {% else %}
+                                        {{ order.associated_user.profile.full_name }}
+                                    {% endif %}
+                                    </td>
+                                    <td>{{ order.order_date }}</td>
+                                    <td>{{ order.get_status_display }}</td>
+                                    <td>{{ order.package_set|length }}</td>
+                                    <td>
+                                        {% if initiative %}
+                                            <a href="{% url 'initiative_order_detail' initiative.pk order.pk %}"
+                                           class="btn btn-primary btn-sm">View</a>
+                                        {% else %}
+                                            <a href="{% url 'order_detail' order.pk %}"
+                                               class="btn btn-primary btn-sm">View</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if initiative %}
+                                            <a href="{% url 'initiative_order_edit' initiative.pk order.pk %}"
+                                           class="btn btn-warning btn-sm">Edit</a>
+                                        {% else %}
+                                        <a href="{% url 'order_edit' order.pk %}"
+                                           class="btn btn-warning btn-sm">Edit</a>
+                                        {% endif %}
+                                    </td>
+                                    {% if not initiative %}
+                                    <td>
+                                        <button name="delete" value="{{ order.pk }}"
+                                                class="btn btn-danger btn-sm delete">Delete
+                                        </button>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='orders' %}
+{% endblock dashboard_js %}

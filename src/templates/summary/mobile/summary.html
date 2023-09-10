@@ -1,0 +1,36 @@
+{% load static %}
+<div class="row catalogue-main catalogue-main-mobile">
+    <div class="col">
+        <div class="pill-row">
+            {% include "summary/buttons.html" with active="summary" %}
+        </div>
+    </div>
+</div>
+<div class="row catalogue-main catalogue-main-mobile">
+    <div class="col">
+        <div class="larger-package-styled-text">
+            {{ initiative.description|safe }}
+        </div>
+        {% if request.site.enable_standards %}
+            <h3 class="text-left">Standards</h3>
+            {% get_site_text 'standards_info' %}
+            <ul>
+                {% for standard in package.standards %}
+                    <li><a target="_blank"
+                           href="{{ standard.details_url }}">{{ standard.standard.standard_name }}</a></li>
+                    {% empty %}
+                    <li>This package adheres to none of our standards.</li>
+                {% endfor %}
+                {% if package.attestationhistory_set.all %}
+                    <li><a href="#" data-toggle="modal" data-target="#history_modal">View attestation history</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {% include "summary/sidebar.html" %}
+    </div>
+</div>

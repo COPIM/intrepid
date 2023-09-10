@@ -1,0 +1,93 @@
+{% extends "base/frontend/base_header_overlap.html" %}
+{% load static %}
+
+{% block title %}
+News
+{% endblock title %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col pull-left">
+            <h1>News</h1>
+        </div>
+        <div class="col-3"><img src="{% static "frontend/img/home_publishers.svg" %}" alt="Open Book Collective"
+                                                  class="img-fluid img-right news-image"/></div>
+    </div>
+
+    <div class="row news-info-row">
+        <div class="col-1"></div>
+        <div class="col pull-left white-text">
+            <p class="subhead">Updates from the Open Book Collective.</p>
+        </div>
+        <div class="col-3"></div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row pill-row">
+        <div class="col-3">
+            <ul class="side-menu">
+                {% include "base/frontend/fixed_nav.html" %}
+            </ul>
+        </div>
+
+        <div class="col-9 text-center news-col">
+           <div class="row news-cards">
+                {% for news_item in news_items %}
+                    <div class="col-4 news-item">
+                    <a href="{% url 'news_item' news_item.update_item.pk %}">
+                        <div class="card">
+                            <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                            <div class="card-body">
+                                <p class="small-date">{{ news_item.update_item.created }}</p>
+                                <p class="card-text">{{ news_item.update_item.title }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock body %}
+
+{% block body-mobile %}
+    <div class="row login-row-header-mobile">
+        <div class="col-12 who-we-are-header-mobile">
+            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="News" class="img-fluid"/><br/>
+            <h1>{% trans "News" %}</h1>
+        </div>
+
+    </div>
+
+    <div class="row white-background blue-text">
+        <div class="col">
+           <p>Updates from the Open Book Collective.</p>
+        </div>
+    </div>
+
+     <div class="news-mobile">
+        <h1>News</h1>
+        {% for news_item in news_items %}
+            <div class="row news-cards">
+                <div class="col news-item">
+                <a href="{% url 'news_item' news_item.update_item.pk %}">
+                    <div class="card">
+                        <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                        <div class="card-body">
+                            <p class="small-date-mobile">{{ news_item.update_item.created }}</p>
+                            <p class="card-text">{{ news_item.update_item.title }}</p>
+                        </div>
+                    </div>
+                </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body-mobile %}

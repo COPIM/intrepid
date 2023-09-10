@@ -1,0 +1,27 @@
+{% extends "base/admin_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if processor %}Edit Payment Processor{% else %}Add New Payment Processor{% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_payment_processors' %}">Payment Processors</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% if processor %}Edit Payment Processor{% else %}Add New Payment Processor{% endif %}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{% if processor %}Edit Payment Processor{% else %}Add New Payment Processor{% endif %}</h1>
+                    <p>Hold control (ctrl) to select multiple managers and countries.</p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

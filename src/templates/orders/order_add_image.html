@@ -1,0 +1,32 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Add Package to Order {{ order.order_number }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'order_list' %}">Order Management</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a
+            href="{% url 'order_detail' order.pk %}">Order {{ order.order_number }}</a></li>
+    <li class="breadcrumb-item active">Add Package</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Add Image to Order {{ order.order_number }}</h1>
+                    <p class="lead">Add a private image to this order.</p>
+                </div>
+                <div class="col-md-12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary">Upload Image</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+

@@ -1,0 +1,67 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='initiatives' %}
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Initiative Packages</h1>
+            <p class="lead">Packages owned by {{ initiative.name }}</p>
+            <a href="{% url 'start_package' initiative.pk %}" class="btn btn-success">
+                <i class="fa fa-plus"> </i> Add New Package
+            </a>
+
+            <br/> <br/>
+
+            <table class="table table-striped" id="initiatives">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Active</th>
+                        <th>Edit</th>
+                        <th>Bandings</th>
+                        <th>Data Fields</th>
+                        <th>Documents</th>
+                        <th>Contacts</th>
+                        <th>Standards</th>
+                        <th>Access Control</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for package in packages %}
+                    <tr>
+                        <td>{{ package.name }}</td>
+                        <td>{{ package.active_display }}</td>
+                        <td><a href="{% url 'manage_package' initiative.pk package.pk %}">Edit Package</a></td>
+                        <td><a href="{% url 'package_bandings' package.pk initiative.pk %}">Bandings</a></td>
+                        <td><a href="{% url 'package_data' package.pk initiative.pk %}">Data Fields</a></td>
+                        <td>
+                            <a href="{% url 'list_documents' package.pk initiative.pk %}">Documents</a><br>
+                            <a href="{% url 'media_files' package.pk initiative.pk %}">Media Files</a>
+                        </td>
+                        <td><a href="{% url 'package_contacts' package.pk initiative.pk %}">Contacts</a></td>
+                        <td><a href="{% url 'package_standards' package.pk initiative.pk %}">Standards</a></td>
+                        <td><a href="{% url 'package_access_control' package.pk initiative.pk %}">Access Control</a></td>
+                        <td><form method="POST" action="{% url 'delete_package' package.pk initiative.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock content %}

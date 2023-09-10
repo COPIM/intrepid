@@ -1,0 +1,77 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+{% load django_bootstrap5 %}
+
+{% block title %}{% if page %}Edit{% else %}Create{% endif %} {{ page_or_update|capfirst }}{% endblock title %}
+
+{% block breadcrumb %}
+        <li class="breadcrumb-item" aria-current="page"><a
+                href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+        <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
+        <li class="breadcrumb-item" aria-current="page"><a
+                href="{% url 'page_list' initiative.pk page_or_update %}">{{ page_or_update|capfirst }} List</a></li>
+        <li class="breadcrumb-item" aria-current="page">{% if page %}Edit{% else %}
+            Create{% endif %} {{ page.title }}</li>
+    {% endblock breadcrumb %}
+
+{% block dashboard_js %}
+    <script>
+        $( document ).ready(function() {
+            $('#inst_lookup').val('{{ initial_value }}');
+            $('#institution_ROR').val('{{ initial_ror }}');
+        });
+    </script>
+    <script src="{% static "frontend/js/institution-autocomplete.js" %}"></script>
+    <script>
+        activate_autocomplete("{% url 'ror_ajax' %}")
+    </script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">{% if page %}Edit{% else %}
+                    Create{% endif %} {{ page.title }} {{ page_or_update|capfirst }}</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            You can manage the data for your {{ page_or_update }} below. There are two save options
+                            available.
+                        </p>
+                        <ul>
+                            <li>Save - creates a new version of your page but does not make it live.</li>
+                            <li>Save and Make Current Version - creates a new version and also makes it the live version.
+                            </li>
+                        </ul>
+                        {% if page %}
+                        <p>You can control versions, and which of them is live, from the <a
+                                href="{% url 'page_detail' initiative.pk page_or_update page.pk %}">detail</a> page.</p>
+                        {% endif %}
+                        <form enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            {% bootstrap_form page_form %}
+
+                            <label for="inst_lookup" class=" requiredField">
+                                Institution (Optional: targets this update at a specific institution)
+                            </label>
+                            <input class="emailinput form-control" id="inst_lookup" name="inst_lookup"/><input id="institution_ROR" name="institution_ROR" type="hidden" value=""/>
+
+                            {% bootstrap_form version_form %}
+                            <button type="submit" class="btn btn-primary">
+                                Save
+                            </button>
+                            {% if page %}
+                                <button type="submit" name="set_current" class="btn btn-success">
+                                    Save and Make Current Version
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

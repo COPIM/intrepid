@@ -1,0 +1,119 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Saved Searches
+{% endblock title %}
+
+{% block page-title %}
+    Saved Searches
+{% endblock page-title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Saved Searches</a></li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="saved_searches">&nbsp;</span>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col">
+                    <p>These are the searches that you have made previously and saved. You can here re-run these searches or sign up to email alerts.</p>
+                        {% csrf_token %}
+                        <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Search name</th>
+                                        <th>Terms</th>
+                                        <th>Email updates</th>
+                                        <th>Run search</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                            {% for search in searches %}
+                                <tbody>
+                                    <tr>
+                                        <td style="width:33%">{{ search.display_name }}</td>
+                                        <td>{% for item in search.thothsearchelement_set.all %}{% if forloop.first %}{% else %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}{{item}}{% endfor %}</td>
+                                        <td><form method="POST" action="{% url 'toggle_search_email' search.pk %}">{% csrf_token %} {% if not search.email_on_new %}<input type="submit" class="btn btn-warning" name="toggle_email" value="Subscribe for email updates"/>{% else %}<input type="submit" class="btn btn-warning" name="toggle_email" value="Unsubscribe from email updates"/>{% endif %}</form></td>
+                                        <td><form method="POST" action="{% url 'run_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-success" name="activate" value="Run this search"/></form></td>
+                                        <td><form method="POST" action="{% url 'delete_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Search"/></form></td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                        <input type="submit" class="btn btn-success" value="Save to Profile">
+                </div>
+            </div>
+
+      <div class="row" style="margin-top: 50px;">
+          <div class="col">
+              <h2>Thoth Feed</h2>
+              <p>These are the books matched by all of the above searches</p>
+              <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Authors</th>
+                            <th>Book Name</th>
+                            <th>Publisher</th>
+                            <th>Date</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                {% for work in works %}
+                    <tbody>
+                        <tr>
+                            <td style="width:33%">{% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}</td>
+                            <td>{{ work.full_title }}</td>
+                            <td>{{ work.publisher }}</td>
+                            <td>{{ work.published_date }}</td>
+                            <td><a href="{% url 'book' work.pk %}">Catalogue record</a></td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+          </div>
+      </div>
+
+      {% if institutional_updates %}
+       <div class="row" style="margin-top: 50px;">
+          <div class="col">
+              <h2>Institutional Updates</h2>
+              <p>These are updates directed specifically at your institution (as set in <a href="{% url 'edit_profile' %}">your profile</a>).</p>
+              <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Update</th>
+                            <th>Initiative</th>
+                            <th>Date</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                {% for page in institutional_updates %}
+                    <tbody>
+                        <tr>
+                            <td style="width:33%">{{ page.title }}</td>
+                            <td>{{ page.initiative }}</td>
+                            <td>{{ page.created|date:"M d, Y" }}</td>
+                            <td><a href="{% url 'news_item' page.pk %}">View update</a></td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+          </div>
+      </div>
+      {% endif %}
+
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

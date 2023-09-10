@@ -1,0 +1,22 @@
+<div class="card collective-card">
+    <div class="card-body">
+        <h5 class="card-title">{{ package.name }}</h5>
+        <div class="row collection-card-content row-spacer">
+            <div class="col-12">
+                {{ package.description|safe|truncatechars_html:350 }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p class="package-styled-text"><i class="fa fa-arrow-right"></i> <a href="{% url 'summary_package_initiative' 'package' package.pk %}">More</a></p>
+            </div>
+            <div class="col-6">
+                {% if meta %}
+                <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">Add</a>
+                {% else %}
+                <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">Add</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

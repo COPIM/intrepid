@@ -1,0 +1,35 @@
+---
+- hosts: all
+  tasks:
+  - name: Create socket directory
+    become: true
+    file:
+      path: /var/www/sockets
+      state: directory
+      owner: www-data
+      group: obc
+      mode: 0775
+  - name: Create media directory
+    become: true
+    file:
+      path: /var/www/media
+      state: directory
+      owner: www-data
+      group: obc
+      mode: 0775
+  - name: Create static directory
+    become: true
+    file:
+      path: /var/www/static
+      state: directory
+      owner: www-data
+      group: obc
+      mode: 0775
+  - name: Create lock directory
+    become: true
+    file:
+      path: /home/obc/lock
+      state: directory
+      owner: obc
+      group: obc
+      mode: 0775

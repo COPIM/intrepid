@@ -1,0 +1,53 @@
+<svg id="Group_4879" data-name="Group 4879" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="160" height="165.831" viewBox="0 0 160 165.831">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path_7025" data-name="Path 7025" d="M80,0,40,23.1V69.283L80,92.377l40-23.094V23.1Z" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_11444" data-name="Rectangle 11444" width="160" height="165.831" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <path id="Path_7031" data-name="Path 7031" d="M0,92.377v46.188l40,23.094,40-23.094V92.377L40,69.283Z" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <path id="Path_7038" data-name="Path 7038" d="M80,92.377v46.188l40,23.094,40-23.094V92.377L120,69.283Z" fill="none"/>
+    </clipPath>
+  </defs>
+  <path id="Path_7019" data-name="Path 7019" d="M80,0,40,23.095V69.283L80,92.377l40-23.094V23.095Z" fill="#e71e85"/>
+  <g id="Group_4870" data-name="Group 4870">
+    <g id="Group_4869" data-name="Group 4869" clip-path="url(#clip-path)">
+      <path id="Path_7020" data-name="Path 7020" d="M111.839,111.349H48.162V94.137a31.838,31.838,0,0,1,63.677,0Z" fill="#702282"/>
+      <path id="Path_7021" data-name="Path 7021" d="M104.938,33.376A12.115,12.115,0,1,1,92.823,21.261a12.115,12.115,0,0,1,12.115,12.115" fill="#262959"/>
+      <path id="Path_7022" data-name="Path 7022" d="M79.276,34.073A12.115,12.115,0,1,1,67.161,21.958,12.115,12.115,0,0,1,79.276,34.073" fill="#262959"/>
+      <path id="Path_7023" data-name="Path 7023" d="M92,24.468a12,12,0,1,1-12-12,12,12,0,0,1,12,12" fill="#262959"/>
+      <path id="Path_7024" data-name="Path 7024" d="M97.775,44.523A17.776,17.776,0,1,1,80,26.748,17.775,17.775,0,0,1,97.775,44.523" fill="#f2decc"/>
+    </g>
+  </g>
+  <g id="Group_4872" data-name="Group 4872">
+    <g id="Group_4871" data-name="Group 4871" clip-path="url(#clip-path-2)">
+      <path id="Path_7026" data-name="Path 7026" d="M93.648,38.793c-6.691,0-6.641-5.424-6.641-12.115H81.533A12.115,12.115,0,0,0,93.648,38.793" fill="#262959"/>
+      <path id="Path_7027" data-name="Path 7027" d="M80,138.564V92.376L40,69.282,0,92.376v46.188l40,23.094Z" fill="#2396d4"/>
+    </g>
+  </g>
+  <g id="Group_4874" data-name="Group 4874">
+    <g id="Group_4873" data-name="Group 4873" clip-path="url(#clip-path-3)">
+      <path id="Path_7028" data-name="Path 7028" d="M68.65,163.414H10.939a2.888,2.888,0,0,1-2.888-2.888v-5.779a31.744,31.744,0,0,1,63.487,0v5.779a2.888,2.888,0,0,1-2.888,2.888" fill="#a3166b"/>
+      <path id="Path_7029" data-name="Path 7029" d="M57.582,105.217A17.788,17.788,0,1,1,39.794,87.43a17.787,17.787,0,0,1,17.788,17.787" fill="#e5bf9e"/>
+      <path id="Path_7030" data-name="Path 7030" d="M22.641,100.571a17.113,17.113,0,0,0,25.1-11.249,17.737,17.737,0,0,0-25.1,11.249" fill="#363d91"/>
+    </g>
+  </g>
+  <g id="Group_4876" data-name="Group 4876">
+    <g id="Group_4875" data-name="Group 4875" clip-path="url(#clip-path-2)">
+      <path id="Path_7032" data-name="Path 7032" d="M160,138.564V92.376L120,69.282,80,92.376v46.188l40,23.094Z" fill="#86c3e0"/>
+      <path id="Path_7033" data-name="Path 7033" d="M143.615,121.211c-6.374,2.035-7.976-3.147-10.011-9.521l-5.214,1.665a12.115,12.115,0,0,0,15.225,7.856" fill="#fff"/>
+      <path id="Path_7034" data-name="Path 7034" d="M97.213,121.506c6.449,1.784,7.847-3.457,9.631-9.906l5.275,1.459a12.114,12.114,0,0,1-14.906,8.447" fill="#fff"/>
+    </g>
+  </g>
+  <g id="Group_4878" data-name="Group 4878">
+    <g id="Group_4877" data-name="Group 4877" clip-path="url(#clip-path-5)">
+      <path id="Path_7035" data-name="Path 7035" d="M150.406,165.831H89.855a1.468,1.468,0,0,1-1.468-1.468V153.09a31.743,31.743,0,0,1,63.486,0v11.273a1.467,1.467,0,0,1-1.467,1.468" fill="#363d91"/>
+      <path id="Path_7036" data-name="Path 7036" d="M137.787,103.227A17.787,17.787,0,1,1,120,85.44a17.787,17.787,0,0,1,17.787,17.787" fill="#af8864"/>
+      <path id="Path_7037" data-name="Path 7037" d="M119.854,85.386c-.006.189-.031.373-.032.563,0-.191-.025-.375-.031-.563a17.664,17.664,0,0,0-17.539,20.452A19.906,19.906,0,0,0,119.822,86.2a19.907,19.907,0,0,0,17.562,19.641,17.663,17.663,0,0,0-17.53-20.451" fill="#fff"/>
+    </g>
+  </g>
+</svg>

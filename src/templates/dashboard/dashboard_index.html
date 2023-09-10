@@ -1,0 +1,338 @@
+{% extends "base/admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block page-title %}
+    Dashboard
+{% endblock page-title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {{ visitors_data|json_script:"visitors_data" }}
+    <script>
+        const visitorsData = JSON.parse(document.getElementById('visitors_data').textContent);
+        console.log(visitorsData)
+        // jvector
+        // map data
+
+
+        var max = 0,
+            min = Number.MAX_VALUE,
+            cc,
+            startColor = [255, 0, 0],
+            endColor = [0, 255, 0],
+            colors = {},
+            hex;
+
+        //find maximum and minimum values
+        for (cc in visitorsData) {
+            if (parseFloat(visitorsData[cc]) > max) {
+                max = parseFloat(visitorsData[cc]);
+            }
+            if (parseFloat(visitorsData[cc]) < min) {
+                min = parseFloat(visitorsData[cc]);
+            }
+        }
+
+        //set colors according to values of GDP
+        for (cc in visitorsData) {
+            if (visitorsData[cc] > 0) {
+                colors[cc] = '#';
+                for (var i = 0; i < 3; i++) {
+                    hex = Math.round(startColor[i]
+                        + (endColor[i]
+                            - startColor[i])
+                        * (visitorsData[cc] / (max - min))).toString(16);
+
+                    if (hex.length == 1) {
+                        hex = '0' + hex;
+                    }
+
+                    colors[cc] += (hex.length == 1 ? '0' : '') + hex;
+                }
+            }
+        }
+
+
+        $('#world-map').vectorMap({
+            map: 'world_en',
+            backgroundColor: 'transparent',
+            colors: colors,
+
+            regionStyle: {
+                initial: {
+                    fill: 'rgba(255, 255, 255, 0.7)',
+                    'fill-opacity': 1,
+                    stroke: 'rgba(0,0,0,.2)',
+                    'stroke-width': 1,
+                    'stroke-opacity': 1
+                }
+            },
+
+            showTooltip: true,
+            series: {
+                regions: [{
+                    values: visitorsData,
+                    scale: ['#ffffff', '#0154ad'],
+                    normalizeFunction: 'polynomial'
+                }]
+            },
+            onLabelShow: function (e, el, code) {
+
+                if (typeof visitorsData[code] !== 'undefined') {
+                    el.html(el.html() + ': ' + visitorsData[code] + ' books')
+                }
+            }
+        })
+    </script>
+
+    {{ graph_data|json_script:"graph_data" }}
+    {{ labels|json_script:"labels" }}
+
+    <script>
+
+        const graphdata = JSON.parse(document.getElementById('graph_data').textContent);
+        const labelsdata = JSON.parse(document.getElementById('labels').textContent);
+
+        /* Chart.js Charts */
+        // Sales chart
+        var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
+        // $('#revenue-chart').get(0).getContext('2d');
+
+        var salesChartData = {
+            labels: labelsdata,
+            datasets: graphdata
+        }
+
+        var salesChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            }
+        }
+
+        // This will get the first returned node in the jQuery collection.
+        // eslint-disable-next-line no-unused-vars
+        var salesChart = new Chart(salesChartCanvas, { // lgtm[js/unused-local-variable]
+            type: 'line',
+            data: salesChartData,
+            options: salesChartOptions
+        })
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'basket_list' %}">
+                        <div class="small-box bg-pink">
+                            <div class="inner">
+                                <h3>{{ request.active_baskets.count }} Quotes</h3>
+
+                                <p>View Quotes in Progress</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-document"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'all_books' %}">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{ book_count }}</h3>
+
+                                <p>Books in Packages at OBC</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- ./col -->
+                <div class="col">
+                    {% if  request.user.profile.institution %}
+                        <a href="{% url 'books_by_ror' request.user.profile.institution.pk %}">
+                    {% endif %}
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{ institution_books }}</h3>
+
+                            <p>Authors from Your Institution</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+                    {% if  request.user.profile.institution %}
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- ./col -->
+                <div class="col">
+                    <a href="{% url 'documents' %}">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{ pub_count }}</h3>
+
+                                <p>Funded Presses at OBC</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- ./col -->
+
+                <div class="col">
+                    <a href="{% url 'documents' %}">
+                        <!-- small box -->
+                        <div class="small-box bg-primary">
+                            <div class="inner">
+                                <h3>{{ index_count }}</h3>
+
+                                <p>Books Indexed</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- ./col -->
+
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <section class="col-lg-7 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Books Published by OBC Presses
+                            </h3>
+                            <div class="card-tools">
+                            </div>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <!-- Morris chart - Sales -->
+                                <div class="chart tab-pane active" id="revenue-chart"
+                                     style="position: relative; height: 300px;">
+                                    <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
+                                </div>
+                                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
+                                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </section>
+
+                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                <section class="col-lg-5 connectedSortable">
+
+                    <!-- Map card -->
+                    <div class="card bg-gradient-primary">
+                        <div class="card-header border-0">
+                            <h3 class="card-title">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                Book Authorship Map
+                            </h3>
+                            <!-- card tools -->
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse"
+                                        title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <div class="card-body">
+                            <div id="world-map" style="height: 250px; width: 100%;"></div>
+                        </div>
+                        <!-- /.card-body-->
+                        <div class="card-footer bg-transparent">
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <div class="text-white">&nbsp;</div>
+                                </div>
+                                <!-- ./col -->
+                                <div class="col-4 text-center">
+                                    <div class="text-white">&nbsp;</div>
+                                </div>
+                                <!-- ./col -->
+                                <div class="col-4 text-center">
+                                    <div class="text-white">&nbsp;</div>
+                                </div>
+                                <!-- ./col -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <!-- right col -->
+            </div>
+            <!-- /.row (main row) -->
+            {% if request.payment_processors %}
+            <div class="row">
+                <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>Payment Processors</h3>
+                                <ul>
+                                    {% for processor in request.payment_processors %}
+                                    <li><a class="white-link-text" href="{% url 'list_order_invoices' processor.pk %}">{{ processor.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            {% endif %}
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+{% endblock %}

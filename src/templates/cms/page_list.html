@@ -1,0 +1,76 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+{{ page_or_update|capfirst }} List
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ page_or_update|capfirst }}</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+   {% include 'elements/sortable.html' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <section class="content">
+      <div class="container-fluid">
+            <h1>{{ page_or_update|capfirst }} List</h1>
+            <p class="lead">A list of {{ page_or_update }}s for {{ initiative.name }}.</p>
+            {% if page_or_update == 'page' %}
+                <p>In order to preserve the layout on the landing page, initiatives should have either 1 page, 2 pages, or 5 pages</p>
+            {% endif %}
+            <a href="{% url 'page_create' initiative.pk page_or_update %}" class="btn btn-success">
+                <i class="fa fa-plus"> </i> Add New {{ page_or_update|capfirst }}
+            </a>
+
+        <br /> <br />
+            <form method="POST">
+            <table class="table table-striped" id="initiatives">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Created</th>
+                        <th>Last Updated By</th>
+                        <th>Display</th>
+                        <th>Detail</th>
+                        <th>Edit</th>
+                        <th>Preview</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="sortable">
+                {% for obj in objects %}
+                    <tr id="initiative_page-{{ obj.pk }}">
+                        <td><i class="fas fa-sort"></i></td>
+                        <td>{{ obj.title }}</td>
+                        <td>{{ obj.created }}</td>
+                        <td>{{ obj.updated_by.profile.full_name }}</td>
+                        <td>{{ obj.display }}</td>
+                        <td><a href="{% url 'page_detail' initiative.pk page_or_update obj.pk %}">{{ page_or_update|capfirst }} Detail</a></td>
+                        <td><a href="{% url 'page_edit' initiative.pk page_or_update obj.pk %}">Edit {{ page_or_update|capfirst }}</a></td>
+                        <td>{% if obj.current_version %}
+                            <a href="{% url 'view_current_version' initiative.pk page_or_update obj.pk %}" target="_blank">
+                         View Current Version
+                    </a>{% endif %}
+                        </td>
+                        <td><a class="delete" href="{% url 'page_delete' initiative.pk page_or_update obj.pk %}">Delete {{ page_or_update|capfirst }}</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                    <td colspan="100">
+                        No {{ page_or_update }}s. <a href="{% url 'page_create' initiative.pk page_or_update %}">Create a new one.</a>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </form>
+      </div>
+
+    </section>
+{% endblock content %}
+

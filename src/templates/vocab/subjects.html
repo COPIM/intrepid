@@ -1,0 +1,57 @@
+{% extends "base/admin_base.html" %}
+{% load booleans %}
+
+{% block title %}Manage Subject Vocabs{% endblock %}
+{% block page-title %}Manage Subject Vocabs{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Subject Vocabs</li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='vocabs' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="subjects">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                {{ request.site_name }} subject list. Initiatives can pick one or more subjects for their packages.
+            </p>
+            <p>
+                <a class="btn btn-success" href="{% url 'new_subject' %}?return={{ request.path|urlencode }}">Add new
+                    subject</a>
+            </p>
+            <table class="table-striped table" id="vocabs">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subject in subjects %}
+                    <tr>
+                        <td>{{ subject.name }}</td>
+                        <td><a href="{% url 'edit_subject' subject.pk %}" class="btn btn-sm btn-warning">Edit</a></td>
+                        <td>
+                            <form method="POST">{% csrf_token %}
+                                <button name="delete" value="{{ subject.pk }}" class="btn btn-sm btn-danger">Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends "base/admin_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Order {{ order.order_number }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'order_list' %}">Order Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% if order %}Order {{ order.order_number }}{% else %}Create New Order{% endif %}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{% if order %}Order {{ order.order_number }}{% else %}Create New Order{% endif %}</h1>
+                    <p class="lead">Note: Creating new orders may cause contractual liabilities and so forth that are not covered if an institution does not, themselves, agree to the terms. </p>
+                </div>
+                <div class="col-md-12">
+                    {% crispy form %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block dashboard_js %}
+    {% include "elements/select_2_includes.html" with target="#id_associated_user" %}
+{% endblock %}

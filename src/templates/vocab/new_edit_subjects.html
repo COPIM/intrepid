@@ -1,0 +1,38 @@
+{% extends "base/admin_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Manage Subject Vocabs{% endblock %}
+{% block page-title %}Manage Subject Vocabs{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">Manage Subject Vocabs</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">
+        {% if subject %}Edit Subject {{ subject.pk }}{% else %}Add New Subject{% endif %}
+    </a></li>
+{% endblock %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="subjects">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                {% if subject %}Edit Subject {{ subject.pk }}{% else %}Add New Subject{% endif %}
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

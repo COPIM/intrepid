@@ -1,0 +1,186 @@
+{% extends "base/frontend/base_header_overlap_grey.html" %}
+{% load static %}
+
+{% block js %}
+    <script src="{% static "frontend/js/equalize-height.js" %}"></script>
+    <script src="{% static "frontend/js/catalogue.js" %}"></script>
+{% endblock js %}
+
+{% block title %}
+Books
+{% endblock title %}
+
+<!-- desktop -->
+{% block header %}
+    <div class="row text-left">
+        <div class="col-1"></div>
+        <div class="col text-left">
+            <h1 class="text-left">Build an Advanced Search</h1>
+            <p class="subhead-no-offset">The collective catalogue displays books that are in the Thoth system and that are supported by the work and funding model of the Open Book Collective.</p>
+        </div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/></div>
+        <div class="col-1"></div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row catalogue-main">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <h4>Add to Search</h4>
+                <input class="form-control" type="text" name="search" id="search" placeholder="Search"/> <select class="form-control" name="type_of_search" id="type_of_search"><option value="FT">Free text</option><option value="KW">Keyword</option><option value="IT">Institution</option><option value="AU">Author</option></select> <input class="form-control" type="submit" value="Add search"/>
+                <p>Note: to search for author names, place your query in quotation marks to match a full name</p>
+            </form>
+        </div>
+
+        <div class="col">
+            <h4>Search Configuration</h4>
+            <table style="width:100%">
+                <tr><th>Type</th><th>Value</th><th>Remove</th></tr>
+                {% for element in search_elements %}
+                    <tr>
+                        <td>{{ element.get_search_type_display }}</td>
+                        <td>{{ element.text_content }}</td>
+                        <td><form method="post">{% csrf_token %}<input class="form-control" type="hidden" name="to_del" id="to_del" value="{{ element.pk }}"/><input class="form-control" type="submit" value="Delete" id="Delete" name="Delete"/></form></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                {% if request.user.is_authenticated %}
+                    {% csrf_token %}<input class="form-control" type="text" name="search_name" id="search_name" placeholder="Search name to save"/><input type="submit" class="form-control" name="save" value="Save this search">
+                    <input type="submit" class="form-control" name="reset" value="Reset search">
+                {% endif %}
+            <input type="submit" class="form-control" name="delete_all" value="Delete all terms from this search">
+            {% if request.user.is_authenticated %}
+                <p><a href="{% url 'saved_searches' %}">Manage your searches</a></p>
+            {% endif %}
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row catalogue-main">
+        {% for work in works %}
+            <div class="col-4 row-eq-height book-item-row">
+                <a class="book-item-link" href="{% url 'book' work.pk %}">
+                    <div class="row book-item row-eq-height">
+                        <div class="col-4">
+                                {% if work.cover_url %}
+                                    <img class="img-fluid book-cover-catalogue" src="{{ work.cover_url }}" alt="{{ work }}"/>
+                                {% else %}
+                                    <img class="img-fluid book-cover-catalogue" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h3 class="publisher">{{ work.publisher }}</h3>
+                            <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">
+                                {% for contribution in work.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination row">
+        <div class="col">
+            <span class="step-links">
+                {% if works.has_previous %}<a href="?page=1" class="left-pill-paginator">&laquo; first</a><a href="?page={{ page_obj.previous_page_number }}" class="mid-pill-paginator">previous</a>{% endif %}{% if works.has_next %}<a href="?page={{ works.next_page_number }}" class="mid-pill-paginator">next</a><a href="?page={{ works.paginator.num_pages }}" class="right-pill-paginator">last &raquo;</a>{% endif %}
+            </span>
+
+            <span class="current">
+                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+            </span>
+        </div>
+    </div>
+{% endblock body %}
+
+{% block header-mobile %}
+    <div class="row catalogue-header-mobile">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/>
+            <h1>Collective Catalogue</h1>
+            <p>
+                {% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
+            </p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-info-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p>This is the collective catalogue, showcasing publications from presses at the Open Book Collective.</p>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="catalogue-filter-row-mobile row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                Filters
+              </button>
+              <div class="dropdown-menu catalogue-filters-mobile" aria-labelledby="dropdownMenuButton">
+                <form method="get">
+                    <input class="search-box" type="text" id="search-mobile" name="search" placeholder="Search Title, Author"/><br/>
+                    <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
+                        <option>Date Newest</option>
+                        <option>Date Oldest</option>
+                    </select>
+                </form>
+              </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+
+    <div class="row catalogue-main-mobile">
+        {% for work in works %}
+            <div class="col-12  book-item-row-mobile">
+                <a class="book-item-link" href="{% url 'book' work.pk %}">
+                    <div class="row book-item book-item-mobile ">
+                        <div class="col-4">
+                                {% if work.cover_url %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{{ work.cover_url }}" alt="{{ work }}"/>
+                                {% else %}
+                                    <img class="img-fluid book-cover-catalogue-mobile" src="{% static 'img/cover-placeholder.jpg' %}" alt="{{ work }}"/>
+                                {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h3 class="publisher">{{ work.publisher }}</h3>
+                            <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">
+                                {% for contribution in work.contribution_set.all %}
+                                    <span>{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% if not forloop.first %}{% if forloop.last %}, and {% else %}, {% endif %}{% endif %}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+     <div class="pagination-mobile row">
+        <div class="col">
+            <span class="step-links">
+                {% if works.has_previous %}<a href="?page=1">first</a> | <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% endif %}
+                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">next</a> | <a href="?page={{ works.paginator.num_pages }}">last</a>{% endif %}
+            </span>
+
+            <span class="current">
+                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+            </span>
+        </div>
+    </div>
+{% endblock %}

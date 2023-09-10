@@ -1,0 +1,39 @@
+.table-wrap {
+    display: block;
+    max-width: 100%;
+}
+
+.table-wrap table {
+    border: 1px solid var(--obc-blue);
+    border-radius: 4px 4px 0px 0px;
+    font-family: rubrik-edge-new;
+    color: var(--obc-blue);
+}
+
+.table-wrap table > tbody > tr:first-child > td {
+    background: var(--obc-blue) 0% 0% no-repeat padding-box;
+    color: white;
+    padding: .75rem;
+    vertical-align: top;
+    font-family: rubrik-edge-new;
+    font-size: 16px;
+    font-weight: 700
+}
+
+.table-wrap table > tbody > tr:first-child > td {
+    padding-top: 40px;
+}
+
+.table-wrap table > tbody {
+    display: inline-table;
+    width: 100%;
+}
+
+.table-wrap table tr:not(:nth-child(-1n+2)) > td {
+    border-top: 1px dashed #151462;
+    background-color: white;
+}
+
+.table-wrap td {
+    padding: .75rem;
+}

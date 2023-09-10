@@ -1,0 +1,22 @@
+- name: Add user Martin Eve
+  hosts: all
+  tasks:
+    - name: Add user Martin Eve
+      become: true
+      user:
+        name: martin
+        state: present
+        shell: /bin/bash       # Defaults to /bin/bash
+        system: no             # Defaults to no
+        createhome: yes        # Defaults to yes
+
+- name: Add key for user Martin Eve
+  hosts: all
+  tasks:
+    - name: Add user key for Martin Eve
+      become: true
+      authorized_key:
+        user: martin
+        key: '{{ item }}'
+      with_file:
+        - /home/martin/.ssh/id_ed25519.pub

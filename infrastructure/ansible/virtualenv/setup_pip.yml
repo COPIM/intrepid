@@ -1,0 +1,15 @@
+- name: Setup pip dependencies
+  hosts: all
+  tasks:
+    - name: Manually create the initial virtualenv
+      become: true
+      become_user: obc
+      command:
+        cmd: virtualenv /home/obc/intrepid-venv
+        creates: "/home/obc/intrepid-venv"
+    - name: Install specified python requirements in intrepid virtualenv
+      become: true
+      become_user: obc
+      pip:
+        requirements: /home/obc/intrepid/requirements.txt
+        virtualenv: /home/obc/intrepid-venv

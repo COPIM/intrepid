@@ -1,0 +1,19 @@
+{% load static %}
+
+<div class="card collective-card package-card-mobile">
+    <div class="card-body">
+        <div class="row initiative-row">
+            <div class="col-12 border-bottom-space">
+                <h5 class="card-title"><a href="{% url 'public_initiative' initiative.pk %}">{{ initiative.name }}</a></h5>
+                <span class="package-styled-text">{{ initiative.description|safe|truncatechars_html:250 }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <a href="{% url 'public_initiative' initiative.pk %}">Learn More</a>
+            </div>
+        </div>
+
+    </div>
+</div>

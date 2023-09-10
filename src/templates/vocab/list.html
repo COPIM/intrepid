@@ -1,0 +1,69 @@
+{% extends "base/admin_base.html" %}
+{% load booleans %}
+
+{% block title %}Manage Banding Type Vocabs{% endblock %}
+{% block page-title %}Manage Banding Type Vocabs{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">Banding Types List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Vocabs</li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='vocabs' %}
+    {% include 'elements/sortable.html' %}
+{% endblock dashboard_js %}
+
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="banding_vocabularies">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                Manage Banded Vocabularies
+            </p>
+
+            <p>Drag and drop the vocabs into groups, this way they will appear in the correct order on the front end.</p>
+
+                <table class="table-striped table" id="vocabs">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Text</th>
+                        <th>Lower Limit</th>
+                        <th>Upper Limit</th>
+                        <th>Is FTE?</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="sortable">
+                    {% for vocab in vocabs %}
+                    <tr id=banding_vocabs-{{ vocab.pk }}>
+                        <td><i class="fas fa-sort"></i></td>
+                        <td>{{ vocab.text|safe }}</td>
+                        <td>{{ vocab.lower_limit }}</td>
+                        <td>{{ vocab.upper_limit }}</td>
+                        <td>{% boolean_font_awesome vocab.is_fte %}</td>
+                        <td><form method="POST" action="{% url 'vocab_delete' vocab.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        <td><a href="{% url 'vocab_edit' vocab.pk %}?return={{ request.path|urlencode }}" class="btn btn-success">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            <form method="POST">
+                {% csrf_token %}
+                <p>
+                    <a class="btn btn-success" href="{% url 'vocab_new' %}?return={{ request.path|urlencode }}">Add new vocab</a>
+                </p>
+            </form>
+
+        </div>
+    </section>
+{% endblock content %}

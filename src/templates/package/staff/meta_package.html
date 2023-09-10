@@ -1,0 +1,26 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 crispy_forms_tags %}
+{% block title %}{% if package %}Manage Meta Package{% else %}Create New Meta Package{% endif %}{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/select_2_includes.html" with target="#id_contact" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_meta_packages' %}">Meta Packages</a></li>
+    <li class="breadcrumb-item" aria-current="page">{% if package %}Manage Meta Package{% else %}Create New Meta Package{% endif %}</li>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% if package %}Manage Meta Package{% else %}Create New Meta Package{% endif %}</h1>
+                <p class="lead">Meta Packages are a group of other packages that a library can subscribe to.</p>
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

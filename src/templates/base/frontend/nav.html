@@ -1,0 +1,116 @@
+{% load static %}
+<div class="row">
+    <div class="col-3">
+        <a class="navbar-logo d-none d-md-block" href="{% url "site_index" %}"><img class="img-fluid"
+                src="{% static 'frontend/img/logo.svg' %}" alt="Open Book Collective"/></a>
+        <!-- upper navigation row -->
+    </div>
+    <div class="col-9">
+        <nav class="navbar-inverse nav-upper d-none d-md-block">
+            <div class="container-fluid">
+                <ul class="flex-md-row nav navbar-upper">
+                    <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> Dashboard</a>
+                    </li>
+                    {% if request.site.enable_your_quotes_link %}
+                    <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> Your Quotes</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </nav>
+
+        <!-- lower navigation row -->
+        <nav class="navbar-inverse nav-lower d-none d-md-block">
+            <div class="container-fluid">
+                <ul class="nav navbar-lower">
+                    <li class="lower-nav-item"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a>
+                    </li>
+                    <li class="lower-nav-item"><a href="{% url "all_books" %}">Catalogue</a>
+                    </li>
+                    <li class="lower-nav-item"><a href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<!-- responsive version -->
+<a class="navbar-logo-responsive d-sm-block d-xs-block d-md-none" href="#"><img src="{% static 'frontend/img/logo.svg' %}"
+                                                                                alt="Open Book Collective" /></a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-sm-block d-xs-block d-md-none">
+  <a class="navbar-brand" href="{% url "site_index" %}"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="navbar-nav mr-auto">
+        <div class="row menu-image">
+            <div class="col">
+                <a href="{% url "site_index" %}"><img class="mobile-menu-image" src="{% static 'frontend/img/footer_logo.png' %}" alt="Open Book Collective"></a>
+            </div>
+        </div>
+        <hr id="first-divider" />
+        <ul>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{% url 'who_we_are' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              What We Stand For
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'who_we_are' %}"><span class="in-caret">&gt;</span> Who We Are</a>
+                <a class="dropdown-item" href="{% url 'sitewide_news' %}"><span class="in-caret">&gt;</span> News</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'values' %}"><span class="in-caret">&gt;</span> What We Stand For</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'why_support_oa' %}"><span class="in-caret">&gt;</span> Why Support OA</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'governance' %}"><span class="in-caret">&gt;</span> Governance</a>
+            </div>
+        </li>
+
+        <hr/>
+
+        {% if initiative %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="initDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ initiative.name }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="initDropdown">
+                {% for page in additional_nav %}
+                    <a class="dropdown-item" href="{% url 'public_initiative_page' initiative.pk page.pk %}"><span class="in-caret">&gt;</span>
+                        {{ page.title }}</a>
+                {% endfor %}
+            </div>
+        </li>
+
+        <hr/>
+        {% endif %}
+
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url "all_books" %}">Catalogue</a>
+        </li>
+
+        <hr/>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' %}</a>
+        </li>
+
+        <hr/>
+
+        <li class="nav-item">
+            <a class="nav-link nav-small" href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> Dashboard</a>
+        </li>
+
+        <hr/>
+        {% if request.site.enable_your_quotes_link %}
+        <li class="nav-item">
+            <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> Your Quotes</a>
+        </li>
+        {% endif %}
+
+        <hr/>
+    </ul>
+  </div>
+</nav>

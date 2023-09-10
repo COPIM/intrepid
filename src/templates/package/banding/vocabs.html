@@ -1,0 +1,65 @@
+{% extends "base/admin_base.html" %}
+{% load booleans %}
+
+{% block title %}Manage Banding Type Vocabs for {{ banding_type.name }}{% endblock %}
+{% block page-title %}Manage Banding Type Vocabs for {{ banding_type.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">Banding Types List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Manage {{ banding_type.name }} Vocabs</li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='vocabs' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="banding_types">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                Select vocabs for this Banding Type. When a Initiative creates packages they will use these as the basis for their Banding/Prices.</br>
+                <b class="alert-warning">Warning: Affiliating new bandings will generate a default price of zero where initiatives have not yet set a price.</b><br/>
+                <b class="alert-danger">Warning: Removing a vocabulary from a band where prices are set will delete those prices.</b>
+            </p>
+            <p>
+                <a class="btn btn-success" href="{% url 'vocab_new' %}?return={{ request.path|urlencode }}">Add a new vocabulary</a>
+            </p>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table-striped table" id="vocabs">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Text</th>
+                        <th>Upper Limit</th>
+                        <th>Lower Limit</th>
+                        <th>Is FTE?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vocab in vocabs %}
+                    <tr>
+                        <td><input type="checkbox" name="vocab" value="{{ vocab.pk }}" {% if vocab in banding_type.vocabs.all %}checked="checked"{% endif %}></td>
+                        <td>{{ vocab.text|safe }}</td>
+                        <td>{{ vocab.lower_limit }}</td>
+                        <td>{{ vocab.upper_limit }}</td>
+                        <td>{% boolean_font_awesome vocab.is_fte %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                <p>
+                    <button class="btn btn-primary">Save Selected Vocabularies to Banding</button>
+                </p>
+            </form>
+
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends "base/admin_base.html" %}
+{% load static two_factor %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Standard Attestation Configuration{% endblock title %}
+
+{% block breadcrumb %}
+        <li class="breadcrumb-item" aria-current="page">Platform Management</li>
+        <li class="breadcrumb-item" aria-current="page">Standard Attestation Configuration</li>
+    {% endblock breadcrumb %}
+
+{% block content %}
+    <!-- this span expands the platform manager tab -->
+    <span id="expand_platform_manager">&nbsp;</span>
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="standards">&nbsp;</span>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="lead">Add a new or edit an existing standard for attestation</p>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                          {{form.standard_name|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                          {{form.text|as_crispy_field}}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <button type="submit" name="set_current" class="btn btn-success">Save Element</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

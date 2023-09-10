@@ -1,0 +1,77 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 invoicing %}
+
+{% block title %}Invoice Management - {{ payment_processor.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Invoice Management - {{ payment_processor.name }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Invoice Management - {{ payment_processor.name }}</h1>
+                    <p>Listed below are the orders that contain a package for which you are listed as one of the payment processors for. You will be able to see the details of the order that relate to you including billing information and agreed pricing.</p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table class="table" id="orders">
+                            <thead>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Invoice Statuses</th>
+                                <th>View</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}
+                                {% order_invoices_processor order as order_signups %}
+                                <tr>
+                                    <td>{{ order.order_number }}</td>
+                                    <td>{% if order.associated_user.profile.institution %}
+                                        {{ order.associated_user.profile.institution.institution_name }}
+                                        ({{ order.associated_user.profile.full_name }})
+                                    {% else %}
+                                        {{ order.associated_user.profile.full_name }}
+                                    {% endif %}
+                                    </td>
+                                    <td>{{ order.order_date }}</td>
+                                    <td>{{ order.get_status_display }}</td>
+                                    <td>
+                                        <table class="table table-borderless table-sm small">
+                                            <tr>
+                                                <th>Package</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                            {% for signup in order_signups %}
+                                                <tr>
+                                                    <td>{{ signup.associated_package.name }}</td>
+                                                    <td>{{ signup.formatted_price }}</td>
+                                                    <td>{{ signup.signupinvoice.last_status_update.get_status_display }} - {{ signup.signupinvoice.last_status_update.date_time|date:"Y-m-d H:i" }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'detail_invoice' payment_processor.pk order.pk %}"
+                                           class="btn btn-primary btn-sm">View Details</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='orders' sort=2 order="desc" %}
+{% endblock dashboard_js %}

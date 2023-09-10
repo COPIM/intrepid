@@ -1,0 +1,60 @@
+{% extends "base/admin_base.html" %}
+{% load booleans %}
+
+{% block title %}Manage Contacts for {{ banding_type.name }}{% endblock %}
+{% block page-title %}Manage Contacts for {{ banding_type.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Contacts</li>
+{% endblock %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='vocabs' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="contacts">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                Select contacts for event types. These contacts will be sent an email when the event occurs.</br>
+                <b class="alert-warning">Warning: Contacts have access to signup data which may be sensitive.</b>
+            </p>
+            <p>
+                <a class="btn btn-success" href="{% url 'create_contact' %}"><i class="fas fa-plus"></i> Add a New Contact</a>
+            </p>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table-striped table" id="vocabs">
+                <thead>
+                    <tr>
+                        <th>Signup Notification</th>
+                        <th>Access Control Notification</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in signup_contacts %}
+                    <tr>
+                        <td><input type="checkbox" name="signup_contact" value="{{ contact.pk }}" {% if contact in package.signup_contacts.all %}checked="checked"{% endif %}></td>
+                        <td><input type="checkbox" name="access_contact" value="{{ contact.pk }}" {% if contact in package.access_contacts.all %}checked="checked"{% endif %}></td>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                <p>
+                    <button class="btn btn-primary">Save Contacts to Package</button>
+                </p>
+            </form>
+
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,56 @@
+{% extends "base/admin_base.html" %}
+
+{% block title %}
+{{ page_or_update|capfirst }} List
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ page_or_update|capfirst }}</li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+   {% include 'elements/sortable.html' %}
+{% endblock dashboard_js %}
+
+{% block content %}
+    <section class="content">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h2>Featured Thoth Titles (<a href="{% url 'featured_book_create' initiative.pk %}">add +</a>)</h2>
+                    <p>Note: these display as three per line, so multiples of three will look best.</p>
+                     <table class="table table-striped" id="initiatives">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>View</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="sortable">
+                {% for obj in featured_books %}
+                    <tr id="featured-book-{{ obj.pk }}">
+                        <td><i class="fas fa-sort"></i></td>
+                        <td>{{ obj.book.full_title }}</td>
+                        <td><a href="{% url 'book' obj.book.pk %}">View book</a></td>
+                        <td><form method="POST" action="{% url 'featured_book_delete' initiative.pk obj.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Featured Title"/></form></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                    <td colspan="100">
+                        No featured books. <a href="{% url 'featured_book_create' initiative.pk %}">Add one.</a>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+

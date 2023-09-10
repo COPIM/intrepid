@@ -1,0 +1,54 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Add Package to Order {{ order.order_number }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'order_list' %}">Order Management</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a
+            href="{% url 'order_detail' order.pk %}">Order {{ order.order_number }}</a></li>
+    <li class="breadcrumb-item active">Add Package</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Add Package to Order {{ order.order_number }}</h1>
+                    <p class="lead">Below are listed all of the packages not currently in this order.</p>
+                </div>
+                <div class="col-md-12">
+                <form method="POST">
+                    {% csrf_token %}
+                    <table class="table" id="packages">
+                        <thead>
+                        <tr>
+                            <th>Package Name</th>
+                            <th>Initiative</th>
+                            <th>Add</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for package in packages %}
+                            <tr>
+                                <td>{{ package.name }}</td>
+                                <td>{{ package.initiative.name }}</td>
+                                <td>
+                                    <button name="add" value="{{ package.pk }}" class="btn btn-success">Add Package
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block dashboard_js %}
+    {% include "elements/datatables.js.html" with target='packages' %}
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base/admin_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Initiatives
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">Signups</a></li>
+{% endblock breadcrumb %}
+
+{% block dashboard_js %}
+{% endblock %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="list_signups">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Signup to {{ signup.associated_package }} by {% if signup.associated_user.profile.institution.institution_name %}{{ signup.associated_user.profile.institution.institution_name }}{% else %}{{ signup.associated_user.profile }}{% endif %}</h1>
+            <p class="lead">Signup Information</p>
+            <small>Warning: This page may contain sensitive personal data subject to GDPR or other data protection legislation.</small></p>
+
+            <table class="table table-striped" id="signups">
+                <thead>
+                    <tr>
+                        <th>Data Field</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for field in signup.stored_answers %}
+                    <tr>
+                        <td>{{ field.order_form_answer.form_element_name }}</td>
+                        <td>{{ field.order_form_answer.answer }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td>Price</td>
+                        <td>{{ signup.formatted_price }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Organisation Approval Status</h2>
+            <p>If the organisation signing up has approved then this means they are not requesting any changes to the package terms and you can go ahead an approve it.</p>
+            <p>
+                {% if signup.organisation_approved %}
+                    <i class="fa fa-check-circle"></i> Approved on:{{ signup.organisation_approved }}.
+                {% else %}
+                    <i class="fa fa-times-circle"></i> Not approved.
+                {% endif %}
+            </p>
+            <h2>Initiative Approval Status</h2>
+            {% if signup.initiative_approved %}
+                <i class="fa fa-check-circle"></i> This signup was approved on: {{ signup.initiative_approved }}.
+            {% else %}
+                <p>This signup has not been approved.</p>
+                <form method="POST">
+                {% csrf_token %}
+                    <button class="btn btn-success" name="approve" value="{{ signup.pk }}">Approve Signup</button>
+                </form>
+            {% endif %}
+            <br />
+
+            {% if signup.associated_order.status == 'provisional' and not signup.organisation_approved %}
+                    <h2>Documents</h2>
+                    <p>You can upload a custom document for the package if the organisation signing up has requested changes to standard terms. This document must incorporate all documents for this agreement as it will override all others.</p>
+                    {% crispy form %}
+                {% endif %}
+        </div>
+    </section>
+{% endblock content %}

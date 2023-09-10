@@ -1,0 +1,33 @@
+{% extends "base/admin_base.html" %}
+{% load django_bootstrap5 crispy_forms_tags %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Access</a></li>
+    <li class="breadcrumb-item" aria-current="page">Change Access</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<span id="active_page" class="list_signups">&nbsp;</span>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Add an Access Control Entry</h1>
+                <p class="lead">Add a new access control instruction.</p>
+                <b class="alert-warning">Warning: These entries cannot be deleted, but they can be reversed by adding the opposite instruction (i.e. revoke).</b>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            {{ form|crispy }}
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tasks:
+  - name: ReStart intrepid gunicorn service
+    become: true
+    ansible.builtin.systemd:
+      name: intrepid.service
+      state: restarted
+      enabled: yes
+      daemon_reload: yes
+  - name: Restart nginx service
+    become: true
+    ansible.builtin.systemd:
+      name: nginx.service
+      state: restarted
+      enabled: yes
+      daemon_reload: yes

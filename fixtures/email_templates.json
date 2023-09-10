@@ -1,0 +1,102 @@
+[
+  {
+    "model": "mail.emailtemplate",
+    "pk": 1,
+    "fields": {
+      "name": "manager_cms_update",
+      "subject": "CMS Update",
+      "body": "<p>Dear {{ platform_manager.profile.full_name }},</p>\r\n\r\n<p>An update has been made to a CMS page on {{ request.site_name }} by {{ initiative.name }}.</p>\r\n\r\n<p>You can see the edits here: </p>\r\n\r\n<p>{{ url }}</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 2,
+    "fields": {
+      "name": "initiative_new_vocab_element",
+      "subject": "A new banding has been added",
+      "body": "<p>This is a message sent to the managers of {{ initiative.name }} on {{ request.site_name }},</p>\r\n\r\n<p>New bandings have been added to {{ request.site_name }}: {% for vocab in new_vocabs %}{{ vocab }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>\r\n\r\n<p>This banding is used by the following packages:</p>\r\n\r\n<ul>{% for package in packages %}<li>{{ package.name }}</li>{% endfor %}</ul>\r\n\r\n<p>Please login and supply a price for this new banding.</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 3,
+    "fields": {
+      "name": "new_signup",
+      "subject": "You have a new signup",
+      "body": "<p>This is a message regarding {{ request.site_name }}.</p>\r\n\r\n<p>A new signup has been created on {{ request.site_name }}. You can login to see its details: {{ url }}.</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 4,
+    "fields": {
+      "name": "package_sign_off",
+      "subject": "A package has been signed off",
+      "body": "<p>Dear {{ recipient.full_name }},</p>\r\n\r\n<p>A package in order {{ order.order_number }} as been signed off. You can see details on the {{ request.site_name }} site: {{ url }}.</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 5,
+    "fields": {
+      "name": "order_complete",
+      "subject": "Order complete",
+      "body": "<p>Dear {{ recipient.profile.full_name }},</p>\r\n\r\n<p>Order {{ order.order_number }} is now complete as all packages have been signed off.</p>\r\n\r\n{% if type == 'initiative' %}<p>If your package has billing managers they will have recieved this message to begin processing billing. If you manage billing yourself you can begin this process.</p>{% endif %}\r\n\r\n{% if type == 'billing_manager' %}<p>Please begin processing invoices for this order.</p>{% endif %}\r\n\r\n{% if type == 'library' %}<p>Package billing managers will now begin processing the order.</p>{% endif %}\r\n\r\n<p>You can find more information on the site: {{ url }}</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 6,
+    "fields": {
+      "name": "new_book",
+      "subject": "Your researchers have published a new book",
+      "body": "<h1>New Book at the Open Book Collective</h1>\r\n<p>We are writing to inform you that a member  of staff at your institution has published a  new book: {}.</p> \r\n<p>You have received this email because you have set your institutional affiliation at the Open Book Collective and have said that you wish to receive book updates.  If this is no longer correct  please update your preferences on the site.</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 7,
+    "fields": {
+      "name": "new_update",
+      "subject": "New Initiative Update",
+      "body": "<p>Dear {{ user.profile.full_name }},</p>\r\n\r\n<p>A new update has been added by {{ page.initiative.name }} on {{ request.site_name }} that is targeted for your institution. You can view the update here:</p>\r\n\r\n<p>{{ page.title }}: {{ url }}</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name}}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 8,
+    "fields": {
+      "name": "new_standard",
+      "subject": "A New Standard is Available",
+      "body": "<p>A new standard, {{ standard.standard_name }}, has been added to {{ request.site_name }}. Information about the standard is available below:</p>\r\n\r\n{{ standard.text|safe }}\r\n\r\n<p>If this is a standard thay your initiative attests to, please login and add it to the relevant packages.</p>\r\n\r\n<p>{{ url }}</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{ request.site_name }}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 9,
+    "fields": {
+      "name": "new_book_notify",
+      "subject": "New Book Notification",
+      "body": "<h1>New Book at the Open Book Collective</h1><p>We are writing to inform you of a new book at the Open Book Collective: {{ work }}.</p><p>You have received this email because you have set your institutional affiliation at the Open Book Collective and have said that you wish to receive book updates. Alternatively, you have a search setup at OBC that has an email subscription set. If this is no longer correct please update your preferences on the site.</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 10,
+    "fields": {
+      "name": "registration",
+      "subject": "Account Registration",
+      "body": "<p>Dear {{user.profile.full_name }},</p>\r\n\r\n<p>Thank you for signing up to {{request.site_name}}. To complete the registration process please click the link below.</p>\r\n\r\n<p>{{url}}</p>\r\n\r\n<p>Regards,</p>\r\n<p>{{request.site_name}}</p>"
+    }
+  },
+  {
+    "model": "mail.emailtemplate",
+    "pk": 10,
+    "fields": {
+      "name": "platform_new_order",
+      "subject": "New Order Created",
+      "body": "<p>This is an email from the Open Book Collective system.</p><p>A new order has been created with id {{ order.pk }}. See detail here: {{ url }}.</p><p>{{request.site_name}}</p>"
+    }
+  }
+
+]

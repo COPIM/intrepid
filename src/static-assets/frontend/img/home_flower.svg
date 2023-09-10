@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="204.502" height="204.502" viewBox="0 0 204.502 204.502">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_11077" data-name="Rectangle 11077" width="204.502" height="204.502" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4069" data-name="Group 4069" clip-path="url(#clip-path)">
+    <g id="Group_4068" data-name="Group 4068" transform="translate(27.708 27.708)">
+      <path id="Intersection_25" data-name="Intersection 25" d="M.826,74.784A64.494,64.494,0,0,1,74.785.826a64.932,64.932,0,0,1,.826,10.346A64.438,64.438,0,0,1,11.173,75.611,64.94,64.94,0,0,1,.826,74.784Z" transform="translate(73.476 1.3)" fill="#e71e85"/>
+      <path id="Intersection_26" data-name="Intersection 26" d="M0,11.173A64.93,64.93,0,0,1,.826.826,64.493,64.493,0,0,1,75.611,64.438a64.915,64.915,0,0,1-.826,10.347,64.934,64.934,0,0,1-10.347.826A64.438,64.438,0,0,1,0,11.173Z" transform="translate(1.299)" fill="#2396d4"/>
+      <path id="Intersection_27" data-name="Intersection 27" d="M.826,74.784A64.493,64.493,0,0,1,74.783.826a64.946,64.946,0,0,1,.826,10.347A64.438,64.438,0,0,1,11.172,75.611,64.924,64.924,0,0,1,.826,74.784Z" transform="translate(0 72.177)" fill="#86c3e0"/>
+      <path id="Intersection_28" data-name="Intersection 28" d="M0,11.173A64.944,64.944,0,0,1,.826.826,64.493,64.493,0,0,1,75.611,64.439a64.933,64.933,0,0,1-.826,10.346,64.93,64.93,0,0,1-10.346.826A64.438,64.438,0,0,1,0,11.173Z" transform="translate(72.176 73.476)" fill="#f577c3"/>
+      <ellipse id="Ellipse_1244" data-name="Ellipse 1244" cx="16.278" cy="16.278" rx="16.278" ry="16.278" transform="translate(58.586 59.361)" fill="#fff"/>
+      <line id="Line_15185" data-name="Line 15185" y2="81.064" transform="translate(74.719 86.073)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="6"/>
+      <ellipse id="Ellipse_1245" data-name="Ellipse 1245" cx="16.029" cy="16.029" rx="16.029" ry="16.029" transform="translate(58.69 61.604)" fill="#e71e85" stroke="#fff" stroke-width="5"/>
+    </g>
+  </g>
+</svg>

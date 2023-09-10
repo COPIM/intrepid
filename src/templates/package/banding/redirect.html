@@ -1,0 +1,32 @@
+{% extends "base/admin_base.html" %}
+{% load i18n two_factor static crispy_forms_tags %}
+{% load booleans %}
+
+{% block title %}Manage Redirect for {{ banding}}{% endblock %}
+{% block page-title %}Manage Redirect for {{ banding }}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">Banding Types List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Manage {{ banding_type.name }} Redirect</li>
+{% endblock %}
+
+
+{% block content %}
+        <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <p class="lead">
+                This allows you to specify that the user should be directed to an external site (such as the Jisc Collections catalogue page) at the end of the signup. To undo this, simply leave the redirect blank.
+            </p>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input class="form-control" type="submit"/>
+            </form>
+
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,104 @@
+{% extends "base/admin_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+List Documents
+{% endblock title %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' package.initiative.pk %}">{{ package.initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">Media Files</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <!-- this span sets the active page in the menu -->
+    <span id="active_page" class="my_initiatives">&nbsp;</span>
+
+    <section class="content">
+        <div class="container-fluid">
+            <h1>Media Files Affiliated with “{{ package.name }}” ({{ package.initiative.name }})</h1>
+            <p class="lead">Media Files are accessible only to libraries who have subscribed to one of your packages.</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>
+                    <h4>Load New File</h4>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ new_file_form|crispy }}
+                        <button name="upload" class="btn btn-primary">Upload File</button>
+                    </form>
+                    </p>
+                </div>
+            </div>
+
+
+            <table class="table table-striped" id="initiatives">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>View</th>
+                        <th>Date Uploaded</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for file in media_files %}
+                    <tr>
+                        <td>{{ file.name }}</td>
+                        <td><a href="{% url 'download_media_file' package.id package.initiative.id file.id %}">Download File</a></td>
+                        <td>{{ file.date_uploaded }}</td>
+                        <td><form method="POST">{% csrf_token %} <button class="btn btn-danger delete" name="delete" value="{{ file.pk }}">Delete File</button></form></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {% for document in documents %}
+        <div class="modal fade" id="document-{{ document.pk }}" tabindex="-1" aria-labelledby="document-{{ document.pk }}ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="document-{{ document.pk }}ModalLabel">Document #{{ document.pk }} Versions</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Reverting will overwrite the current document details with the verison's.w</p>
+                        <table class="table">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Download</th>
+                                <th>Revert</th>
+                            </tr>
+                            {% for version in document.packagedocumenthistorical_set.all %}
+                                <tr>
+                                    <td>#{{ version.pk }}</td>
+                                    <td>{{ version.name }}</td>
+                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">Download</a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'revert_document_version' package.pk initiative.pk document.pk %}">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">Revert Document to this Version</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="4">No versions recorded for this document.</td></tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
