@@ -217,6 +217,54 @@ Open Book Collective | Who We Are
                 <!-- back to main flow here -->
     {% endif %}
 
+    {% if previous.count > 0 %}
+                <div class="row pill-row">
+                    <div class="col-3"></div>
+                    <div class="col-9 text-center board-of-stewards">
+                        <h2>Previous Board Members</h2><a id="previous"></a>
+                         <div class="row">
+                            {% for sec in previous %}
+                                <div class="col-4">
+                                    <div class="row circle-row">
+                                        <div class="col-12">{% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image" alt="{{ sec.display_name}}" />{% endif %}</div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-12"><p class="person">{{ sec.display_name }}</p>
+                                        <p class="institution">{{ sec.affiliation_line }}{% if sec.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ sec.pk }}">View Biography</a>{% endif %}</p></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.membership_committee_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+    {% endif %}
+
     {% for steward in stewards %}
     {% include "base/frontend/bio_modal.html" with who=steward %}
     {% endfor %}
@@ -231,6 +279,10 @@ Open Book Collective | Who We Are
 
     {% for sec in secretariat %}
     {% include "base/frontend/bio_modal.html" with who=sec %}
+    {% endfor %}
+
+    {% for prev in previous %}
+    {% include "base/frontend/bio_modal.html" with who=prev %}
     {% endfor %}
 
 {% endblock body %}
@@ -281,6 +333,15 @@ Open Book Collective | Who We Are
 
             <h2>Secretariat</h2>
             {% for sec in secretariat %}
+                <div class="person-block-mobile">
+                    {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
+                    <p class="person">{{ sec.display_name }}</p>
+                    <p class="institution">{{ sec.affiliation_line }}</p>
+                </div>
+            {% endfor %}
+
+            <h2>Previous Board Members</h2>
+            {% for sec in previous %}
                 <div class="person-block-mobile">
                     {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
                     <p class="person">{{ sec.display_name }}</p>

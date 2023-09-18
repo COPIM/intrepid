@@ -80,13 +80,17 @@ def who_we_are(request):
     secretariat = cms_models.WhoWeAreProfileItem.objects.filter(
         section="secretariat"
     ).order_by("order")
-    print(secretariat)
+    previous = cms_models.WhoWeAreProfileItem.objects.filter(
+        section="previous"
+    ).order_by("order")
+
     template = "base/frontend/{}".format(template_name)
     context = {
         "stewards": stewards,
         "members": members,
         "managers": managers,
         "secretariat": secretariat,
+        "previous": previous,
     }
     return render(
         request,

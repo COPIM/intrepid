@@ -700,6 +700,9 @@ def who_we_are_config(request) -> HttpResponse:
     secretariat = models.WhoWeAreProfileItem.objects.filter(
         section="secretariat"
     ).order_by("order")
+    previous = models.WhoWeAreProfileItem.objects.filter(
+        section="previous"
+    ).order_by("order")
 
     template = "cms/who_we_are_section_list.html"
     context = {
@@ -707,6 +710,7 @@ def who_we_are_config(request) -> HttpResponse:
         "members": members,
         "managers": managers,
         "secretariat": secretariat,
+        "previous": previous,
         "sort_url": reverse("who_we_are_order"),
     }
     return render(
@@ -809,10 +813,17 @@ def who_we_are_order(request) -> HttpResponse:
     member_ids = extract_ids(request.POST.getlist("members[]"))
     manager_ids = extract_ids(request.POST.getlist("managers[]"))
     secretariat_ids = extract_ids(request.POST.getlist("secretariat[]"))
+    previous_ids = extract_ids(request.POST.getlist("previous[]"))
 
     wwe_items = models.WhoWeAreProfileItem.objects.all()
 
-    item_list = [steward_ids, member_ids, manager_ids, secretariat_ids]
+    item_list = [
+        steward_ids,
+        member_ids,
+        manager_ids,
+        secretariat_ids,
+        previous_ids,
+    ]
 
     for item in item_list:
         if len(item) > 0:

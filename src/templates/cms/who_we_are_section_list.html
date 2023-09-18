@@ -144,6 +144,37 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Previous Board Members</h2>
+                <p><a href="{% url 'add_who_we_are_entry' 'previous' %}" class="btn btn-success">
+                    <i class="fa fa-plus"> </i> Add New Member
+                </a></p>
+                <table class="table table-hover" id="previous">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Affiliation</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody class="sortable">
+                    {% for member in previous %}
+                        <tr id="members-{{ member.id }}">
+                            <td><i class="fas fa-sort"></i></td>
+                            <td>{{ member.display_name }}</td>
+                            <td>{{ member.affiliation_line }}</td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'previous' member.id %}">Edit</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </section>
 {% endblock content %}
