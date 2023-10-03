@@ -5,7 +5,7 @@
   tasks:
   - name: Git checkout
     ansible.builtin.git:
-      repo: 'git@github.com:dqprogramming/intrepid.git'
+      repo: 'git@github.com:COPIM/intrepid.git'
       dest: /home/obc/intrepid
       accept_hostkey: yes
       force: yes
