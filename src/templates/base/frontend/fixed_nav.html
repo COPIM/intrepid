@@ -6,3 +6,4 @@
 <li {% if 'news' in request.path %}class="active"{% endif %}><a href="https://openbookcollective.pubpub.org/news">News</a></li>
 <li {% if 'what' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
 <li {% if 'funding' in request.path %}class="active"{% endif %}><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>
+<li {% if 'supporters' in request.path %}class="active"{% endif %}><a href="https://www.openbookcollective.org/cms/fixed_page/supporters/">Supporters</a></li>
