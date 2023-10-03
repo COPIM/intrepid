@@ -171,7 +171,7 @@ class EmailTemplate(models.Model):
         :param attachments: the email attachments
         :return: the email response
         """
-        if attachments is not None:
+        if attachments is None:
             attachments = []
 
         html = self.render_email(context)
