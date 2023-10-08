@@ -116,11 +116,13 @@ class Work(models.Model):
     work_type = models.CharField(max_length=255, blank=True, null=True)
     full_title = models.TextField(blank=True, null=True)
     doi = models.CharField(max_length=255, blank=True, null=True)
-    cover_url = models.URLField(blank=True, null=True)
+    cover_url = models.URLField(blank=True, null=True, max_length=512)
     cover_caption = models.TextField(blank=True, null=True)
     thoth_id = models.UUIDField()
     thoth_instance = models.URLField(default="https://api.thoth.pub")
-    landing_page = models.URLField(default=None, null=True, blank=True)
+    landing_page = models.URLField(
+        default=None, null=True, blank=True, max_length=512
+    )
     long_abstract = models.TextField(default="")
     short_abstract = models.TextField(default="")
     publisher = models.ForeignKey(
