@@ -14,18 +14,9 @@
             "workId",
             "work { fullTitle }",
             "contributor {firstName lastName fullName orcid __typename website contributorId}"
-        ],
-        "parameters": [
-            "contributionId"
         ]
     },
-    "contributionCount": {
-        "parameters": [
-            "filter",
-            "publishers",
-            "contributionType"
-        ]
-    },
+    "contributionCount": {},
     "contributions": {
         "fields": [
             "contributionId",
@@ -41,14 +32,6 @@
             "workId",
             "work { fullTitle }",
             "contributor {firstName lastName fullName orcid __typename website contributorId}"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "contributionType"
         ]
     },
     "contributor": {
@@ -60,16 +43,9 @@
             "orcid",
             "__typename",
             "contributions { contributionId contributionType work { workId fullTitle} }"
-        ],
-        "parameters": [
-            "contributorId"
         ]
     },
-    "contributorCount": {
-        "parameters": [
-            "filter"
-        ]
-    },
+    "contributorCount": {},
     "contributors": {
         "fields": [
             "contributorId",
@@ -79,12 +55,6 @@
             "orcid",
             "__typename",
             "contributions { contributionId contributionType work { workId fullTitle} }"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order"
         ]
     },
     "institution": {
@@ -92,11 +62,9 @@
             "institutionId",
             "institutionName",
             "institutionDoi",
-            "fundings { grantNumber program projectName projectShortname jurisdiction work institutionId { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "fundings { grantNumber program projectName projectShortname jurisdiction institutionId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "affiliations { affiliationOrdinal position contribution { fullName contributionType mainContribution contributionOrdinal } }",
             "__typename"
-        ],
-        "parameters": [
-            "institutionId"
         ]
     },
     "institutions": {
@@ -109,12 +77,6 @@
             "fundings { grantNumber program projectName projectShortname jurisdiction institutionId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
             "affiliations { affiliationOrdinal position contribution { fullName contributionType mainContribution contributionOrdinal } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order"
         ]
     },
     "funding": {
@@ -130,9 +92,6 @@
             "jurisdiction",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
-        ],
-        "parameters": [
-            "fundingId"
         ]
     },
     "fundingCount": {},
@@ -147,14 +106,8 @@
             "projectName",
             "projectShortname",
             "jurisdiction",
-            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "publishers",
-            "order"
         ]
     },
     "imprint": {
@@ -166,18 +119,10 @@
             "createdAt",
             "publisherId",
             "publisher { publisherName publisherId }",
-            "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "imprintId"
+            "works { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ]
     },
-    "imprintCount": {
-        "parameters": [
-            "filter",
-            "publishers"
-        ]
-    },
+    "imprintCount": {},
     "imprints": {
         "fields": [
             "imprintUrl",
@@ -187,14 +132,7 @@
             "createdAt",
             "publisherId",
             "publisher { publisherName publisherId }",
-            "works { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers"
+            "works { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ]
     },
     "issue": {
@@ -206,9 +144,6 @@
             "createdAt",
             "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "issueId"
         ]
     },
     "issues": {
@@ -220,13 +155,6 @@
             "createdAt",
             "series { seriesId seriesType seriesName imprintId imprint { __typename publisher { publisherName publisherId __typename } }}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers"
         ]
     },
     "issuesCount": {},
@@ -239,17 +167,9 @@
             "createdAt",
             "mainLanguage",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "languageId"
         ]
     },
-    "languageCount": {
-        "parameters": [
-            "languageCodes",
-            "languageRelation"
-        ]
-    },
+    "languageCount": {},
     "languages": {
         "fields": [
             "languageId",
@@ -258,16 +178,7 @@
             "languageRelation",
             "createdAt",
             "mainLanguage",
-            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "languageCodes",
-            "languageRelation"
+            "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ]
     },
     "price": {
@@ -280,34 +191,19 @@
             "createdAt",
             "updatedAt",
             "__typename"
-        ],
-        "parameters": [
-            "priceId"
         ]
     },
-    "priceCount": {
-        "parameters": [
-            "currencyCode"
-        ]
-    },
+    "priceCount": {},
     "prices": {
         "fields": [
             "currencyCode",
             "publicationId",
             "priceId",
             "unitPrice",
-            "publication { work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
+            "publication { work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } } }",
             "createdAt",
             "updatedAt",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "currencyCode"
         ]
     },
     "publication": {
@@ -326,18 +222,9 @@
             "prices { currencyCode unitPrice __typename}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
-        ],
-        "parameters": [
-            "publicationId"
         ]
     },
-    "publicationCount": {
-        "parameters": [
-            "filter",
-            "publishers",
-            "publicationType"
-        ]
-    },
+    "publicationCount": {},
     "publications": {
         "fields": [
             "publicationId",
@@ -350,14 +237,6 @@
             "prices { currencyCode unitPrice __typename}",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "publicationType"
         ]
     },
     "publisher": {
@@ -369,17 +248,9 @@
             "publisherShortname",
             "publisherUrl",
             "__typename"
-        ],
-        "parameters": [
-            "publisherId"
         ]
     },
-    "publisherCount": {
-        "parameters": [
-            "filter",
-            "publishers"
-        ]
-    },
+    "publisherCount": {},
     "publishers": {
         "fields": [
             "imprints { imprintUrl imprintId imprintName __typename}updatedAt",
@@ -389,13 +260,68 @@
             "publisherShortname",
             "publisherUrl",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers"
+        ]
+    },
+    "reference": {
+        "fields": [
+            "referenceId",
+            "workId",
+            "referenceOrdinal",
+            "doi",
+            "unstructuredCitation",
+            "issn",
+            "isbn",
+            "journalTitle",
+            "articleTitle",
+            "seriesTitle",
+            "volumeTitle",
+            "edition",
+            "author",
+            "volume",
+            "issue",
+            "firstPage",
+            "componentNumber",
+            "standardDesignator",
+            "standardsBodyName",
+            "standardsBodyAcronym",
+            "url",
+            "publicationDate",
+            "retrievalDate",
+            "createdAt",
+            "updatedAt",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
+        ]
+    },
+    "references": {
+        "fields": [
+            "referenceId",
+            "workId",
+            "referenceOrdinal",
+            "doi",
+            "unstructuredCitation",
+            "issn",
+            "isbn",
+            "journalTitle",
+            "articleTitle",
+            "seriesTitle",
+            "volumeTitle",
+            "edition",
+            "author",
+            "volume",
+            "issue",
+            "firstPage",
+            "componentNumber",
+            "standardDesignator",
+            "standardsBodyName",
+            "standardsBodyAcronym",
+            "url",
+            "publicationDate",
+            "retrievalDate",
+            "createdAt",
+            "updatedAt",
+            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } imprint { publisher { publisherName publisherId } } }",
+            "__typename"
         ]
     },
     "series": {
@@ -409,18 +335,9 @@
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
             "__typename"
-        ],
-        "parameters": [
-            "seriesId"
         ]
     },
-    "seriesCount": {
-        "parameters": [
-            "filter",
-            "publishers",
-            "seriesType"
-        ]
-    },
+    "seriesCount": {},
     "serieses": {
         "fields": [
             "seriesId",
@@ -432,14 +349,6 @@
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "issues { issueId work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "seriesType"
         ]
     },
     "subject": {
@@ -450,18 +359,10 @@
             "subjectType",
             "subjectOrdinal",
             "createdAt",
-            "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "subjectId"
+            "work { workId fullTitle doi publicationDate place contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution contributionOrdinal } }__typename"
         ]
     },
-    "subjectCount": {
-        "parameters": [
-            "filter",
-            "subjectTypes"
-        ]
-    },
+    "subjectCount": {},
     "subjects": {
         "fields": [
             "subjectId",
@@ -471,14 +372,6 @@
             "subjectOrdinal",
             "createdAt",
             "work { workId fullTitle doi publicationDate place contributions { fullName contributionType mainContribution contributionOrdinal } }__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "subjectTypes"
         ]
     },
     "work": {
@@ -522,9 +415,6 @@
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "__typename"
-        ],
-        "parameters": [
-            "workId"
         ]
     },
     "workByDoi": {
@@ -566,19 +456,9 @@
             "contributions { fullName contributionType mainContribution contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
-        ],
-        "parameters": [
-            "doi"
         ]
     },
-    "workCount": {
-        "parameters": [
-            "filter",
-            "publishers",
-            "workType",
-            "workStatus"
-        ]
-    },
+    "workCount": {},
     "works": {
         "fields": [
             "workType",
@@ -612,27 +492,12 @@
             "coverCaption",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "workType",
-            "workStatus"
         ]
     },
-    "bookCount": {
-        "parameters": [
-            "filter",
-            "publishers",
-            "workStatus"
-        ]
-    },
+    "bookCount": {},
     "books": {
         "fields": [
             "workType",
@@ -666,17 +531,16 @@
             "coverCaption",
             "subjects { subjectId, subjectType, subjectCode, subjectOrdinal, __typename }",
             "publications { isbn publicationType __typename }",
-            "contributions { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
+            "contributions(order: {field: CONTRIBUTION_ORDINAL, direction: ASC}) { fullName contributionType mainContribution affiliations { affiliationId institution { institutionName institutionId ror fundings { institutionId program projectName projectShortname grantNumber jurisdiction } } } contributor { contributorId orcid firstName lastName fullName } contributionId contributionOrdinal __typename }",
             "imprint { __typename publisher { publisherName publisherId __typename } }",
             "__typename"
-        ],
-        "parameters": [
-            "limit",
-            "offset",
-            "filter",
-            "order",
-            "publishers",
-            "workStatus"
         ]
+    },
+    "bookIds": {
+        "fields": [
+            "workId",
+            "__typename"
+        ],
+        "aliasOf": "books"
     }
 }

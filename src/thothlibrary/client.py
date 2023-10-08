@@ -16,7 +16,7 @@ from .mutation import ThothMutation
 from .query import ThothQuery
 
 THOTH_ENDPOINT = "https://api.thoth.pub"
-THOTH_VERSION = "0.8.4"
+THOTH_VERSION = "0.9.0"
 
 
 class ThothClient:
@@ -55,7 +55,7 @@ class ThothClient:
         self.client.inject_token(bearer)
 
     def mutation(self, mutation_name, data):
-        """Instantiate a thoth mutation and execute"""
+        """Instantiate a thoth mutation and execute it"""
         mutation = ThothMutation(mutation_name, data)
         return mutation.run(self.client)
 
@@ -72,9 +72,9 @@ class ThothClient:
         """Construct and trigger a mutation to add a new imprint object"""
         return self.mutation("createImprint", imprint)
 
-    def create_work(self, work, units="MM"):
+    def create_work(self, work):
         """Construct and trigger a mutation to add a new work object"""
-        return self.mutation("createWork", work, units)
+        return self.mutation("createWork", work)
 
     def create_publication(self, publication):
         """Construct and trigger a mutation to add a new publication object"""
@@ -123,6 +123,22 @@ class ThothClient:
     def create_funding(self, funding):
         """Construct and trigger a mutation to add a new funding object"""
         return self.mutation("createFunding", funding)
+
+    def create_work_relation(self, work_relation):
+        """Construct and trigger a mutation to add a new work relation object"""
+        return self.mutation("createWorkRelation", work_relation)
+
+    def create_reference(self, reference):
+        """Construct and trigger a mutation to add a new reference object"""
+        return self.mutation("createReference", reference)
+
+    def update_work(self, work):
+        """Construct and trigger a mutation to update a work object"""
+        return self.mutation("updateWork", work)
+
+    def update_institution(self, institution):
+        """Construct and trigger a mutation to update an institution object"""
+        return self.mutation("updateInstitution", institution)
 
     @staticmethod
     def supported_versions():
