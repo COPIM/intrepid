@@ -11,17 +11,17 @@ import thothlibrary
 from thothlibrary.client import ThothClient
 
 
-class ThothClient0_8_4(ThothClient):
+class ThothClient0_9_0(ThothClient):
     """
-    The client for Thoth 0.4.2
+    The client for Thoth 0.9.0
     """
 
     def __new__(cls, *args, **kwargs):
-        return super(thothlibrary.ThothClient, ThothClient0_8_4).__new__(cls)
+        return super(thothlibrary.ThothClient, ThothClient0_9_0).__new__(cls)
 
-    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.8.4"):
+    def __init__(self, thoth_endpoint="https://api.thoth.pub", version="0.9.0"):
         """
-        Creates an instance of Thoth 0.8.0 endpoints
+        Creates an instance of Thoth 0.9.0 endpoints
         @param thoth_endpoint: the Thoth API instance endpoint
         @param version: the version of the Thoth API to use
         """
@@ -215,6 +215,22 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'order', order)
 
         return self._api_request("institutions", parameters, return_raw=raw)
+
+    def institution_count(self, search: str = "", raw: bool = False):
+        """
+        Return a count of institutions
+        @param search: a search string
+        @param raw: whether to return the raw result
+        @return: a count of institutions
+        """
+        parameters = {}
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+
+        return self._api_request("institutionCount", parameters, return_raw=raw)
 
     def funding_count(self, search: str = "", raw: bool = False):
         """
@@ -594,6 +610,40 @@ class ThothClient0_8_4(ThothClient):
 
         return self._api_request("publisherCount", parameters, return_raw=raw)
 
+    def reference(self, reference_id: str, raw: bool = False):
+        """
+        Returns a reference by ID
+        @param reference_id: the ID to fetch
+        @param raw: whether to return a python object or the raw result
+        @return: either an object (default) or raw server response
+        """
+        parameters = {
+            'referenceId': '"' + reference_id + '"'
+        }
+
+        return self._api_request("reference", parameters, return_raw=raw)
+
+    def references(self, limit: int = 100, offset: int = 0, order: str = None,
+                   search: str = "", publishers: str = None,
+                   raw: bool = False):
+        """
+        Return references
+        @param limit: the limit on the number of results
+        @param offset: the offset from which to begin
+        @param order: the order for the returned results
+        @param search: a search string
+        @param publishers: a list of publishers by which to limit the results
+        @param raw: whether to return a raw result
+        @return: an object or raw result
+        """
+        parameters = self._order_limit_filter_offset_setup(order=order,
+                                                           search=search,
+                                                           limit=limit,
+                                                           offset=offset)
+        self._dictionary_append(parameters, 'publishers', publishers)
+
+        return self._api_request("references", parameters, return_raw=raw)
+
     def series(self, series_id: str, raw: bool = False):
         """
         Returns a series by ID
@@ -713,7 +763,8 @@ class ThothClient0_8_4(ThothClient):
 
     def works(self, limit: int = 100, offset: int = 0, search: str = "",
               order: str = None, publishers: str = None, work_types: str = None,
-              work_status: str = None, raw: bool = False):
+              work_status: str = None, work_statuses: str = None,
+              updated_at_with_relations: str = None, raw: bool = False):
         """
         Returns works
         @param limit: the maximum number of results to return
@@ -721,8 +772,10 @@ class ThothClient0_8_4(ThothClient):
         @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param search: a filter string to search
-        @param work_types: the work type (e.g. MONOGRAPH)
-        @param work_status: the work status (e.g. ACTIVE)
+        @param work_types: the work types (e.g. [MONOGRAPH, TEXTBOOK])
+        @param work_status: (deprecated) the work status (e.g. ACTIVE)
+        @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
@@ -741,6 +794,9 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workTypes', work_types)
         self._dictionary_append(parameters, 'workStatus', work_status)
+        self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(
+            parameters, 'updatedAtWithRelations', updated_at_with_relations)
 
         return self._api_request("works", parameters, return_raw=raw)
 
@@ -770,15 +826,17 @@ class ThothClient0_8_4(ThothClient):
 
         return self._api_request("work", parameters, return_raw=raw)
 
-    def work_count(self, search: str = "", publishers: str = None,
-                   work_types: str = None, work_status: str = None,
-                   raw: bool = False):
+    def work_count(self, search: str = "", publishers: str = None, work_types: str = None,
+                   work_status: str = None, work_statuses: str = None,
+                   updated_at_with_relations: str = None, raw: bool = False):
         """
         A count of works
         @param search: a search string
         @param publishers: a list of publishers by which to limit results
-        @param work_types: the work type (e.g. MONOGRAPH)
-        @param work_status: the work status (e.g. ACTIVE)
+        @param work_types: the work types (e.g. [MONOGRAPH, TEXTBOOK])
+        @param work_status: (deprecated) the work status (e.g. ACTIVE)
+        @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
         @param raw: whether to return a raw result
         @return: a count of works
         """
@@ -791,12 +849,15 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workTypes', work_types)
         self._dictionary_append(parameters, 'workStatus', work_status)
+        self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(
+            parameters, 'updatedAtWithRelations', updated_at_with_relations)
 
         return self._api_request("workCount", parameters, return_raw=raw)
 
     def books(self, limit: int = 100, offset: int = 0, search: str = "",
-              order: str = None, publishers: str = None,
-              work_status: str = None, raw: bool = False):
+              order: str = None, publishers: str = None, work_status: str = None,
+              work_statuses: str = None, updated_at_with_relations: str = None, raw: bool = False):
         """
         Returns books
         @param limit: the maximum number of results to return
@@ -804,7 +865,9 @@ class ThothClient0_8_4(ThothClient):
         @param offset: the offset from which to retrieve results
         @param publishers: a list of publishers to limit by
         @param search: a filter string to search
-        @param work_status: the work status (e.g. ACTIVE)
+        @param work_status: (deprecated) the work status (e.g. ACTIVE)
+        @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
         @param raw: whether to return a python object or the raw server result
         @return: either an object (default) or raw server response
         """
@@ -822,16 +885,57 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'order', order)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workStatus', work_status)
+        self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(
+            parameters, 'updatedAtWithRelations', updated_at_with_relations)
 
         return self._api_request("books", parameters, return_raw=raw)
 
-    def book_count(self, search: str = "", publishers: str = None,
-                   work_status: str = None, raw: bool = False):
+    def bookIds(self, limit: int = 100, offset: int = 0, search: str = "",
+                order: str = None, publishers: str = None, work_status: str = None,
+                work_statuses: str = None, updated_at_with_relations: str = None, raw: bool = False):
+        """
+        Returns books, in a minimal representation containing only workId
+        @param limit: the maximum number of results to return
+        @param order: a GraphQL order query statement
+        @param offset: the offset from which to retrieve results
+        @param publishers: a list of publishers to limit by
+        @param search: a filter string to search
+        @param work_status: (deprecated) the work status (e.g. ACTIVE)
+        @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
+        @param raw: whether to return a python object or the raw server result
+        @return: either an object (default) or raw server response
+        """
+        if order is None:
+            order = {}
+        parameters = {
+            "offset": offset,
+            "limit": limit,
+        }
+
+        if search and not search.startswith('"'):
+            search = '"{0}"'.format(search)
+
+        self._dictionary_append(parameters, 'filter', search)
+        self._dictionary_append(parameters, 'order', order)
+        self._dictionary_append(parameters, 'publishers', publishers)
+        self._dictionary_append(parameters, 'workStatus', work_status)
+        self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(
+            parameters, 'updatedAtWithRelations', updated_at_with_relations)
+
+        return self._api_request("bookIds", parameters, return_raw=raw)
+
+    def book_count(self, search: str = "", publishers: str = None, work_status: str = None,
+                   work_statuses: str = None, updated_at_with_relations: str = None, raw: bool = False):
         """
         A count of books
         @param search: a search string
         @param publishers: a list of publishers by which to limit results
-        @param work_status: the work status (e.g. ACTIVE)
+        @param work_status: (deprecated) the work status (e.g. ACTIVE)
+        @param work_statuses: the work statuses (e.g. [ACTIVE])
+        @param updated_at_with_relations: timestamp and choice of greater/less than, for limiting results by last update time
         @param raw: whether to return a raw result
         @return: a count of works
         """
@@ -843,5 +947,8 @@ class ThothClient0_8_4(ThothClient):
         self._dictionary_append(parameters, 'filter', search)
         self._dictionary_append(parameters, 'publishers', publishers)
         self._dictionary_append(parameters, 'workStatus', work_status)
+        self._dictionary_append(parameters, 'workStatuses', work_statuses)
+        self._dictionary_append(
+            parameters, 'updatedAtWithRelations', updated_at_with_relations)
 
         return self._api_request("bookCount", parameters, return_raw=raw)

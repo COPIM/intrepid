@@ -7,7 +7,7 @@ This programme is free software; you may redistribute and/or modify
 it under the terms of the Apache License v2.0.
 """
 
-
+import re
 import json
 import urllib
 from .errors import ThothError
@@ -74,7 +74,10 @@ class ThothMutation():
                 ("generalNote", True),
                 ("toc", True),
                 ("coverUrl", True),
-                ("coverCaption", True)
+                ("coverCaption", True),
+                ("firstPage", True),
+                ("lastPage", True),
+                ("pageInterval", True)
             ],
             "return_value": "workId"
         },
@@ -82,10 +85,14 @@ class ThothMutation():
             "fields": [
                 ("publicationType", False),
                 ("workId", True),
-                ("width", False),
-                ("height", False),
-                ("depth", False),
-                ("weight", False),
+                ("widthMm", False),
+                ("widthIn", False),
+                ("heightMm", False),
+                ("heightIn", False),
+                ("depthMm", False),
+                ("depthIn", False),
+                ("weightG", False),
+                ("weightOz", False),
                 ("isbn", True)
             ],
             "return_value": "publicationId"
@@ -201,6 +208,42 @@ class ThothMutation():
             ],
             "return_value": "fundingId"
         },
+        "createWorkRelation": {
+            "fields": [
+                ("relatorWorkId", True),
+                ("relatedWorkId", True),
+                ("relationType", False),
+                ("relationOrdinal", False)
+            ],
+            "return_value": "workRelationId"
+        },
+        "createReference": {
+            "fields": [
+                ("workId", True),
+                ("referenceOrdinal", False),
+                ("doi", True),
+                ("unstructuredCitation", True),
+                ("issn", True),
+                ("isbn", True),
+                ("journalTitle", True),
+                ("articleTitle", True),
+                ("seriesTitle", True),
+                ("volumeTitle", True),
+                ("edition", False),
+                ("author", True),
+                ("volume", True),
+                ("issue", True),
+                ("firstPage", True),
+                ("componentNumber", True),
+                ("standardDesignator", True),
+                ("standardsBodyName", True),
+                ("standardsBodyAcronym", True),
+                ("url", True),
+                ("publicationDate", True),
+                ("retrievalDate", True)
+            ],
+            "return_value": "referenceId"
+        },
         "updateWork": {
             "fields": [
                 ("workId", True),
@@ -231,9 +274,22 @@ class ThothMutation():
                 ("generalNote", True),
                 ("toc", True),
                 ("coverUrl", True),
-                ("coverCaption", True)
+                ("coverCaption", True),
+                ("firstPage", True),
+                ("lastPage", True),
+                ("pageInterval", True)
             ],
             "return_value": "workId"
+        },
+        "updateInstitution": {
+            "fields": [
+                ("institutionId", True),
+                ("institutionName", True),
+                ("institutionDoi", True),
+                ("ror", True),
+                ("countryCode", False)
+            ],
+            "return_value": "institutionId"
         }
     }
 
@@ -288,7 +344,7 @@ class ThothMutation():
         """Returns a set of mutation statements based on object attributes."""
         def sanitise(text):
             """Escape quotes and linebreaks"""
-            tmp = text.replace("\n", "\\n")
+            tmp = re.sub(r'(\r\n?|\n)', r'\\n', text)
             return tmp.replace('"', '''\\"''')
         values = []
         for key, enclose in self.MUTATIONS[self.mutation_name]["fields"]:
