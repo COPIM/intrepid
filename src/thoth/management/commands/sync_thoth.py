@@ -9,7 +9,14 @@ from initiatives import models as initiative_models
 from intrepid import models as intrepid_models
 from thoth import models as thoth_models
 from thoth.management.commands import gen_stats
-from thoth.models import BIC, BISAC, Contribution, Contributor, Funding
+from thoth.models import (
+    BIC,
+    BISAC,
+    Contribution,
+    Contributor,
+    Funding,
+    RORRecord,
+)
 from thoth.models import Institution, Publisher, Subject, Thema, Work
 from thothlibrary import ThothClient
 
@@ -450,15 +457,26 @@ class Command(BaseCommand):
 
                     contribution_model.institutions.add(inst)
                     new_good_institutions.append(inst)
+                    try:
+                        ror = RORRecord.objects.get(ror_id=inst.ror)
+                        inst.country_code = ror.country
+                    except:
+                        pass
+                    inst.save()
                 except Institution.DoesNotExist:
-                    print(f"{affil.institution.ror} DOES NOT EXIST. ADDING.")
                     inst, created = Institution.objects.get_or_create(
                         thoth_id=affil.institution.institutionId,
                         thoth_instance=thoth_sync["endpoint"],
                     )
 
                     inst.institution_name = affil.institution.institutionName
-                    inst.ror = affil.institution.ror
+                    try:
+                        inst.ror = affil.institution.ror
+                        ror = RORRecord.objects.get(ror_id=inst.ror)
+                    except:
+                        pass
+
+                    inst.country_code = ror.country
                     inst.save()
 
                     contribution_model.institutions.add(inst)
