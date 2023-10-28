@@ -495,6 +495,9 @@ class Institution(models.Model):
     An institution
     """
 
+    def __str__(self):
+        return f"{self.institution_name} ({self.ror})"
+
     thoth_id = models.UUIDField()
     thoth_instance = models.URLField(default="https://api.thoth.pub")
     institution_name = models.TextField(blank=True, null=True)

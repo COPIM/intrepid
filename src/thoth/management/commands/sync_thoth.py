@@ -74,7 +74,7 @@ class Command(BaseCommand):
         default_thoth_endpoint = "https://api.thoth.pub"
 
         to_fetch = []
-
+        new_insts = []
         id_list = []
 
         inits = initiative_models.Initiative.objects.filter(active=True)
@@ -143,7 +143,7 @@ class Command(BaseCommand):
                 ret_text,
             )
 
-            self._sync_works(publisher_model, thoth_sync, works)
+            new_insts = self._sync_works(publisher_model, thoth_sync, works)
 
             self._verify_exists_in_thoth(thoth_sync, works, ret_text)
 
@@ -199,6 +199,8 @@ class Command(BaseCommand):
             self._sync_works(
                 publisher_model, thoth_sync, works, do_contribs=True
             )
+
+        good_institutions = good_institutions + new_insts
 
         # now cleanup anything that's in the database that wasn't on the remote
         # Thoth fetch
@@ -295,15 +297,17 @@ class Command(BaseCommand):
 
     def _sync_works(
         self, publisher_model, thoth_sync, works, do_contribs=False
-    ) -> None:
+    ) -> list:
         """
         Synchronizes works from the remote Thoth instance
         :param publisher_model: the publisher to use
         :param thoth_sync: the Thoth instance
         :param works: a list of works from a Thoth instance to sync
         :param do_contribs: whether to sync contributions
-        :return: None
+        :return: a list of new good institutions
         """
+        new_insts = []
+
         with tqdm(total=len(works), unit="works") as pbar:
             for work in works:
                 # build a work model
@@ -337,11 +341,15 @@ class Command(BaseCommand):
                     # this is for a second pass
                     # the reason is that we need to have created all
                     # institution objects before we can do contributions
-                    self._sync_contributions(thoth_sync, work, work_model)
+                    new_insts = self._sync_contributions(
+                        thoth_sync, work, work_model
+                    )
 
                     self._sync_subjects(thoth_sync, work, work_model)
 
                 pbar.update(1)
+
+        return new_insts
 
     @staticmethod
     def _sync_subjects(thoth_sync, work, work_model) -> None:
@@ -391,14 +399,17 @@ class Command(BaseCommand):
             subject_model.save()
 
     @staticmethod
-    def _sync_contributions(thoth_sync, work, work_model) -> None:
+    def _sync_contributions(thoth_sync, work, work_model) -> list:
         """
         Synchronize contributors from Thoth to the local DB
         :param thoth_sync: the Thoth instance
         :param work: the work instance
         :param work_model: the work model instance
-        :return: None
+        :return: List of added institutions
         """
+
+        new_good_institutions = []
+
         # build the contributions and contributors
         for contribution in work.contributions:
             # find or build the contributor and then update it
@@ -425,14 +436,33 @@ class Command(BaseCommand):
 
             for affil in contribution.affiliations:
                 try:
+                    print(f"Trying to find {affil.institution.ror}")
+
+                    inst = Institution.objects.get(
+                        ror=affil.institution.ror,
+                    )
+                    """
                     inst = Institution.objects.get(
                         thoth_id=affil.institution.institutionId,
                         thoth_instance=thoth_sync["endpoint"][0],
                     )
+                    """
 
                     contribution_model.institutions.add(inst)
+                    new_good_institutions.append(inst)
                 except Institution.DoesNotExist:
-                    pass
+                    print(f"{affil.institution.ror} DOES NOT EXIST. ADDING.")
+                    inst, created = Institution.objects.get_or_create(
+                        thoth_id=affil.institution.institutionId,
+                        thoth_instance=thoth_sync["endpoint"],
+                    )
+
+                    inst.institution_name = affil.institution.institutionName
+                    inst.ror = affil.institution.ror
+                    inst.save()
+
+                    contribution_model.institutions.add(inst)
+                    new_good_institutions.append(inst)
 
             contribution_model.contribution_ordinal = (
                 contribution.contributionOrdinal
@@ -446,6 +476,8 @@ class Command(BaseCommand):
 
             contribution_model.save()
 
+            return new_good_institutions
+
     def _cleanup_institutions(
         self, good_institutions, good_fundings, ret_text
     ) -> None:
@@ -455,6 +487,11 @@ class Command(BaseCommand):
         :param good_fundings: a list of good fundings
         :param ret_text: the return text
         :return: None
+        """
+
+        # without main Thoth sync allowing more than 9999 records we can't
+        # return the correct institutions for orphaning. This fix restores
+        # working institution search.
         """
         self.output(
             "Cleaning up orphaned institutions (not associated with "
@@ -475,6 +512,7 @@ class Command(BaseCommand):
             ),
             ret_text,
         )
+        """
 
         self.output(
             "Cleaning up orphaned fundings (not associated with "
