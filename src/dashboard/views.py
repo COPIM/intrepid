@@ -34,8 +34,11 @@ def visitor_dict(stats) -> dict:
 
     for stat in stats:
         # convert from ISO 3166-1 alpha-3 to ISO 3166-1 alpha-2
-        country = pycountry.countries.get(alpha_3=stat.country_code)
-        ret[country.alpha_2.lower()] = stat.country_count
+        if len(stat.country_code) == 3:
+            country = pycountry.countries.get(alpha_3=stat.country_code)
+            ret[country.alpha_2.lower()] = stat.country_count
+        else:
+            ret[stat.country_code.lower()] = stat.country_count
 
     return ret
 

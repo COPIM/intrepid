@@ -97,7 +97,12 @@ class Command(BaseCommand):
                     stat_object.save()
 
         # build a full database of country code counts
-        affiliations = Institution.objects.all()
+        affiliations = []
+
+        for book in books:
+            for contribution in book.contribution_set.all():
+                for institution in contribution.institutions.all():
+                    affiliations.append(institution)
 
         for affil in affiliations:
             if affil.country_code:
