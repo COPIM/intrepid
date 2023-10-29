@@ -481,6 +481,13 @@ class Command(BaseCommand):
 
                     contribution_model.institutions.add(inst)
                     new_good_institutions.append(inst)
+                except Institution.MultipleObjectsReturned:
+                    insts = Institution.objects.filter(
+                        ror=affil.institution.ror,
+                    )
+
+                    contribution_model.institutions.add(insts[0])
+                    new_good_institutions.append(insts[0])
 
             contribution_model.contribution_ordinal = (
                 contribution.contributionOrdinal
