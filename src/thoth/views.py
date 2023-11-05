@@ -348,6 +348,9 @@ def all_books(request) -> HttpResponse:
         work_list.remove(work_to_shunt)
         # work_list.append(work_to_shunt)
 
+    for work in work_list:
+        work.year = work.published_date.split("-")[0]
+
     # paginate the response
     paginator = Paginator(work_list, 24)
     page_number = request.GET.get("page")
