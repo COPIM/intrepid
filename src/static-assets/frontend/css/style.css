@@ -33,6 +33,11 @@
 	display: flex;
 }
 
+.btn-sm
+{
+	margin-top: 0.5rem;
+}
+
 #header {
 	top: 0px;
 	left: 0px;
