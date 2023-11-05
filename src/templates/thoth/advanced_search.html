@@ -79,6 +79,7 @@ Books
                         <div class="col-8">
                             <h3 class="publisher">{{ work.publisher }}</h3>
                             <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">{{ work.year }}</p>
                             <p class="author-list">
                                 {% for contribution in work.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
                             </p>
@@ -159,6 +160,7 @@ Books
                         <div class="col-8">
                             <h3 class="publisher">{{ work.publisher }}</h3>
                             <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
+                            <p class="author-list">{{ work.year }}</p>
                             <p class="author-list">
                                 {% for contribution in work.contribution_set.all %}
                                     <span>{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% if not forloop.first %}{% if forloop.last %}, and {% else %}, {% endif %}{% endif %}</span>
