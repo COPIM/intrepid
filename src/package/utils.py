@@ -1102,6 +1102,10 @@ def generate_acceptance_doc(
     order_doc.add_paragraph(f"Contact Email: {order.email_address}")
 
     order_doc.add_paragraph(
+        "Please note, we may pass your name and email address to the Provider(s) you have chosen to support. If you do not want us to pass you on your details please make a note next to your contact name."
+    )
+
+    order_doc.add_paragraph(
         "You have selected the following offers to potentially support: "
     )
 
@@ -1203,6 +1207,10 @@ def generate_acceptance_doc(
         "In order to recognise the support it receives, the OBC would, where possible, like to list Supporting Institutions on its website and publicise this support via other channels (e.g. in newsletters, on social media). Do you give permission for the OBC to acknowledge your Institution’s support in this way?",
     )
     order_doc.add_paragraph("Yes / No")
+    add_bold_paragraph(
+        order_doc,
+        "Do you give permission for the OBC and/or supported initiatives to use your institution's logo to acknowledge your institution’s support on their channels -- including on respective websites and social media channels, as well as in presentations? "
+    )
     add_bold_paragraph(
         order_doc,
         "Once we have reviewed this form, would you like the OBC to invoice you immediately, or should we contact you to confirm further invoicing details (e.g. obtain a purchase order)? (Delete as appropriate)",
