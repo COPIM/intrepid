@@ -53,13 +53,30 @@ def summary_package_initiative(
         publisher__thoth_id=initiative.thoth_id
     ).order_by("-published_date")[:6]
 
+    work_list = []
+    to_shunt = []
+
+    for work in works:
+        if work.published_date == "n.d.":
+            to_shunt.append(work)
+        elif (
+            datetime.strptime(work.published_date, "%Y-%m-%d") > datetime.now()
+        ):
+            to_shunt.append(work)
+        work_list.append(work)
+
+    # push all n.d. results to the back of the list
+    for work_to_shunt in to_shunt:
+        work_list.remove(work_to_shunt)
+        # work_list.append(work_to_shunt)
+
     template = "summary/summary.html"
     context = {
         "initiative": initiative,
         "package": initiative.packages.filter(active=True).first(),
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
-        "works": works,
+        "works": works[:6],
     }
     return render(
         request,
