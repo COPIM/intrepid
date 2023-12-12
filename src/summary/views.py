@@ -49,9 +49,11 @@ def summary_package_initiative(
     if not initiative:
         raise Http404("No package or initiative found.")
 
-    works = models.Work.objects.filter(
-        publisher__thoth_id=initiative.thoth_id
-    ).order_by("-published_date")[:6]
+    works = (
+        models.Work.objects.filter(publisher__thoth_id=initiative.thoth_id)
+        .exclude(published_date="n.d.")
+        .order_by("-published_date")
+    )
 
     work_list = []
     to_shunt = []
@@ -76,7 +78,7 @@ def summary_package_initiative(
         "package": initiative.packages.filter(active=True).first(),
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
-        "works": works[:6],
+        "works": work_list[:6],
     }
     return render(
         request,
