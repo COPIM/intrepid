@@ -30,7 +30,8 @@ module "key" {
 
 module "route53" {
   source      = "./modules/route53"
-  primary_ip  = module.ec2.ips[0]
+  # primary_ip  = module.ec2.ips[0]
+  primary_ip  = "18.170.47.219"
   domain_name = var.domain_name
 }
 

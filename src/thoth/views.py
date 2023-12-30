@@ -286,7 +286,7 @@ def all_books(request) -> HttpResponse:
             work_list.append(work)
     else:
         # construct a temporary in-memory Thoth search object
-        search_terms_split = shlex.split(search_term)
+        search_terms_split = search_term.split(" ")
 
         search = models.ThothSearch()
         elements = []
@@ -425,7 +425,7 @@ def advanced_search(request) -> HttpResponse:
             search_string = request.POST.get("search", "")
             type_of_search = request.POST.get("type_of_search", "")
 
-            search_terms_split = shlex.split(search_string)
+            search_terms_split = search_string.split(" ")
 
             add_search_term(
                 current_search, elements, search_terms_split, type_of_search

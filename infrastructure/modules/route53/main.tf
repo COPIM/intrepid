@@ -27,7 +27,8 @@ resource "aws_route53_record" "bookstack" {
   type    = "A"
   ttl     = "300"
 
-  records = ["3.223.136.50"]
+  #records = ["3.223.136.50"]
+  records = ["3.226.254.16"]
 }
 
 resource "aws_route53_record" "bookstack_toolkit" {
@@ -36,7 +37,8 @@ resource "aws_route53_record" "bookstack_toolkit" {
   type    = "A"
   ttl     = "300"
 
-  records = ["3.223.136.50"]
+  #records = ["3.223.136.50"]
+  records = ["3.226.254.16"]
 }
 
 resource "aws_route53_record" "cert_one_javi" {
