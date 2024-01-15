@@ -257,8 +257,10 @@ def all_books(request) -> HttpResponse:
     final_list = []
 
     for init in initiatives:
-        works = models.Work.objects.filter(publisher__thoth_id=init.thoth_id)
-        if len(works) != 0:
+        works = models.Work.objects.filter(
+            publisher__thoth_id=init.thoth_id
+        ).count()
+        if works != 0:
             final_list.append(init)
 
     initiatives = final_list
