@@ -254,15 +254,14 @@ def all_books(request) -> HttpResponse:
         active=True,
     )
 
-    to_remove = []
+    final_list = []
 
     for init in initiatives:
         works = models.Work.objects.filter(publisher__thoth_id=init.thoth_id)
-        if len(works) == 0:
-            to_remove.append(init)
+        if len(works) != 0:
+            final_list.append(init)
 
-    for init in to_remove:
-        initiatives.remove(init)
+    initiatives = final_list
 
     work_list = []
 
