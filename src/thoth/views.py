@@ -287,7 +287,9 @@ def all_books(request) -> HttpResponse:
                 models.Work.objects.filter(
                     publisher__thoth_id=initiative.thoth_id
                 )
-                .prefetch_related("contribution_set")
+                .prefetch_related(
+                    "contribution_set", "contribution_set__contributor"
+                )
                 .select_related("publisher")
                 .order_by(order_by)
             )
@@ -295,7 +297,9 @@ def all_books(request) -> HttpResponse:
         else:
             works = (
                 models.Work.objects.all()
-                .prefetch_related("contribution_set")
+                .prefetch_related(
+                    "contribution_set", "contribution_set__contributor"
+                )
                 .select_related("publisher")
                 .order_by(order_by)
             )
