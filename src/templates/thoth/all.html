@@ -79,7 +79,7 @@ Books
                             <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
                             <p class="author-list">{{ work.year }}</p>
                             <p class="author-list">
-
+                                {% for contribution in work.contribution_set.all %}<span>{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
                             </p>
                         </div>
                     </div>
@@ -112,7 +112,7 @@ Books
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/>
             <h1>{% get_site_text 'books_header' %}</h1>
             <p>
-
+                {% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
             </p>
         </div>
         <div class="col-1"></div>
@@ -164,7 +164,9 @@ Books
                             <h3 class="book-title">{{ work.full_title|truncatechars:35 }}</h3>
                             <p class="author-list">{{ work.year }}</p>
                             <p class="author-list">
-
+                                {% for contribution in work.contribution_set.all %}
+                                    <span>{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% if not forloop.first %}{% if forloop.last %}, and {% else %}, {% endif %}{% endif %}</span>
+                                {% endfor %}
                             </p>
                         </div>
                     </div>
