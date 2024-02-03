@@ -290,7 +290,6 @@ def all_books(request) -> HttpResponse:
         else:
             works = models.Work.objects.all().order_by(order_by)
 
-        """
         for work in works:
             if work.published_date == "n.d.":
                 to_shunt.append(work)
@@ -300,8 +299,6 @@ def all_books(request) -> HttpResponse:
             ):
                 to_shunt.append(work)
             work_list.append(work)
-        """
-        work_list = works
     else:
         # construct a temporary in-memory Thoth search object
         search_terms_split = search_term.split(" ")
