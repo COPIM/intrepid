@@ -292,7 +292,11 @@ def all_books(request) -> HttpResponse:
             )
 
         else:
-            works = models.Work.objects.all().order_by(order_by)
+            works = (
+                models.Work.objects.all()
+                .prefetch_related("contribution_set")
+                .order_by(order_by)
+            )
 
         for work in works:
             if work.published_date == "n.d.":
