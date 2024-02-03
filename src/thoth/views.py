@@ -301,6 +301,7 @@ def all_books(request) -> HttpResponse:
                 to_shunt.append(work)
             work_list.append(work)
         """
+        work_list = works
     else:
         # construct a temporary in-memory Thoth search object
         search_terms_split = search_term.split(" ")
