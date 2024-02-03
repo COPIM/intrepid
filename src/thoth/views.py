@@ -283,9 +283,13 @@ def all_books(request) -> HttpResponse:
         if init_term and init_term > 0:
             initiative = init_models.Initiative.objects.get(pk=init_term)
 
-            works = models.Work.objects.filter(
-                publisher__thoth_id=initiative.thoth_id
-            ).order_by(order_by)
+            works = (
+                models.Work.objects.filter(
+                    publisher__thoth_id=initiative.thoth_id
+                )
+                .prefetch_related("contribution_set")
+                .order_by(order_by)
+            )
 
         else:
             works = models.Work.objects.all().order_by(order_by)
