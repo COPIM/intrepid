@@ -151,7 +151,7 @@ def summary_meta_package(request, package_id) -> HttpResponse:
             reverse(
                 "summary_package_initiative",
                 kwargs={
-                    "package_or_initiative": package,
+                    "package_or_initiative": "package",
                     "identifier": package.pk,
                 },
             )
