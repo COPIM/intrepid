@@ -250,9 +250,7 @@ def all_books(request) -> HttpResponse:
 
     order_by = "-published_date"
 
-    initiatives = init_models.Initiative.objects.exclude(
-        thoth_id="", name="DOAB & OAPEN"
-    ).filter(
+    initiatives = init_models.Initiative.objects.exclude(thoth_id="").filter(
         active=True,
     )
 

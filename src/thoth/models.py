@@ -101,6 +101,10 @@ class ThothWorkManager(models.Manager):
         return (
             super(ThothWorkManager, self)
             .get_queryset()
+            .prefetch_related(
+                "contribution_set", "contribution_set__contributor"
+            )
+            .select_related("publisher")
             .exclude(
                 work_type="BOOK_CHAPTER",
             )
