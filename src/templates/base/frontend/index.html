@@ -50,6 +50,10 @@
                 <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_1_body' %}</p></div>
             </div>
 
+            <div class="col-12">
+                <a href="{% url 'package_list' %}" class="pill-button">Build Your Subscription</a>
+            </div>
+
             <!-- flower chart -->
             <div class="row">
                 <div class="col text-center section-break"><img class="img_fluid home_img" alt="Sustainable funding model" src="{% static "frontend/img/home_flower.svg" %}">
@@ -62,6 +66,10 @@
                 <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_2_body' %}</p></div>
             </div>
 
+            <div class="col-12">
+                <a href="{% url 'all_books' %}" class="pill-button">Search the Catalogue</a>
+            </div>
+
             <!-- cloud chart -->
             <div class="row">
                 <div class="col text-center section-break"><img class="img_fluid home_img" alt="Robust infrastructure" src="{% static "frontend/img/home_cloud.svg" %}">
@@ -72,6 +80,9 @@
             </div>
             <div class="row">
                 <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_3_body' %}</p></div>
+            </div>
+            <div class="col-12">
+                <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button">Apply for Membership</a>
             </div>
 
             <!-- clip chart -->

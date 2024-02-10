@@ -70,7 +70,7 @@
 .navbar-collapse {
 	background: transparent linear-gradient(175deg, var(--obc-dark-blue) 0%, var(--obc-blue) 100%) 0% 0% no-repeat padding-box;
 	color: white;
-	font: normal normal bold 18px/60px rubrik-edge-new;
+	font: normal normal bold 18px/60px Rubrik Edge New;
 	letter-spacing: 0px;
 }
 
@@ -78,13 +78,13 @@
 {
 	background-color: transparent;
 	color: white;
-	font: normal normal bold 18px/25px rubrik-edge-new;
+	font: normal normal bold 18px/60px Rubrik Edge New;
 	letter-spacing: 0px;
 }
 
 .nav-link {
 	color: white !important;
-	font: normal normal bold 18px/60px rubrik-edge-new !important;
+	font: normal normal bold 18px/60px Rubrik Edge New !important;
 	letter-spacing: 0px;
 	margin-left: 5%;
 	padding: 0px;
@@ -92,13 +92,13 @@
 
 .nav-link:hover {
 	color: white !important;
-	font: normal normal bold 18px/60px rubrik-edge-new !important;
+	font: normal normal bold 18px/60px Rubrik Edge New !important;
 	letter-spacing: 0px;
 }
 
 .dropdown-item, .dropdown-item:hover {
 	color: white !important;
-	font: normal normal 16px/60px rubrik-edge-new !important;
+	font: normal normal 16px/60px Rubrik Edge New !important;
 	letter-spacing: 0px;
 	margin-left: 5%;
 	padding: 0px;
@@ -119,7 +119,7 @@
 }
 
 a.nav-small, a.nav-small:hover {
-	font: normal normal 16px/60px rubrik-edge-new !important;
+	font: normal normal 16px/60px Rubrik Edge New !important;
 	letter-spacing: 0px;
 }
 
@@ -171,16 +171,6 @@ a.nav-small, a.nav-small:hover {
 	min-height: 600px;
 	padding-top: 50px;
 	background-color: var(--obc-light-blue);
-	width: 75%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.magenta-bg {
-	margin-top: 0px;
-	min-height: 600px;
-	padding-top: 50px;
-	background-color: var(--obc-magenta);
 	width: 75%;
 	margin-left: auto;
 	margin-right: auto;
@@ -266,16 +256,6 @@ button.close, button.close:hover {
 	text-align: left;
 	font: normal normal 12px/22px rubrik-edge-new !important;
 	letter-spacing: 0px;
-}
-
-a {
-	color: var(--obc-magenta);
-	font-weight: bold;
-}
-
-a:hover {
-	color: var(--obc-blue);
-	text-decoration: underline;
 }
 
 .footer-logo {
@@ -394,7 +374,7 @@ a:hover {
 .working-together {
 	padding-bottom: 100px;
 	padding-top: 50px;
-	width: 90%;
+	width: 75%;
 	margin-left: auto;
 	margin-right: auto;
 	font: normal normal bold 16px/19px rubrik-edge-new;
@@ -477,7 +457,7 @@ a:hover {
 
 .working-together-info {
 	margin-top: 100px;
-	font: normal normal normal 22px/31px rubrik-edge-new;
+	font: normal normal normal 32px/41px rubrik-edge-new;
 	letter-spacing: -0.8px;
 	text-align: left;
 	color: white;
@@ -597,7 +577,7 @@ a:hover {
 }
 
 .mattering {
-	width: 20% !important;
+	width: 18% !important;
 }
 
 .ohp {
@@ -605,11 +585,11 @@ a:hover {
 }
 
 .meson {
-	width: 20% !important;
+	width: 16% !important;
 }
 
 .punctum {
-	width: 20% !important;
+	width: 18% !important;
 }
 
 .publisher-pill, .publisher-pill button:hover {
@@ -633,16 +613,6 @@ a:hover {
 .inactive-pill {
 	background-color: var(--obc-magenta) !important;
 	color: white !important;
-}
-
-.inactive-blue-pill {
-	background-color: var(--obc-blue) !important;
-	color: white !important;
-}
-
-.inactive-blue-pill:hover {
-  	background-color: white !important;
-	color: var(--obc-magenta) !important;
 }
 
 .mid-pill:hover {
@@ -842,6 +812,27 @@ a:hover {
 	font: normal normal bold 24px/42px rubrik-edge-new !important;
 	letter-spacing: 0px !important;
 	margin-top: 20px;
+}
+
+.pill-button {
+	border-style: solid;
+	width: 100%;
+	border-width: 1px;
+	border-color: #FFFFFF;
+	color: #FFFFFF;
+	background-color: transparent;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 16px;
+	font: normal normal 800 16px/21px rubrik-edge-new;
+	letter-spacing: 0.16px;
+	margin-bottom: 50px;
+	margin-top: 50px;
+	text-align: center;
 }
 
 .pill-button-library {
@@ -1047,28 +1038,13 @@ a:hover {
   }
 }
 
-
-@media screen and (max-width: 1148px) {
+@media screen and (min-width: 300px) {
   .navbar-lower {
-    padding-top: 30px;
+    padding-top: 50px;
   }
 
-	.lower-nav-item a {
-		font-size: 18px;
-	}
-}
-
-@media screen and (max-width: 976px) {
-  .navbar-lower {
-    padding-top: 30px;
-  }
-
-	.lower-nav-item a {
-		font-size: 14px;
-	}
-
-	.main h1 {
-		font-size: 2.5rem;
+	.build-your-quotation {
+		display: none;
 	}
 }
 
@@ -1112,7 +1088,7 @@ i {
 
 nav a, nav a:hover {
 	color: var(--obc-blue);
-	font: normal normal bold 20px/24px rubrik-edge-new;
+	font: normal normal bold 24px/28px rubrik-edge-new;
 	letter-spacing: -0.24px;
 	opacity: 1;
 	text-decoration: none;
@@ -1182,32 +1158,12 @@ nav a, nav a:hover {
 	margin-bottom: 30px;
 }
 
-.container.grey-background {
-	max-width: 73%;
-}
-
-.grey-border {
-	max-width: 73%;
-}
-
-.grey-border-sides {
-	max-width: 73%;
-}
-
 .blue-header h1 {
 	margin-top: 45px;
 	text-align: center;
-	font: normal normal bold 28px/32px rubrik-edge-new;
+	font: normal normal bold 48px/50px rubrik-edge-new;
 	letter-spacing: 0px;
 }
-
-@media only screen and (max-width: 1200px) {
-	.blue-header h1 {
-		font: normal normal bold 22px/28px rubrik-edge-new;
-	}
-}
-
-
 
 .offset-content {
 	margin-top: -80px;
@@ -1365,10 +1321,6 @@ nav a, nav a:hover {
 	color: var(--obc-blue);
 	margin-top: 50px;
 	margin-bottom: 0px;
-}
-
-.catalogue-main h1 {
-	color: var(--obc-blue);
 }
 
 .book-item {
@@ -1584,7 +1536,7 @@ nav a, nav a:hover {
 }
 
 .book-info-row {
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 .formats-box-upper {
@@ -1666,6 +1618,13 @@ nav a, nav a:hover {
 	letter-spacing: 0px;
 	margin-top: 30px;
 	margin-bottom: 30px;
+}
+
+.blue-header h1 {
+	margin-top: 45px;
+	text-align: center;
+	font: normal normal bold 48px/50px rubrik-edge-new;
+	letter-spacing: 0px;
 }
 
 .offset-content {
@@ -1996,7 +1955,7 @@ nav a, nav a:hover {
 
 .pagination, .pagination a, .pagination a:hover {
 	color: var(--obc-blue);
-	font: normal normal 13px/22px rubrik-edge-new;
+	font: normal normal normal 24px/34px rubrik-edge-new;
 	letter-spacing: -0.24px;
 	text-align: center;
 	margin: 0px;
@@ -2146,6 +2105,8 @@ nav a, nav a:hover {
 	.navbar.navbar-lower .navbar-nav {
 	margin-left: 100px;
 	}
+
+
 }
 
 .navbar-logo {
@@ -2387,7 +2348,7 @@ nav a, nav a:hover {
 	border-radius: 4px;
 	height: 48px;
 	color: var(--obc-input-pale-blue);
-	font: normal normal normal 18px/23px rubrik-edge-new;
+	font: normal normal normal 18px/23px Rubrik Edge New;
 	letter-spacing: 0px;
 	margin-bottom: 20px;
 }
@@ -2562,13 +2523,14 @@ nav a, nav a:hover {
 	width: 25%;
 	color: var(--obc-blue);
 	background-color: transparent;
+
 	text-align: center;
 	text-decoration: none;
 	margin: 0px;
 	cursor: pointer;
 	border-radius: 28px 0px 0px 28px;
 	height: 50px;
-	font: normal normal bold 12px/14px rubrik-edge-new;
+	font: normal normal bold 16px/19px rubrik-edge-new;
 	letter-spacing: 0.16px;
 
 	display: inline-flex;
@@ -2627,21 +2589,6 @@ nav a, nav a:hover {
     justify-content: center;
 }
 
-.right-pill-initiative {
-	text-align: center;
-	text-decoration: none;
-	margin: 0px;
-	cursor: pointer;
-	border-radius: 0px 28px 28px 0px;
-	height: 50px;
-	font: normal normal bold 16px/19px rubrik-edge-new;
-	letter-spacing: 0.16px;
-
-	display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .right-pill-blue {
   	border-style: solid;
 	border-color: var(--obc-blue);
@@ -2655,7 +2602,7 @@ nav a, nav a:hover {
 	cursor: pointer;
 	border-radius: 0px 28px 28px 0px;
 	height: 50px;
-	font: normal normal bold 12px/14px rubrik-edge-new;
+	font: normal normal bold 16px/19px rubrik-edge-new;
 	letter-spacing: 0.16px;
 
 	display: inline-flex;
@@ -2682,7 +2629,7 @@ nav a, nav a:hover {
 	border-style: solid;
 	border-color: var(--obc-blue);
 	border-width: 1px;
-	width: 25%;
+	width: 33%;
 	color: white;
 	background-color: var(--obc-blue);
 	text-align: center;
@@ -2690,7 +2637,7 @@ nav a, nav a:hover {
 	margin: 0px;
 	cursor: pointer;
 	text-align: center;
-	font: normal normal bold 12px/14px rubrik-edge-new;
+	font: normal normal bold 16px/19px rubrik-edge-new;
 	letter-spacing: 0.16px;
 	height: 50px;
 	display: inline-flex;
@@ -2731,7 +2678,7 @@ nav a, nav a:hover {
 }
 
 .mid-pill-blue:hover {
-	width: 25%;
+	width: 33%;
 	color: var(--obc-magenta);
 	background-color: white;
 	text-align: center;
@@ -2739,7 +2686,7 @@ nav a, nav a:hover {
 	margin: 0px;
 	cursor: pointer;
 	text-align: center;
-	font: normal normal bold 12px/14px rubrik-edge-new;
+	font: normal normal bold 16px/19px rubrik-edge-new;
 	letter-spacing: 0.16px;
 	height: 50px;
 
@@ -2774,14 +2721,18 @@ nav a, nav a:hover {
 
 .circle-image {
 	border-radius: 50%;
-	max-width: 85%;
+	max-width: 75%;
 
 	text-align: center;
-	max-height: 85%;
+	max-height: 75%;
 }
 
 .circle-image-mobile {
 	width: 65% !important;
+}
+
+.circle-row {
+	height: 150px;
 }
 
 .person {
@@ -2934,18 +2885,12 @@ nav a, nav a:hover {
 	color: var(--obc-blue);
 }
 
-.cms-col {
-	text-align: left;
-	font: normal normal normal 18px/28px rubrik-edge-new;
-	letter-spacing: 0px;
-	color: var(--obc-blue);
-}
-
 .cms-col p {
 	text-align: left;
 	font: normal normal normal 18px/28px rubrik-edge-new;
 	letter-spacing: 0px;
 	color: var(--obc-blue);
+	margin-top: 30px;
 }
 
 .cms-para {
@@ -2953,6 +2898,7 @@ nav a, nav a:hover {
 	font: normal normal normal 18px/28px rubrik-edge-new;
 	letter-spacing: 0px;
 	color: var(--obc-blue);
+	margin-top: 30px;
 }
 
 .pull-quote-block {
@@ -3040,132 +2986,10 @@ nav a, nav a:hover {
 	color: var(--obc-blue) !important;
 }
 
-.blue-h2 h2 {
-	color: var(--obc-blue);
-}
-
 .message-alert {
     margin-top: 10px;
 }
 
 .cms-body {
 	margin-top: 0px !important;
-}
-
-.edit-button {
-	font-size: small;
-	margin: 0;
-	padding: 0;
-}
-
-.edit-button:hover {
-	color: var(--obc-magenta);
-}
-
-.take-action-mobile h1 {
-    color: black;
-    font: normal normal bold 54px/60px rubrik-edge-new;
-}
-
-.no-margin-top {
-	margin-top: 0;
-}
-
-.highlights-title {
-	margin-bottom: 40px;
-}
-
-.highlights {
-	width: 90%;
-	margin-left: auto;
-	margin-right: auto;
-	font: normal normal bold 16px/19px rubrik-edge-new;
-	letter-spacing: 0.16px;
-	min-height: 300px;
-}
-
-.highlights h3 {
-	color: white;
-	text-align: center;
-	font: normal normal bold 42px/46px rubrik-edge-new;
-	letter-spacing: 0px;
-}
-
-.highlights-inner {
-	max-width: 85%;
-	margin-left: auto;
-	margin-right: auto;
-	color: white;
-}
-
-.highlight-img {
-	height: 100px;
-	width: 100px;
-	text-align: center;
-}
-
-.highlight-title {
-	color:white;
-	margin-top: 20px;
-}
-
-.highlight-title {
-	color:white;
-	margin-top: 20px;
-}
-
-.highlight-text-block {
-	font: normal normal 13px/23px rubrik-edge-new;
-}
-
-.megenta-pill-button-more {
-    width: 250px;
-    background: var(--obc-magenta) 0% 0% no-repeat padding-box;
-    border: 2px solid #FFFFFF;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 35px;
-    font: normal normal 800 16px/21px rubrik-edge-new;
-    letter-spacing: 0.16px;
-    margin-bottom: 50px;
-    margin-top: 50px;
-	color: white;
-}
-
-.megenta-pill-button-more:hover {
-    width: 250px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    border: 2px solid #FFFFFF;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 37px;
-    font: normal normal 800 16px/21px rubrik-edge-new;
-    letter-spacing: 0.16px;
-    margin-bottom: 50px;
-    margin-top: 50px;
-	color: var(--obc-magenta);
-}
-
-.colinfo a {
-	font-weight: normal;
-}
-
-.package-collection-pill-row {
-	margin-bottom: 0px;
-}
-
-.package-collection-text p {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	font: normal normal normal 14px/24px rubrik-edge-new;
-	color: var(--obc-blue);
-	text-align: left;
 }
