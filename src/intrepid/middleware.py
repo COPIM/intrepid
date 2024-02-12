@@ -5,6 +5,7 @@ from intrepid import models as intrepid_models
 from invoicing import models as invoice_models
 from package import models as package_models
 from thoth import models as thoth_models
+from utils import country
 
 
 def debug_middleware(get_response):
@@ -35,6 +36,25 @@ def session_middleware(get_response):
     def middleware(request):
         if not request.session.session_key:
             request.session.save()
+
+        return get_response(request)
+
+    return middleware
+
+
+def country_middleware(get_response):
+    """
+    Middleware that ensures that a session key is always present
+    :param get_response: a callable
+    :return: a request object
+    """
+
+    def middleware(request):
+        request.session['country'] = country.get_iso_country_code(
+            request,
+        )
+
+        request.session['country'] = 'US'
 
         return get_response(request)
 
