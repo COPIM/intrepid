@@ -107,6 +107,12 @@ class Initiative(models.Model):
         default=0,
     )
 
+    exclude_from_thoth_filter = models.BooleanField(
+        default=False,
+        help_text='Check this to exclude this initiative from the Thoth '
+                  'search drop down.',
+    )
+
     class Meta:
         ordering = ("name",)
 
