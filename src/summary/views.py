@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from initiatives import models as im
 from package import models as pm
 from thoth import models
+from cms import models as cms_models
 
 
 def get_initiative(package_or_initiative, identifier) -> im.Initiative:
@@ -72,6 +73,11 @@ def summary_package_initiative(
         work_list.remove(work_to_shunt)
         # work_list.append(work_to_shunt)
 
+    pages = cms_models.PageUpdate.objects.filter(
+        is_update=False,
+        initiative=initiative,
+    ).order_by("sequence")
+
     template = "summary/summary.html"
     context = {
         "initiative": initiative,
@@ -79,6 +85,7 @@ def summary_package_initiative(
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
         "works": work_list[:6],
+        "additional_nav": pages,
     }
     return render(
         request,
@@ -98,6 +105,10 @@ def summary_more_info(
     :return: the response
     """
     initiative = get_initiative(package_or_initiative, identifier)
+    pages = cms_models.PageUpdate.objects.filter(
+        is_update=False,
+        initiative=initiative,
+    ).order_by("sequence")
 
     template = "summary/more_info.html"
     context = {
@@ -105,6 +116,7 @@ def summary_more_info(
         "package": initiative.packages.filter(active=True).first(),
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
+        "additional_nav": pages,
     }
     return render(
         request,
@@ -122,6 +134,10 @@ def summary_pricing(request, package_or_initiative, identifier) -> HttpResponse:
     :return: the response
     """
     initiative = get_initiative(package_or_initiative, identifier)
+    pages = cms_models.PageUpdate.objects.filter(
+        is_update=False,
+        initiative=initiative,
+    ).order_by("sequence")
 
     template = "summary/pricing.html"
     context = {
@@ -129,6 +145,7 @@ def summary_pricing(request, package_or_initiative, identifier) -> HttpResponse:
         "package": initiative.packages.filter(active=True).first(),
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
+        "additional_nav": pages,
     }
     return render(
         request,
