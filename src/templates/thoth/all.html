@@ -38,9 +38,7 @@ Books
                 <select class="initiative-box" type="text" id="initiative" name="initiative" onchange="this.form.submit()">
                     <option value="0">Select an Initiative</option>
                     {% for init in initiatives %}
-                        {% if init.name != 'DOAB & OAPEN' and init.name != "Leuven University Press" and init.name != "University of London Press" %}
-                            <option value="{{ init.pk }}">{{ init.name }}</option>
-                        {% endif %}
+                        <option value="{{ init.pk }}">{{ init.name }}</option>
                     {% endfor %}
                 </select>
             </div>

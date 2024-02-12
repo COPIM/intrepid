@@ -12,6 +12,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 from cms import models as cms_models
 from initiatives import models as init_models
@@ -250,10 +251,11 @@ def all_books(request) -> HttpResponse:
 
     order_by = "-published_date"
 
-    initiatives = init_models.Initiative.objects.exclude(thoth_id="").filter(
+    initiatives = init_models.Initiative.objects.exclude(
+        Q(thoth_id="") | Q(exclude_from_thoth_filter=True),
+    ).filter(
         active=True,
     )
-
     work_list = []
 
     if sort_term:
