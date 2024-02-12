@@ -54,8 +54,6 @@ def country_middleware(get_response):
             request,
         )
 
-        request.session['country'] = 'US'
-
         return get_response(request)
 
     return middleware
