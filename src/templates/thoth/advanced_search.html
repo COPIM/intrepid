@@ -134,6 +134,12 @@ Books
               <div class="dropdown-menu catalogue-filters-mobile" aria-labelledby="dropdownMenuButton">
                 <form method="get">
                     <input class="search-box" type="text" id="search-mobile" name="search" placeholder="Search Title, Author"/><br/>
+                    <select type="text" id="initiative" name="initiative" onchange="this.form.submit()">
+                        <option value="0">Select an Initiative</option>
+                         {% for init in initiatives %}
+                                <option value="{{ init.pk }}" {% if init_term and init.pk == init_term %}selected="selected"{% endif %}>{{ init.name }}</option>
+                        {% endfor %}
+                    </select>
                     <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
                         <option>Date Newest</option>
                         <option>Date Oldest</option>
