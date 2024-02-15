@@ -49,6 +49,19 @@ def initiative_list(request) -> HttpResponse:
         active=True,
     )
 
+    if request.session.get('country', None):
+        for package in packages:
+            try:
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country__code=request.session.get('country'),
+                    package=package,
+                )
+            except models.PreCalcMinMax.DoesNotExist:
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country=package.default_country,
+                    package=package,
+                )
+
     initiative = request.GET.get("initiative")
     subject = request.GET.get("subject")
     sort = request.GET.get("sort")
@@ -102,6 +115,20 @@ def collective_list(request) -> HttpResponse:
     meta_packages = models.MetaPackage.objects.filter(
         active=True,
     ).order_by("-recommended", "name")
+
+    if request.session.get('country', None):
+        for mp in meta_packages:
+            try:
+                mp.pre_calc = models.PreCalcMinMax.objects.get(
+                    country__code=request.session.get('country'),
+                    meta_package=mp,
+                )
+            except models.PreCalcMinMax.DoesNotExist:
+                mp.pre_calc = models.PreCalcMinMax.objects.get(
+                    country__currency=request.site.fallback_currency,
+                    meta_package=mp,
+                )
+
     template = "base/frontend/quote/collective_list.html"
     context = {
         "meta_packages": meta_packages,
