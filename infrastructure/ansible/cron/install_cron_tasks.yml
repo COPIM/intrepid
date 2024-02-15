@@ -16,3 +16,19 @@
       hour: "0"
       minute: "15"
       job: "/usr/bin/bash -c \"/home/obc/intrepid/.backup.sh\""
+  - name: Install Thoth updater
+    become: true
+    become_user: obc
+    ansible.builtin.cron:
+      name: "Update Thoth"
+      hour: "0"
+      minute: "0"
+      job: "/home/obc/intrepid-venv/bin/python /home/obc/intrepid/src/manage.py sync_thoth"
+  - name: Install price updater
+    become: true
+    become_user: obc
+    ansible.builtin.cron:
+      name: "Update Prices"
+      hour: "3"
+      minute: "0"
+      job: "/home/obc/intrepid-venv/bin/python /home/obc/intrepid/src/manage.py pregenerate_prices"
