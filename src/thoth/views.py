@@ -378,6 +378,7 @@ def all_books(request) -> HttpResponse:
         "works": page_obj,
         "initiatives": initiatives,
         "num_pages": paginator.num_pages,
+        "init_term": init_term,
     }
     return render(
         request,
