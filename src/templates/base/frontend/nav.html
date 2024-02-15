@@ -71,19 +71,34 @@
         <hr/>
 
         {% if initiative %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="initDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ initiative.name }}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="initDropdown">
-                {% for page in additional_nav %}
-                    <a class="dropdown-item" href="{% url 'public_initiative_page' initiative.pk page.pk %}"><span class="in-caret">&gt;</span>
-                        {{ page.title }}</a>
-                {% endfor %}
-            </div>
-        </li>
+            <li class="nav-item dropdown">
 
-        <hr/>
+                <a class="nav-link dropdown-toggle" id="initDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    {{ initiative.name }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="initDropdown">
+                    <a class="dropdown-item"
+                       href="{% url 'summary_package_initiative' 'initiative' initiative.pk %}"><span
+                                class="in-caret">&gt;</span> Summary</a>
+                    <a class="dropdown-item"
+                       href="{% url 'summary_more_info' 'initiative' initiative.pk %}"><span
+                                class="in-caret">&gt;</span> More
+                        Info</a>
+                    <a class="dropdown-item"
+                       href="{% url 'summary_pricing' 'initiative' initiative.pk %}"><span
+                                class="in-caret">&gt;</span> Pricing</a>
+                    {% for page in additional_nav %}
+                        <a class="dropdown-item"
+                           href="{% url 'public_initiative_page' initiative.pk page.pk %}"><span
+                                class="in-caret">&gt;</span>
+                            {{ page.title }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+
+            <hr/>
         {% endif %}
 
 
