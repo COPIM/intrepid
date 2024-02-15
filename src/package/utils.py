@@ -884,7 +884,11 @@ def format_price(cost, currency) -> str:
     :return: the formatted price
     """
     try:
-        return babel.numbers.format_currency(cost, currency)
+        return babel.numbers.format_currency(
+            cost,
+            currency,
+            locale='en_US'
+        )
     except (
         babel.numbers.UnknownCurrencyError,
         babel.numbers.UnknownCurrencyFormatError,

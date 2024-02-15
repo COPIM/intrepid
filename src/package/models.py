@@ -613,17 +613,20 @@ class Package(BasePackage):
         return (
             "From {0} to {1} (in {2})".format(
                 babel.numbers.format_currency(
-                    low, self.default_country.currency
+                    low, self.default_country.currency,
+                    locale='en_US'
                 ),
                 babel.numbers.format_currency(
-                    high, self.default_country.currency
+                    high, self.default_country.currency,
+                    locale='en_US'
                 ),
                 self.default_country.currency,
             )
             if low != high
             else "Around {0}".format(
                 babel.numbers.format_currency(
-                    high, self.default_country.currency
+                    high, self.default_country.currency,
+                    locale='en_US'
                 )
             )
         )
@@ -1749,4 +1752,38 @@ class MediaFile(models.Model):
 
         return serve_file(
             path=self.file.path, filename=self.file.name, mime=self.mime
+        )
+
+
+class PreCalcMinMax(models.Model):
+    package = models.ForeignKey(
+        "Package",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    meta_package = models.ForeignKey(
+        "MetaPackage",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    country = models.ForeignKey(
+        "Country",
+        on_delete=models.CASCADE,
+    )
+    min_amount = models.IntegerField()
+    max_amount = models.IntegerField()
+
+    def __str__(self):
+        return "{0} to {1}".format(
+            babel.numbers.format_currency(
+                self.min_amount, self.country.currency,
+                locale='en_US'
+            ),
+            babel.numbers.format_currency(
+                self.max_amount, self.country.currency,
+                locale='en_US'
+            ),
+            self.country.currency,
         )

@@ -175,6 +175,10 @@ class PackageSignupAdmin(admin.ModelAdmin):
     inlines = [SignupInvoiceInline]
 
 
+class PreCalcMinMaxAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'package', 'meta_package', 'country', 'min_amount', 'max_amount')
+
+
 admin_list = [
     (models.BandingType, BandingTypeAdmin),
     (models.Country, CountryAdmin),
@@ -192,6 +196,7 @@ admin_list = [
     (models.CustomPackageDocument,),
     (models.PackageDocumentHistorical, PackageDocumentHistoricalAdmin),
     (models.BandingTypeCurrencyEntry, BandingTypeCurrencyEntryAdmin),
+    (models.PreCalcMinMax, PreCalcMinMaxAdmin),
 ]
 
 [admin.site.register(*t) for t in admin_list]
