@@ -32,8 +32,8 @@ Books
                 <h3>Search</h3>
                 <a href="{% url 'advanced_search' %}">Search the catalogue</a>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2">
+            <div class="col-1"></div>
+            <div class="col-3">
                 <h3>Initiative</h3>
                 <select class="initiative-box" type="text" id="initiative" name="initiative" onchange="this.form.submit()">
                     <option value="0">Select an Initiative</option>
@@ -42,15 +42,14 @@ Books
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2">
+            <div class="col-1"></div>
+            <div class="col-3">
                 <h3>Sort</h3>
                 <select class="sort-box" type="text" name="sort" id="sort" onchange="this.form.submit()">
                     <option>Date Newest</option>
                     <option>Date Oldest</option>
                 </select>
             </div>
-            <div class="col-1"></div>
         </div>
     </form>
 
