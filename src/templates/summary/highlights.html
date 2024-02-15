@@ -7,8 +7,8 @@
             {% for highlight in package.highlights %}
                 <div class="col-md-3">
                     <img class="img-fluid highlight-img" src="{{ highlight.icon.url }}">
-                    <p class="highlight-title"><strong>{{ highlight.title }}</strong></p>
-                    <div class="highlight-text-block">
+                    <p class="highlight-title white-text"><strong>{{ highlight.title }}</strong></p>
+                    <div class="highlight-text-block white-text">
                     {{ highlight.body|safe }}
                     </div>
                 </div>
