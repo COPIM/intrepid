@@ -1,5 +1,5 @@
 {% extends "base/frontend/base_header_overlap_grey.html" %}
-{% load static %}
+{% load static country %}
 
 {% block css %}
     <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
@@ -44,6 +44,8 @@
     <div class="row">
         <div class="col package-collection-text">
             {% get_site_text 'collection_collectiv' %}
+            {% country_code_to_name as country_name %}
+            <p class="text-center">Pricing on the page below is based on your detected or set country, {{ country_name|title }}. <a href="#" data-toggle="modal" data-target="#country_change_modal">Change your country</a>.</p>
         </div>
     </div>
     <div class="content">
@@ -55,6 +57,8 @@
             {% endfor %}
         </div>
     </div>
+
+    {% include "elements/country_change_modal.html" %}
 {% endblock body %}
 
 <!-- Mobile -->
