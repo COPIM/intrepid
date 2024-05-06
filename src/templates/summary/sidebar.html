@@ -14,7 +14,7 @@
             <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month
                 contract
             </li>
-            <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+            <li><i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
             {% if package.meta_packages %}
                 <li>
                     <i class="fa fa-box"> </i> Included in
