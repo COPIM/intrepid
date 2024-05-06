@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 
 from initiatives import models as im
-from package import models as pm
+from package import models as pm, utils as pu
 from thoth import models
 from cms import models as cms_models
 
@@ -78,10 +78,18 @@ def summary_package_initiative(
         initiative=initiative,
     ).order_by("sequence")
 
+    package = initiative.packages.filter(active=True).first()
+    request.session.get('country')
+    if request.session.get('country', None):
+        pu.add_pre_calc_to_objects(
+            request.session.get('country'),
+            [package],
+        )
+
     template = "summary/summary.html"
     context = {
         "initiative": initiative,
-        "package": initiative.packages.filter(active=True).first(),
+        "package": package,
         "package_or_initiative": package_or_initiative,
         "identifier": identifier,
         "works": work_list[:6],
@@ -177,6 +185,17 @@ def summary_meta_package(request, package_id) -> HttpResponse:
         try:
             package = pm.MetaPackage.objects.get(pk=package_id, active=True)
             package_type = "meta"
+            if request.session.get('country', None):
+                try:
+                    package.pre_calc = pm.PreCalcMinMax.objects.get(
+                        country__code=request.session.get('country'),
+                        meta_package=package,
+                    )
+                except pm.PreCalcMinMax.DoesNotExist:
+                    package.pre_calc = pm.PreCalcMinMax.objects.get(
+                        country__currency=request.site.fallback_currency,
+                        meta_package=package,
+                    )
         except pm.MetaPackage.DoesNotExist:
             raise Http404
 

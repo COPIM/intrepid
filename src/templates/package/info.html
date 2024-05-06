@@ -37,7 +37,7 @@
         </div>
         <div class="col">
             <span class="colinfo">
-                <i class="fa fa-edit"></i> {{ package.pricing_display }}
+                <i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}
             </span>
         </div>
         <div class="col-2"></div>
@@ -132,7 +132,7 @@
                             <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                             initiatives{% endif %}</li>
                         <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</li>
-                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+                        <li><i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
                         {% if package.meta_packages %}
                             <li>
                                 <i class="fa fa-box"> </i> Included in
@@ -260,7 +260,7 @@
                             <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                             initiatives{% endif %}</li>
                         <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</li>
-                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+                        <li><i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
                         {% if package.meta_packages %}
                             <li>
                                 <i class="fa fa-box"> </i> Included in
