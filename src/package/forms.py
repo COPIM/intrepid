@@ -750,3 +750,23 @@ class MediaFileForm(forms.ModelForm):
             file.save()
 
         return file
+
+
+class CountryForm(forms.Form):
+    country = forms.ModelChoiceField(
+        queryset=models.Country.objects.exclude(
+            name__in=["EUROZONE", "Eurozone", "eurozone"]
+        ),
+        help_text="Select your preferred country.",
+        label="Countries",
+    )
+
+    def __init__(self, *args, **kwargs):
+        session_country_code = kwargs.pop('session_country_code')
+        super(CountryForm, self).__init__(*args, **kwargs)
+        if session_country_code:
+            country = models.Country.objects.filter(
+                code=session_country_code,
+            ).first()
+            if country:
+                self.fields['country'].initial = country.pk

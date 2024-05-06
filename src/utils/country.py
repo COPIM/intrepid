@@ -18,8 +18,12 @@ def get_ip_address(request):
     return ip
 
 
-def get_iso_country_code(request):
+def get_iso_country_from_request(request):
     ip = get_ip_address(request)
+    return get_iso_country_code(ip)
+
+
+def get_iso_country_code(ip):
     db_path = os.path.join(
         settings.BASE_DIR,
         'utils',
@@ -31,6 +35,6 @@ def get_iso_country_code(request):
         response = reader.country(ip)
         return response.country.iso_code if response.country.iso_code else 'OTHER'
     except AddressNotFoundError:
-        if ip == '127.0.0.1':
-            return "GB"
-        return 'OTHER'
+        return "GB"
+
+

@@ -79,6 +79,8 @@
                     </div>
                 </div>
             </form>
+            {% country_code_to_name as country_name %}
+            <p>Pricing on the page below is based on your detected or set country, {{ country_name|title }}. <a href="#" data-toggle="modal" data-target="#country_change_modal">Change your country</a>.</p>
         </div>
     </div>
     {% endif %}
@@ -95,6 +97,7 @@
             {% endfor %}
         </div>
     </div>
+    {% include "elements/country_change_modal.html" %}
 {% endblock body %}
 
 <!-- Mobile -->
