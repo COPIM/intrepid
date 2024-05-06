@@ -50,9 +50,11 @@ def country_middleware(get_response):
     """
 
     def middleware(request):
-        request.session['country'] = country.get_iso_country_code(
-            request,
-        )
+        if not request.session.get('country'):
+            request.session['country'] = country.get_iso_country_from_request(
+                request,
+            )
+            request.session['country'] = 'GB'
 
         return get_response(request)
 

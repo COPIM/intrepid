@@ -50,17 +50,10 @@ def initiative_list(request) -> HttpResponse:
     )
 
     if request.session.get('country', None):
-        for package in packages:
-            try:
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country__code=request.session.get('country'),
-                    package=package,
-                )
-            except models.PreCalcMinMax.DoesNotExist:
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country=package.default_country,
-                    package=package,
-                )
+        packages = utils.add_pre_calc_to_objects(
+            request.session.get('country'),
+            packages,
+        )
 
     initiative = request.GET.get("initiative")
     subject = request.GET.get("subject")
@@ -98,6 +91,9 @@ def initiative_list(request) -> HttpResponse:
         "standards": vocab_models.StandardVocab.objects.all(),
         "get_standards": standards,
         "initiatives": initiatives,
+        "country_form": forms.CountryForm(
+            session_country_code=request.session['country']
+        ),
     }
     return render(
         request,
@@ -134,6 +130,9 @@ def collective_list(request) -> HttpResponse:
         "meta_packages": meta_packages,
         "search_on": False,
         "collectives_only": True,
+        "country_form": forms.CountryForm(
+            session_country_code=request.session['country']
+        ),
     }
     return render(
         request,
@@ -2229,3 +2228,16 @@ def new_order_complete(request, order_id) -> HttpResponse:
         template,
         context,
     )
+
+
+def change_session_country(request):
+    if request.POST and 'country' in request.POST:
+        country_id = request.POST.get('country')
+        try:
+            country = models.Country.objects.get(pk=country_id)
+            request.session['country'] = country.code
+        except models.Country.DoesNotExist:
+            pass
+        return redirect(
+            request.POST.get('next')
+        )

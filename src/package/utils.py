@@ -1278,3 +1278,35 @@ def get_user_currency(identifier, identifier_type) -> "models.Country":
         country = models.Country.objects.filter(pk=country_pk).first()
 
     return country
+
+
+def add_pre_calc_to_objects(country_code, packages):
+    country = models.Country.objects.get(
+        code=country_code
+    )
+
+    for package in packages:
+        try:
+            package.pre_calc = models.PreCalcMinMax.objects.get(
+                country=country,
+                package=package,
+            )
+        except models.PreCalcMinMax.DoesNotExist:
+            try:
+                catch_all_country = models.Country.objects.get(
+                    catch_all=True,
+                    currency=country.currency,
+                )
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country=catch_all_country,
+                    package=package,
+                )
+            except (
+                models.Country.DoesNotExist,
+                models.PreCalcMinMax.DoesNotExist
+            ):
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country=package.default_country,
+                    package=package,
+                )
+    return packages

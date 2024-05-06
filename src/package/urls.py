@@ -158,4 +158,5 @@ urlpatterns = [
          media_views.list_media_files, name='media_files'),
     path('<int:package_id>/initiative/<int:initiative_id>/media_files/<int:file_id>/',
          media_views.download_media_file, name='download_media_file'),
+    path('change_country/', views.change_session_country, name='change_session_country'),
 ]
