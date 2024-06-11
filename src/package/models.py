@@ -1787,3 +1787,10 @@ class PreCalcMinMax(models.Model):
             ),
             self.country.currency,
         )
+
+    def get_package(self):
+        if self.package:
+            return self.package.name
+        if self.meta_package:
+            return self.meta_package
+        return 'No package associated with pre calc price'

@@ -186,16 +186,10 @@ def summary_meta_package(request, package_id) -> HttpResponse:
             package = pm.MetaPackage.objects.get(pk=package_id, active=True)
             package_type = "meta"
             if request.session.get('country', None):
-                try:
-                    package.pre_calc = pm.PreCalcMinMax.objects.get(
-                        country__code=request.session.get('country'),
-                        meta_package=package,
-                    )
-                except pm.PreCalcMinMax.DoesNotExist:
-                    package.pre_calc = pm.PreCalcMinMax.objects.get(
-                        country__currency=request.site.fallback_currency,
-                        meta_package=package,
-                    )
+                pu.add_pre_calc_to_meta_objects(
+                    request.session.get('country'),
+                    [package],
+                )
         except pm.MetaPackage.DoesNotExist:
             raise Http404
 
