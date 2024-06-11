@@ -113,17 +113,10 @@ def collective_list(request) -> HttpResponse:
     ).order_by("-recommended", "name")
 
     if request.session.get('country', None):
-        for mp in meta_packages:
-            try:
-                mp.pre_calc = models.PreCalcMinMax.objects.get(
-                    country__code=request.session.get('country'),
-                    meta_package=mp,
-                )
-            except models.PreCalcMinMax.DoesNotExist:
-                mp.pre_calc = models.PreCalcMinMax.objects.get(
-                    country__currency=request.site.fallback_currency,
-                    meta_package=mp,
-                )
+        utils.add_pre_calc_to_meta_objects(
+            request.session.get('country'),
+            meta_packages,
+        )
 
     template = "base/frontend/quote/collective_list.html"
     context = {

@@ -3,7 +3,7 @@ from pprint import pprint
 
 from django.core.management.base import BaseCommand
 
-from package.models import Package, MetaPackage, PreCalcMinMax
+from package.models import Package, MetaPackage, PreCalcMinMax, Country
 from package.utils import get_price_for_package
 
 
@@ -64,18 +64,31 @@ class Command(BaseCommand):
                         }
         for package, country in package_list.items():
             for c, values in country.items():
-                PreCalcMinMax.objects.create(
+                PreCalcMinMax.objects.get_or_create(
                     country=c,
                     package=package,
                     min_amount=values['min'],
                     max_amount=values['max'],
                 )
-        pprint(meta_package_list)
         for package, country in meta_package_list.items():
             for c, values in country.items():
-                PreCalcMinMax.objects.create(
+                PreCalcMinMax.objects.get_or_create(
                     meta_package=package,
                     country=c,
                     min_amount=values['min'],
                     max_amount=values['max'],
                 )
+
+        # Loop through catch all countries and delete local values in favour
+        # of the catch all pricing.
+        for country in Country.objects.filter(catch_all=True):
+            PreCalcMinMax.objects.filter(
+                country__currency=country.currency,
+            ).exclude(
+                country=country,
+            ).delete()
+
+        for precalc in PreCalcMinMax.objects.all().order_by('package', 'meta_package', 'country'):
+            print(
+                f"{precalc.get_package()} {precalc}"
+            )

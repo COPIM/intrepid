@@ -1310,3 +1310,36 @@ def add_pre_calc_to_objects(country_code, packages):
                     package=package,
                 )
     return packages
+
+
+def add_pre_calc_to_meta_objects(country_code, packages):
+    country = models.Country.objects.get(
+        code=country_code
+    )
+
+    for package in packages:
+        try:
+            package.pre_calc = models.PreCalcMinMax.objects.get(
+                country=country,
+                meta_package=package,
+            )
+        except models.PreCalcMinMax.DoesNotExist:
+            try:
+                catch_all_country = models.Country.objects.get(
+                    catch_all=True,
+                    currency=country.currency,
+                )
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country=catch_all_country,
+                    meta_package=package,
+                )
+            except (
+                models.Country.DoesNotExist,
+                models.PreCalcMinMax.DoesNotExist
+            ):
+                package.pre_calc = models.PreCalcMinMax.objects.get(
+                    country=package.default_country,
+                    meta_package=package,
+                )
+    return packages
+
