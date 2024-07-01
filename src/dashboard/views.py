@@ -212,16 +212,21 @@ def generate_graph(books):
     """
     # a list of colours to loop through for the books published
     colours = [
-        "rgba(210, 0, 0, 1)",
+        "rgba(68, 119, 179, 1)",
+        "rgba(102, 204, 238, 1)",
+        "rgba(34, 136, 51, 1)",
+        "rgba(204, 187, 68, 1)",
+        "rgba(238, 102, 119, 1)",
+        "rgba(170, 51, 119, 1)",
+        "rgba(255, 255, 255, 1)",
         "rgba(0, 0, 0, 1)",
-        "rgba(210, 214, 222, 1)",
     ]
 
     # see if we have any stats in the DB
     stats = (
         thoth_models.Stats.objects.all()
-        .order_by("year")
         .select_related("publisher")
+        .order_by("year")
     )
 
     # variable initialization
@@ -233,16 +238,19 @@ def generate_graph(books):
     final_publishers = {}
 
     for stat in stats:
+        if int(stat.year) < 2000:
+            continue
+
         # create the years list
         if stat.year not in years:
             years.append(stat.year)
 
         # add the publisher to the publishers list
         if stat.publisher not in publishers:
-            publishers[stat.publisher] = []
+            publishers[stat.publisher] = {}
 
         # add the data to a list
-        publishers[stat.publisher].append(stat.book_count)
+        publishers[stat.publisher][stat.year] = stat.book_count
 
         # count publishers
         publisher_count = len(publishers)
@@ -259,6 +267,8 @@ def generate_graph(books):
         # create a json template for this publisher
         pub_template = create_js_template(colours[indexer], k, v)
 
+        print(pub_template)
+
         # add the publisher template to the list
         publisher_templates.append(pub_template)
 
@@ -266,6 +276,7 @@ def generate_graph(books):
 
     # return labels and values to the dashboard
     labels = sorted(years)[:-1]
+
     return labels, publisher_count, publisher_templates
 
 
@@ -286,6 +297,6 @@ def create_js_template(color, publisher_name, publisher_data):
         "pointStrokeColor": "#c1c7d1",
         "pointHighlightFill": "#fff",
         "pointHighlightStroke": "rgba(220,220,220,1)",
-        "data": publisher_data,
+        "data": list(publisher_data.values()),
     }
     return pub_template
