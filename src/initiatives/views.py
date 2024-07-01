@@ -188,11 +188,11 @@ def user_initiatives(request) -> HttpResponse:
     :return: an HTTP response
     """
     if request.user.is_staff:
-        users_initiatives = models.Initiative.objects.all()
+        users_initiatives = models.Initiative.objects.all().prefetch_related("users").prefetch_related("users__profile")
     else:
         users_initiatives = models.Initiative.objects.filter(
             users=request.user,
-        )
+        ).prefetch_related("users").prefetch_related("users__profile")
     template = "initiatives/user_initiatives.html"
     context = {
         "users_initiatives": users_initiatives,
