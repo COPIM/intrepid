@@ -61,6 +61,8 @@ def index(request) -> HttpResponse:
         book_count.book_count = count
         book_count.save()
 
+        book_count = book_count.book_count
+
     books = thoth_models.Work.objects.all()
 
     # this catches instances where a user doesn't have a profile
