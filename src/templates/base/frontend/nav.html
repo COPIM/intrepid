@@ -28,7 +28,7 @@
                     </li>
                     <li class="lower-nav-item"><a href="{% url "all_books" %}">Catalogue</a>
                     </li>
-                    <li class="lower-nav-item"><a href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' %}</a>
+                    <li class="lower-nav-item"><a href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' prefetched %}</a>
                     </li>
                 </ul>
             </div>
@@ -113,7 +113,7 @@
         <hr/>
 
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' %}</a>
+            <a class="nav-link" href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' prefetched %}</a>
         </li>
 
         <hr/>
