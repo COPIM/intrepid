@@ -70,7 +70,7 @@ def variables_middleware(get_response):
 
     def middleware(request):
         try:
-            setup = intrepid_models.SiteSetup.objects.all().order_by("pk")[0]
+            setup = intrepid_models.SiteSetup.objects.first()
         except IndexError:
             setup = intrepid_models.SiteSetup()
             setup.save()
