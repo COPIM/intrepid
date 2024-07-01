@@ -100,8 +100,14 @@ class Command(BaseCommand):
         affiliations = []
 
         for book in books:
+            book_country = {}
             for contribution in book.contribution_set.all():
                 for institution in contribution.institutions.all():
+                    # only count each country once per book
+                    if institution.country_code in book_country:
+                        continue
+                    else:
+                        book_country[institution.country_code] = True
                     affiliations.append(institution)
 
         for affil in affiliations:

@@ -267,8 +267,6 @@ def generate_graph(books):
         # create a json template for this publisher
         pub_template = create_js_template(colours[indexer], k, v)
 
-        print(pub_template)
-
         # add the publisher template to the list
         publisher_templates.append(pub_template)
 
