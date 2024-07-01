@@ -18,7 +18,10 @@ def index(request):
     final_prefetched = {o.key: o for o in cms_models.SiteText.objects.all()}
 
     # Generate an initiative if one does not exist.
-    if models.Initiative.objects.all().count() == 0:
+    try:
+        first = models.Initiative.objects.first()
+
+    except models.Initiative.DoesNotExist:
         initiative, c = models.Initiative.objects.get_or_create(
             name="Test Initiative",
             defaults={
@@ -27,8 +30,6 @@ def index(request):
                 "active": True,
             },
         )
-    else:
-        initiative = None
 
     news_items = cms_models.SiteWideNewsItem.objects.all().order_by("order")[
         0:4
@@ -36,11 +37,13 @@ def index(request):
 
     quotes = cms_models.HomePageQuote.objects.all().order_by("order")[0:4]
 
+    news_items_exists = cms_models.SiteWideNewsItem.objects.exists()
+
     context = {
-        "initiative": initiative,
+        "news_items_exists": news_items_exists,
         "news_items": news_items,
         "quotes": quotes,
-        "prefetched": final_prefetched
+        "prefetched": final_prefetched,
     }
     template = "base/frontend/index.html"
     return render(request, template, context)
