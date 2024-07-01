@@ -222,7 +222,7 @@
     </div>
     {% endif %}
 
-    {% if news_items.count > 0 %}
+    {% if news_items_exists %}
     <div class="news-mobile container-fluid d-sm-block d-xs-block d-md-none">
         <div class="news-mobile">
             <h1>News</h1>
@@ -497,7 +497,7 @@
     </div>
 
     {% endif %}
-    {% if news_items.count > 0 %}
+    {% if news_items_exists %}
     <div class="container-fluid pale-blue d-none d-md-block">
         <div class="news">
             <a href="{% url 'sitewide_news' %}"><h1>News</h1></a>
