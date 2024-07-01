@@ -44,6 +44,14 @@ class Stats(models.Model):
     book_count = models.IntegerField(blank=True, null=True)
 
 
+class OverallStats(models.Model):
+    """
+    A model to store overall stats about the Thoth database
+    """
+
+    book_count = models.IntegerField(blank=True, null=True)
+
+
 class CountryStat(models.Model):
     """
     A model to store country stats

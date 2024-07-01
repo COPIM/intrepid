@@ -52,13 +52,22 @@ def index(request) -> HttpResponse:
     """
     template = "dashboard/dashboard_index.html"
 
+    try:
+        book_count = thoth_models.OverallStats.objects.first()
+        book_count = book_count.book_count
+    except AttributeError:
+        book_count = thoth_models.OverallStats()
+        count = thoth_models.Work.objects.all().count()
+        book_count.book_count = count
+        book_count.save()
+
     books = thoth_models.Work.objects.all()
-    book_count = books.count()
 
     # this catches instances where a user doesn't have a profile
     try:
         profile = request.user.profile
-        profile.save()
+        if not profile:
+            raise acc_models.Profile.DoesNotExist
 
     except acc_models.Profile.DoesNotExist:
         request.user.profile = acc_models.Profile()
@@ -207,7 +216,11 @@ def generate_graph(books):
     ]
 
     # see if we have any stats in the DB
-    stats = thoth_models.Stats.objects.all().order_by("year")
+    stats = (
+        thoth_models.Stats.objects.all()
+        .order_by("year")
+        .select_related("publisher")
+    )
 
     # variable initialization
     publishers = {}
