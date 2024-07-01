@@ -27,7 +27,7 @@ Initiatives
                         <th>Name</th>
                         <th>Managers</th>
                         <th>Active</th>
-                        <th># of Packages</th>
+                        <!--<th># of Packages</th>-->
                         <th>Add New Package</th>
                         <th>View Packages</th>
                         <th>Featured Books</th>
@@ -43,7 +43,7 @@ Initiatives
                         <td><a href="{% url 'initiative_edit' initiative.pk %}">{{ initiative.name }}</a></td>
                         <td>{% for account in initiative.users.all %}{{ account.profile.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ initiative.active_display }}</td>
-                        <td>{{ initiative.packages.count }}</td>
+
                         <td><a href="{% url 'start_package' initiative.pk %}">Add New Package</a></td>
                         <td><a href="{% url 'initiative_packages' initiative.pk %}">View Packages</a></td>
                         <td><a href="{% url 'featured_books' initiative.pk %}">Featured Books</a></td>
