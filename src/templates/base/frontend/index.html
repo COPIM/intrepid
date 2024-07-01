@@ -26,10 +26,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center">{% get_site_text 'index_header' %}</div>
+                <div class="col text-center">{% get_site_text 'index_header' prefetched %}</div>
             </div>
             <div class="row">
-                <div class="col text-center"><span class="blurb">{% get_site_text 'index_sub_header' %}</span>
+                <div class="col text-center"><span class="blurb">{% get_site_text 'index_sub_header' prefetched %}</span>
                 </div>
             </div>
             <div class="row">
@@ -44,10 +44,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_1_header' %}</h2></div>
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_1_header' prefetched %}</h2></div>
             </div>
             <div class="row">
-                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_1_body' %}</p></div>
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_1_body' prefetched %}</p></div>
             </div>
 
             <div class="col-12">
@@ -60,10 +60,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_2_header' %}</h2></div>
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_2_header' prefetched %}</h2></div>
             </div>
             <div class="row">
-                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_2_body' %}</p></div>
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_2_body' prefetched %}</p></div>
             </div>
 
             <div class="col-12">
@@ -76,10 +76,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_3_header' %}</h2></div>
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_3_header' prefetched %}</h2></div>
             </div>
             <div class="row">
-                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_3_body' %}</p></div>
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_3_body' prefetched %}</p></div>
             </div>
             <div class="col-12">
                 <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button">Apply for Membership</a>
@@ -91,10 +91,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_4_header' %}</h2></div>
+                <div class="col text-center section-break"><h2>{% get_site_text 'index_col_4_header' prefetched %}</h2></div>
             </div>
             <div class="row">
-                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_4_body' %}</p></div>
+                <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_4_body' prefetched %}</p></div>
             </div>
         </div>
 
@@ -102,25 +102,25 @@
 
     <div class="container-fluid d-sm-block d-xs-block d-md-none">
         <div class="take-action-mobile text-center">
-            <h1>{% get_site_text 'action_header' %}</h1>
+            <h1>{% get_site_text 'action_header' prefetched %}</h1>
             <div class="row purple-foreground white-background libraries-mobile">
                 <div class="col">
-                    <h2>{% get_site_text 'action_col_1_header' %}</h2><br/>
-                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' %}</p>
+                    <h2>{% get_site_text 'action_col_1_header' prefetched %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' prefetched %}</p>
                     <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="Libraries"></img></p>
                     <ul class="benefit text-left">
-                        {% get_site_text 'action_col_1_list' %}
+                        {% get_site_text 'action_col_1_list' prefetched %}
                     </ul>
                 </div>
             </div>
 
             <div class="row bright-blue-foreground white-background authors-mobile">
                 <div class="col">
-                    <h2>{% get_site_text 'action_col_2_header' %}</h2><br/>
-                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' %}</p>
+                    <h2>{% get_site_text 'action_col_2_header' prefetched %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' prefetched %}</p>
                     <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="Authors and readers"></img></p>
                     <ul class="benefit text-left">
-                        {% get_site_text 'action_col_2_list' %}
+                        {% get_site_text 'action_col_2_list' prefetched %}
                     </ul>
                 </div>
             </div>
@@ -128,12 +128,12 @@
 
             <div class="row dark-blue-foreground white-background publishers-mobile">
                 <div class="col">
-                    <h2>{% get_site_text 'action_col_3_header' %}</h2><br/>
-                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' %}</p>
+                    <h2>{% get_site_text 'action_col_3_header' prefetched %}</h2><br/>
+                    <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' prefetched %}</p>
                     <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="Publishers"></img>
                     </p>
                     <ul class="benefit text-left">
-                        {% get_site_text 'action_col_2_list' %}
+                        {% get_site_text 'action_col_2_list' prefetched %}
                     </ul>
                 </div>
             </div>
@@ -144,7 +144,7 @@
     {%  if quotes.0.quotation %}
     <div class="working-together-mobile container-fluid d-sm-block d-xs-block d-md-none">
         <div class="working-together-mobile text-center working-together-mobile-1">
-            <h1>{% get_site_text 'working_together' %}</h1>
+            <h1>{% get_site_text 'working_together' prefetched %}</h1>
 
             <div class="working-together-mobile-block-1 working-together-mobile-block">
                 <div class="row working-together-image-mobile">
@@ -284,9 +284,9 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-5 home-text">
-                    {% get_site_text 'index_header' %}
+                    {% get_site_text 'index_header' prefetched %}
                     <br/>
-                    <span class="blurb">{% get_site_text 'index_sub_header' %}</span>
+                    <span class="blurb">{% get_site_text 'index_sub_header' prefetched %}</span>
                     <br/><br/>
                     <button class="pill_button video-button" href="#youTubeModal" data-toggle="modal">Watch Video</button>
                 </div>
@@ -304,17 +304,17 @@
                 <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_clip.svg" %}" alt="An image representing diversity"></div>
             </div>
             <div class="row home_heads">
-                <div class="col-3"><h2>{% get_site_text 'index_col_1_header' %}</h2></div>
-                <div class="col-3"><h2>{% get_site_text 'index_col_2_header' %}</h2></div>
-                <div class="col-3"><h2>{% get_site_text 'index_col_3_header' %}</h2></div>
-                <div class="col-3"><h2>{% get_site_text 'index_col_4_header' %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_1_header' prefetched %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_2_header' prefetched %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_3_header' prefetched %}</h2></div>
+                <div class="col-3"><h2>{% get_site_text 'index_col_4_header' prefetched %}</h2></div>
             </div>
 
             <div class="row home_blurbs">
-                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_1_body' %}</p></div>
-                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_2_body' %}</p></div>
-                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_3_body' %}</p></div>
-                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_4_body' %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_1_body' prefetched %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_2_body' prefetched %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_3_body' prefetched %}</p></div>
+                <div class="col-3"><p class="blurb text-center">{% get_site_text 'index_col_4_body' prefetched %}</p></div>
             </div>
         </div>
     </div>
@@ -323,7 +323,7 @@
 
         <div class="take-action">
             <div class="row">
-                <div class="col text-center"><h1>{% get_site_text 'action_header' %}</h1></div>
+                <div class="col text-center"><h1>{% get_site_text 'action_header' prefetched %}</h1></div>
             </div>
 
             <!-- headings -->
@@ -332,13 +332,13 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-top-action">
-                            <h2 class="action-heading">{% get_site_text 'action_col_1_header' %}</h2>
+                            <h2 class="action-heading">{% get_site_text 'action_col_1_header' prefetched %}</h2>
                         </div>
                         <div class="col-4 white-background bright-blue-foreground text-center dash-right-border middle-border-top-action">
-                            <h2 class="action-heading">{% get_site_text 'action_col_2_header' %}</h2>
+                            <h2 class="action-heading">{% get_site_text 'action_col_2_header' prefetched %}</h2>
                         </div>
                         <div class="col-4 white-background dark-blue-foreground text-center right-border-top-action">
-                            <h2 class="action-heading">{% get_site_text 'action_col_3_header' %}</h2></div>
+                            <h2 class="action-heading">{% get_site_text 'action_col_3_header' prefetched %}</h2></div>
                     </div>
                 </div>
             </div>
@@ -349,13 +349,13 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-only-action">
-                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' %}</p>
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' prefetched %}</p>
                         </div>
                         <div class="col-4 white-background bright-blue-foreground dash-right-border middle-border-action">
-                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' %}</p>
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' prefetched %}</p>
                         </div>
                         <div class="col-4 white-background dark-blue-foreground right-border-action">
-                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' %}</p>
+                            <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' prefetched %}</p>
                         </div>
                     </div>
                 </div>
@@ -388,17 +388,17 @@
                     <div class="row">
                         <div class="col-4 text-left white-background purple-foreground dash-right-border left-border-only-action">
                             <ul class="benefit">
-                                {% get_site_text 'action_col_1_list' %}
+                                {% get_site_text 'action_col_1_list' prefetched %}
                             </ul>
                         </div>
                         <div class="col-4 white-background bright-blue-foreground dash-right-border text-left middle-border-action">
                             <ul class="benefit">
-                                {% get_site_text 'action_col_2_list' %}
+                                {% get_site_text 'action_col_2_list' prefetched %}
                             </ul>
                         </div>
                         <div class="col-4 white-background dark-blue-foreground text-left right-border-action">
                             <ul class="benefit">
-                                {% get_site_text 'action_col_3_list' %}
+                                {% get_site_text 'action_col_3_list' prefetched %}
                             </ul>
                         </div>
                     </div>
@@ -426,7 +426,7 @@
     {% if quotes.0.quotation %}
     <div class="container-fluid light-blue d-none d-md-block">
         <div class="working-together">
-            <h1>{% get_site_text 'working_together' %}</h1>
+            <h1>{% get_site_text 'working_together' prefetched %}</h1>
             <div class="row pill-row">
                 <div class="col">
                     {% for quote in quotes %}{% if forloop.first %}<button class="first-pill punctum publisher-pill" id="working-together-1">{{ quote.pill_name}}</button>{% else %}<button id="working-together-{{ forloop.counter }}" class="publisher-pill mid-pill mattering publisher-pill">{{ quote.pill_name}}</button>{% endif %}{% endfor %}<button onclick="location.href='{% url "public_initiative_list" %}'" class="last-pill publisher-pill">&gt;</button>

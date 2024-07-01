@@ -14,6 +14,9 @@ def index(request):
     :return: a response
     """
 
+    # prefetch all CMS text objects to avoid template hits
+    final_prefetched = {o.key: o for o in cms_models.SiteText.objects.all()}
+
     # Generate an initiative if one does not exist.
     if models.Initiative.objects.all().count() == 0:
         initiative, c = models.Initiative.objects.get_or_create(
@@ -37,6 +40,7 @@ def index(request):
         "initiative": initiative,
         "news_items": news_items,
         "quotes": quotes,
+        "prefetched": final_prefetched
     }
     template = "base/frontend/index.html"
     return render(request, template, context)
