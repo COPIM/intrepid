@@ -700,6 +700,9 @@ def who_we_are_config(request) -> HttpResponse:
     secretariat = models.WhoWeAreProfileItem.objects.filter(
         section="secretariat"
     ).order_by("order")
+    finance = models.WhoWeAreProfileItem.objects.filter(
+        section="finance"
+    ).order_by("order")
     previous = models.WhoWeAreProfileItem.objects.filter(
         section="previous"
     ).order_by("order")
@@ -710,6 +713,7 @@ def who_we_are_config(request) -> HttpResponse:
         "members": members,
         "managers": managers,
         "secretariat": secretariat,
+        "finance": finance,
         "previous": previous,
         "sort_url": reverse("who_we_are_order"),
     }
