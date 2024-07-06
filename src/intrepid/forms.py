@@ -26,6 +26,7 @@ class SiteSetupForm(forms.ModelForm):
             "management_team_description",
             "membership_committee_description",
             "secretariat_description",
+            "finance_committee_description",
             "fee_amount",
         )
 

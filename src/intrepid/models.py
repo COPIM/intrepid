@@ -81,6 +81,12 @@ class SiteSetup(models.Model):
         null=True,
         verbose_name="Description of the Membership Committee",
     )
+    finance_committee_description = models.TextField(
+        default="",
+        blank=True,
+        null=True,
+        verbose_name="Description of the Finance Committee",
+    )
     management_team_description = models.TextField(
         default="",
         blank=True,

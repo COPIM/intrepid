@@ -89,6 +89,9 @@ def who_we_are(request):
     secretariat = cms_models.WhoWeAreProfileItem.objects.filter(
         section="secretariat"
     ).order_by("order")
+    finance = cms_models.WhoWeAreProfileItem.objects.filter(
+        section="finance"
+    ).order_by("order")
     previous = cms_models.WhoWeAreProfileItem.objects.filter(
         section="previous"
     ).order_by("order")
@@ -99,6 +102,7 @@ def who_we_are(request):
         "members": members,
         "managers": managers,
         "secretariat": secretariat,
+        "finance": finance,
         "previous": previous,
     }
     return render(

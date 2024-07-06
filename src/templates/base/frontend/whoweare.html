@@ -29,7 +29,7 @@ Open Book Collective | Who We Are
             </ul>
         </div>
         <div class="col-9 text-center board-of-stewards">
-            <button class="left-pill-blue" onclick="location.href='#board-of-stewards'">Board of Stewards</button><button onclick="location.href='#membership-committee'" class="mid-pill-blue">Membership Committee</button><button onclick="location.href='#management-team'" class="mid-pill-blue">Management Team</button><button onclick="location.href='#secretariat'" class="right-pill-blue">Secretariat</button>
+            <!--<button class="left-pill-blue" onclick="location.href='#board-of-stewards'">Board of Stewards</button><button onclick="location.href='#membership-committee'" class="mid-pill-blue">Membership Committee</button><button onclick="location.href='#management-team'" class="mid-pill-blue">Management Team</button><button onclick="location.href='#secretariat'" class="right-pill-blue">Secretariat</button>-->
 
             <h2>Board of Stewards</h2><a id="board-of-stewards"></a>
 
@@ -204,6 +204,55 @@ Open Book Collective | Who We Are
             <div class="col-1"></div>
             <div class="col-10">
                 <p>{{ request.site.membership_committee_description }}</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <!-- this is all to get us back into the base flow-->
+    <div class="container d-none d-md-block grey-border">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <!-- back to main flow here -->
+    {% endif %}
+
+
+        {% if finance.count > 0 %}
+                <div class="row pill-row">
+                    <div class="col-3"></div>
+                    <div class="col-9 text-center board-of-stewards">
+                        <h2>Secretariat</h2><a id="finance"></a>
+                         <div class="row">
+                            {% for sec in finance %}
+                                <div class="col-4">
+                                    <div class="row circle-row">
+                                        <div class="col-12">{% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image" alt="{{ sec.display_name}}" />{% endif %}</div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-12"><p class="person">{{ sec.display_name }}</p>
+                                        <p class="institution">{{ sec.affiliation_line }}{% if sec.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ sec.pk }}">View Biography</a>{% endif %}</p></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- this block ends the container outside -->
+    </div> <!-- end col-10 -->
+    <div class="col-1"></div> <!-- end with extra padding col -->
+    </div> <!-- end row -->
+    </div> <!-- end container-fluid -->
+
+    <div class="container d-none d-md-block grey-border blue-row">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p>{{ request.site.finance_committee_description }}</p>
             </div>
             <div class="col-1"></div>
         </div>
