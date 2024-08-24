@@ -135,7 +135,11 @@ class EmailTemplate(models.Model):
                 },
             )
 
-            json_response = response.json()
+            try:
+                json_response = response.json()
+            except requests.exceptions.JSONDecodeError:
+                return ""
+
             if settings.DEBUG:
                 print(json_response)
 
