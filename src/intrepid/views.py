@@ -185,3 +185,26 @@ def export(request, target):
             )
     else:
         raise Http404
+
+
+def nav(request, page_name: str):
+    """
+    Render a site page
+    """
+
+    # get the page using page_expression
+    try:
+        page = cms_models.PageUpdate.objects.get(url_expression=page_name)
+    except cms_models.PageUpdate.DoesNotExist:
+        raise Http404
+
+    template = "base/frontend/cms_page.html"
+    context = {
+        "page": page,
+    }
+
+    return render(
+        request,
+        template,
+        context,
+    )

@@ -11,6 +11,7 @@ from django.shortcuts import (
 from django.views.decorators.http import require_POST
 from fluid_permissions import decorators
 
+import intrepid.views
 from cms import models, forms, utils
 from intrepid import diff_match_patch as dmp_module
 from intrepid.security import user_is_initiative_manager
@@ -245,16 +246,16 @@ def page_edit_or_create(
     version_form = forms.VersionForm(
         initial={
             "body": current_version.body if current_version else "",
-            "first_paragraph": current_version.first_paragraph
-            if current_version
-            else "",
-            "pre_break_content": current_version.pre_break_content
-            if current_version
-            else "",
+            "first_paragraph": (
+                current_version.first_paragraph if current_version else ""
+            ),
+            "pre_break_content": (
+                current_version.pre_break_content if current_version else ""
+            ),
             "pull_quote": current_version.pull_quote if current_version else "",
-            "show_quote_icons": current_version.show_quote_icons
-            if current_version
-            else True,
+            "show_quote_icons": (
+                current_version.show_quote_icons if current_version else True
+            ),
         },
         user=request.user,
     )
@@ -894,6 +895,58 @@ def fixed_page(request, page_string) -> HttpResponse:
         # "Terms and Conditions" and have it accidentally selected
         if page_object.initiative != instance.initiative:
             raise Http404
+
+        # if there's a nav entry, redirect
+        if (
+            page_object.url_expression is not None
+            and page_object.url_expression != ""
+        ):
+            return redirect(
+                intrepid.views.nav,
+                page_name=page_object.url_expression,
+            )
+
+        template = "base/frontend/cms_page.html"
+        context = {
+            "page": page_object,
+        }
+
+        return render(
+            request,
+            template,
+            context,
+        )
+
+    except IndexError:
+        raise Http404
+
+
+@staff_member_required
+def all_pages(request) -> HttpResponse:
+    """
+    View all pages
+    :param request: the request object
+    :return: HttpResponse object
+    """
+    pages = models.PageUpdate.objects.all()
+    template = "cms/all_pages.html"
+    context = {
+        "objects": pages,
+    }
+    return render(
+        request,
+        template,
+        context,
+    )
+
+
+@staff_member_required
+def page_render(request, page_id: int) -> HttpResponse:
+    """
+    Render a page
+    """
+    try:
+        page_object = get_object_or_404(models.PageUpdate, pk=page_id)
 
         template = "base/frontend/cms_page.html"
         context = {

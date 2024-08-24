@@ -14,6 +14,7 @@ class PageUpdateForm(forms.ModelForm):
         model = models.PageUpdate
         fields = (
             "title",
+            "url_expression",
             "abstract_paragraph",
             "display",
             "sequence",
