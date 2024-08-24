@@ -184,6 +184,10 @@ class PageUpdate(models.Model):
         null=True,
     )
 
+    url_expression = models.CharField(
+        max_length=255, verbose_name="URL expression", blank=True, null=True
+    )
+
     def __str__(self):
         return self.title
 
