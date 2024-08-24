@@ -120,6 +120,7 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("books/", include("thoth.urls")),
     path("manage/vocabs/", include("vocab.urls")),
+    path("nav/<str:page_name>", views.nav, name="nav"),
 ]
 
 if settings.DEBUG:

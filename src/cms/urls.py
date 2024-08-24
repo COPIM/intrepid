@@ -114,6 +114,16 @@ urlpatterns = [
         name="fixed_page",
     ),
     path(
+        "all_pages/",
+        views.all_pages,
+        name="all_pages",
+    ),
+    path(
+        "page_render/<int:page_id>/",
+        views.page_render,
+        name="page_render",
+    ),
+    path(
         "homepage_quotes/",
         views.homepage_quotes,
         name="homepage_quotes",
