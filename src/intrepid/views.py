@@ -5,10 +5,11 @@ from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
 from cms import models as cms_models
+
+from package import models as packagemodels
 from initiatives import models
 
 
-@cache_page(600)
 def index(request):
     """
     Site index for intrepid.
