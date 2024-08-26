@@ -633,6 +633,7 @@ def view_basket(request, basket_id) -> HttpResponse:
         site_percentage_value,
     ) = (None, None, None, None, None, None)
 
+
     if request.user.is_authenticated:
         basket = get_object_or_404(
             models.Basket,

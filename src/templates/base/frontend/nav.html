@@ -9,6 +9,7 @@
         <nav class="navbar-inverse nav-upper d-none d-md-block">
             <div class="container-fluid">
                 <ul class="flex-md-row nav navbar-upper">
+                    {% if request.basket %}<li><a href="{% url 'basket_detail' request.basket.pk %}"><i class="fa fa-shopping-basket" style="color:black"></i><sup>{{ request.basket_count }}</sup></a></li>{% endif %}
                     <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> Dashboard</a>
                     </li>
                     {% if request.site.enable_your_quotes_link %}

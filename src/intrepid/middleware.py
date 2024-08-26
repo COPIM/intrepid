@@ -50,11 +50,11 @@ def country_middleware(get_response):
     """
 
     def middleware(request):
-        if not request.session.get('country'):
-            request.session['country'] = country.get_iso_country_from_request(
+        if not request.session.get("country"):
+            request.session["country"] = country.get_iso_country_from_request(
                 request,
             )
-            request.session['country'] = 'GB'
+            request.session["country"] = "GB"
 
         return get_response(request)
 
@@ -83,6 +83,29 @@ def variables_middleware(get_response):
 
         request.matomo_site_url = settings.MATOMO_SITE_URL
         request.matomo_site_id = settings.MATOMO_SITE_ID
+
+        try:
+            if request.user.is_authenticated:
+                baskets = package_models.Basket.objects.filter(
+                    account=request.user,
+                    active=True,
+                )
+            else:
+                baskets = package_models.Basket.objects.filter(
+                    session_id=request.session.session_key,
+                    active=True,
+                )
+
+            request.basket = baskets.first()
+
+            request.basket_count = (
+                    request.basket.packages.count()
+                    + request.basket.meta_packages.count()
+            )
+        except package_models.Basket.DoesNotExist:
+            request.basket = None
+
+
 
         if hasattr(request, "user") and request.user.is_authenticated:
             # inject a document count into the request for the count on the
@@ -124,6 +147,8 @@ def variables_middleware(get_response):
 
             # active baskets
             request.active_baskets = request.user.basket_set.filter(active=True)
+
+
 
             # saved searches
             request.saved_searches = thoth_models.ThothSearch.objects.filter(
