@@ -442,6 +442,8 @@ class Command(BaseCommand):
             )[0]
 
             for affil in contribution.affiliations:
+                ror = None
+
                 try:
                     print(f"Trying to find {affil.institution.ror}")
 
@@ -457,6 +459,7 @@ class Command(BaseCommand):
 
                     contribution_model.institutions.add(inst)
                     new_good_institutions.append(inst)
+
                     try:
                         ror = RORRecord.objects.get(ror_id=inst.ror)
                         inst.country_code = ror.country
@@ -476,8 +479,9 @@ class Command(BaseCommand):
                     except:
                         pass
 
-                    inst.country_code = ror.country
-                    inst.save()
+                    if ror:
+                        inst.country_code = ror.country
+                        inst.save()
 
                     contribution_model.institutions.add(inst)
                     new_good_institutions.append(inst)
