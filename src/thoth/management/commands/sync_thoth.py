@@ -93,9 +93,11 @@ class Command(BaseCommand):
                 to_fetch.append(
                     {
                         "publisher": init.thoth_id,
-                        "endpoint": init.thoth_endpoint
-                        if init.thoth_endpoint
-                        else default_thoth_endpoint,
+                        "endpoint": (
+                            init.thoth_endpoint
+                            if init.thoth_endpoint
+                            else default_thoth_endpoint
+                        ),
                     }
                 )
 

@@ -70,6 +70,7 @@ class FTEForm(forms.Form):
         self.user_session = kwargs.pop("user_session")
         self.user = kwargs.pop("user")
         self.banding_types = kwargs.pop("banding_types")
+
         super(FTEForm, self).__init__(*args, **kwargs)
 
         if self.user:
@@ -112,38 +113,43 @@ class FTEForm(forms.Form):
 
         if self.fields["currency"].initial:
             for banding_type in self.banding_types:
-                session_string = "banding_type_{}".format(banding_type.pk)
-                choices = [["", "-----"]]
-                for vocab in banding_type.vocabs.all():
-                    choices.append([vocab.pk, vocab.text])
-                self.fields[session_string] = forms.ChoiceField(
-                    choices=choices,
-                    label=banding_type.name,
-                )
-                if self.user:
-                    account_banding_choice = (
-                        accm.AccountBandingChoices.objects.filter(
-                            account=self.user,
-                            banding_type=banding_type,
-                        ).first()
+
+                if banding_type.active:
+
+                    session_string = "banding_type_{}".format(banding_type.pk)
+                    choices = [["", "-----"]]
+                    for vocab in banding_type.vocabs.all():
+                        choices.append([vocab.pk, vocab.text])
+                    self.fields[session_string] = forms.ChoiceField(
+                        choices=choices,
+                        label=banding_type.name,
                     )
-                    self.fields[session_string].initial = (
-                        account_banding_choice.banding_type_vocab.pk
-                        if account_banding_choice
-                        else None
-                    )
-                else:
-                    self.fields[session_string].initial = self.user_session.get(
-                        session_string, None
+                    if self.user:
+                        account_banding_choice = (
+                            accm.AccountBandingChoices.objects.filter(
+                                account=self.user,
+                                banding_type=banding_type,
+                            ).first()
+                        )
+                        self.fields[session_string].initial = (
+                            account_banding_choice.banding_type_vocab.pk
+                            if account_banding_choice
+                            else None
+                        )
+                    else:
+                        self.fields[session_string].initial = (
+                            self.user_session.get(session_string, None)
+                        )
+
+                    self.fields[session_string].help_text = (
+                        banding_type.description
                     )
 
-                self.fields[session_string].help_text = banding_type.description
-
-                self.helper.layout.append(
-                    Layout(session_string),
-                )
-                if "currency" in self.changed_data:
-                    self.fields[session_string].required = False
+                    self.helper.layout.append(
+                        Layout(session_string),
+                    )
+                    if "currency" in self.changed_data:
+                        self.fields[session_string].required = False
 
         if "currency" in self.changed_data and self.fields.get("fte"):
             self.fields["fte"].required = False
@@ -260,12 +266,13 @@ class MetaPackageForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "Save"))
 
-        self.fields[
-            "contact"
-        ].label_from_instance = lambda obj: "%s %s (%s)" % (
-            obj.first_name,
-            obj.last_name,
-            obj.email,
+        self.fields["contact"].label_from_instance = (
+            lambda obj: "%s %s (%s)"
+            % (
+                obj.first_name,
+                obj.last_name,
+                obj.email,
+            )
         )
 
     def save(self, commit=True) -> models.MetaPackage:
@@ -762,11 +769,11 @@ class CountryForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        session_country_code = kwargs.pop('session_country_code')
+        session_country_code = kwargs.pop("session_country_code")
         super(CountryForm, self).__init__(*args, **kwargs)
         if session_country_code:
             country = models.Country.objects.filter(
                 code=session_country_code,
             ).first()
             if country:
-                self.fields['country'].initial = country.pk
+                self.fields["country"].initial = country.pk
