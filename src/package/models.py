@@ -823,7 +823,8 @@ class Basket(models.Model):
         Returns a set of packages that conflict with one another
         :return: a set of packages
         """
-        conflicting_packages = cache.get("conflicting_packages")
+        # conflicting_packages = cache.get("conflicting_packages")
+        conflicting_packages = None
 
         if not conflicting_packages:
             conflicting_packages = list()
@@ -844,9 +845,11 @@ class Basket(models.Model):
                     for conflict in conflicts:
                         conflicting_packages.append(conflict)
 
+            """
             cache.set(
                 "conflicting_packages", conflicting_packages, 5
             )  # 5 seconds
+            """
 
         return set(conflicting_packages)
 
