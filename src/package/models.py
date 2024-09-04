@@ -786,7 +786,8 @@ class Basket(models.Model):
         Returns a set of packages that are in this basket
         :return: a set of packages
         """
-        package_list = cache.get("package_list")
+        # package_list = cache.get("package_list")
+        package_list = None
 
         if not package_list:
             package_list = list()
@@ -796,7 +797,7 @@ class Basket(models.Model):
                 for package in meta_package.packages.all():
                     package_list.append(package)
 
-            cache.set("package_list", package_list, 5)  # 5 seconds
+            # cache.set("package_list", package_list, 5)  # 5 seconds
 
         return set(package_list)
 
