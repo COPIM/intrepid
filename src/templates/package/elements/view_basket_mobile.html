@@ -92,7 +92,7 @@
                     </div>
 
                     {% if basket.package_set %}
-                    {% include "package/elements/basket_form.html" %}
+                    {% include "package/elements/basket_form.html" with prefetched=prefetched %}
                     {% endif %}
 
                 </div>

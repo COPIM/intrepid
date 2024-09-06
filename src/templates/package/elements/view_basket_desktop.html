@@ -6,21 +6,21 @@
             <div class="col-3">
                 <div class="card contact-us-card">
                     <div class="card-body">
-                        <h3 class="card-title text-center">{% get_site_text 'discuss_quote' %}</h3>
+                        <h3 class="card-title text-center">{% get_site_text 'discuss_quote' prefetched %}</h3>
                         <div class="text-center">
                             <img class="img-fluid text-center"
                                  src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
                         </div>
                         <div class="text-center spacer-top-20">
                             <a class="contact-us-button"
-                               href="mailto:{{ request.site.contact_email }}">{% get_site_text_no_edit 'contact_us' %}</a>
+                               href="mailto:{{ request.site.contact_email }}">{% get_site_text_no_edit 'contact_us' prefetched %}</a>
                         </div>
                     </div>
                 </div>
             </div>
             {% endif %}
             <div class="col" id="form_start">
-                <h3>{% get_site_text 'quotation_packages' %}</h3>
+                <h3>{% get_site_text 'quotation_packages' prefetched %}</h3>
                 <form method="POST">
                     {% csrf_token %}
                     <table class="table package-table">
@@ -104,7 +104,7 @@
                     {% endif %}
                     <tr class="total">
                         <td>
-                            <strong>{% get_site_text 'totals' %}</strong>
+                            <strong>{% get_site_text 'totals' prefetched %}</strong>
                             {% if basket.conflicts %}
                                 <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
                                 </p>{% endif %}
@@ -128,14 +128,14 @@
                     {% if converted_total %}
                         <tr>
                             <td colspan="5">
-                                 <small>*{% get_site_text 'curr_con_warning' %}</small>
+                                 <small>*{% get_site_text 'curr_con_warning' prefetched %}</small>
                             </td>
                         </tr>
                     {% endif %}
                     {% if site_percentage %}
                         <tr>
                             <td>
-                                <strong>{% get_site_text 'obc_percentage' %}</strong>
+                                <strong>{% get_site_text 'obc_percentage' prefetched %}</strong>
                             </td>
                             <td colspan="4" class="text-right">
                                 {% for k,v in site_percentage.items %}
@@ -170,8 +170,8 @@
                 {% endif %}
 
                 {% if has_all_prices and basket.package_set %}
-                    <h3>{% get_site_text 'has_all_prices_head' %}</h3>
-                    {% get_site_text 'has_all_prices_text' %}
+                    <h3>{% get_site_text 'has_all_prices_head' prefetched %}</h3>
+                    {% get_site_text 'has_all_prices_text' prefetched %}
                     <form method="POST">
                         {% csrf_token %}
                         <p><button name="complete" class="btn btn-primary btn-obc-magenta">Proceed</button></p>
@@ -179,12 +179,12 @@
                 {% endif %}
 
                 <div class="col no-pad">
-                    <h3>{% get_site_text 'quotation_additional' %}</h3>
-                    {% get_site_text 'quotation_add_text' %}
+                    <h3>{% get_site_text 'quotation_additional' prefetched %}</h3>
+                    {% get_site_text 'quotation_add_text' prefetched %}
                     <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
                 </div>
                 {% if basket.package_set %}
-                {% include "package/elements/basket_form.html" %}
+                {% include "package/elements/basket_form.html" with prefetched=prefetched%}
                 {% endif %}
             </div>
             {% if mobile %}

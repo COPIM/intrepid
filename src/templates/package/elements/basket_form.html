@@ -1,8 +1,8 @@
 {% load static django_bootstrap5 conflicts crispy_forms_tags currency_display %}
 
 <div class="col no-pad">
-    <h3>{% get_site_text "quotation_proceed_h" %}</h3>
-    {% get_site_text "quotation_anongather" %}
+    <h3>{% get_site_text "quotation_proceed_h" prefetched %}</h3>
+    {% get_site_text "quotation_anongather" prefetched %}
     <form method="POST">
         {% csrf_token %}
         {% crispy fte_form %}
