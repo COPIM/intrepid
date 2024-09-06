@@ -26,6 +26,7 @@ from intrepid.utils import return_or_elsewhere
 from invoicing import models as invoicing_models
 from package import models, forms, utils
 from vocab import models as vocab_models
+from cms import models as cms_models
 
 
 def initiative_list(request) -> HttpResponse:
@@ -49,9 +50,9 @@ def initiative_list(request) -> HttpResponse:
         active=True,
     )
 
-    if request.session.get('country', None):
+    if request.session.get("country", None):
         packages = utils.add_pre_calc_to_objects(
-            request.session.get('country'),
+            request.session.get("country"),
             packages,
         )
 
@@ -92,7 +93,7 @@ def initiative_list(request) -> HttpResponse:
         "get_standards": standards,
         "initiatives": initiatives,
         "country_form": forms.CountryForm(
-            session_country_code=request.session['country']
+            session_country_code=request.session["country"]
         ),
     }
     return render(
@@ -112,9 +113,9 @@ def collective_list(request) -> HttpResponse:
         active=True,
     ).order_by("-recommended", "name")
 
-    if request.session.get('country', None):
+    if request.session.get("country", None):
         utils.add_pre_calc_to_meta_objects(
-            request.session.get('country'),
+            request.session.get("country"),
             meta_packages,
         )
 
@@ -124,7 +125,7 @@ def collective_list(request) -> HttpResponse:
         "search_on": False,
         "collectives_only": True,
         "country_form": forms.CountryForm(
-            session_country_code=request.session['country']
+            session_country_code=request.session["country"]
         ),
     }
     return render(
@@ -624,6 +625,9 @@ def view_basket(request, basket_id) -> HttpResponse:
     )
     identifier_type = "user" if request.user.is_authenticated else "session"
 
+    # prefetch all CMS text objects to avoid template hits
+    final_prefetched = {o.key: o for o in cms_models.SiteText.objects.all()}
+
     (
         site_percentage,
         currency_converted,
@@ -632,7 +636,6 @@ def view_basket(request, basket_id) -> HttpResponse:
         currency_conversion_total,
         site_percentage_value,
     ) = (None, None, None, None, None, None)
-
 
     if request.user.is_authenticated:
         basket = get_object_or_404(
@@ -739,9 +742,9 @@ def view_basket(request, basket_id) -> HttpResponse:
 
         # Create the order here.
         order = models.Order.objects.create(
-            associated_user=request.user
-            if request.user.is_authenticated
-            else None,
+            associated_user=(
+                request.user if request.user.is_authenticated else None
+            ),
             session_id=request.session.session_key,
             basket=basket,
             valid_period="{0} to {1}".format(
@@ -774,6 +777,7 @@ def view_basket(request, basket_id) -> HttpResponse:
         "converted_total": converted_total,
         "converted_currency": converted_currency,
         "user_currency": user_currency,
+        "prefetched": final_prefetched,
     }
     return render(
         request,
@@ -938,9 +942,9 @@ def create_checkout_documents(request, order_id=None) -> HttpResponse:
         # with the order
 
         models.PackageSignup.objects.create(
-            associated_user=request.user
-            if request.user.is_authenticated
-            else None,
+            associated_user=(
+                request.user if request.user.is_authenticated else None
+            ),
             associated_session=request.session.session_key,
             associated_order=order,
             associated_package=package,
@@ -1030,9 +1034,9 @@ def order_form(request, order_id) -> HttpResponse:
     form = forms.GeneratedForm(
         order=order,
         fields_required=True,
-        email_address=request.user.email
-        if request.user.is_authenticated
-        else "",
+        email_address=(
+            request.user.email if request.user.is_authenticated else ""
+        ),
     )
 
     if request.POST:
@@ -1040,9 +1044,9 @@ def order_form(request, order_id) -> HttpResponse:
             request.POST,
             order=order,
             fields_required=True,
-            email_address=request.user.email
-            if request.user.is_authenticated
-            else "",
+            email_address=(
+                request.user.email if request.user.is_authenticated else ""
+            ),
         )
         if form.is_valid():
             order.save_order_form(form)
@@ -2225,13 +2229,11 @@ def new_order_complete(request, order_id) -> HttpResponse:
 
 
 def change_session_country(request):
-    if request.POST and 'country' in request.POST:
-        country_id = request.POST.get('country')
+    if request.POST and "country" in request.POST:
+        country_id = request.POST.get("country")
         try:
             country = models.Country.objects.get(pk=country_id)
-            request.session['country'] = country.code
+            request.session["country"] = country.code
         except models.Country.DoesNotExist:
             pass
-        return redirect(
-            request.POST.get('next')
-        )
+        return redirect(request.POST.get("next"))

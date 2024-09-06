@@ -8,6 +8,7 @@ import babel.numbers
 import magic
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.db import models
@@ -540,11 +541,17 @@ class Package(BasePackage):
         E.g. price_bandings[BandingTypeCurrencyEntry][Country] = [Prices]
         :return: a dictionary of BandingTypeCurrencyEntries that contains
         """
-        banding_entries = self.bandingtypecurrencyentry_set.all()
-        price_objects = Price.objects.all()
+        # Fetch all related objects in one go
+        banding_entries = (
+            self.bandingtypecurrencyentry_set.all()
+            .select_related("banding_type_entry__banding_type", "country")
+            .prefetch_related("banding_type_entry__banding_type__vocabs")
+        )
+        price_objects = Price.objects.all().select_related("banding")
         prices = {}
 
-        # all available BandingTypeCurrencyEntries for this package
+        bandings = Banding.objects.all().select_related("banding_type")
+
         for banding_entry in banding_entries:
             prices[banding_entry] = {}
 
@@ -552,27 +559,40 @@ class Package(BasePackage):
             for (
                 v_banding
             ) in banding_entry.banding_type_entry.banding_type.vocabs.all():
-                # get a banding object
-                banding = Banding.objects.get(
-                    package=self,
-                    vocab=v_banding,
-                    banding_type=banding_entry.banding_type_entry.banding_type,
-                )
+                for banding in bandings:
+                    if (
+                        banding.package == self
+                        and banding.vocab == v_banding
+                        and banding.banding_type
+                        == banding_entry.banding_type_entry.banding_type
+                    ):
+                        try:
+                            price = None
+                            for price_obj in price_objects:
+                                if (
+                                    price_obj.banding == banding
+                                    and price_obj.country
+                                    == banding_entry.country
+                                ):
+                                    price = price_obj
 
-                try:
-                    # see if there are prices set
-                    price = price_objects.get(
-                        banding=banding,
-                        country=banding_entry.country,
-                    )
+                                """
+                                # see if there are prices set
+                                price = price_objects.get(
+                                    banding=banding,
+                                    country=banding_entry.country,
+                                )
+                                """
 
-                    # if so, append to the list for each country
-                    if price.country not in prices[banding_entry]:
-                        prices[banding_entry][price.country] = []
+                            # if so, append to the list for each country
+                            if price.country not in prices[banding_entry]:
+                                prices[banding_entry][price.country] = []
 
-                    prices[banding_entry][price.country].append(price)
-                except Price.DoesNotExist:
-                    pass
+                            prices[banding_entry][price.country].append(price)
+                        except Price.DoesNotExist:
+                            pass
+                        except AttributeError:
+                            pass
 
         return prices
 
@@ -613,20 +633,17 @@ class Package(BasePackage):
         return (
             "From {0} to {1} (in {2})".format(
                 babel.numbers.format_currency(
-                    low, self.default_country.currency,
-                    locale='en_US'
+                    low, self.default_country.currency, locale="en_US"
                 ),
                 babel.numbers.format_currency(
-                    high, self.default_country.currency,
-                    locale='en_US'
+                    high, self.default_country.currency, locale="en_US"
                 ),
                 self.default_country.currency,
             )
             if low != high
             else "Around {0}".format(
                 babel.numbers.format_currency(
-                    high, self.default_country.currency,
-                    locale='en_US'
+                    high, self.default_country.currency, locale="en_US"
                 )
             )
         )
@@ -769,12 +786,18 @@ class Basket(models.Model):
         Returns a set of packages that are in this basket
         :return: a set of packages
         """
-        package_list = list()
-        for package in self.packages.all():
-            package_list.append(package)
-        for meta_package in self.meta_packages.all():
-            for package in meta_package.packages.all():
+        # package_list = cache.get("package_list")
+        package_list = None
+
+        if not package_list:
+            package_list = list()
+            for package in self.packages.all():
                 package_list.append(package)
+            for meta_package in self.meta_packages.all():
+                for package in meta_package.packages.all():
+                    package_list.append(package)
+
+            # cache.set("package_list", package_list, 5)  # 5 seconds
 
         return set(package_list)
 
@@ -800,21 +823,33 @@ class Basket(models.Model):
         Returns a set of packages that conflict with one another
         :return: a set of packages
         """
-        conflicting_packages = list()
+        # conflicting_packages = cache.get("conflicting_packages")
+        conflicting_packages = None
 
-        for package in self.packages.all():
+        if not conflicting_packages:
+            conflicting_packages = list()
+
+            for package in self.packages.all():
+                for meta_package in self.meta_packages.all():
+                    if package in meta_package.packages.all():
+                        conflicting_packages.append(package)
+
             for meta_package in self.meta_packages.all():
-                if package in meta_package.packages.all():
-                    conflicting_packages.append(package)
-
-        for meta_package in self.meta_packages.all():
-            other_meta_packages = self.meta_packages.exclude(pk=meta_package.pk)
-            for omp in other_meta_packages:
-                conflicts = set(meta_package.packages.all()).intersection(
-                    set(omp.packages.all())
+                other_meta_packages = self.meta_packages.exclude(
+                    pk=meta_package.pk
                 )
-                for conflict in conflicts:
-                    conflicting_packages.append(conflict)
+                for omp in other_meta_packages:
+                    conflicts = set(meta_package.packages.all()).intersection(
+                        set(omp.packages.all())
+                    )
+                    for conflict in conflicts:
+                        conflicting_packages.append(conflict)
+
+            """
+            cache.set(
+                "conflicting_packages", conflicting_packages, 5
+            )  # 5 seconds
+            """
 
         return set(conflicting_packages)
 
@@ -927,7 +962,8 @@ class Basket(models.Model):
                 suitable_prices = Price.objects.filter(
                     country__currency=catch_all_matching_currency.currency,
                     country__catch_all=True,
-                )
+                ).select_related("banding__banding_type")
+
                 package_bandings_return = package_bandings_return + [
                     price.banding for price in suitable_prices
                 ]
@@ -938,12 +974,13 @@ class Basket(models.Model):
                 package_bandings = bandings.filter(
                     package=package,
                 )
+
                 prices = Price.objects.filter(
                     banding__in=package_bandings,
-                ).select_related("banding")
+                ).select_related("banding__banding_type")
                 suitable_prices = prices.filter(
                     country=currency,
-                )
+                ).select_related("banding__banding_type")
                 if suitable_prices:
                     package_bandings_return = package_bandings_return + [
                         price.banding for price in suitable_prices
@@ -951,7 +988,8 @@ class Basket(models.Model):
                 else:
                     suitable_prices = prices.filter(
                         country=package.default_country,
-                    )
+                    ).select_related("banding__banding_type")
+
                     if suitable_prices:
                         package_bandings_return = package_bandings_return + [
                             price.banding for price in suitable_prices
@@ -964,10 +1002,10 @@ class Basket(models.Model):
                     )
                     prices = Price.objects.filter(
                         banding__in=package_bandings,
-                    )
+                    ).select_related("banding__banding_type")
                     suitable_prices = prices.filter(
                         country=currency,
-                    )
+                    ).select_related("banding__banding_type")
                     if suitable_prices:
                         package_bandings_return = package_bandings_return + [
                             price.banding for price in suitable_prices
@@ -976,7 +1014,8 @@ class Basket(models.Model):
                         if not catch_all_matching_currency:
                             suitable_prices = prices.filter(
                                 country=package.default_country,
-                            )
+                            ).select_related("banding__banding_type")
+
                             if suitable_prices:
                                 package_bandings_return = (
                                     package_bandings_return
@@ -1778,14 +1817,11 @@ class PreCalcMinMax(models.Model):
     def __str__(self):
         return "{0} to {1}".format(
             babel.numbers.format_currency(
-                self.min_amount, self.country.currency,
-                locale='en_US'
+                self.min_amount, self.country.currency, locale="en_US"
             ),
             babel.numbers.format_currency(
-                self.max_amount, self.country.currency,
-                locale='en_US'
+                self.max_amount, self.country.currency, locale="en_US"
             ),
-            self.country.currency,
         )
 
     def get_package(self):
@@ -1793,4 +1829,4 @@ class PreCalcMinMax(models.Model):
             return self.package.name
         if self.meta_package:
             return self.meta_package
-        return 'No package associated with pre calc price'
+        return "No package associated with pre calc price"
