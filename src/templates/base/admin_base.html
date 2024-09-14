@@ -49,13 +49,13 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="/" class="nav-link">Home</a>
+        <a href="/" class="nav-link">{% get_site_text 'home' %}</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="#" class="nav-link">{% get_site_text 'contact' %}</a>
       </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          <a class="nav-link" href="{% url 'logout' %}">{% get_site_text 'logout' %}</a>
         </li>
     </ul>
 
@@ -108,7 +108,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="/">{% get_site_text 'home' %}</a></li>
               {% block breadcrumb %}{% endblock %}
             </ol>
           </div><!-- /.col -->
@@ -177,7 +177,7 @@
 {% endblock dashboard_js %}
 
 
-<!-- these scripts do some magic that lets us expand sub-menus and conrol the active page using span tags -->
+<!-- these scripts do some magic that lets us expand sub-menus and control the active page using span tags -->
 <script>
     $( document ).ready(function() {
      if( $('#expand_platform_manager').length ) {
@@ -199,7 +199,7 @@
 <script>
     $(document).ready(function () {
         $(".delete").click(function () {
-            if (!confirm("Are you sure you want to delete this object?")) {
+            if (!confirm("{% get_site_text 'confirm_delete' %}")) {
                 return false;
             }
         });

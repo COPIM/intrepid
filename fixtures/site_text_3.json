@@ -498,5 +498,465 @@
         "help_text": "Heading that reads 'Thoth Backups'",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 117,
+    "fields": {
+        "key": "home",
+        "body": "Home",
+        "help_text": "Breadcrumb that reads 'Home'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 118,
+    "fields": {
+        "key": "contact",
+        "body": "Contact",
+        "help_text": "Menu option that reads 'Contact'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 119,
+    "fields": {
+        "key": "logout",
+        "body": "Logout",
+        "help_text": "Menu option that reads 'Logout'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 120,
+    "fields": {
+        "key": "confirm_delete",
+        "body": "Are you sure you want to delete this object?",
+        "help_text": "Text of confirm deletion popup",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 121,
+    "fields": {
+        "key": "dashboard_caps",
+        "body": "DASHBOARD",
+        "help_text": "A menu heading for the dashboard, in capitals",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 122,
+    "fields": {
+        "key": "dashboard",
+        "body": "Dashboard",
+        "help_text": "A menu heading for the dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 123,
+    "fields": {
+        "key": "my_information",
+        "body": "My Information",
+        "help_text": "A menu heading for 'My Information'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 124,
+    "fields": {
+        "key": "orders_and_documents",
+        "body": "Orders and Documents",
+        "help_text": "A menu heading for 'Orders and Documents'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 125,
+    "fields": {
+        "key": "my_saved_quotes",
+        "body": "My Saved Quotes",
+        "help_text": "A menu heading for 'My Saved Quotes'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 126,
+    "fields": {
+        "key": "my_searches",
+        "body": "My Searches/Feed",
+        "help_text": "A menu heading for 'My Searches/Feed'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 127,
+    "fields": {
+        "key": "payment_processing",
+        "body": "Payment Processing",
+        "help_text": "A menu heading for 'Payment Processing'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 128,
+    "fields": {
+        "key": "initiative_manager",
+        "body": "Initiative Manager",
+        "help_text": "A menu heading for 'Initiative Manager'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 129,
+    "fields": {
+        "key": "my_initiatives",
+        "body": "My Initiatives",
+        "help_text": "A menu heading for 'My Initiatives'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 130,
+    "fields": {
+        "key": "signups",
+        "body": "Signups",
+        "help_text": "A menu heading for 'Signups'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 131,
+    "fields": {
+        "key": "contacts",
+        "body": "Contacts",
+        "help_text": "A menu heading for 'Contacts'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 132,
+    "fields": {
+        "key": "price_debugger",
+        "body": "Price Debugger",
+        "help_text": "A menu heading for 'Price Debugger'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 133,
+    "fields": {
+        "key": "staff",
+        "body": "Staff",
+        "help_text": "A menu heading for 'Staff'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 134,
+    "fields": {
+        "key": "package_approval",
+        "body": "Package Approval",
+        "help_text": "A menu heading for 'Package Approval'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 135,
+    "fields": {
+        "key": "order_management",
+        "body": "Order Management",
+        "help_text": "A menu heading for 'Order Management'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 136,
+    "fields": {
+        "key": "meta_packages",
+        "body": "Meta Packages",
+        "help_text": "A menu heading for 'Meta Packages'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 137,
+    "fields": {
+        "key": "email_logs",
+        "body": "Email Logs",
+        "help_text": "A menu heading for 'Email Logs'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 138,
+    "fields": {
+        "key": "payment_processors",
+        "body": "Payment Processors",
+        "help_text": "A menu heading for 'Payment Processors'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 139,
+    "fields": {
+        "key": "content_management",
+        "body": "Content Management",
+        "help_text": "A menu heading for 'Content Management'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 140,
+    "fields": {
+        "key": "all_pages",
+        "body": "All Pages",
+        "help_text": "A menu heading for 'All Pages'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 141,
+    "fields": {
+        "key": "site_wide_news",
+        "body": "Site Wide News",
+        "help_text": "A menu heading for 'Site Wide News'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 142,
+    "fields": {
+        "key": "page_update_feed",
+        "body": "Page Update Feed",
+        "help_text": "A menu heading for 'Page Update Feed'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 143,
+    "fields": {
+        "key": "who_we_are",
+        "body": "Who We Are",
+        "help_text": "A menu heading for 'who we are'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 144,
+    "fields": {
+        "key": "fixed_pages",
+        "body": "Fixed Pages",
+        "help_text": "A menu heading for 'Fixed Pages'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 145,
+    "fields": {
+        "key": "homepage_quotes",
+        "body": "Homepage Quotes",
+        "help_text": "A menu heading for 'Homepage Quotes'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 146,
+    "fields": {
+        "key": "contact_details",
+        "body": "Contact Details",
+        "help_text": "A menu heading for 'Contact Details'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 147,
+    "fields": {
+        "key": "platform_management",
+        "body": "Platform Management",
+        "help_text": "A menu heading for 'Platform Management'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 148,
+    "fields": {
+        "key": "site_setup",
+        "body": "Site Setup",
+        "help_text": "A menu heading for 'Site Setup'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 149,
+    "fields": {
+        "key": "add_initiative",
+        "body": "Add Initiative",
+        "help_text": "A menu heading for 'Add Initiative'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 150,
+    "fields": {
+        "key": "standards_attestation",
+        "body": "Standards Attestation",
+        "help_text": "A menu heading for 'Standards Attestation'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 151,
+    "fields": {
+        "key": "form_elements",
+        "body": "Form Elements",
+        "help_text": "A menu heading for 'Form Elements'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 152,
+    "fields": {
+        "key": "banding_types",
+        "body": "Banding Types",
+        "help_text": "A menu heading for 'Banding Types'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 153,
+    "fields": {
+        "key": "banding_vocabularies",
+        "body": "Banding Vocabularies",
+        "help_text": "A menu heading for 'Banding Vocabularies'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 154,
+    "fields": {
+        "key": "view_permissions",
+        "body": "View Permissions",
+        "help_text": "A menu heading for 'View Permissions'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 155,
+    "fields": {
+        "key": "thoth_sync",
+        "body": "Thoth Sync",
+        "help_text": "A menu heading for 'Thoth Sync'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 156,
+    "fields": {
+        "key": "subjects",
+        "body": "Subjects",
+        "help_text": "A menu heading for 'Subjects'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 157,
+    "fields": {
+        "key": "backups",
+        "body": "Backups",
+        "help_text": "A menu heading for 'Backups'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 158,
+    "fields": {
+        "key": "navbar",
+        "body": "Navbar",
+        "help_text": "A menu heading for 'Navbar'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 159,
+    "fields": {
+        "key": "toggle_navigation",
+        "body": "Toggle Navigation",
+        "help_text": "A menu heading for 'Toggle Navigation'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 160,
+    "fields": {
+        "key": "packages",
+        "body": "Packages",
+        "help_text": "A menu heading for 'Packages'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 161,
+    "fields": {
+        "key": "quotations",
+        "body": "Quotations",
+        "help_text": "A menu heading for 'Quotations'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 162,
+    "fields": {
+        "key": "search",
+        "body": "Search",
+        "help_text": "A menu heading for 'Search'",
+        "rich_text": false
+        }
     }
 ]
