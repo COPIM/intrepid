@@ -49,6 +49,13 @@ English is the designated fallback language, it will display when a user has not
 ## Setup
 To setup model translations follow these instructions:
 
+### Requirements
+Modeltranslations is now a requirement so ensure you run:
+
+```shell
+pip3 install -r requirements.txt
+```
+
 ### Settings
 Add the following to settings.py
 
