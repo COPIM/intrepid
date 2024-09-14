@@ -958,5 +958,595 @@
         "help_text": "A menu heading for 'Search'",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 163,
+    "fields": {
+        "key": "open_book_collective",
+        "body": "Open Book Collective",
+        "help_text": "A page heading with the name of the site",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 164,
+    "fields": {
+        "key": "biography_of",
+        "body": "Biography of",
+        "help_text": "An alt-text for images that reads 'Biography of'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 165,
+    "fields": {
+        "key": "close",
+        "body": "Close",
+        "help_text": "Close text for modals",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 166,
+    "fields": {
+        "key": "news",
+        "body": "News",
+        "help_text": "News alt-text for images",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 167,
+    "fields": {
+        "key": "open_quote",
+        "body": "Open quotation mark",
+        "help_text": "Alt-text for images that reads 'Open quotation mark'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 168,
+    "fields": {
+        "key": "close_quote",
+        "body": "Close quotation mark",
+        "help_text": "Alt-text for images that reads 'Close quotation mark'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 169,
+    "fields": {
+        "key": "what_we_stand_for",
+        "body": "What We Stand For",
+        "help_text": "What We Stand For text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 170,
+    "fields": {
+        "key": "membership",
+        "body": "Membership",
+        "help_text": "Membership text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 171,
+    "fields": {
+        "key": "governance",
+        "body": "Governance",
+        "help_text": "Governance text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 172,
+    "fields": {
+        "key": "documents",
+        "body": "Documents",
+        "help_text": "Documents text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 173,
+    "fields": {
+        "key": "how_it_works",
+        "body": "How It Works",
+        "help_text": "How It Works text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 174,
+    "fields": {
+        "key": "funding_and_fees",
+        "body": "Funding and Fees",
+        "help_text": "Funding and Fees text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 175,
+    "fields": {
+        "key": "supporters",
+        "body": "Supporters",
+        "help_text": "Supporters text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 176,
+    "fields": {
+        "key": "platform",
+        "body": "Platform",
+        "help_text": "Platform text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 177,
+    "fields": {
+        "key": "initiatives",
+        "body": "Initiatives",
+        "help_text": "Initiatives text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 178,
+    "fields": {
+        "key": "catalogue",
+        "body": "Catalogue",
+        "help_text": "Catalogue text",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 179,
+    "fields": {
+        "key": "twitter",
+        "body": "Twitter/X",
+        "help_text": "Twitter text in footer",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 180,
+    "fields": {
+        "key": "mastodon",
+        "body": "Mastodon",
+        "help_text": "Mastodon text in footer",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 181,
+    "fields": {
+        "key": "email_contact",
+        "body": "Email",
+        "help_text": "Email text in footer",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 182,
+    "fields": {
+        "key": "open_book_collective_abbreviation",
+        "body": "OBC",
+        "help_text": "Abbreviation for Open Book Collective",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 183,
+    "fields": {
+        "key": "terms_of_use",
+        "body": "Terms of Use",
+        "help_text": "Footer link for terms of use",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 184,
+    "fields": {
+        "key": "privacy_policy",
+        "body": "Privacy Policy",
+        "help_text": "Privacy policy link for terms of use",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 185,
+    "fields": {
+        "key": "accessibility",
+        "body": "Accessibility",
+        "help_text": "Accessibility link for terms of use",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 186,
+    "fields": {
+        "key": "watch_video",
+        "body": "Watch video",
+        "help_text": "Watch video link on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 187,
+    "fields": {
+        "key": "stronger_oa",
+        "body": "Stronger OA Communities",
+        "help_text": "Stronger OA Communities text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 188,
+    "fields": {
+        "key": "build_your_subscription",
+        "body": "Build your Subscription",
+        "help_text": "Build Your Subscription button on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 189,
+    "fields": {
+        "key": "sustainable_funding_model",
+        "body": "Sustainable Funding Model",
+        "help_text": "Sustainable Funding Model text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 190,
+    "fields": {
+        "key": "search_the_catalogue",
+        "body": "Search the catalogue",
+        "help_text": "Search the catalogue link on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 191,
+    "fields": {
+        "key": "robust_infrastructure",
+        "body": "Robust Infrastructure",
+        "help_text": "Robust Infrastructure text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 192,
+    "fields": {
+        "key": "apply_for_membership",
+        "body": "Apply for Membership",
+        "help_text": "Apply for Membership link on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 193,
+    "fields": {
+        "key": "diversity_in_oa",
+        "body": "Diversity in OA",
+        "help_text": "Diversity in OA text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 194,
+    "fields": {
+        "key": "libraries",
+        "body": "Libraries",
+        "help_text": "Libraries text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 195,
+    "fields": {
+        "key": "authors_and_readers",
+        "body": "Authors and Readers",
+        "help_text": "Authors and Readers text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 196,
+    "fields": {
+        "key": "publishers",
+        "body": "Publishers",
+        "help_text": "Publishers text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 197,
+    "fields": {
+        "key": "a_news_item",
+        "body": "A News Item",
+        "help_text": "A News Item alt-text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 198,
+    "fields": {
+        "key": "funders",
+        "body": "Funders",
+        "help_text": "Funders header on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 199,
+    "fields": {
+        "key": "image_community",
+        "body": "An image representing community",
+        "help_text": "Community image alt-text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 200,
+    "fields": {
+        "key": "image_sustainability",
+        "body": "An image representing sustainability",
+        "help_text": "Sustainability image alt-text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 200,
+    "fields": {
+        "key": "image_infrastructure",
+        "body": "An image representing infrastructure",
+        "help_text": "Infrastructure image alt-text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 201,
+    "fields": {
+        "key": "image_diversity",
+        "body": "An image representing diversity",
+        "help_text": "Diversity image alt-text on homepage",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 202,
+    "fields": {
+        "key": "featured_books",
+        "body": "Featured Books",
+        "help_text": "Header that reads 'Featured Books'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 203,
+    "fields": {
+        "key": "news_updates",
+        "body": "News Updates",
+        "help_text": "Header that reads 'News Updates'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 204,
+    "fields": {
+        "key": "initiatives_subhead",
+        "body": "At the core of the Open Book Collective are our initiatives. These range from open-access book publishers to indexing services and directories. You can find out more about these initiatives here.",
+        "help_text": "Initiatives page subheading",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 205,
+    "fields": {
+        "key": "collections_and_collectives",
+        "body": "Collections and Collectives",
+        "help_text": "Alt-text on initiatives page that reads 'Collections and Collectives'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 206,
+    "fields": {
+        "key": "publishers_and_service_providers",
+        "body": "Publishers and Service Providers",
+        "help_text": "Text on initiatives page that reads 'Publishers and Service Providers'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 207,
+    "fields": {
+        "key": "your_quotes",
+        "body": "Your Quotes",
+        "help_text": "Text on nav page that reads 'Your Quotes'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 208,
+    "fields": {
+        "key": "summary",
+        "body": "Summary",
+        "help_text": "Text on nav page that reads 'Summary'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 209,
+    "fields": {
+        "key": "more",
+        "body": "More",
+        "help_text": "Text on nav page that reads 'More'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 210,
+    "fields": {
+        "key": "pricing",
+        "body": "Pricing",
+        "help_text": "Text on nav page that reads 'Pricing'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 211,
+    "fields": {
+        "key": "updates_from_the_open_book_collective",
+        "body": "Updates from the Open Book Collective",
+        "help_text": "Text on news page that reads 'Updates from the Open Book Collective'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 212,
+    "fields": {
+        "key": "register_for_the_open_book_collective",
+        "body": "Register for the Open Book Collective",
+        "help_text": "Text on news page that reads 'Register for the Open Book Collective'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 213,
+    "fields": {
+        "key": "repeat_email",
+        "body": "Repeat email",
+        "help_text": "Placeholder form text that says 'repeat email'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 214,
+    "fields": {
+        "key": "password",
+        "body": "Password",
+        "help_text": "Placeholder form text that says 'password'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 215,
+    "fields": {
+        "key": "repeat_password",
+        "body": "Repeat password",
+        "help_text": "Placeholder form text that says 'Repeat password'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 216,
+    "fields": {
+        "key": "sign_up",
+        "body": "Sign up",
+        "help_text": "Placeholder form text that says 'Sign up'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 217,
+    "fields": {
+        "key": "who_we_are_subhead",
+        "body": "We are a team of librarians, publishers, publishing service providers and academics committed to collectively reimagining and reconfiguring the funding and circulation of open access monographs.",
+        "help_text": "Subheader on Who We Are page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 218,
+    "fields": {
+        "key": "board_of_stewards",
+        "body": "Board of Stewards",
+        "help_text": "Subheader for Board of Stewards",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 219,
+    "fields": {
+        "key": "view_biography",
+        "body": "View Biography",
+        "help_text": "Link text to View Biography",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 220,
+    "fields": {
+        "key": "membership_committee",
+        "body": "Membership Committee",
+        "help_text": "Subheader for Membership Committee",
+        "rich_text": false
+        }
     }
 ]

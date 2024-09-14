@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-3">
         <a class="navbar-logo d-none d-md-block" href="{% url "site_index" %}"><img class="img-fluid"
-                src="{% static 'frontend/img/logo.svg' %}" alt="Open Book Collective"/></a>
+                src="{% static 'frontend/img/logo.svg' %}" alt="{% get_site_text 'open_book_collective' prefetched %}"/></a>
         <!-- upper navigation row -->
     </div>
     <div class="col-9">
@@ -10,10 +10,10 @@
             <div class="container-fluid">
                 <ul class="flex-md-row nav navbar-upper">
                     {% if request.basket %}<li><a href="{% url 'basket_detail' request.basket.pk %}"><i class="fa fa-shopping-basket" style="color:black"></i><sup>{{ request.basket_count }}</sup></a></li>{% endif %}
-                    <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> Dashboard</a>
+                    <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
                     </li>
                     {% if request.site.enable_your_quotes_link %}
-                    <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> Your Quotes</a>
+                    <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
                     </li>
                     {% endif %}
 
@@ -25,9 +25,9 @@
         <nav class="navbar-inverse nav-lower d-none d-md-block">
             <div class="container-fluid">
                 <ul class="nav navbar-lower">
-                    <li class="lower-nav-item"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a>
+                    <li class="lower-nav-item"><a href="{% url 'fixed_page' 'values' %}">{% get_site_text 'what_we_stand_for' prefetched %}</a>
                     </li>
-                    <li class="lower-nav-item"><a href="{% url "all_books" %}">Catalogue</a>
+                    <li class="lower-nav-item"><a href="{% url "all_books" %}">{% get_site_text 'catalogue' prefetched %}</a>
                     </li>
                     <li class="lower-nav-item"><a href="{% url 'package_list' %}">{% get_site_text_no_edit 'oa_inits_header' prefetched %}</a>
                     </li>
@@ -40,7 +40,7 @@
 
 <!-- responsive version -->
 <a class="navbar-logo-responsive d-sm-block d-xs-block d-md-none" href="#"><img src="{% static 'frontend/img/logo.svg' %}"
-                                                                                alt="Open Book Collective" /></a>
+                                                                                alt="{% get_site_text 'open_book_collective' prefetched %}" /></a>
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-sm-block d-xs-block d-md-none">
   <a class="navbar-brand" href="{% url "site_index" %}"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,25 +51,25 @@
     <div class="navbar-nav mr-auto">
         <div class="row menu-image">
             <div class="col">
-                <a href="{% url "site_index" %}"><img class="mobile-menu-image" src="{% static 'frontend/img/footer_logo.png' %}" alt="Open Book Collective"></a>
+                <a href="{% url "site_index" %}"><img class="mobile-menu-image" src="{% static 'frontend/img/footer_logo.png' %}" alt="{% get_site_text 'open_book_collective' prefetched %}"></a>
             </div>
         </div>
         <hr id="first-divider" />
         <ul>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'who_we_are' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              What We Stand For
+              {% get_site_text 'what_we_stand_for' prefetched %}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'fixed_page' 'values' %}"><span class="in-caret">&gt;</span> What We Stand For</a>
-                <a class="dropdown-item" href="{% url 'who_we_are' %}"><span class="in-caret">&gt;</span> Who We Are</a>
-                <a class="dropdown-item" href="{% url 'fixed_page' 'why_support_oa' %}"><span class="in-caret">&gt;</span> Membership</a>
-                <a class="dropdown-item" href="{% url 'fixed_page' 'governance' %}"><span class="in-caret">&gt;</span> Governance</a>
-                <a class="dropdown-item" href="https://openbookcollective.pubpub.org/documents" target="_blank"><span class="in-caret">&gt;</span> Documents</a>
-                <a class="dropdown-item" href="https://openbookcollective.pubpub.org/news"><span class="in-caret">&gt;</span> News</a>
-                <a class="dropdown-item" href="{% url 'fixed_page' 'what_we_do' %}"><span class="in-caret">&gt;</span> How It Works</a>
-                <a class="dropdown-item" href="{% url 'fixed_page' 'funding_model' %}"><span class="in-caret">&gt;</span> Funding and Fees</a>
-                <a class="dropdown-item" href="https://www.openbookcollective.org/cms/fixed_page/supporters/"><span class="in-caret">&gt;</span> Supporters</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'values' %}"><span class="in-caret">&gt;</span> {% get_site_text 'what_we_stand_for' prefetched %}</a>
+                <a class="dropdown-item" href="{% url 'who_we_are' %}"><span class="in-caret">&gt;</span> {% get_site_text 'who_we_are' prefetched %}</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'why_support_oa' %}"><span class="in-caret">&gt;</span> {% get_site_text 'membership' prefetched %}</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'governance' %}"><span class="in-caret">&gt;</span> {% get_site_text 'governance' prefetched %}</a>
+                <a class="dropdown-item" href="https://openbookcollective.pubpub.org/documents" target="_blank"><span class="in-caret">&gt;</span> {% get_site_text 'documents' prefetched %}</a>
+                <a class="dropdown-item" href="https://openbookcollective.pubpub.org/news"><span class="in-caret">&gt;</span> {% get_site_text 'news' prefetched %}</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'what_we_do' %}"><span class="in-caret">&gt;</span> {% get_site_text 'how_it_works' prefetched %}</a>
+                <a class="dropdown-item" href="{% url 'fixed_page' 'funding_model' %}"><span class="in-caret">&gt;</span> {% get_site_text 'funding_and_fees' prefetched %}</a>
+                <a class="dropdown-item" href="https://www.openbookcollective.org/cms/fixed_page/supporters/"><span class="in-caret">&gt;</span> {% get_site_text 'supporters' prefetched %}</a>
             </div>
         </li>
 
@@ -86,14 +86,14 @@
                 <div class="dropdown-menu" aria-labelledby="initDropdown">
                     <a class="dropdown-item"
                        href="{% url 'summary_package_initiative' 'initiative' initiative.pk %}"><span
-                                class="in-caret">&gt;</span> Summary</a>
+                                class="in-caret">&gt;</span> {% get_site_text 'summary' prefetched %}</a>
                     <a class="dropdown-item"
                        href="{% url 'summary_more_info' 'initiative' initiative.pk %}"><span
-                                class="in-caret">&gt;</span> More
+                                class="in-caret">&gt;</span> {% get_site_text 'more' prefetched %}
                         Info</a>
                     <a class="dropdown-item"
                        href="{% url 'summary_pricing' 'initiative' initiative.pk %}"><span
-                                class="in-caret">&gt;</span> Pricing</a>
+                                class="in-caret">&gt;</span> {% get_site_text 'pricing' prefetched %}</a>
                     {% for page in additional_nav %}
                         <a class="dropdown-item"
                            href="{% url 'public_initiative_page' initiative.pk page.pk %}"><span
@@ -108,7 +108,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link" href="{% url "all_books" %}">Catalogue</a>
+            <a class="nav-link" href="{% url "all_books" %}">{% get_site_text 'catalogue' prefetched %}</a>
         </li>
 
         <hr/>
@@ -120,13 +120,13 @@
         <hr/>
 
         <li class="nav-item">
-            <a class="nav-link nav-small" href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> Dashboard</a>
+            <a class="nav-link nav-small" href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
         </li>
 
         <hr/>
         {% if request.site.enable_your_quotes_link %}
         <li class="nav-item">
-            <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> Your Quotes</a>
+            <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
         </li>
         {% endif %}
 

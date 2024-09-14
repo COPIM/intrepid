@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block title %}
-    Initiatives
+    {% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'initiatives' %}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -18,11 +18,11 @@
     <div class="row text-left">
         <div class="col-1"></div>
         <div class="col text-left">
-            <h1 class="text-left">Initiatives</h1>
-            <p class="subhead-no-offset">At the core of the Open Book Collective are our initiatives. These range from open-access book publishers to indexing services and directories. You can find out more about these initiatives here.</p>
+            <h1 class="text-left">{% get_site_text 'initiatives' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'initiatives_subhead' %}</p>
         </div>
         <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/collective_five.svg" %}"
-                                alt="Collections and Collectives"/></div>
+                                alt="{% get_site_text 'collections_and_collectives' %}Collections and Collectives"/></div>
         <div class="col-1"></div>
     </div>
 {% endblock header %}
@@ -30,7 +30,7 @@
 {% block body %}
     <div class="row catalogue-main">
         <div class="col">
-            <h2>Publishers and Service Providers</h2>
+            <h2>{% get_site_text 'publishers_and_service_providers' %}</h2>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
 
     <div class="row catalogue-main">
         <div class="col">
-            <h1>Publishers and Service Providers</h1>
+            <h1>{% get_site_text 'publishers_and_service_providers' %}</h1>
         </div>
     </div>
 
