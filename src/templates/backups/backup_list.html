@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Site Backups
+    {% get_site_text 'site_backups' %}
 {% endblock title %}
 
 {% block page-title %}
-    Site Backups
+    {% get_site_text 'site_backups' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Site Backups</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'site_backups' %}</a></li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -31,14 +31,14 @@
         <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col">
-                <h2>SQL Backups</h2>
+                <h2>{% get_site_text 'sql_backups' %}</h2>
                     <table class="table-bordered table-striped table" id="sql">
                         <thead>
                             <tr>
-                                <th>Date Modified</th>
-                                <th>Version ID</th>
-                                <th>Size</th>
-                                <th>Download</th>
+                                <th>{% get_site_text 'date_modified' %}</th>
+                                <th>{% get_site_text 'version_id' %}</th>
+                                <th>{% get_site_text 'size' %}</th>
+                                <th>{% get_site_text 'download' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +47,7 @@
                                     <td>{{ sql_entry.lastmodified }}</td>
                                     <td>{{ sql_entry.versionid }}</td>
                                     <td>{{ sql_entry.size }}</td>
-                                    <td><a href="{% url 'download_backup' 'sql' sql_entry.versionid %}">Download</a></td>
+                                    <td><a href="{% url 'download_backup' 'sql' sql_entry.versionid %}">{% get_site_text 'download' %}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -57,14 +57,14 @@
 
             <div class="row">
                 <div class="col">
-                <h2>Data File Backups</h2>
+                <h2>{% get_site_text 'data_file_backups' %}</h2>
                     <table class="table-bordered table-striped table" id="data">
                         <thead>
                             <tr>
-                                <th>Date Modified</th>
-                                <th>Version ID</th>
-                                <th>Size</th>
-                                <th>Download</th>
+                                <th>{% get_site_text 'date_modified' %}</th>
+                                <th>{% get_site_text 'version_id' %}</th>
+                                <th>{% get_site_text 'size' %}</th>
+                                <th>{% get_site_text 'download' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -73,7 +73,7 @@
                                     <td>{{ sql_entry.lastmodified }}</td>
                                     <td>{{ sql_entry.versionid }}</td>
                                     <td>{{ sql_entry.size }}</td>
-                                    <td><a href="{% url 'download_backup' 'data' sql_entry.versionid %}">Download</a></td>
+                                    <td><a href="{% url 'download_backup' 'data' sql_entry.versionid %}">{% get_site_text 'download' %}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -84,14 +84,14 @@
 
             <div class="row">
                 <div class="col">
-                <h2>Thoth Backups</h2>
+                <h2>{% get_site_text 'thoth_backups' %}</h2>
                     <table class="table-bordered table-striped table" id="data">
                         <thead>
                             <tr>
-                                <th>Date Modified</th>
-                                <th>Version ID</th>
-                                <th>Size</th>
-                                <th>Download</th>
+                                <th>{% get_site_text 'date_modified' %}</th>
+                                <th>{% get_site_text 'version_id' %}</th>
+                                <th>{% get_site_text 'size' %}</th>
+                                <th>{% get_site_text 'download' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,7 +100,7 @@
                                     <td>{{ sql_entry.lastmodified }}</td>
                                     <td>{{ sql_entry.versionid }}</td>
                                     <td>{{ sql_entry.size }}</td>
-                                    <td><a href="{% url 'download_backup' 'data' sql_entry.versionid %}">Download</a></td>
+                                    <td><a href="{% url 'download_backup' 'data' sql_entry.versionid %}">{% get_site_text 'download' %}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

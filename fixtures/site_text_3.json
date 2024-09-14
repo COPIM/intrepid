@@ -418,5 +418,85 @@
         "help_text": "Text of a button that reads 'Create Account'",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 109,
+    "fields": {
+        "key": "site_backups",
+        "body": "Site Backups",
+        "help_text": "Headings that read 'Site Backups'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 110,
+    "fields": {
+        "key": "sql_backups",
+        "body": "SQL Backups",
+        "help_text": "Headings that read 'SQL Backups'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 111,
+    "fields": {
+        "key": "date_modified",
+        "body": "Date Modified",
+        "help_text": "Table heading that read 'Date Modified'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 112,
+    "fields": {
+        "key": "version_id",
+        "body": "Version ID",
+        "help_text": "Table heading that read 'Version ID'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 113,
+    "fields": {
+        "key": "size",
+        "body": "Size",
+        "help_text": "Table heading that read 'Size' (referring to file size)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 114,
+    "fields": {
+        "key": "download",
+        "body": "Download",
+        "help_text": "Table heading that read 'Download'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 115,
+    "fields": {
+        "key": "data_file_backup",
+        "body": "Data File Backup",
+        "help_text": "Heading that reads 'Data File Backup'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 116,
+    "fields": {
+        "key": "thoth_backup",
+        "body": "Thoth Backups",
+        "help_text": "Heading that reads 'Thoth Backups'",
+        "rich_text": false
+        }
     }
 ]
