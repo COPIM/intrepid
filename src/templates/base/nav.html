@@ -1,28 +1,28 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">{% get_site_text 'navbar' %}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{% get_site_text 'toggle_navigation' %}">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">{% get_site_text 'home' %}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'package_list' %}">Packages</a>
+          <a class="nav-link" href="{% url 'package_list' %}">{% get_site_text 'packages' %}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'basket_list' %}">Quotations</a>
+          <a class="nav-link" href="{% url 'basket_list' %}">{% get_site_text 'quotations' %}</a>
         </li>
 
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          <a class="nav-link" href="{% url 'logout' %}">{% get_site_text 'logout' %}</a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'two_factor:login' %}">Login</a>
+          <a class="nav-link" href="{% url 'two_factor:login' %}">{% get_site_text 'login' %}</a>
         </li>
         {% endif %}
         <li class="nav-item">
@@ -31,8 +31,8 @@
 
       </ul>
       <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="{% get_site_text 'search' %}">
+        <button class="btn btn-outline-success" type="submit">{% get_site_text 'search' %}</button>
       </form>
     </div>
   </div>

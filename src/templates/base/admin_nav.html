@@ -14,9 +14,9 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
         {% if user.profile.image %}
-            <img src="{{ user.profile.image.url }}" class="img-circle elevation-2" alt="Image of {{ user.profile.full_name }}">
+            <img src="{{ user.profile.image.url }}" class="img-circle elevation-2" alt="{% get_site_text 'image_of' %} {{ user.profile.full_name }}">
         {% else %}
-            <img src="{% static 'img/avatar.png' %}" class="img-circle elevation-2" alt="Image of {{ user.profile.full_name }}">
+            <img src="{% static 'img/avatar.png' %}" class="img-circle elevation-2" alt="{% get_site_text 'image_of' %} {{ user.profile.full_name }}">
         {% endif %}
         </div>
         <div class="info">
@@ -29,28 +29,26 @@
       {% if user.is_authenticated %}
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          <li class="nav-header">DASHBOARD</li>
+          <li class="nav-header">{% get_site_text 'dashboard_caps' %}</li>
           <li class="nav-item">
             <a href="{% url 'dashboard_index' %}" class="nav-link" id="dashboard">
               <i class="nav-icon fas fa-chart-area"></i>
               <p>
-                Dashboard
+                {% get_site_text 'dashboard' %}
               </p>
             </a>
           </li>
             <li class="nav-item">
             <a href="{% url 'profile' %}" class="nav-link" id="my_information">
               <i class="nav-icon fas fa-users"></i>
-              <p>
-                My Information
+              <p>{% get_site_text 'my_information' %}
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'documents' %}" class="nav-link" id="document_centre">
               <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                Orders & Documents
+              <p>{% get_site_text 'orders_and_documents' %}
                   <span class="badge badge-info right">{{ request.document_count }}</span>
               </p>
             </a>
@@ -58,8 +56,7 @@
           <li class="nav-item">
             <a href="{% url 'basket_list' %}" class="nav-link">
               <i class="nav-icon fas fa-cart-arrow-down"></i>
-              <p>
-                My Saved Quotes
+              <p>{% get_site_text 'my_saved_quotes' %}
                   <span class="badge badge-info right">{{ request.active_baskets.count }}</span>
               </p>
             </a>
@@ -68,8 +65,7 @@
           <li class="nav-item">
             <a href="{% url 'saved_searches' %}" class="nav-link" id="saved_searches">
               <i class="nav-icon fas fa-list"></i>
-              <p>
-                My Searches/Feed
+              <p>{% get_site_text 'my_searches' %}
                   <span class="badge badge-info right">{{ request.saved_searches.count }}</span>
               </p>
             </a>
@@ -81,7 +77,7 @@
             <hr />
             <li class="nav-item">
               <p class="nav-link">
-                  <i class="nav-icon fas fa-money-bill"></i> Payment Processing
+                  <i class="nav-icon fas fa-money-bill"></i> {% get_site_text 'payment_processing' %}
               </p>
             </li>
 
@@ -101,15 +97,14 @@
           <hr />
           <li class="nav-item">
               <p class="nav-link">
-                  <i class="nav-icon fas fa-user-cog"></i> Initiative Manager
+                  <i class="nav-icon fas fa-user-cog"></i> {% get_site_text 'initiative_manager' %}
               </p>
           </li>
 
           <li class="nav-item">
             <a href="{% url 'initiative_user_initiatives' %}" class="nav-link" id="my_initiatives">
               <i class="nav-icon fas fa-cogs"></i>
-              <p>
-                My Initiatives
+              <p>{% get_site_text 'my_initiatives' %}
                   <span class="badge badge-info right">{{ request.user.Initiatives.all.count }}</span>
               </p>
             </a>
@@ -118,8 +113,7 @@
           <li class="nav-item">
             <a href="{% url 'list_signups' %}" class="nav-link" id="list_signups">
               <i class="nav-icon fas fa-calculator"></i>
-              <p>
-                Signups
+              <p>{% get_site_text 'signups' %}
                   <span class="badge badge-info right">{{ request.signup_count }} total</span>{% if request.new_signup_count > 0 %}&nbsp;<span class="badge badge-info">new</span>&nbsp;{% endif %}
               </p>
             </a>
@@ -129,7 +123,7 @@
                 <a href="{% url 'contact_list' %}" class="nav-link" id="contacts">
                   <i class="nav-icon fas fa-address-card"></i>
                   <p>
-                    Contacts
+                    {% get_site_text 'contacts' %}
                   </p>
                 </a>
             </li>
@@ -137,8 +131,7 @@
           <li class="nav-item">
             <a href="{% url 'price_debugger' %}" class="nav-link" id="debugger">
               <i class="nav-icon fas fa-bug"></i>
-              <p>
-                Price Debugger
+              <p>{% get_site_text 'price_debugger' %}
               </p>
             </a>
         </li>
@@ -148,47 +141,46 @@
               <hr />
           <li class="nav-item">
               <p class="nav-link">
-                  <i class="nav-icon fas fa-user-cog"></i> Staff
+                  <i class="nav-icon fas fa-user-cog"></i> {% get_site_text 'staff' %}
               </p>
           </li>
           <li class="nav-item">
             <a href="{% url 'package_approval' %}" class="nav-link" id="package_approval">
               <i class="nav-icon fas fa-box-open"></i>
-              <p>Package Approval
+              <p>{% get_site_text 'package_approval' %}
               <span class="badge badge-info right">{{ packages_awaiting_approval.count }}</span></p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'order_list' %}" class="nav-link" id="package_approval">
               <i class="nav-icon fas fa-file-alt"></i>
-                <p>Order Management</p>
+                <p>{% get_site_text 'order_management' %}</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'list_meta_packages' %}" class="nav-link" id="list_meta_packages">
               <i class="nav-icon fas fa-box-open"></i>
-              <p>Meta Packages</p>
+              <p>{% get_site_text 'meta_packages' %}</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="{% url 'list_mail_logs' %}" class="nav-link" id="email_logs">
               <i class="nav-icon fas fa-envelope"></i>
-              <p>Email Logs</p>
+              <p>{% get_site_text 'email_logs' %}</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'list_payment_processors' %}" class="nav-link" id="list_meta_packages">
               <i class="nav-icon fas fa-money-check"></i>
-              <p>Payment Processors</p>
+              <p>{% get_site_text 'payment_processors' %}</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder"></i>
-              <p>
-                Content Management
+              <p>{% get_site_text 'content_management' %}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -198,49 +190,49 @@
                 <li class="nav-item">
                     <a href="{% url 'all_pages' %}" class="nav-link" id="all_pages">
                       <i class="nav-icon fas fa-rss"></i>
-                      <p>All Pages</p>
+                      <p>{% get_site_text 'all_pages' %}</p>
                     </a>
                 </li>
                 
                 <li class="nav-item">
                     <a href="{% url 'sitewide_news_config' %}" class="nav-link" id="homepage_news">
                       <i class="nav-icon fas fa-rss"></i>
-                      <p>Site-Wide News</p>
+                      <p>{% get_site_text 'site_wide_news' %}</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'page_update_feed' %}" class="nav-link" id="update_feed">
                       <i class="nav-icon fas fa-pen-square"></i>
-                      <p>Page Update Feed</p>
+                      <p>{% get_site_text 'page_update_feed' %}</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'who_we_are_config' %}" class="nav-link" id="whoweare">
                       <i class="nav-icon fas fa-users"></i>
-                      <p>Who We Are</p>
+                      <p>{% get_site_text 'who_we_are' %}</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'fixed_pages' %}" class="nav-link" id="fixed_pages">
                       <i class="nav-icon fas fa-hammer"></i>
-                      <p>Fixed Pages</p>
+                      <p>{% get_site_text 'fixed_pages' %}</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'homepage_quotes' %}" class="nav-link" id="homepage_quotes">
                       <i class="nav-icon fas fa-quote-left"></i>
-                      <p>Homepage Quotes</p>
+                      <p>{% get_site_text 'homepage_quotes' %}</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'dashboard_setup' %}" class="nav-link" id="fixed_pages">
                       <i class="nav-icon fas fa-at"></i>
-                      <p>Contact Details</p>
+                      <p>{% get_site_text 'contact_details' %}</p>
                     </a>
                 </li>
             </ul>
@@ -249,8 +241,7 @@
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
-              <p>
-                Platform Management
+              <p>{% get_site_text 'platform_management' %}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -258,56 +249,56 @@
               <li class="nav-item">
                 <a href="{% url 'dashboard_setup' %}" class="nav-link" id="site_setup">
                   <i class="nav-icon fas fa-cogs"></i>
-                  <p>Site Setup</p>
+                  <p>{% get_site_text 'site_setup' %}</p>
                 </a>
               </li>
             <li class="nav-item">
                 <a href="{% url 'initiative_create' %}" class="nav-link" id="create_initiative">
                   <i class="nav-icon fas fa-plus"></i>
-                  <p>Add Initiative</p>
+                  <p>{% get_site_text 'add_initiative' %}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'standards_vocab_list' %}" class="nav-link" id="standards">
                   <i class="nav-icon fas fa-puzzle-piece"></i>
-                  <p>Standards Attestation</p>
+                  <p>{% get_site_text 'standards_attestation' %}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'form_element_setup' %}" class="nav-link" id="form_elements">
                   <i class="nav-icon fas fa-text-width"></i>
-                  <p>Form Elements</p>
+                  <p>{% get_site_text 'form_elements' %}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'package_banding_type_list' %}" class="nav-link" id="banding_types">
                   <i class="nav-icon fas fa-money-check-alt"></i>
-                  <p>Banding Types</p>
+                  <p>{% get_site_text 'banding_types' %}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{% url 'vocab_list' %}" class="nav-link" id="banding_vocabularies">
                   <i class="nav-icon fas fa-dollar-sign"></i>
-                  <p>Banding Vocabularies</p>
+                  <p>{% get_site_text 'banding_vocabularies' %}</p>
                 </a>
               </li>
                 <li class="nav-item">
                 <a href="{% url 'manage_fluid_permissions' %}" class="nav-link" id="view_permissions">
                   <i class="nav-icon fas fa-user"></i>
-                  <p>View Permissions</p>
+                  <p>{% get_site_text 'view_permissions' %}</p>
                 </a>
               </li>
                 <li class="nav-item">
 
                 <a href="{% url 'thoth_driver' %}" class="nav-link" id="thoth_sync">
                   <i class="nav-icon fas fa-book"></i>
-                  <p>Thoth Sync</p>
+                  <p>{% get_site_text 'thoth_sync' %}</p>
                 </a>
               </li>
             <li class="nav-item">
                 <a href="{% url 'subjects' %}" class="nav-link" id="subjects">
                   <i class="nav-icon fas fa-file"></i>
-                  <p>Subjects</p>
+                  <p>{% get_site_text 'subjects' %}</p>
 
                 </a>
               </li>
@@ -315,7 +306,7 @@
              <li class="nav-item">
                 <a href="{% url 'list_backups' %}" class="nav-link" id="backups">
                   <i class="nav-icon fas fa-user-lock"></i>
-                  <p>Backups</p>
+                  <p>{% get_site_text 'backups' %}</p>
 
                 </a>
               </li>
