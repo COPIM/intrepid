@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor account_tags %}
 
-{% block title %}{% trans "Profile" %}{% endblock title %}
+{% block title %}{% get_site_text 'profile' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'profile' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% trans "Banding Setup" %}</h1>
+                <h1>{% get_site_text 'banding_setup' %}</h1>
             </div>
             <div class="col-md-12">
             <form method="POST">
@@ -27,7 +27,7 @@
                         <td style="width:33%"><h3>{{ banding }}</h3></td>
                         <td>
                         <select name="banding-{{ banding.pk }}" id="banding-{{ banding.pk }}">
-                            <option value="0">Unspecified</option>
+                            <option value="0">{% get_site_text 'unspecified' %}</option>
                         {% for vocab in banding.vocabs.all %}
                             {% is_current_banding_for_user banding vocab request as is_selected %}
                             <option {% if is_selected %}selected="selected"{% endif %} value="{{ vocab.pk }}">{{ vocab }}</option>
@@ -37,7 +37,7 @@
                     </tr>
                 {% endfor %}
             </table>
-            <input type="submit" class="btn btn-success" value="Save to Profile">
+            <input type="submit" class="btn btn-success" value="{% get_site_text 'save_to_profile' %}">
             </form>
             </div>
         </div>
