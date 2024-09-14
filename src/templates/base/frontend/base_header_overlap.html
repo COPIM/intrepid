@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{% block title %}Open Book Collective{% endblock title %}</title>
+    <title>{% block title %}{% get_site_text 'open_book_collective' %}{% endblock title %}</title>
     {% include "base/frontend/header.html" %}
     {% block css %}
     {% endblock css %}
