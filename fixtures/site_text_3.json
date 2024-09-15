@@ -1595,7 +1595,87 @@
     "fields": {
         "key": "find_out_more",
         "body": "Find out more about the OBC and who is behind it.",
-        "help_text": "Exlpainer text on Who We Are mobile page",
+        "help_text": "Explainer text on Who We Are mobile page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 226,
+    "fields": {
+        "key": "pricing_country",
+        "body": "Pricing on the page below is based on your detected or set country:",
+        "help_text": "Explanation re. pricing currency",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 227,
+    "fields": {
+        "key": "change_country",
+        "body": "Change your country.",
+        "help_text": "Button to change country",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 228,
+    "fields": {
+        "key": "build_your_quote",
+        "body": "Build Your Quote",
+        "help_text": "alt-text for images that reads 'Build Your Quote'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 229,
+    "fields": {
+        "key": "all_initiatives",
+        "body": "All Initiatives",
+        "help_text": "All Initiatives text for dropdown",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 230,
+    "fields": {
+        "key": "all_subjects",
+        "body": "All Subjects",
+        "help_text": "All Subjects text for dropdown",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 231,
+    "fields": {
+        "key": "recommended",
+        "body": "Recommended",
+        "help_text": "Recommended text for dropdown",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 232,
+    "fields": {
+        "key": "name",
+        "body": "Name",
+        "help_text": "Name text for dropdown",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 233,
+    "fields": {
+        "key": "no_results",
+        "body": "No results to match your search",
+        "help_text": "No results text on packages page",
         "rich_text": false
         }
     }

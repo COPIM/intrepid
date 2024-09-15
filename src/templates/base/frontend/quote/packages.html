@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-    Collections and Collectives
+    {% get_site_text 'collections_and_collectives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -22,7 +22,7 @@
             <p class="subhead-no-offset">{% get_site_text 'oa_inits_sub_header' %}</p>
         </div>
         <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/collective_five.svg" %}"
-                                alt="Collections and Collectives"/></div>
+                                alt="{% get_site_text 'collections_and_collectives' %}"/></div>
         <div class="col-1"></div>
     </div>
 {% endblock header %}
@@ -31,11 +31,11 @@
     <div class="row">
         <div class="col">
             <div class="pill-row package-collection-pill-row">
-                <button class="left-pill-blue inactive-blue-pill" onclick="location.href='{% url 'package_list' %}'">Packages</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue active-pill">Initiatives</button>
+                <button class="left-pill-blue inactive-blue-pill" onclick="location.href='{% url 'package_list' %}'">{% get_site_text 'packages' %}</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue active-pill">{% get_site_text 'initiatives' %}</button>
             </div>
             {% if not request.site.enable_signup %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{% get_site_text 'close' %}">×</button>
                 {{ request.site.signup_disabled_notification }}
             </div>
             {% endif %}
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="initiative" id="sort-mobile"
                                 onchange="this.form.submit()">
-                            <option{% if request.GET.initiative == 'all' %} selected="selected"{% endif %} value="all">All Initiatives</option>
+                            <option{% if request.GET.initiative == 'all' %} selected="selected"{% endif %} value="all">{% get_site_text 'all_initiatives' %}</option>
                             {% for initiative in initiatives %}
                                  <option{% if request.GET.initiative == initiative.pk_str %} selected="selected"{% endif %} value="{{ initiative.pk }}">{{ initiative.name }}</option>
                             {% endfor %}
@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="subject" id="sort-mobile"
                                 onchange="this.form.submit()">
-                            <option{% if request.GET.subject == 'all' %} selected="selected"{% endif %} value="all">All Subjects</option>
+                            <option{% if request.GET.subject == 'all' %} selected="selected"{% endif %} value="all">{% get_site_text 'all_subjects' %}</option>
                             {% for subject in subjects %}
                                  <option{% if request.GET.subject == subject.subject_pk_str %} selected="selected"{% endif %} value="{{ subject.pk }}">{{ subject.name }}</option>
                             {% endfor %}
@@ -73,14 +73,14 @@
                     <div class="form-group">
                         <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="sort" id="sort-mobile"
                                 onchange="this.form.submit()">
-                            <option{% if request.GET.sort == 'recommended' %} selected="selected"{% endif %} value="recommended">Recommended</option>
-                            <option{% if request.GET.sort == 'name' %} selected="selected"{% endif %} value="name">Name</option>
+                            <option{% if request.GET.sort == 'recommended' %} selected="selected"{% endif %} value="recommended">{% get_site_text 'recommended' %}</option>
+                            <option{% if request.GET.sort == 'name' %} selected="selected"{% endif %} value="name">{% get_site_text 'name' %}</option>
                         </select>
                     </div>
                 </div>
             </form>
             {% country_code_to_name as country_name %}
-            <p>Pricing on the page below is based on your detected or set country, {{ country_name|title }}. <a href="#" data-toggle="modal" data-target="#country_change_modal">Change your country</a>.</p>
+            <p>{% get_site_text 'pricing_country' %} {{ country_name|title }}. <a href="#" data-toggle="modal" data-target="#country_change_modal">{% get_site_text 'change_country' %}</a></p>
         </div>
     </div>
     {% endif %}
@@ -92,7 +92,7 @@
                 </div>
             {% empty %}
                  <div class="col-12 package-col">
-                    <p>No results match your search.</p>
+                    <p>{% get_site_text 'no_results' %}</p>
                  </div>
             {% endfor %}
         </div>
@@ -106,7 +106,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
-                 alt="Build your quote image"/>
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{% get_site_text 'oa_inits_header' %}</h1>
         </div>
         <div class="col-1"></div>
@@ -126,7 +126,7 @@
     <div class="row package-main-mobile">
     <div class="col">
         <div class="pill-row">
-            <button class="left-pill-blue inactive-blue-pill" onclick="location.href='{% url 'package_list' %}'">Packages</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue active-pill">Initiatives</button>
+            <button class="left-pill-blue inactive-blue-pill" onclick="location.href='{% url 'package_list' %}'">{% get_site_text 'packages' %}</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue active-pill">{% get_site_text 'initiatives' %}</button>
         </div>
         <h2>{% get_site_text 'initiatives_header' %}</h2>
     </div>
@@ -148,8 +148,8 @@
                 <div class="form-group">
                     <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="initiative" id="sort-mobile"
                             onchange="this.form.submit()">
-                        <option{% if request.GET.initiative == 'all' %} selected="selected"{% endif %} value="all">All
-                            Initiatives
+                        <option{% if request.GET.initiative == 'all' %} selected="selected"{% endif %} value="all">
+                            {% get_site_text 'all_initiatives' %}
                         </option>
                         {% for initiative in initiatives %}
                             <option{% if request.GET.initiative == initiative.pk_str %} selected="selected"{% endif %}
@@ -160,8 +160,7 @@
                 <div class="form-group">
                     <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="subject" id="sort-mobile"
                             onchange="this.form.submit()">
-                        <option{% if request.GET.subject == 'all' %} selected="selected"{% endif %} value="all">All
-                            Subjects
+                        <option{% if request.GET.subject == 'all' %} selected="selected"{% endif %} value="all">{% get_site_text 'all_subjects' %}
                         </option>
                         {% for subject in subjects %}
                             <option{% if request.GET.subject == subject.subject_pk_str %} selected="selected"{% endif %}
@@ -172,8 +171,8 @@
                 <div class="form-group">
                     <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="sort" id="sort-mobile"
                                 onchange="this.form.submit()">
-                            <option{% if request.GET.sort == 'recommended' %} selected="selected"{% endif %} value="recommended">Recommended</option>
-                            <option{% if request.GET.sort == 'name' %} selected="selected"{% endif %} value="name">Name</option>
+                            <option{% if request.GET.sort == 'recommended' %} selected="selected"{% endif %} value="recommended">{% get_site_text 'recommended' %}</option>
+                            <option{% if request.GET.sort == 'name' %} selected="selected"{% endif %} value="name">{% get_site_text 'name' %}</option>
                         </select>
                 </div>
             </form>
