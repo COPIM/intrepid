@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}Who We Are Configuration{% endblock title %}
+{% block title %}{% get_site_text 'who_we_are_configuration' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Who We Are Configuration</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'who_we_are_configuration' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -22,18 +22,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>Board of Stewards</h2>
+                <h2>{% get_site_text 'board_of_stewards' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'stewards' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Steward
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="BoS">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -42,8 +42,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ steward.display_name }}</td>
                             <td>{{ steward.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'stewards' steward.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' steward.id %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'stewards' steward.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' steward.id %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -54,18 +54,18 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Membership Committee</h2>
+                <h2>{% get_site_text 'membership_committee' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'members' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Member
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="BoS">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -74,8 +74,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ member.display_name }}</td>
                             <td>{{ member.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'members' member.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'members' member.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -85,18 +85,18 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Management Team</h2>
+                <h2>{% get_site_text 'management_team' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'managers' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Manager
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="BoS">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -105,8 +105,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ manager.display_name }}</td>
                             <td>{{ manager.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'managers' manager.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' manager.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'managers' manager.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' manager.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -115,18 +115,18 @@
         </div>
     <div class="row">
             <div class="col-md-12">
-                <h2>Secretariat</h2>
+                <h2>{% get_site_text 'secretariat' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'secretariat' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Member
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="BoS">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -135,8 +135,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ member.display_name }}</td>
                             <td>{{ member.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'secretariat' member.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'secretariat' member.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -146,18 +146,18 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Finance Committee</h2>
+                <h2>{% get_site_text 'finance_committee' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'finance' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Member
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="BoS">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -166,8 +166,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ member.display_name }}</td>
                             <td>{{ member.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'finance' member.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'finance' member.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -177,18 +177,18 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h2>Previous Board Members</h2>
+                <h2>{% get_site_text 'previous_board_members' %}</h2>
                 <p><a href="{% url 'add_who_we_are_entry' 'previous' %}" class="btn btn-success">
-                    <i class="fa fa-plus"> </i> Add New Member
+                    <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
                 </a></p>
                 <table class="table table-hover" id="previous">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'affiliation' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody class="sortable">
@@ -197,8 +197,8 @@
                             <td><i class="fas fa-sort"></i></td>
                             <td>{{ member.display_name }}</td>
                             <td>{{ member.affiliation_line }}</td>
-                            <td><a href="{% url 'edit_who_we_are_entry' 'previous' member.id %}">Edit</a></td>
-                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                            <td><a href="{% url 'edit_who_we_are_entry' 'previous' member.id %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST" action="{% url 'delete_who_we_are_entry' member.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>

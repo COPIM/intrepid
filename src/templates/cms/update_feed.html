@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}Update Feed{% endblock title %}
+{% block title %}{% get_site_text 'update_feed' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Update Feed</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'update_feed' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,16 +19,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">Lists updates to pages and versions.</p>
+                <p class="lead">{% get_site_text 'lists_updates_to_pages' %}</p>
                 <table class="table table-hover" id="updates">
                     <thead>
                     <tr>
-                        <th>Version ID</th>
-                        <th>Updated By</th>
-                        <th>Date/Time</th>
-                        <th>Page/Update</th>
-                        <th>Edit</th>
-                        <th>Detail</th>
+                        <th>{% get_site_text 'id' %}</th>
+                        <th>{% get_site_text 'last_updated_by' %}</th>
+                        <th>{% get_site_text 'date_time' %}</th>
+                        <th>{% get_site_text 'page_update' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'details' %}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,13 +38,13 @@
                             <td>{{ version.created_by.profile.full_name }}</td>
                             <td>{{ version.created }}</td>
                             <td>
-                                <strong>{% if version.pageupdate_set.all.0.is_update %}Update {% else %}Page {% endif %}</strong>{{ version.pageupdate_set.all.0.title }}
+                                <strong>{% if version.pageupdate_set.all.0.is_update %}{% get_site_text 'update' %} {% else %}{% get_site_text 'page' %} {% endif %}</strong>{{ version.pageupdate_set.all.0.title }}
                             </td>
                             <td>
-                                <a target="_blank" href="{{ version.pageupdate_set.all.0.edit_url }}">Edit</a>
+                                <a target="_blank" href="{{ version.pageupdate_set.all.0.edit_url }}">{% get_site_text 'edit' %}</a>
                             </td>
                             <td>
-                                <a target="_blank" href="{{ version.pageupdate_set.all.0.detail_url }}">Detail</a>
+                                <a target="_blank" href="{{ version.pageupdate_set.all.0.detail_url }}">{% get_site_text 'details' %}</a>
                             </td>
                         </tr>
                     {% endfor %}
