@@ -124,7 +124,7 @@
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Management Team</h2><a id="management-team"></a>
+                        <h2>{% get_site_text 'management_team' %}</h2><a id="management-team"></a>
                         <div class="row">
 
                            {% for manager in managers %}
@@ -173,7 +173,7 @@
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Secretariat</h2><a id="secretariat"></a>
+                        <h2>{% get_site_text 'secretariat' %}</h2><a id="secretariat"></a>
                          <div class="row">
                             {% for sec in secretariat %}
                                 <div class="col-4">
@@ -222,7 +222,7 @@
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Finance Committee</h2><a id="finance"></a>
+                        <h2>{% get_site_text 'finance_committee' %}</h2><a id="finance"></a>
                          <div class="row">
                             {% for sec in finance %}
                                 <div class="col-4">
@@ -270,7 +270,7 @@
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Previous Board Members</h2><a id="previous"></a>
+                        <h2>{% get_site_text 'previous_board_members' %}</h2><a id="previous"></a>
                          <div class="row">
                             {% for sec in previous %}
                                 <div class="col-4">
@@ -339,21 +339,21 @@
 {% block body-mobile %}
     <div class="row login-row-header-mobile">
         <div class="col-12 who-we-are-header-mobile">
-            <img src="{% static "frontend/img/whoweare.svg" %}" alt="Who We Are" class="img-fluid"/><br/>
-            <h1>{% trans "Who We Are" %}</h1>
+            <img src="{% static "frontend/img/whoweare.svg" %}" alt="{% get_site_text 'who_we_are' %}" class="img-fluid"/><br/>
+            <h1>{% get_site_text 'who_we_are' %}</h1>
         </div>
 
     </div>
 
     <div class="row white-background blue-text">
         <div class="col">
-           <p>Find out more about the OBC and who is behind it.</p>
+           <p>{% get_site_text 'find_out_more' %}</p>
         </div>
     </div>
 
     <div class="row grey-background blue-text">
         <div class="col">
-            <h2>Board of Stewards</h2>
+            <h2>{% get_site_text 'board_of_stewards' %}</h2>
             {% for steward in stewards %}
             <div class="person-block-mobile">
                 {% if steward.police_mugshot %}<img src="{{ steward.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ steward.display_name }}" />{% endif %}
@@ -362,7 +362,7 @@
             </div>
             {% endfor %}
 
-            <h2>Membership Committee</h2>
+            <h2>{% get_site_text 'membership_committee' %}</h2>
             {% for member in members %}
                 <div class="person-block-mobile">
                     {% if memnber.police_mugshot %}<img src="{{ member.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ member.display_name }}" />{% endif %}
@@ -371,7 +371,7 @@
                 </div>
             {% endfor %}
 
-            <h2>Management Team</h2>
+            <h2>{% get_site_text 'management_team' %}</h2>
             {% for manager in managers %}
                 <div class="person-block-mobile">
                     {% if manager.police_mugshot %}<img src="{{ manager.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ manager.display_name}}" />{% endif %}
@@ -380,7 +380,7 @@
                 </div>
             {% endfor %}
 
-            <h2>Secretariat</h2>
+            <h2>{% get_site_text 'secretariat' %}</h2>
             {% for sec in secretariat %}
                 <div class="person-block-mobile">
                     {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
@@ -389,7 +389,7 @@
                 </div>
             {% endfor %}
 
-            <h2>Previous Board Members</h2>
+            <h2>{% get_site_text 'previous_board_members' %}</h2>
             {% for sec in previous %}
                 <div class="person-block-mobile">
                     {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
