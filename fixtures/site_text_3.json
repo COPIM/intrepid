@@ -2198,5 +2198,205 @@
         "help_text": "Text for use on page details page",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 286,
+    "fields": {
+        "key": "id",
+        "body": "ID",
+        "help_text": "Text for abbreviation of ID (identifier)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 287,
+    "fields": {
+        "key": "created_by",
+        "body": "Created by",
+        "help_text": "Text for use in headings and tables (created by)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 288,
+    "fields": {
+        "key": "view_version",
+        "body": "View version",
+        "help_text": "Text for use in headings and tables (view version)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 289,
+    "fields": {
+        "key": "set_as_current_version",
+        "body": "Set as Current Version",
+        "help_text": "Text for use in headings and tables (set as current version)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 290,
+    "fields": {
+        "key": "this_is_current",
+        "body": "This is the current version",
+        "help_text": "Text for use in headings and tables (set as current version)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 291,
+    "fields": {
+        "key": "no_other_versions",
+        "body": "No other versions",
+        "help_text": "Text for use in headings and tables (no other versions)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 292,
+    "fields": {
+        "key": "preview",
+        "body": "Preview",
+        "help_text": "Text for use in headings and tables (preview)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 293,
+    "fields": {
+        "key": "not_found",
+        "body": "not found",
+        "help_text": "Text for use in headings and tables (not found)",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 294,
+    "fields": {
+        "key": "site_wide_news_config",
+        "body": "Site-Wide News Configuration",
+        "help_text": "Heading for the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 295,
+    "fields": {
+        "key": "site_wide_news_config_items",
+        "body": "Configures Site-Wide News Items",
+        "help_text": "Heading for the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 296,
+    "fields": {
+        "key": "page",
+        "body": "Page",
+        "help_text": "Heading for the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 297,
+    "fields": {
+        "key": "initiative",
+        "body": "Initiative",
+        "help_text": "Heading for the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 298,
+    "fields": {
+        "key": "remove_from_homepage",
+        "body": "Remove from Homepage",
+        "help_text": "Button action text on the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 299,
+    "fields": {
+        "key": "date_time",
+        "body": "Date/Time",
+        "help_text": "Table text on the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 300,
+    "fields": {
+        "key": "add_to_homepage",
+        "body": "Add to Homepage",
+        "help_text": "Table text on the site-wide news configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 301,
+    "fields": {
+        "key": "update_feed",
+        "body": "Update Feed",
+        "help_text": "Header text on the update feed page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 302,
+    "fields": {
+        "key": "lists_updates_to_pages",
+        "body": "Lists updates to pages and versions.",
+        "help_text": "Header text on the update feed page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 303,
+    "fields": {
+        "key": "page_update",
+        "body": "Page/Update",
+        "help_text": "Table text on the update feed page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 304,
+    "fields": {
+        "key": "update",
+        "body": "Update",
+        "help_text": "Table text on the update feed page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 305,
+    "fields": {
+        "key": "who_we_are_configuration",
+        "body": "Who We Are Configuration",
+        "help_text": "Header text on the Who We Are configuration page",
+        "rich_text": false
+        }
     }
 ]
