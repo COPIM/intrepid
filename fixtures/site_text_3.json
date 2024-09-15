@@ -1445,7 +1445,7 @@
     "fields": {
         "key": "pricing",
         "body": "Pricing",
-        "help_text": "Text on nav page that reads 'Pricing'",
+        "help_text": "Text on nav page and elsewhere that reads 'Pricing'",
         "rich_text": false
         }
     },
@@ -1676,6 +1676,106 @@
         "key": "no_results",
         "body": "No results to match your search",
         "help_text": "No results text on packages page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 234,
+    "fields": {
+        "key": "month_contract",
+        "body": "month contract",
+        "help_text": "Appended after the number of months the contract runs for",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 235,
+    "fields": {
+        "key": "more_information",
+        "body": "More Information",
+        "help_text": "Button in collective element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 236,
+    "fields": {
+        "key": "add_to_quote",
+        "body": "Add to Quote",
+        "help_text": "Button in collective element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 237,
+    "fields": {
+        "key": "collective_signup_disabled",
+        "body": "Collective package signup is disabled.",
+        "help_text": "Message for when collective package signup is disabled",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 238,
+    "fields": {
+        "key": "learn_more",
+        "body": "Learn More",
+        "help_text": "Button in initiative element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 239,
+    "fields": {
+        "key": "edit_package",
+        "body": "Edit package",
+        "help_text": "Button for staff to edit package",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 240,
+    "fields": {
+        "key": "included_in",
+        "body": "Included in",
+        "help_text": "Preamble text to specify which packages are included in which metapackages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 241,
+    "fields": {
+        "key": "initiative_only",
+        "body": "Initiative only",
+        "help_text": "Text in dropdown to support just a single initiative",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 242,
+    "fields": {
+        "key": "initiative_package_signup_disabled",
+        "body": "Initiative package signup is disabled.",
+        "help_text": "Text to use when initiative package signup is disabled",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 243,
+    "fields": {
+        "key": "add",
+        "body": "Add",
+        "help_text": "Add button on mobile",
         "rich_text": false
         }
     }
