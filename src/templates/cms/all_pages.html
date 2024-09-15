@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-{{ page_or_update|capfirst }} List
+{{ page_or_update|capfirst }} {% get_site_text 'list' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
     <li class="breadcrumb-item active" aria-current="page">{{ page_or_update|capfirst }}</li>
 {% endblock breadcrumb %}
@@ -17,10 +17,10 @@
 {% block content %}
     <section class="content">
       <div class="container-fluid">
-            <h1>{{ page_or_update|capfirst }} List</h1>
-            <p class="lead">A list of {{ page_or_update }}s for {{ initiative.name }}.</p>
+            <h1>{{ page_or_update|capfirst }} {% get_site_text 'list' %}</h1>
+            <p class="lead">{{ page_or_update }}s / {{ initiative.name }}.</p>
             {% if page_or_update == 'page' %}
-                <p>In order to preserve the layout on the landing page, initiatives should have either 1 page, 2 pages, or 5 pages</p>
+                <p>{% get_site_text 'layout_preserve' %}</p>
             {% endif %}
 
 
@@ -30,13 +30,13 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Title</th>
-                        <th>Created</th>
-                        <th>Last Updated By</th>
-                        <th>Display</th>
-                        <th>URL</th>
-                        <th>Edit</th>
-                        <th>View</th>
+                        <th>{% get_site_text 'title' %}</th>
+                        <th>{% get_site_text 'created' %}</th>
+                        <th>{% get_site_text 'last_updated_by' %}</th>
+                        <th>{% get_site_text 'display' %}</th>
+                        <th>{% get_site_text 'url' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'view' %}</th>
                     </tr>
                 </thead>
                 <tbody id="sortable">
@@ -48,8 +48,8 @@
                         <td>{{ obj.updated_by.profile.full_name }}</td>
                         <td>{{ obj.display }}</td>
                         <td>/nav/{{ obj.url_expression }}</td>
-                        <td><a href="{% url 'page_edit' obj.initiative.pk "page" obj.pk %}">Edit Page</a></td>
-                        <td><a href="{% url 'page_render' obj.pk %}">View</a></td>
+                        <td><a href="{% url 'page_edit' obj.initiative.pk "page" obj.pk %}">{% get_site_text 'edit' %}</a></td>
+                        <td><a href="{% url 'page_render' obj.pk %}">{% get_site_text 'view' %}</a></td>
                     </tr>
                     {% empty %}
                 {% endfor %}
