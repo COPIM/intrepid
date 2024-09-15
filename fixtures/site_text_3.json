@@ -1548,5 +1548,55 @@
         "help_text": "Subheader for Membership Committee",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 221,
+    "fields": {
+        "key": "management_team",
+        "body": "Management Team",
+        "help_text": "Subheader for Management Team",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 222,
+    "fields": {
+        "key": "secretariat",
+        "body": "Secretariat",
+        "help_text": "Subheader for Secretariat",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 223,
+    "fields": {
+        "key": "finance_committee",
+        "body": "Finance Committee",
+        "help_text": "Subheader for Finance Committee",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 224,
+    "fields": {
+        "key": "previous_board_members",
+        "body": "Previous Board Members",
+        "help_text": "Subheader for Previous Board Members",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 225,
+    "fields": {
+        "key": "find_out_more",
+        "body": "Find out more about the OBC and who is behind it.",
+        "help_text": "Exlpainer text on Who We Are mobile page",
+        "rich_text": false
+        }
     }
 ]
