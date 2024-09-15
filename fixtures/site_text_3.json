@@ -1778,5 +1778,105 @@
         "help_text": "Add button on mobile",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 244,
+    "fields": {
+        "key": "list",
+        "body": "List",
+        "help_text": "The word 'List' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 245,
+    "fields": {
+        "key": "layout_preserve",
+        "body": "In order to preserve the layout on the landing page, initiatives should have either 1 page, 2 pages, or 5 pages",
+        "help_text": "A statement about the number of pages and preserving the layout",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 246,
+    "fields": {
+        "key": "title",
+        "body": "Title",
+        "help_text": "The word 'Title' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 247,
+    "fields": {
+        "key": "created",
+        "body": "Created",
+        "help_text": "The word 'Created' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 248,
+    "fields": {
+        "key": "last_updated_by",
+        "body": "Last Updated By",
+        "help_text": "The words 'Last Updated By' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 249,
+    "fields": {
+        "key": "display",
+        "body": "Display",
+        "help_text": "The word 'Display' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 250,
+    "fields": {
+        "key": "url",
+        "body": "URL",
+        "help_text": "The word 'URL' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 251,
+    "fields": {
+        "key": "edit",
+        "body": "Edit",
+        "help_text": "The word 'Edit' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 252,
+    "fields": {
+        "key": "view",
+        "body": "View",
+        "help_text": "The word 'View' for the heading on CMS management pages",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 253,
+    "fields": {
+        "key": "diff",
+        "body": "Diff",
+        "help_text": "The word 'Diff' for the CMS diffing page",
+        "rich_text": false
+        }
     }
 ]
