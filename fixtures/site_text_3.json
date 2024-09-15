@@ -1878,5 +1878,325 @@
         "help_text": "The word 'Diff' for the CMS diffing page",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 254,
+    "fields": {
+        "key": "create",
+        "body": "Create",
+        "help_text": "The word 'Create' for the CMS edit/create page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 255,
+    "fields": {
+        "key": "manage_data",
+        "body": "You can manage the data for this page below. There are two save options available.",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 256,
+    "fields": {
+        "key": "save_page",
+        "body": "Save - creates a new version of your page but does not make it live.",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 257,
+    "fields": {
+        "key": "save_page_make_current",
+        "body": "Save and Make Current Version - creates a new version and also makes it the live version.",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 258,
+    "fields": {
+        "key": "can_control_versions",
+        "body": "You can control versions, and which of them is live, from the",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 259,
+    "fields": {
+        "key": "detail_page",
+        "body": "detail page",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 260,
+    "fields": {
+        "key": "institution_target",
+        "body": "Institution (Optional: targets this update at a specific institution)",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 261,
+    "fields": {
+        "key": "save_and_make_current",
+        "body": "Save and Make Current Version",
+        "help_text": "Help text on the create/edit CMS page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 262,
+    "fields": {
+        "key": "edit_homepage_quotation",
+        "body": "Edit homepage quotation",
+        "help_text": "Breadcrumb on the edit homepage quotation page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 263,
+    "fields": {
+        "key": "homepage_quotation_configuration",
+        "body": "Homepage Quotation Configuration",
+        "help_text": "Breadcrumb on the homepage quotation configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 264,
+    "fields": {
+        "key": "who_we_are_entry",
+        "body": "Who We Are entry",
+        "help_text": "Breadcrumb on the homepage quotation configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 265,
+    "fields": {
+        "key": "edit_site_text",
+        "body": "Edit Site Text:",
+        "help_text": "Explanatory text on the edit site text page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 266,
+    "fields": {
+        "key": "featured_thoth_titles",
+        "body": "Featured Thoth Titles",
+        "help_text": "Text on the Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 267,
+    "fields": {
+        "key": "add",
+        "body": "add",
+        "help_text": "Text on the Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 268,
+    "fields": {
+        "key": "thoth_display",
+        "body": "Note: these display as three per line, so multiples of three will look best.",
+        "help_text": "Text on the Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 269,
+    "fields": {
+        "key": "delete",
+        "body": "Delete",
+        "help_text": "Text used in tables",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 270,
+    "fields": {
+        "key": "view_book",
+        "body": "View book",
+        "help_text": "Text used on Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 271,
+    "fields": {
+        "key": "delete_featured_title",
+        "body": "Delete this Featured Title",
+        "help_text": "Text used on Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 272,
+    "fields": {
+        "key": "no_featured_books",
+        "body": "No featured books",
+        "help_text": "Text used on Thoth titles page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 273,
+    "fields": {
+        "key": "fixed_pages",
+        "body": "Fixed Pages",
+        "help_text": "Text used on the Fixed Pages page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 274,
+    "fields": {
+        "key": "fixed_pages_explainer",
+        "body": "Certain locations within the CMS are fixed (e.g. \"Terms and Conditions\"). This page allows you to map these entries to CMS entries.",
+        "help_text": "Explanatory text used on the Fixed Pages page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 275,
+    "fields": {
+        "key": "control_fixed_versions",
+        "body": "You can control versions, and which of them is live, from the",
+        "help_text": "Explanatory text used on the Fixed Pages page. Goes just before 'detail page'",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 276,
+    "fields": {
+        "key": "homepage_quotation_configuration_explainer",
+        "body": "This page allows you to configure the display of quotations on the home page. You can add as many quotations as you like, but only the first four will show on the homepage.",
+        "help_text": "Explanatory text used on the Homepage Quotation Configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 277,
+    "fields": {
+        "key": "quote",
+        "body": "Quote",
+        "help_text": "Text used on the Homepage Quotation Configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 278,
+    "fields": {
+        "key": "person",
+        "body": "Person",
+        "help_text": "Text used on the Homepage Quotation Configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 279,
+    "fields": {
+        "key": "organization",
+        "body": "Organization",
+        "help_text": "Text used on the Homepage Quotation Configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 280,
+    "fields": {
+        "key": "no_quotations",
+        "body": "No quotations.",
+        "help_text": "Text used on the Homepage Quotation Configuration page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 281,
+    "fields": {
+        "key": "details",
+        "body": "Details",
+        "help_text": "Text for use in headings and tables",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 282,
+    "fields": {
+        "key": "target_institution",
+        "body": "Target Institution",
+        "help_text": "Text for use in headings and tables",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 283,
+    "fields": {
+        "key": "sequence",
+        "body": "Sequence",
+        "help_text": "Text for use in headings and tables",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 284,
+    "fields": {
+        "key": "current_version",
+        "body": "Current version",
+        "help_text": "Text for use on page details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 285,
+    "fields": {
+        "key": "view_current_version",
+        "body": "View Current Version",
+        "help_text": "Text for use on page details page",
+        "rich_text": false
+        }
     }
 ]

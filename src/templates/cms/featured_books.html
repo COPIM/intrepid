@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-{{ page_or_update|capfirst }} List
+{{ page_or_update|capfirst }} {% get_site_text 'list' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
     <li class="breadcrumb-item active" aria-current="page">{{ page_or_update|capfirst }}</li>
 {% endblock breadcrumb %}
@@ -20,15 +20,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <h2>Featured Thoth Titles (<a href="{% url 'featured_book_create' initiative.pk %}">add +</a>)</h2>
-                    <p>Note: these display as three per line, so multiples of three will look best.</p>
+                    <h2>{% get_site_text 'featured_thoth_titles' %} (<a href="{% url 'featured_book_create' initiative.pk %}">{% get_site_text 'add' %} +</a>)</h2>
+                    <p>{% get_site_text 'thoth_display' %}</p>
                      <table class="table table-striped" id="initiatives">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Title</th>
-                        <th>View</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'title' %}</th>
+                        <th>{% get_site_text 'view' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody id="sortable">
@@ -36,13 +36,13 @@
                     <tr id="featured-book-{{ obj.pk }}">
                         <td><i class="fas fa-sort"></i></td>
                         <td>{{ obj.book.full_title }}</td>
-                        <td><a href="{% url 'book' obj.book.pk %}">View book</a></td>
-                        <td><form method="POST" action="{% url 'featured_book_delete' initiative.pk obj.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Featured Title"/></form></td>
+                        <td><a href="{% url 'book' obj.book.pk %}">{% get_site_text 'view_book' %}</a></td>
+                        <td><form method="POST" action="{% url 'featured_book_delete' initiative.pk obj.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete_featured_title' %}"/></form></td>
                     </tr>
                     {% empty %}
                     <tr>
                     <td colspan="100">
-                        No featured books. <a href="{% url 'featured_book_create' initiative.pk %}">Add one.</a>
+                        {% get_site_text 'no_featured_books' %}. <a href="{% url 'featured_book_create' initiative.pk %}">{% get_site_text 'add' %}.</a>
                     </td>
                     </tr>
                 {% endfor %}
