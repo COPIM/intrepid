@@ -3,9 +3,9 @@
 
 {% block breadcrumb %}
 
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
-    <li class="breadcrumb-item" aria-current="page">Contacts</li>
-    <li class="breadcrumb-item" aria-current="page">{% if contact %}Edit {{ contact.name }}{% else %}Create New Contact{% endif %}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'contacts' %}</li>
+    <li class="breadcrumb-item" aria-current="page">{% if contact %}{% get_site_text 'edit' %} {{ contact.name }}{% else %}{% get_site_text 'add' %}{% endif %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -14,16 +14,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% if package %}Edit {{ contact.name }}{% else %}Add New Contact{% endif %}</h1>
-                <p class="lead">Add new and edit existing contacts.</p>
+                <h1>{% if package %}{% get_site_text 'edit' %} {{ contact.name }}{% else %}{% get_site_text 'add' %}{% endif %}</h1>
+                <p class="lead">{% get_site_text 'contacts_add_edit' %}</p>
 
                 <form method="POST">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-9">
-                            <h2>Contact Details</h2>
+                            <h2>{% get_site_text 'details' %}</h2>
                             {{ form|crispy }}
-                            <button class="btn btn-success">Save</button>
+                            <button class="btn btn-success">{% get_site_text 'save' %}</button>
                         </div>
                     </div>
                 </form>

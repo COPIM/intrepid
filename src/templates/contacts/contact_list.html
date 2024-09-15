@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'initiatives' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -18,20 +18,20 @@ Initiatives
 
     <section class="content">
       <div class="container-fluid">
-            <h1>Contacts for your initiatives</h1>
-            <p class="lead">Contacts for the initiative can be assigned to receive notifications on signups and on changes to access controls. Note that anybody listed here can use their access code to view signups and access controls for the listed initiative.</p>
+            <h1>{% get_site_text 'contacts_for_initiatives' %}</h1>
+            <p class="lead">{% get_site_text 'contacts_for_initiatives_explainer' %}</p>
             <p><a href="{% url 'create_contact' %}" class="btn btn-success">
-                <i class="fa fa-plus"> </i> Add New Contact
+                <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
             </a></p>
 
             <table class="table table-striped" id="contact_list">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Initiative</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'email' %}</th>
+                        <th>{% get_site_text 'initiative' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,8 +40,8 @@ Initiatives
                         <td>{{ contact.name }}</td>
                         <td>{{ contact.email }}</td>
                         <td>{{ contact.initiative }}</td>
-                        <td><a href="{% url 'edit_contact' contact.pk %}">Edit</a></td>
-                        <td><form method="POST" action="{% url 'delete_contact' contact.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Contact"/></form></td>
+                        <td><a href="{% url 'edit_contact' contact.pk %}">{% get_site_text 'edit' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_contact' contact.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                 {% endfor %}
                 </tbody>
