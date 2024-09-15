@@ -2398,5 +2398,45 @@
         "help_text": "Header text on the Who We Are configuration page",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 306,
+    "fields": {
+        "key": "contacts_for_initiatives",
+        "body": "Contacts for your initiatives",
+        "help_text": "Header text on the contacts for initiatives page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 307,
+    "fields": {
+        "key": "contacts_for_initiatives_explainer",
+        "body": "Contacts for the initiative can be assigned to receive notifications on signups and on changes to access controls. Note that anybody listed here can use their access code to view signups and access controls for the listed initiative.",
+        "help_text": "Explainer text on the contacts for initiatives page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 308,
+    "fields": {
+        "key": "contacts",
+        "body": "Contacts",
+        "help_text": "Breadcrumb and header text on the contacts for initiatives page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 309,
+    "fields": {
+        "key": "contacts_add_edit",
+        "body": "Add new and edit existing contacts.",
+        "help_text": "Subheader text on the contacts for initiatives page",
+        "rich_text": false
+        }
     }
 ]
