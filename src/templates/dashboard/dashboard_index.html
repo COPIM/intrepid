@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block title %}
-    Dashboard
+    {% get_site_text 'dashboard' %}
 {% endblock title %}
 
 {% block page-title %}
-    Dashboard
+    {% get_site_text 'dashboard' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'dashboard' %}</a></li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -152,9 +152,9 @@
                     <a href="{% url 'basket_list' %}">
                         <div class="small-box bg-pink">
                             <div class="inner">
-                                <h3>{{ request.active_baskets.count }} Quotes</h3>
+                                <h3>{{ request.active_baskets.count }} {% get_site_text 'quotes' %}</h3>
 
-                                <p>View Quotes in Progress</p>
+                                <p>{% get_site_text 'view_quotes_in_progress' %}</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-document"></i>
@@ -169,7 +169,7 @@
                             <div class="inner">
                                 <h3>{{ book_count }}</h3>
 
-                                <p>Books in Packages at OBC</p>
+                                <p>{% get_site_text 'books_in_packages' %}</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-book"></i>
@@ -187,7 +187,7 @@
                         <div class="inner">
                             <h3>{{ institution_books }}</h3>
 
-                            <p>Authors from Your Institution</p>
+                            <p>{% get_site_text 'authors_from_institution' %}</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -206,7 +206,7 @@
                             <div class="inner">
                                 <h3>{{ pub_count }}</h3>
 
-                                <p>Funded Presses at OBC</p>
+                                <p>{% get_site_text 'funded_presses' %}</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
@@ -223,7 +223,7 @@
                             <div class="inner">
                                 <h3>{{ index_count }}</h3>
 
-                                <p>Books Indexed</p>
+                                <p>{% get_site_text 'books_indexed' %}</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-eye"></i>
@@ -244,7 +244,7 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="fas fa-chart-pie mr-1"></i>
-                                Books Published by OBC Presses
+                                {% get_site_text 'books_published' %}
                             </h3>
                             <div class="card-tools">
                             </div>
@@ -273,12 +273,12 @@
                         <div class="card-header border-0">
                             <h3 class="card-title">
                                 <i class="fas fa-map-marker-alt mr-1"></i>
-                                Book Authorship Map
+                                {% get_site_text 'books_authorship_map' %}
                             </h3>
                             <!-- card tools -->
                             <div class="card-tools">
                                 <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse"
-                                        title="Collapse">
+                                        title="{% get_site_text 'collapse' %}">
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
@@ -318,7 +318,7 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>Payment Processors</h3>
+                                <h3>{% get_site_text 'payment_processors' %}</h3>
                                 <ul>
                                     {% for processor in request.payment_processors %}
                                     <li><a class="white-link-text" href="{% url 'list_order_invoices' processor.pk %}">{{ processor.name }}</a></li>
