@@ -2438,5 +2438,165 @@
         "help_text": "Subheader text on the contacts for initiatives page",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 310,
+    "fields": {
+        "key": "quotes",
+        "body": "Quotes",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 311,
+    "fields": {
+        "key": "view_quotes_in_progress",
+        "body": "View Quotes in Progress",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 312,
+    "fields": {
+        "key": "books_in_packages",
+        "body": "Books in Packages at OBC",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 313,
+    "fields": {
+        "key": "authors_from_institution",
+        "body": "Authors from Your Institution",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 314,
+    "fields": {
+        "key": "funded_presses",
+        "body": "Funded Presses at OBC",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 315,
+    "fields": {
+        "key": "books_indexed",
+        "body": "Books Indexed",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 316,
+    "fields": {
+        "key": "books_published",
+        "body": "Books Published by OBC Presses",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 317,
+    "fields": {
+        "key": "book_authorship_map",
+        "body": "Book Authorship Map",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 318,
+    "fields": {
+        "key": "collapse",
+        "body": "Collapse",
+        "help_text": "Alt text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 319,
+    "fields": {
+        "key": "site_setup",
+        "body": "Site Setup",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 320,
+    "fields": {
+        "key": "disable_signup_note",
+        "body": "Note: Disabling all signups will overrule the individual options.",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 321,
+    "fields": {
+        "key": "order_number",
+        "body": "Order Number",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 322,
+    "fields": {
+        "key": "number_of_packages",
+        "body": "Number of Packages",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 323,
+    "fields": {
+        "key": "status",
+        "body": "Status",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 324,
+    "fields": {
+        "key": "no_documents",
+        "body": "No Documents",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 325,
+    "fields": {
+        "key": "complete_order_form",
+        "body": "Complete Order Form",
+        "help_text": "Text on dashboard",
+        "rich_text": false
+        }
     }
 ]
