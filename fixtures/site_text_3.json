@@ -2598,5 +2598,115 @@
         "help_text": "Text on dashboard",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 326,
+    "fields": {
+        "key": "change_current_country",
+        "body": "Change Current Country",
+        "help_text": "Text on update country element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 327,
+    "fields": {
+        "key": "we_have_detected_your_country_as",
+        "body": "We have detected your current country as:",
+        "help_text": "Text on update country element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 328,
+    "fields": {
+        "key": "update_country",
+        "body": "Update Country",
+        "help_text": "Text on update country element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 329,
+    "fields": {
+        "key": "delete_text",
+        "body": "Are you sure you want to delete this object? NB: No data can be recovered from this operation.",
+        "help_text": "Text on delete_check element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 330,
+    "fields": {
+        "key": "adding",
+        "body": "Adding",
+        "help_text": "Text on manage basket element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 331,
+    "fields": {
+        "key": "existing_quotations",
+        "body": "Existing Quotations",
+        "help_text": "Text on manage basket element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 332,
+    "fields": {
+        "key": "no_existing_quotations",
+        "body": "You do not have any existing quotations.",
+        "help_text": "Text on manage basket element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 333,
+    "fields": {
+        "key": "add_to",
+        "body": "Add to",
+        "help_text": "Text on manage basket element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 334,
+    "fields": {
+        "key": "create_new_quotation",
+        "body": "Create New Quotation",
+        "help_text": "Text on manage basket element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 335,
+    "fields": {
+        "key": "your_reference_number_is",
+        "body": "Your reference number is",
+        "help_text": "Text on order form element",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 336,
+    "fields": {
+        "key": "please_quote_it",
+        "body": "Please quote it if you need to get in touch with us.",
+        "help_text": "Text on order form element",
+        "rich_text": false
+        }
     }
 ]

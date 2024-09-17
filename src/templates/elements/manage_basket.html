@@ -3,20 +3,20 @@
 <div class="row catalogue-main">
     <div class="col-1"></div>
     <div class="col">
-        <h2 class="text-left summary-header">Adding <strong>
+        <h2 class="text-left summary-header">{% get_site_text 'adding' %} <strong>
             {% if package %}{{ package.name }}{% else %}{{ meta_package.name }}{% endif %}</strong></h2>
             {% if not request.site.enable_signup %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{% get_site_text 'close' %}">×</button>
                 {{ request.site.signup_disabled_notification }}
             </div>
             {% endif %}
         {% if request.site.enable_signup %}
         <div class="row">
             <div class="col-md-6">
-                <h3>Existing Quotations</h3>
+                <h3>{% get_site_text 'existing_quotations' %}</h3>
                 {% if not baskets %}
-                    <p><i class="fas fa-exclamation-triangle"></i> You do not have any existing quotations.
+                    <p><i class="fas fa-exclamation-triangle"></i>{% get_site_text 'no_existing_quotations' %}
                     </p>
                 {% endif %}
                 <form method="POST">
@@ -24,18 +24,17 @@
                     <div class="btn-group-vertical">
                         {% for basket in baskets %}
                             <button class="btn btn-primary btn-obc-blue" name="basket_id" value="{{ basket.pk }}">
-                                Add
-                                to {{ basket.name }}</button>
+                                {% get_site_text 'add_to' %} {{ basket.name }}</button>
                         {% endfor %}
                     </div>
                 </form>
             </div>
             <div class="col-md-6">
-                <h3>Create New Quotation</h3>
+                <h3>{% get_site_text 'create_new_quotation' %}</h3>
                 <form method="POST">
                     {% csrf_token %}
                     {% bootstrap_form new_basket_form %}
-                    <button type="submit" class="btn btn-primary btn-obc-blue" name="create_new_basket">Create
+                    <button type="submit" class="btn btn-primary btn-obc-blue" name="create_new_basket">{% get_site_text 'create' %}
                     </button>
                 </form>
             </div>
