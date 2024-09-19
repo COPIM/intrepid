@@ -2708,5 +2708,245 @@
         "help_text": "Text on order form element",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 337,
+    "fields": {
+        "key": "initiative_details",
+        "body": "Initiative Details",
+        "help_text": "Heading on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 338,
+    "fields": {
+        "key": "expanded_initiative",
+        "body": "Expanded information of a given initiative including name and accounts associated with it.",
+        "help_text": "Helper text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 339,
+    "fields": {
+        "key": "basic_information",
+        "body": "Basic Information",
+        "help_text": "Helper text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 340,
+    "fields": {
+        "key": "description",
+        "body": "Description",
+        "help_text": "Helper text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 341,
+    "fields": {
+        "key": "accounts",
+        "body": "Accounts",
+        "help_text": "Header text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 342,
+    "fields": {
+        "key": "accounts_helper",
+        "body": "Below are the accounts linked to this Initiative. Linked accounts have permission to create and edit initiative pages and updates.",
+        "help_text": "Helper text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 343,
+    "fields": {
+        "key": "unlink",
+        "body": "Unlink",
+        "help_text": "Button text on Initiative Details page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 344,
+    "fields": {
+        "key": "edit_initiative",
+        "body": "Edit Initiative",
+        "help_text": "Header text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 345,
+    "fields": {
+        "key": "initiative_packages",
+        "body": "Initiative Packages",
+        "help_text": "Header text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 346,
+    "fields": {
+        "key": "packages_owned_by",
+        "body": "Packages Owned By",
+        "help_text": "Header text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 347,
+    "fields": {
+        "key": "active",
+        "body": "Active",
+        "help_text": "Table text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 348,
+    "fields": {
+        "key": "data_fields",
+        "body": "Data Fields",
+        "help_text": "Table text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 349,
+    "fields": {
+        "key": "standards",
+        "body": "Standards",
+        "help_text": "Table text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 350,
+    "fields": {
+        "key": "access_control",
+        "body": "Access Control",
+        "help_text": "Table text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 351,
+    "fields": {
+        "key": "media_files",
+        "body": "Media Files",
+        "help_text": "Table text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 352,
+    "fields": {
+        "key": "initiative_list",
+        "body": "Initiative List",
+        "help_text": "Header text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 353,
+    "fields": {
+        "key": "initiative_list_helper",
+        "body": "View, edit, delete and create initiative objects.",
+        "help_text": "Header text on Edit Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 354,
+    "fields": {
+        "key": "initiatives_staff",
+        "body": "As a staff member you will see all Initiatives listed here.",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 355,
+    "fields": {
+        "key": "initiatives_manager",
+        "body": "A list of Initiatives for which you are a manager.",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 356,
+    "fields": {
+        "key": "managers",
+        "body": "Managers",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 357,
+    "fields": {
+        "key": "orders",
+        "body": "Orders",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 358,
+    "fields": {
+        "key": "invoicing",
+        "body": "Invoicing",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 359,
+    "fields": {
+        "key": "pages",
+        "body": "Pages",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 360,
+    "fields": {
+        "key": "updates",
+        "body": "Updates",
+        "help_text": "Helper text on User Initiative page",
+        "rich_text": false
+        }
     }
 ]
