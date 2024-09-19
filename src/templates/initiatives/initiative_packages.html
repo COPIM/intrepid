@@ -1,12 +1,12 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,10 +19,10 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Initiative Packages</h1>
-            <p class="lead">Packages owned by {{ initiative.name }}</p>
+            <h1>{% get_site_text 'initiative_packages' %}</h1>
+            <p class="lead">{% get_site_text 'packages_owned_by' %} {{ initiative.name }}</p>
             <a href="{% url 'start_package' initiative.pk %}" class="btn btn-success">
-                <i class="fa fa-plus"> </i> Add New Package
+                <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
             </a>
 
             <br/> <br/>
@@ -30,16 +30,16 @@ Initiatives
             <table class="table table-striped" id="initiatives">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Active</th>
-                        <th>Edit</th>
-                        <th>Bandings</th>
-                        <th>Data Fields</th>
-                        <th>Documents</th>
-                        <th>Contacts</th>
-                        <th>Standards</th>
-                        <th>Access Control</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'active' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'bandings' %}</th>
+                        <th>{% get_site_text 'data_fields' %}</th>
+                        <th>{% get_site_text 'documents' %}</th>
+                        <th>{% get_site_text 'contacts' %}</th>
+                        <th>{% get_site_text 'standards' %}</th>
+                        <th>{% get_site_text 'access_control' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,17 +47,17 @@ Initiatives
                     <tr>
                         <td>{{ package.name }}</td>
                         <td>{{ package.active_display }}</td>
-                        <td><a href="{% url 'manage_package' initiative.pk package.pk %}">Edit Package</a></td>
-                        <td><a href="{% url 'package_bandings' package.pk initiative.pk %}">Bandings</a></td>
-                        <td><a href="{% url 'package_data' package.pk initiative.pk %}">Data Fields</a></td>
+                        <td><a href="{% url 'manage_package' initiative.pk package.pk %}">{% get_site_text 'edit' %}</a></td>
+                        <td><a href="{% url 'package_bandings' package.pk initiative.pk %}">{% get_site_text 'bandings' %}</a></td>
+                        <td><a href="{% url 'package_data' package.pk initiative.pk %}">{% get_site_text 'data_fields' %}</a></td>
                         <td>
-                            <a href="{% url 'list_documents' package.pk initiative.pk %}">Documents</a><br>
-                            <a href="{% url 'media_files' package.pk initiative.pk %}">Media Files</a>
+                            <a href="{% url 'list_documents' package.pk initiative.pk %}">{% get_site_text 'documents' %}</a><br>
+                            <a href="{% url 'media_files' package.pk initiative.pk %}">{% get_site_text 'media_files' %}</a>
                         </td>
-                        <td><a href="{% url 'package_contacts' package.pk initiative.pk %}">Contacts</a></td>
-                        <td><a href="{% url 'package_standards' package.pk initiative.pk %}">Standards</a></td>
-                        <td><a href="{% url 'package_access_control' package.pk initiative.pk %}">Access Control</a></td>
-                        <td><form method="POST" action="{% url 'delete_package' package.pk initiative.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        <td><a href="{% url 'package_contacts' package.pk initiative.pk %}">{% get_site_text 'contacts' %}</a></td>
+                        <td><a href="{% url 'package_standards' package.pk initiative.pk %}">{% get_site_text 'standards' %}</a></td>
+                        <td><a href="{% url 'package_access_control' package.pk initiative.pk %}">{% get_site_text 'access_control' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_package' package.pk initiative.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                 {% endfor %}
                 </tbody>
