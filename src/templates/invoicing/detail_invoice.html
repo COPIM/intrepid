@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 {% load django_bootstrap5 %}
 
-{% block title %}Invoice Management - {{ payment_processor.name }}{% endblock %}
+{% block title %}{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}{% endblock %}
 
 {% block breadcrumb %}
-     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_order_invoices' payment_processor.pk %}">Invoice Management - {{ payment_processor.name }}<</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Order {{ order.order_number }}</li>
+     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_order_invoices' payment_processor.pk %}">{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}<</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'order' %} {{ order.order_number }}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -13,18 +13,18 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Invoice Management - {{ payment_processor.name }}</h1>
-                    <h3>Order {{ order.order_number }}</h3>
-                    <p>Listed here are the ordered packages that require invoicing. Note, these packages may not make up the whole order, but contain those that you are a payment processor for.</p>
+                    <h1>{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}</h1>
+                    <h3>{% get_site_text 'order' %} {{ order.order_number }}</h3>
+                    <p>{% get_site_text 'order_helper' %}</p>
 
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Package ID</th>
-                                <th>Package Name</th>
-                                <th>Price</th>
-                                <th>Latest Status Change</th>
-                                <th>Change Status</th>
+                                <th>{% get_site_text 'ID' %}</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'price' %}</th>
+                                <th>{% get_site_text 'latest_status_change' %}</th>
+                                <th>{% get_site_text 'change_status' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +37,7 @@
                                         {% if signup.signupinvoice %}
                                             {{ signup.signupinvoice.last_status_update.get_status_display }} - {{ signup.signupinvoice.last_status_update.date_time|date:"Y-m-d H:i" }}
                                         {% else %}
-                                            No status updates
+                                            {% get_site_text 'no_status_updates' %}
                                         {% endif %}
                                     </td>
                                     <td>
@@ -45,9 +45,9 @@
                                             <form method="POST">
                                                 {% csrf_token %}
                                                 <select name="status" class="form-control" id="id_status" onchange="this.form.submit()">
-                                                    <option value="new" {% if signup.signupinvoice.status == 'new' %}selected="selected"{% endif %}>New</option>
-                                                    <option value="sent" {% if signup.signupinvoice.status == 'sent' %}selected="selected"{% endif %}>Invoice Sent</option>
-                                                    <option value="paid" {% if signup.signupinvoice.status == 'paid' %}selected="selected"{% endif %}>Invoice Paid</option>
+                                                    <option value="new" {% if signup.signupinvoice.status == 'new' %}selected="selected"{% endif %}>{% get_site_text 'new' %}</option>
+                                                    <option value="sent" {% if signup.signupinvoice.status == 'sent' %}selected="selected"{% endif %}>{% get_site_text 'invoice_sent' %}</option>
+                                                    <option value="paid" {% if signup.signupinvoice.status == 'paid' %}selected="selected"{% endif %}>{% get_site_text 'invoice_paid' %}</option>
                                                 </select>
                                                 <input type="hidden" name="signupinvoice" value="{{ signup.signupinvoice.pk }}"/>
                                             </form>
@@ -56,7 +56,7 @@
                                                 {% csrf_token %}
                                                 <button class="btn btn-primary btn-sm" name="signup"
                                                         value="{{ signup.pk }}">
-                                                    Begin Processing Signup
+                                                    {% get_site_text 'begin_processing_signup' %}
                                                 </button>
                                             </form>
                                         {% endif %}

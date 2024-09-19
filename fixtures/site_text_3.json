@@ -2948,5 +2948,185 @@
         "help_text": "Helper text on User Initiative page",
         "rich_text": false
         }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 361,
+    "fields": {
+        "key": "invoice_management",
+        "body": "Invoice Management",
+        "help_text": "Heading text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 362,
+    "fields": {
+        "key": "order_helper",
+        "body": "Listed here are the ordered packages that require invoicing. Note, these packages may not make up the whole order, but contain those that you are a payment processor for.",
+        "help_text": "Helper text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 363,
+    "fields": {
+        "key": "price",
+        "body": "Price",
+        "help_text": "Table text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 364,
+    "fields": {
+        "key": "latest_status_change",
+        "body": "Latest Status Change",
+        "help_text": "Table text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 365,
+    "fields": {
+        "key": "change_status",
+        "body": "Change Status",
+        "help_text": "Table text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 366,
+    "fields": {
+        "key": "new",
+        "body": "New",
+        "help_text": "Option text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 367,
+    "fields": {
+        "key": "invoice_sent",
+        "body": "Invoice Sent",
+        "help_text": "Option text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 368,
+    "fields": {
+        "key": "invoice_paid",
+        "body": "Invoice Paid",
+        "help_text": "Option text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 369,
+    "fields": {
+        "key": "begin_processing_signup",
+        "body": "Begin Processing Signup",
+        "help_text": "Option text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 370,
+    "fields": {
+        "key": "no_status_updates",
+        "body": "No Status Updates",
+        "help_text": "Text on Invoice Management page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 371,
+    "fields": {
+        "key": "edit_payment_processor",
+        "body": "Edit Payment Processor",
+        "help_text": "Text on Edit Payment Processors page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 372,
+    "fields": {
+        "key": "add_payment_processor",
+        "body": "Add Payment Processor",
+        "help_text": "Text on Edit Payment Processors page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 373,
+    "fields": {
+        "key": "hold_ctrl",
+        "body": "Hold control (ctrl) to select multiple managers and countries.",
+        "help_text": "Text on Edit Payment Processors page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 374,
+    "fields": {
+        "key": "order_helper_invoices",
+        "body": "Listed below are the orders that contain a package for which you are listed as one of the payment processors for. You will be able to see the details of the order that relate to you including billing information and agreed pricing.",
+        "help_text": "Text on Order Invoices page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 375,
+    "fields": {
+        "key": "customer",
+        "body": "Customer",
+        "help_text": "Text on Order Invoices page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 376,
+    "fields": {
+        "key": "invoice_statuses",
+        "body": "Invoice Statuses",
+        "help_text": "Text on Order Invoices page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 377,
+    "fields": {
+        "key": "amount",
+        "body": "Amount",
+        "help_text": "Text on Order Invoices page",
+        "rich_text": false
+        }
+    },
+    {
+    "model": "cms.sitetext",
+    "pk": 378,
+    "fields": {
+        "key": "countries",
+        "body": "Countries",
+        "help_text": "Text on List Payment Processors page",
+        "rich_text": false
+        }
     }
 ]
