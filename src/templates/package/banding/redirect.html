@@ -2,8 +2,8 @@
 {% load i18n two_factor static crispy_forms_tags %}
 {% load booleans %}
 
-{% block title %}Manage Redirect for {{ banding}}{% endblock %}
-{% block page-title %}Manage Redirect for {{ banding }}{% endblock %}
+{% block title %}{% get_site_text 'manage_redirect_for' %} {{ banding}}{% endblock %}
+{% block page-title %}{% get_site_text 'manage_redirect_for' %} {{ banding }}{% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
@@ -18,9 +18,7 @@
 
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">
-                This allows you to specify that the user should be directed to an external site (such as the Jisc Collections catalogue page) at the end of the signup. To undo this, simply leave the redirect blank.
-            </p>
+            <p class="lead">{% get_site_text 'redirect_description' %}</p>
             <form method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}
