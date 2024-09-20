@@ -3128,5 +3128,85 @@
         "help_text": "Text on List Payment Processors page",
         "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 379,
+        "fields": {
+            "key": "platform_management",
+            "body": "Platform Management",
+            "help_text": "Breadcrumb text for platform management",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 380,
+        "fields": {
+            "key": "form_elements_setup",
+            "body": "Form Elements Setup",
+            "help_text": "Breadcrumb text for form elements setup",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 381,
+        "fields": {
+            "key": "email_log_entries",
+            "body": "Email Log Entries",
+            "help_text": "Title for email log entries page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 382,
+        "fields": {
+            "key": "email_logs_description",
+            "body": "This page allows platform managers to view email logs.",
+            "help_text": "Description for email logs page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 383,
+        "fields": {
+            "key": "success",
+            "body": "Success",
+            "help_text": "Label for successful email status",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 384,
+        "fields": {
+            "key": "failed",
+            "body": "Failed",
+            "help_text": "Label for failed email status",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 385,
+        "fields": {
+            "key": "sending",
+            "body": "Sending",
+            "help_text": "Label for sending email status",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 386,
+        "fields": {
+            "key": "update_statuses",
+            "body": "Update Statuses",
+            "help_text": "Button text for updating email statuses",
+            "rich_text": false
+        }
     }
 ]

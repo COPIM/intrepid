@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item">Platform Management</li>
-    <li class="breadcrumb-item active" aria-current="page">Form Elements Setup</li>
+    <li class="breadcrumb-item">{% get_site_text 'platform_management' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'form_elements_setup' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -19,11 +19,11 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% block title %}Email Log Entries{% endblock %}</h1>
-                <p class="lead">This page allows platform managers to view email logs.</p>
-                <p><i class="fas fa-check"></i> = Success | <i class="fas fa-skull-crossbones"></i> = Failed | <i class="fas fa-retweet"></i> = Sending</p>
+                <h1>{% block title %}{% get_site_text 'email_log_entries' %}{% endblock %}</h1>
+                <p class="lead">{% get_site_text 'email_logs_description' %}</p>
+                <p><i class="fas fa-check"></i> = {% get_site_text 'success' %} | <i class="fas fa-skull-crossbones"></i> = {% get_site_text 'failed' %} | <i class="fas fa-retweet"></i> = {% get_site_text 'sending' %}</p>
                 <p><a href="{% url 'update_email_statuses' %}" class="btn btn-success float-end">
-                <i class="fa fa-retweet"> </i> Update Statuses</a></p>
+                <i class="fa fa-retweet"> </i> {% get_site_text 'update_statuses' %}</a></p>
             </div>
             <div class="col-md-12">
                 <form method="POST">
