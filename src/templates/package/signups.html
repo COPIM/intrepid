@@ -57,20 +57,20 @@
                             {% if signup.organisation_approved %}
                                 <i class="fa fa-check-circle"></i> {{ signup.organisation_approved }}
                             {% else %}
-                                 <i class="fa fa-times-circle"></i> Not approved
+                                 <i class="fa fa-times-circle"></i> {% get_site_text 'not_approved' %}
                             {% endif %}
                         </td>
                         <td>
                             {% if signup.initiative_approved %}
                                 <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
                             {% else %}
-                                <i class="fa fa-times-circle"></i> Not approved
+                                <i class="fa fa-times-circle"></i> {% get_site_text 'not_approved' %}
                             {% endif %}
                         </td>
                         <td>
                             <a class="btn btn-success"
                                href="{% url 'process_signup' signup.associated_package.pk signup.associated_package.initiative.pk signup.pk %}">
-                                {% if signup.organisation_approved and signup.initiative_approved %}View Signup{% else %}Process Signup{% endif %}
+                                {% if signup.organisation_approved and signup.initiative_approved %}{% get_site_text 'view' %}{% else %}{% get_site_text 'process_signup' %}{% endif %}
                             </a>
                         </td>
                     </tr>

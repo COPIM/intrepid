@@ -167,7 +167,7 @@
                 <div class="modal-body package-modal-body">
                     <ul>
                         {% for history in package.attestationhistory_set.all %}
-                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }} on {{ history.date_time }}</li>
+                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }}, {{ history.date_time }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -215,7 +215,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title white-text">Standards Attestation History</h4>
+                    <h4 class="modal-title white-text">{% get_site_text "standards_attestation_history" %}</h4>
                     <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -223,7 +223,7 @@
                 <div class="modal-body package-modal-body">
                     <ul>
                         {% for history in package.attestationhistory_set.all %}
-                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }} on {{ history.date_time }}</li>
+                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }}, {{ history.date_time }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -254,7 +254,7 @@
                 {% endfor %}
                 </ul>
                 {% if request.site.enable_standards %}
-                    <h3>Standards</h3>
+                    <h3>{% get_site_text 'standards' %}</h3>
                     {% get_site_text 'standards_info' %}
                     <ul>
                         {% for standard, packages in package.standards.items %}
@@ -273,7 +273,7 @@
                 {% endif %}
             {% else %}
                 {% if request.site.enable_standards %}
-                    <h3 class="text-left spacer-top-10">Standards</h3>
+                    <h3 class="text-left spacer-top-10">{% get_site_text 'standards' %}</h3>
                     {% get_site_text 'standards_info' %}
                     <ul>
                         {% for standard in package.standards %}
@@ -298,7 +298,7 @@
                         <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
                             <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                             initiatives{% endif %}</li>
-                        <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</li>
+                        <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</li>
                         <li><i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
                         {% if package.meta_packages %}
                             <li>
@@ -326,7 +326,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title white-text">Standards Attestation History</h4>
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                     <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
                 </div>
 

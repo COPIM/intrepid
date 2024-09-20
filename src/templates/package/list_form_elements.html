@@ -50,7 +50,7 @@
                                 <td>{% if element.required %}<i class="far fa-check-square"></i>{% else %}<i class="far fa-square"></i>{% endif %}</td>
                                 <td>{{ element.choices }}</td>
                                 <td><a href="{% url 'form_element_edit' element.id %}" class="btn btn-primary">Edit</a></td>
-                                <td><form method="POST" action="{% url 'form_element_delete' element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                                <td><form method="POST" action="{% url 'form_element_delete' element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                             </tr>
                         {% endfor %}
                         </tbody>

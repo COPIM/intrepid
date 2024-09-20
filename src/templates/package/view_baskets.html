@@ -59,17 +59,17 @@
                 <td>{{ basket.name }}</td>
                 <td>{{ basket.package_set|length }}</td>
                 <td>
-                    <a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary btn-obc-blue">View Quote</a></td>
+                    <a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'view' %}</a></td>
                 <td>
                     <form method="POST">
                         {% csrf_token %}
-                        <button name="basket_to_delete" value="{{ basket.pk }}" class="btn btn-danger delete">Delete</button>
+                        <button name="basket_to_delete" value="{{ basket.pk }}" class="btn btn-danger delete">{% get_site_text 'delete' %}</button>
                     </form>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">No active quotes to display.</td>
+                <td colspan="4">{% get_site_text 'no_active_quotes' %}</td>
             </tr>
         {% endfor %}
     </table>
@@ -81,7 +81,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/quotation_group.png' %}"
-                 alt="Build your quote image"/>
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{% get_site_text 'baskets_header' %}</h1>
         </div>
         <div class="col-1"></div>
@@ -108,14 +108,14 @@
             <tr>
                 <td>{{ basket.name }}</td>
                 <td>{{ basket.package_set|length }}</td>
-                <td><a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary">View Quote</a></td>
+                <td><a href="{% url 'basket_detail' basket.pk %}" class="btn btn-primary">{% get_site_text 'view' %}</a></td>
                 <td>
-                    <button class="btn btn-danger delete">Delete</button>
+                    <button class="btn btn-danger delete">{% get_site_text 'delete' %}</button>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">No active quotes.</td>
+                <td colspan="4">{% get_site_text 'no_active_quotes' %}</td>
             </tr>
         {% endfor %}
     </table>
