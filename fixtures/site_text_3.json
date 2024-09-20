@@ -3228,5 +3228,165 @@
             "help_text": "Table heading for date sent",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 387,
+        "fields": {
+            "key": "quotation_name",
+            "body": "Quotation Name",
+            "help_text": "Table heading for quotation name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 388,
+        "fields": {
+            "key": "number_of_packages",
+            "body": "Number of Packages",
+            "help_text": "Table heading for number of packages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 389,
+        "fields": {
+            "key": "view",
+            "body": "View",
+            "help_text": "Table heading for view action",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 390,
+        "fields": {
+            "key": "delete",
+            "body": "Delete",
+            "help_text": "Table heading for delete action",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 391,
+        "fields": {
+            "key": "data_field",
+            "body": "Data Field",
+            "help_text": "Table heading for data field",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 392,
+        "fields": {
+            "key": "value",
+            "body": "Value",
+            "help_text": "Table heading for value",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 393,
+        "fields": {
+            "key": "package",
+            "body": "Package",
+            "help_text": "Table heading for package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 394,
+        "fields": {
+            "key": "initiative",
+            "body": "Initiative",
+            "help_text": "Table heading for initiative",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 395,
+        "fields": {
+            "key": "price",
+            "body": "Price",
+            "help_text": "Table heading for price",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 396,
+        "fields": {
+            "key": "user",
+            "body": "User",
+            "help_text": "Table heading for user",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 397,
+        "fields": {
+            "key": "view_data",
+            "body": "View Data",
+            "help_text": "Table heading for view data action",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 398,
+        "fields": {
+            "key": "signup_date",
+            "body": "Signup Date",
+            "help_text": "Table heading for signup date",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 399,
+        "fields": {
+            "key": "access",
+            "body": "Access",
+            "help_text": "Table heading for access",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 400,
+        "fields": {
+            "key": "quotes",
+            "body": "Quotes",
+            "help_text": "Breadcrumb for quotes",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 401,
+        "fields": {
+            "key": "packages",
+            "body": "Packages",
+            "help_text": "Breadcrumb for packages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 402,
+        "fields": {
+            "key": "change_access",
+            "body": "Change Access",
+            "help_text": "Breadcrumb for change access",
+            "rich_text": false
+        }
     }
 ]
