@@ -1,13 +1,13 @@
 {% extends "base/admin_base.html" %}
 {% load booleans %}
 
-{% block title %}Manage Banding Type Vocabs for {{ banding_type.name }}{% endblock %}
-{% block page-title %}Manage Banding Type Vocabs for {{ banding_type.name }}{% endblock %}
+{% block title %}{% get_site_text 'manage_banding_type_vocabs_for' %} {{ banding_type.name }}{% endblock %}
+{% block page-title %}{% get_site_text 'manage_banding_type_vocabs_for' %} {{ banding_type.name }}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">Banding Types List</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Manage {{ banding_type.name }} Vocabs</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">{% get_site_text 'banding_types_list' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'manage_vocabs_for' %} {{ banding_type.name }}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -23,24 +23,18 @@
 
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">
-                Select vocabs for this Banding Type. When a Initiative creates packages they will use these as the basis for their Banding/Prices.</br>
-                <b class="alert-warning">Warning: Affiliating new bandings will generate a default price of zero where initiatives have not yet set a price.</b><br/>
-                <b class="alert-danger">Warning: Removing a vocabulary from a band where prices are set will delete those prices.</b>
-            </p>
-            <p>
-                <a class="btn btn-success" href="{% url 'vocab_new' %}?return={{ request.path|urlencode }}">Add a new vocabulary</a>
-            </p>
+            <p class="lead">{% get_site_text 'select_vocabs_description' %}</p>
+            <p><a class="btn btn-success" href="{% url 'vocab_new' %}?return={{ request.path|urlencode }}">{% get_site_text 'add_new_vocabulary' %}</a></p>
             <form method="POST">
                 {% csrf_token %}
                 <table class="table-striped table" id="vocabs">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Text</th>
-                        <th>Upper Limit</th>
-                        <th>Lower Limit</th>
-                        <th>Is FTE?</th>
+                        <th>{% get_site_text 'text' %}</th>
+                        <th>{% get_site_text 'upper_limit' %}</th>
+                        <th>{% get_site_text 'lower_limit' %}</th>
+                        <th>{% get_site_text 'is_fte' %}</th>
                     </tr>
                 </thead>
                 <tbody>
