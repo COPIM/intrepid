@@ -4138,5 +4138,25 @@
             "help_text": "Description for basic price overview section.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 490,
+        "fields": {
+            "key": "create_new_banding_type",
+            "body": "Create New Banding Type",
+            "help_text": "Breadcrumb text for creating a new banding type.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 491,
+        "fields": {
+            "key": "save_new_banding_type",
+            "body": "Save New Banding Type",
+            "help_text": "Button text for saving a new banding type.",
+            "rich_text": false
+        }
     }
 ]
