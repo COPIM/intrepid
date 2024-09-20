@@ -4318,5 +4318,75 @@
             "help_text": "Text for managing redirect",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 512,
+        "fields": {
+            "key": "banding_types",
+            "body": "Banding Types",
+            "help_text": "Title for banding types page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 513,
+        "fields": {
+            "key": "banding_types_list_description",
+            "body": "A list of all of the Banding Types available for package creation.",
+            "help_text": "Description for banding types list",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 514,
+        "fields": {
+            "key": "banding_types_warning",
+            "body": "Warning: package banding types cannot be changed after they are created as this will destroy current quotations.",
+            "help_text": "Warning for banding types",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 515,
+        "fields": {
+            "key": "add_new_banding_type",
+            "body": "Add New Banding Type",
+            "help_text": "Button text for adding a new banding type",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 516,
+        "fields": {
+            "key": "is_fte",
+            "body": "Is FTE?",
+            "help_text": "Column heading for FTE status",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 517,
+        "fields": {
+            "key": "active",
+            "body": "Active?",
+            "help_text": "Column heading for active status",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 518,
+        "fields": {
+            "key": "linked_vocabs",
+            "body": "# Linked Vocabs",
+            "help_text": "Column heading for linked vocabularies",
+            "rich_text": false
+        }
     }
 ]
