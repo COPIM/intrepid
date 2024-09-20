@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block css %}
-    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
-    <link href="{% static "frontend/css/tables.css" %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/packages.css' %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/tables.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
@@ -354,7 +354,7 @@
     <div class="row catalogue-header-mobile">
         <div class="col-1"></div>
         <div class="col-10">
-            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
+            <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/collective_five.svg' %}"
                  alt="Build your quote image"/>
             <h1>{{ package.name }}</h1>
         </div>
