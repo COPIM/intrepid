@@ -4271,11 +4271,41 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 506,
+        "pk": 507,
         "fields": {
-            "key": "save_payment_processor",
-            "body": "Save Payment Processor",
-            "help_text": "Button text for saving payment processor.",
+            "key": "prices_for",
+            "body": "Prices for",
+            "help_text": "Title for prices associated with a currency and banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 508,
+        "fields": {
+            "key": "for",
+            "body": "for",
+            "help_text": "Preposition used in titles.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 509,
+        "fields": {
+            "key": "set_prices_for_band",
+            "body": "Please set the prices for this band.",
+            "help_text": "Instruction to set prices for a band.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 510,
+        "fields": {
+            "key": "save_prices",
+            "body": "Save Prices",
+            "help_text": "Button text for saving prices.",
             "rich_text": false
         }
     }
