@@ -4211,11 +4211,71 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 499,
+        "pk": 500,
         "fields": {
-            "key": "edit_redirect",
-            "body": "Edit Redirect",
-            "help_text": "Button text for editing redirect.",
+            "key": "add_this_currency",
+            "body": "Add this currency",
+            "help_text": "Button text for adding a currency.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 501,
+        "fields": {
+            "key": "edit_prices",
+            "body": "Edit Prices",
+            "help_text": "Button text for editing prices.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 502,
+        "fields": {
+            "key": "remove_currency_and_prices",
+            "body": "Remove Currency and Prices",
+            "help_text": "Button text for removing currency and prices.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 503,
+        "fields": {
+            "key": "payment_processor",
+            "body": "Payment Processor",
+            "help_text": "Table heading for payment processor.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 504,
+        "fields": {
+            "key": "manage_payment_processor_for",
+            "body": "Manage Payment Processor for",
+            "help_text": "Title for managing payment processor for a country.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 505,
+        "fields": {
+            "key": "current_payment_processor",
+            "body": "For this banding and currency the payment processor is currently set to",
+            "help_text": "Text indicating the current payment processor for a banding and currency.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 506,
+        "fields": {
+            "key": "save_payment_processor",
+            "body": "Save Payment Processor",
+            "help_text": "Button text for saving payment processor.",
             "rich_text": false
         }
     }
