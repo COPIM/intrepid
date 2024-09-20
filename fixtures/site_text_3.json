@@ -4388,5 +4388,75 @@
             "help_text": "Column heading for linked vocabularies",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 519,
+        "fields": {
+            "key": "manage_banding_type_vocabs_for",
+            "body": "Manage Banding Type Vocabs for",
+            "help_text": "Title for managing banding type vocabs",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 520,
+        "fields": {
+            "key": "manage_vocabs_for",
+            "body": "Manage Vocabs for",
+            "help_text": "Breadcrumb text for managing vocabs",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 521,
+        "fields": {
+            "key": "select_vocabs_description",
+            "body": "Select vocabs for this Banding Type. When a Initiative creates packages they will use these as the basis for their Banding/Prices.",
+            "help_text": "Description for selecting vocabs",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 522,
+        "fields": {
+            "key": "add_new_vocabulary",
+            "body": "Add a new vocabulary",
+            "help_text": "Button text for adding a new vocabulary",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 523,
+        "fields": {
+            "key": "text",
+            "body": "Text",
+            "help_text": "Column heading for text",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 524,
+        "fields": {
+            "key": "upper_limit",
+            "body": "Upper Limit",
+            "help_text": "Column heading for upper limit",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 525,
+        "fields": {
+            "key": "lower_limit",
+            "body": "Lower Limit",
+            "help_text": "Column heading for lower limit",
+            "rich_text": false
+        }
     }
 ]
