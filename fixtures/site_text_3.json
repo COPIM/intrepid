@@ -4158,5 +4158,25 @@
             "help_text": "Button text for saving a new banding type.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 492,
+        "fields": {
+            "key": "dashboard",
+            "body": "Dashboard",
+            "help_text": "Breadcrumb text for the dashboard link.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 493,
+        "fields": {
+            "key": "banding_types_list",
+            "body": "Banding Types List",
+            "help_text": "Breadcrumb text for the banding types list link.",
+            "rich_text": false
+        }
     }
 ]
