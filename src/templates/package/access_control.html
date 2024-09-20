@@ -1,12 +1,12 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">Signups</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">{% get_site_text 'signups' %}</a></li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,11 +19,11 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Signups and Access Control</h1>
-            <p class="lead">Some types of open access deal have unique perks for specific institutions (e.g. Opening the Future). This page allows for the generation of an access control list for subscription portions of such programmes.</p>
-            <p>The access control list is downloadable by <a href="{% url 'package_contacts' package.pk initiative.pk %}">all contacts</a>.</p>
-            <p>You can also <a href="{% url 'export_csv' 'signups' %}">export this data to CSV</a>.
-            <br/><small>(Warning: This file may contain sensitive personal data subject to GDPR or other data protection legislation.)</small></p>
+            <h1>{% get_site_text 'signups_and_access_control' %}</h1>
+            <p class="lead">{% get_site_text 'access_control_lead' %}</p>
+            <p>{% get_site_text 'access_control_download' %} <a href="{% url 'package_contacts' package.pk initiative.pk %}">{% get_site_text 'all_contacts' %}</a>.</p>
+            <p>{% get_site_text 'export_csv' %} <a href="{% url 'export_csv' 'signups' %}">{% get_site_text 'export_csv_link' %}</a>.
+            <br/><small>{% get_site_text 'gdpr_warning' %}</small></p>
 
             <br/> <br/>
 

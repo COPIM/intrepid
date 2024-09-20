@@ -9,8 +9,8 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1>Quotes</h1>
-        <p class="lead">A list of your uncompleted quotations.</p>
+        <h1>{% get_site_text 'quotes' %}</h1>
+        <p class="lead">{% get_site_text 'uncompleted_quotations' %}</p>
     </div>
 </div>
 {% endblock content %}

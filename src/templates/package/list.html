@@ -9,25 +9,25 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1>Packages</h1>
-        <p class="lead">View and select packages available for signup.</p>
+        <h1>{% get_site_text 'packages' %}</h1>
+        <p class="lead">{% get_site_text 'view_select_packages' %}</p>
     </div>
     <div class="col-md-6">
-        <h2>Packages</h2>
-        <p>Individual packages.</p>
+        <h2>{% get_site_text 'packages' %}</h2>
+        <p>{% get_site_text 'individual_packages' %}</p>
         {% for package in packages %}
             {% include "package/elements/package.html" %}
         {% empty %}
-            <p class="lead">There are no Packages to display.</p>
+            <p class="lead">{% get_site_text 'no_packages_display' %}</p>
         {% endfor %}
     </div>
     <div class="col-md-6">
-        <h2>Meta Packages</h2>
-        <p>Groups of packages.</p>
+        <h2>{% get_site_text 'meta_packages' %}</h2>
+        <p>{% get_site_text 'groups_of_packages' %}</p>
         {% for package in meta_packages %}
             {% include "package/elements/package.html" with meta="meta" %}
         {% empty %}
-            <p class="lead">There are no Meta Packages to display.</p>
+            <p class="lead">{% get_site_text 'no_meta_packages_display' %}</p>
         {% endfor %}
     </div>
 </div>

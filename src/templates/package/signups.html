@@ -1,12 +1,12 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">Signups</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'list_signups' %}">{% get_site_text 'signups' %}</a></li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,27 +19,27 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Signups</h1>
-            <p class="lead">Signups to Your Initiatives</p>
-            <p>You can also <a href="{% url 'export_csv' 'signups' %}">export this data to CSV</a>.
-            <br/><small>(Warning: This file may contain sensitive personal data subject to GDPR or other data protection legislation.)</small></p>
+            <h1>{% get_site_text 'signups' %}</h1>
+            <p class="lead">{% get_site_text 'signups_lead' %}</p>
+            <p>{% get_site_text 'export_csv' %} <a href="{% url 'export_csv' 'signups' %}">{% get_site_text 'export_csv_link' %}</a>.
+            <br/><small>{% get_site_text 'gdpr_warning' %}</small></p>
 
             <br/> <br/>
 
             <table class="table table-striped" id="signups">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Order No.</th>
-                        <th>Package</th>
-                        <th>Initiative</th>
-                        <th>Price</th>
-                        <th>User</th>
-                        <th>View Data</th>
-                        <th>Signup Date</th>
-                        <th>Approved by Org</th>
-                        <th>Approved by Initiative</th>
-                        <th>Status</th>
+                        <th>{% get_site_text 'id' %}</th>
+                        <th>{% get_site_text 'order_number' %}</th>
+                        <th>{% get_site_text 'package' %}</th>
+                        <th>{% get_site_text 'initiative' %}</th>
+                        <th>{% get_site_text 'price' %}</th>
+                        <th>{% get_site_text 'user' %}</th>
+                        <th>{% get_site_text 'view_data' %}</th>
+                        <th>{% get_site_text 'signup_date' %}</th>
+                        <th>{% get_site_text 'approved_by_org' %}</th>
+                        <th>{% get_site_text 'approved_by_initiative' %}</th>
+                        <th>{% get_site_text 'status' %}</th>
                     </tr>
                 </thead>
                 <tbody>

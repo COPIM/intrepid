@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block title %}
-    Quotations
+    {% get_site_text 'quotations' %}
 {% endblock title %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'oa_inits_header' %}</li>
-    <li class="breadcrumb-item active" aria-current="page">Quotations</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'quotations' %}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -21,7 +21,7 @@
         <div class="col-1"></div>
         <div class="col text-left">
             <h1 class="text-left">{% get_site_text_no_edit 'oa_inits_header' %}</h1>
-            <p class="subhead-no-offset">Create and add packages to your quotations.</p>
+            <p class="subhead-no-offset">{% get_site_text 'create_add_packages' %}</p>
         </div>
         <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
                                 alt="Quotations logo"/></div>
@@ -48,7 +48,7 @@
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>Create and add packages to your quotations.</p>
+            <p>{% get_site_text 'create_add_packages' %}</p>
         </div>
         <div class="col-1"></div>
     </div>

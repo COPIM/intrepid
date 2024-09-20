@@ -3,8 +3,8 @@
 
 {% block breadcrumb %}
 
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Access</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'access' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{% get_site_text 'change_access' %}</li>
 {% endblock breadcrumb %}
 
@@ -14,15 +14,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>Add an Access Control Entry</h1>
-                <p class="lead">Add a new access control instruction.</p>
-                <b class="alert-warning">Warning: These entries cannot be deleted, but they can be reversed by adding the opposite instruction (i.e. revoke).</b>
+                <h1>{% get_site_text 'add_access_control_entry' %}</h1>
+                <p class="lead">{% get_site_text 'add_access_control_instruction' %}</p>
+                <b class="alert-warning">{% get_site_text 'access_control_warning' %}</b>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-9">
                             {{ form|crispy }}
-                            <button class="btn btn-success">Save</button>
+                            <button class="btn btn-success">{% get_site_text 'save' %}</button>
                         </div>
                     </div>
                 </form>
