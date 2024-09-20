@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Price Debugger
+    {% get_site_text 'price_debugger' %}
 {% endblock title %}
 
 {% block page-title %}
-    Price Debugger
+    {% get_site_text 'price_debugger' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Price Debugger</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'price_debugger' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -25,9 +25,9 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col">
-                    <p>The pricing structure in OBC is complicated. This tool allows you to test your pricing logic works as expected.</p>
+                    <p>{% get_site_text 'debugger_intro' %}</p>
 
-                    <p>Understanding how OBC pricings are controlled is a prerequisite:</p>
+                    <p>{% get_site_text 'debugger_prerequisite' %}</p>
 
                     <ol>
                         <li>Platform Managers at OBC setup bandings that have tiers that are either banded or based on FTE (“Jisc Collections” → “Band 1”, “Band 2” / “Carnegie” → “Big (1000 FTE)”, “Medium (500 FTE)”, “Small (100 FTE)”).</li>
@@ -38,7 +38,7 @@
                         <li>Payment processors are associated with a currency-associated banding. So LYRASIS are set to handle all prices in Jisc Band 1 in USD.</li>
                     </ol>
 
-                    <p>The default flow for applying prices is:</p>
+                    <p>{% get_site_text 'debugger_flow_intro' %}</p>
                     <ol>
                         <li>Find any/all prices in the user’s preferred currency.</li>
                         <li>Check if we can match this against the user’s stored information (FTE/bandings).</li>
@@ -59,7 +59,7 @@
                             {% endfor %}
                         </select>
                     <p>
-                        <input class="form-control" type="submit" value="Debug" name="Debug"/>
+                        <input class="form-control" type="submit" value="{% get_site_text 'debug_button' %}" name="Debug"/>
                     </p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
             {% if result %}
                 <div class="row">
                     <div class="col">
-                        <p>Debug result</p>
+                        <p>{% get_site_text 'debug_result' %}</p>
                         <textarea aria-label="debug result" style="width:100%; height:500px">{{ result }}</textarea>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block title %}
-    Quotations
+    {% get_site_text 'quotations' %}
 {% endblock title %}
 
 {% block breadcrumb %}
@@ -99,10 +99,10 @@
     {% endif %}
     <table class="table package-table">
         <tr class="header-row">
-            <th>Quotation Name</th>
-            <th>Number of Packages</th>
-            <th>View</th>
-            <th>Delete</th>
+            <th>{% get_site_text 'quotation_name' %}</th>
+            <th>{% get_site_text 'number_of_packages' %}</th>
+            <th>{% get_site_text 'view' %}</th>
+            <th>{% get_site_text 'delete' %}</th>
         </tr>
         {% for basket in baskets %}
             <tr>

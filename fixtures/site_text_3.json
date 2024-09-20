@@ -3381,11 +3381,521 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 402,
+        "pk": 403,
         "fields": {
-            "key": "change_access",
-            "body": "Change Access",
-            "help_text": "Breadcrumb for change access",
+            "key": "debugger_intro",
+            "body": "The pricing structure in OBC is complicated. This tool allows you to test your pricing logic works as expected.",
+            "help_text": "Introduction text for the debugger tool.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 404,
+        "fields": {
+            "key": "debugger_prerequisite",
+            "body": "Understanding how OBC pricings are controlled is a prerequisite:",
+            "help_text": "Prerequisite text for the debugger tool.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 405,
+        "fields": {
+            "key": "debugger_flow_intro",
+            "body": "The default flow for applying prices is:",
+            "help_text": "Introduction to the default flow for applying prices.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 406,
+        "fields": {
+            "key": "debug_button",
+            "body": "Debug",
+            "help_text": "Button text for debugging.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 407,
+        "fields": {
+            "key": "debug_result",
+            "body": "Debug result",
+            "help_text": "Label for the debug result section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 408,
+        "fields": {
+            "key": "signups_lead",
+            "body": "Signups to Your Initiatives",
+            "help_text": "Lead text for the signups page.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 409,
+        "fields": {
+            "key": "export_csv",
+            "body": "You can also export this data to CSV",
+            "help_text": "Text for exporting data to CSV.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 410,
+        "fields": {
+            "key": "export_csv_link",
+            "body": "export this data to CSV",
+            "help_text": "Link text for exporting data to CSV.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 411,
+        "fields": {
+            "key": "gdpr_warning",
+            "body": "(Warning: This file may contain sensitive personal data subject to GDPR or other data protection legislation.)",
+            "help_text": "GDPR warning text.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 412,
+        "fields": {
+            "key": "approved_by_org",
+            "body": "Approved by Org",
+            "help_text": "Table heading for organization approval status.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 413,
+        "fields": {
+            "key": "approved_by_initiative",
+            "body": "Approved by Initiative",
+            "help_text": "Table heading for initiative approval status.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 414,
+        "fields": {
+            "key": "form_elements_lead",
+            "body": "This page allows platform managers to specify form elements that will be available to initiatives.",
+            "help_text": "Lead text for form elements setup page.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 415,
+        "fields": {
+            "key": "add_new",
+            "body": "Add New",
+            "help_text": "Button text for adding a new form element.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 416,
+        "fields": {
+            "key": "baskets_active_quote",
+            "body": "Active Quote",
+            "help_text": "Header text for active quote section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 417,
+        "fields": {
+            "key": "signup_to",
+            "body": "Signup to",
+            "help_text": "Text for signup to a package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 418,
+        "fields": {
+            "key": "by",
+            "body": "by",
+            "help_text": "Text for indicating by whom.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 419,
+        "fields": {
+            "key": "signup_information",
+            "body": "Signup Information",
+            "help_text": "Lead text for signup information section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 420,
+        "fields": {
+            "key": "organisation_approval_status",
+            "body": "Organisation Approval Status",
+            "help_text": "Header text for organisation approval status section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 421,
+        "fields": {
+            "key": "organisation_approval_explanation",
+            "body": "If the organisation signing up has approved then this means they are not requesting any changes to the package terms and you can go ahead an approve it.",
+            "help_text": "Explanation text for organisation approval.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 422,
+        "fields": {
+            "key": "approved_on",
+            "body": "Approved on",
+            "help_text": "Text for indicating approval date.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 423,
+        "fields": {
+            "key": "not_approved",
+            "body": "Not approved",
+            "help_text": "Text for indicating not approved status.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 424,
+        "fields": {
+            "key": "initiative_approval_status",
+            "body": "Initiative Approval Status",
+            "help_text": "Header text for initiative approval status section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 425,
+        "fields": {
+            "key": "signup_approved_on",
+            "body": "This signup was approved on",
+            "help_text": "Text for indicating signup approval date.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 426,
+        "fields": {
+            "key": "signup_not_approved",
+            "body": "This signup has not been approved.",
+            "help_text": "Text for indicating signup not approved status.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 427,
+        "fields": {
+            "key": "approve_signup",
+            "body": "Approve Signup",
+            "help_text": "Button text for approving signup.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 428,
+        "fields": {
+            "key": "documents",
+            "body": "Documents",
+            "help_text": "Header text for documents section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 429,
+        "fields": {
+            "key": "upload_custom_document",
+            "body": "You can upload a custom document for the package if the organisation signing up has requested changes to standard terms. This document must incorporate all documents for this agreement as it will override all others.",
+            "help_text": "Explanation text for uploading custom documents.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 430,
+        "fields": {
+            "key": "signups_and_access_control",
+            "body": "Signups and Access Control",
+            "help_text": "Header text for signups and access control section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 431,
+        "fields": {
+            "key": "access_control_lead",
+            "body": "Some types of open access deal have unique perks for specific institutions (e.g. Opening the Future). This page allows for the generation of an access control list for subscription portions of such programmes.",
+            "help_text": "Lead text for access control section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 432,
+        "fields": {
+            "key": "access_control_download",
+            "body": "The access control list is downloadable by",
+            "help_text": "Text for downloading access control list.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 433,
+        "fields": {
+            "key": "all_contacts",
+            "body": "all contacts",
+            "help_text": "Link text for all contacts.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 434,
+        "fields": {
+            "key": "month_contract",
+            "body": "month contract",
+            "help_text": "Text for indicating contract length in months.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 435,
+        "fields": {
+            "key": "close",
+            "body": "Close",
+            "help_text": "Button text for closing modals.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 436,
+        "fields": {
+            "key": "no_packages_standards",
+            "body": "No packages adhere to our standards.",
+            "help_text": "Text for indicating no packages adhere to standards.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 437,
+        "fields": {
+            "key": "no_standards",
+            "body": "This package adheres to none of our standards.",
+            "help_text": "Text for indicating package adheres to no standards.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 438,
+        "fields": {
+            "key": "view_attestation_history",
+            "body": "View attestation history",
+            "help_text": "Link text for viewing attestation history.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 439,
+        "fields": {
+            "key": "included_in",
+            "body": "Included in",
+            "help_text": "Text for indicating inclusion in meta packages.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 440,
+        "fields": {
+            "key": "only_in_collectives",
+            "body": "Only available in collectives",
+            "help_text": "Text for indicating availability only in collectives.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 441,
+        "fields": {
+            "key": "add_to_quote",
+            "body": "Add to Quote",
+            "help_text": "Button text for adding to quote.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 442,
+        "fields": {
+            "key": "create_add_packages",
+            "body": "Create and add packages to your quotations.",
+            "help_text": "Text for creating and adding packages to quotations.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 443,
+        "fields": {
+            "key": "new_form_element",
+            "body": "New Form Element",
+            "help_text": "Breadcrumb text for new form element.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 444,
+        "fields": {
+            "key": "add_edit_form_element",
+            "body": "Add a new or edit an existing form element",
+            "help_text": "Lead text for adding or editing form elements.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 445,
+        "fields": {
+            "key": "save_element",
+            "body": "Save Element",
+            "help_text": "Button text for saving form element.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 446,
+        "fields": {
+            "key": "uncompleted_quotations",
+            "body": "A list of your uncompleted quotations.",
+            "help_text": "Lead text for uncompleted quotations section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 447,
+        "fields": {
+            "key": "view_select_packages",
+            "body": "View and select packages available for signup.",
+            "help_text": "Lead text for viewing and selecting packages.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 448,
+        "fields": {
+            "key": "individual_packages",
+            "body": "Individual packages.",
+            "help_text": "Text for individual packages section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 449,
+        "fields": {
+            "key": "no_packages_display",
+            "body": "There are no Packages to display.",
+            "help_text": "Text for indicating no packages to display.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 450,
+        "fields": {
+            "key": "groups_of_packages",
+            "body": "Groups of packages.",
+            "help_text": "Text for groups of packages section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 451,
+        "fields": {
+            "key": "no_meta_packages_display",
+            "body": "There are no Meta Packages to display.",
+            "help_text": "Text for indicating no meta packages to display.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 452,
+        "fields": {
+            "key": "add_access_control_entry",
+            "body": "Add an Access Control Entry",
+            "help_text": "Header text for adding access control entry.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 453,
+        "fields": {
+            "key": "add_access_control_instruction",
+            "body": "Add a new access control instruction.",
+            "help_text": "Lead text for adding access control instruction.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 454,
+        "fields": {
+            "key": "access_control_warning",
+            "body": "Warning: These entries cannot be deleted, but they can be reversed by adding the opposite instruction (i.e. revoke).",
+            "help_text": "Warning text for access control entries.",
             "rich_text": false
         }
     }
