@@ -3131,16 +3131,6 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 379,
-        "fields": {
-            "key": "platform_management",
-            "body": "Platform Management",
-            "help_text": "Breadcrumb text for platform management",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
         "pk": 380,
         "fields": {
             "key": "form_elements_setup",
