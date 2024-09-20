@@ -30,21 +30,21 @@
                     <p>{% get_site_text 'debugger_prerequisite' %}</p>
 
                     <ol>
-                        <li>Platform Managers at OBC setup bandings that have tiers that are either banded or based on FTE (“Jisc Collections” → “Band 1”, “Band 2” / “Carnegie” → “Big (1000 FTE)”, “Medium (500 FTE)”, “Small (100 FTE)”).</li>
-                        <li>Packages have associated bandings (“Open Book Publishers Membership” can say it uses “Jisc” and “Carnegie”).</li>
-                        <li>Packages can specify which currencies they provide an associated banding in. So Jisc Collections, “Band 1”, could be paid for in GBP or USD.</li>
-                        <li>Packages can set the default banding that they wish to use.</li>
-                        <li>Packages set prices for currency-associated-bandings (BandingTypeCurrencyEntries). (E.g. a price for Jisc Band 1 in GBP).</li>
-                        <li>Payment processors are associated with a currency-associated banding. So LYRASIS are set to handle all prices in Jisc Band 1 in USD.</li>
+                        <li>{% get_site_text 'debugger_platform_managers' %}</li>
+                        <li>{% get_site_text 'debugger_packages_associated_bandings' %}</li>
+                        <li>{% get_site_text 'debugger_packages_specify_currencies' %}</li>
+                        <li>{% get_site_text 'debugger_packages_set_default_banding' %}</li>
+                        <li>{% get_site_text 'debugger_packages_set_prices' %}</li>
+                        <li>{% get_site_text 'debugger_payment_processors_associated' %}</li>
                     </ol>
 
                     <p>{% get_site_text 'debugger_flow_intro' %}</p>
                     <ol>
-                        <li>Find any/all prices in the user’s preferred currency.</li>
-                        <li>Check if we can match this against the user’s stored information (FTE/bandings).</li>
-                        <li>If not, fall back to package default banding and currency.</li>
-                        <li>Check if we can match this against the user’s stored information (FTE/bandings).</li>
-                        <li>If not, ask user to give their details.</li>
+                        <li>{% get_site_text 'debugger_find_prices' %}</li>
+                        <li>{% get_site_text 'debugger_check_match_user_info' %}</li>
+                        <li>{% get_site_text 'debugger_fallback_default_banding' %}</li>
+                        <li>{% get_site_text 'debugger_check_match_user_info_again' %}</li>
+                        <li>{% get_site_text 'debugger_ask_user_details' %}</li>
                     </ol>
 
                         <select class="form-control" aria-label="user to test" id="user" name="user">
