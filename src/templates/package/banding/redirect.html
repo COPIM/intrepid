@@ -6,9 +6,9 @@
 {% block page-title %}{% get_site_text 'manage_redirect_for' %} {{ banding }}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">Banding Types List</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Manage {{ banding_type.name }} Redirect</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'package_banding_type_list' %}">{% get_site_text 'banding_types_list' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'manage_redirect' %} {{ banding_type.name }}</li>
 {% endblock %}
 
 

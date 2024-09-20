@@ -4308,5 +4308,15 @@
             "help_text": "Button text for saving prices.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 511,
+        "fields": {
+            "key": "manage_redirect",
+            "body": "Manage Redirect",
+            "help_text": "Text for managing redirect",
+            "rich_text": false
+        }
     }
 ]
