@@ -3898,5 +3898,25 @@
             "help_text": "Warning text for access control entries.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 455,
+        "fields": {
+            "key": "revoke",
+            "body": "Revoke",
+            "help_text": "Revoke button.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 456,
+        "fields": {
+            "key": "grant",
+            "body": "Grant",
+            "help_text": "Grant button.",
+            "rich_text": false
+        }
     }
 ]
