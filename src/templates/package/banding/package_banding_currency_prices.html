@@ -6,8 +6,8 @@
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
     <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">{% get_site_text 'edit_bandings' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding_type_entry.pk %}">{{ banding_type_entry.banding_type.name }}</a></li>
