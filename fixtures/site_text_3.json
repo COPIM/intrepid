@@ -4168,5 +4168,55 @@
             "help_text": "Breadcrumb text for the banding types list link.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 495,
+        "fields": {
+            "key": "edit_bandings",
+            "body": "Edit Bandings",
+            "help_text": "Breadcrumb text for editing bandings.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 496,
+        "fields": {
+            "key": "add_this_banding",
+            "body": "Add this banding",
+            "help_text": "Button text for adding a banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 497,
+        "fields": {
+            "key": "edit_currencies",
+            "body": "Edit Currencies",
+            "help_text": "Button text for editing currencies.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 498,
+        "fields": {
+            "key": "remove_banding_and_prices",
+            "body": "Remove Banding and Prices",
+            "help_text": "Button text for removing banding and prices.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 499,
+        "fields": {
+            "key": "edit_redirect",
+            "body": "Edit Redirect",
+            "help_text": "Button text for editing redirect.",
+            "rich_text": false
+        }
     }
 ]
