@@ -5,7 +5,7 @@
 
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
     <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Access</a></li>
-    <li class="breadcrumb-item" aria-current="page">Change Access</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'change_access' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
