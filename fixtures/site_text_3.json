@@ -3953,9 +3953,9 @@
         "model": "cms.sitetext",
         "pk": 471,
         "fields": {
-            "key": "standards",
-            "body": "Standards",
-            "help_text": "Header for standards section.",
+            "key": "standards_info",
+            "body": "Information about standards.",
+            "help_text": "Information text for standards section.",
             "rich_text": false
         }
     },
@@ -3963,9 +3963,29 @@
         "model": "cms.sitetext",
         "pk": 472,
         "fields": {
-            "key": "standards_info",
-            "body": "Information about standards.",
-            "help_text": "Information text for standards section.",
+            "key": "month_contract",
+            "body": "month contract",
+            "help_text": "Information text for length of contract.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 473,
+        "fields": {
+            "key": "process_signup",
+            "body": "Process Signup",
+            "help_text": "Link text to process signup.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 474,
+        "fields": {
+            "key": "no_active_quotes",
+            "body": "No active quotes to display.",
+            "help_text": "Text on view baskets page.",
             "rich_text": false
         }
     }

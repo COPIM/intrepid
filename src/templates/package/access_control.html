@@ -46,9 +46,9 @@
                         <td>{{ signup.associated_package.initiative.name }}</td>
                         <td>{{ signup.formatted_price }}</td>
                         <td>{{ signup.associated_user.first_name }} {{ signup.associated_user.last_name }}</td>
-                        <td><a href="{% url 'process_signup' signup.associated_package.pk signup.associated_package.initiative.pk signup.pk %}">View Data</a></td>
+                        <td><a href="{% url 'process_signup' signup.associated_package.pk signup.associated_package.initiative.pk signup.pk %}">{% get_site_text 'view_data' %}</a></td>
                         <td>{{ signup.signup_date }}</td>
-                        <td>{% if signup.access %}<a href="{% url 'package_access_control_change' signup.pk signup.associated_package.initiative.pk 'revoke' %}">Revoke</a>{% else %}<a href="{% url 'package_access_control_change' signup.pk signup.associated_package.initiative.pk 'grant' %}">Grant</a>{% endif %}</td>
+                        <td>{% if signup.access %}<a href="{% url 'package_access_control_change' signup.pk signup.associated_package.initiative.pk 'revoke' %}">{% get_site_text 'revoke' %}</a>{% else %}<a href="{% url 'package_access_control_change' signup.pk signup.associated_package.initiative.pk 'grant' %}">{% get_site_text 'grant' %}</a>{% endif %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

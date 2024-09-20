@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 
-{% block title %}New Form Element{% endblock title %}
+{% block title %}{% get_site_text 'new_form_element' %}{% endblock title %}
 
 {% block breadcrumb %}
         <li class="breadcrumb-item" aria-current="page">{% get_site_text 'platform_management' %}</li>
