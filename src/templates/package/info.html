@@ -30,6 +30,173 @@
         <div class="col">
             <span class="colinfo"><i class="fa fa-building"></i> {% if package_type == 'package' %}
                 <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
+                {% get_site_text 'initiatives' %}{% endif %}</span>
+        </div>
+        <div class="col">
+            <span class="colinfo"><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</span>
+        </div>
+        <div class="col">
+            <span class="colinfo">
+                <i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}
+            </span>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="modal" id="history_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
+                    <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body package-modal-body">
+                    <ul>
+                        {% for history in package.attestationhistory_set.all %}
+                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }} on {{ history.date_time }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{% get_site_text 'close' %}</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="row catalogue-main">
+        <div class="col-1"></div>
+        <div class="col-8">
+            <h2 class="text-left summary-header">{% get_site_text 'membership_offer' %}</h2>
+            <div class="larger-package-styled-text">
+                {{ package.description|safe }}
+            </div>
+            {% if package_type == 'meta' %}
+                 <h3 class="text-left">{% get_site_text 'included_packages' %}</h3>
+                <ul>
+                {% for package in package.packages.all %}
+                    <li><a href="{% url 'summary_package_initiative' 'package' package.pk %}">{{ package.name }}</a></li>
+                {% endfor %}
+                </ul>
+                {% if request.site.enable_standards %}
+                    <h3>{% get_site_text 'standards' %}</h3>
+                    {% get_site_text 'standards_info' %}
+                    <ul>
+                        {% for standard, packages in package.standards.items %}
+                            <li>
+                                {{ standard }}
+                                <ul>
+                                    {% for package in packages %}
+                                        <li><a target="_blank" href="{{ package.standard.details_url }}">{{ package.package.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% empty %}
+                            <li>{% get_site_text 'no_packages_standards' %}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% else %}
+                {% if request.site.enable_standards %}
+                    <h3 class="text-left spacer-top-10">{% get_site_text 'standards' %}</h3>
+                    {% get_site_text 'standards_info' %}
+                    <ul>
+                        {% for standard in package.standards %}
+                            <li><a target="_blank" href="{{ standard.details_url }}">{{ standard.standard.standard_name }}</a></li>
+                        {% empty %}
+                            <li>{% get_site_text 'no_standards' %}</li>
+                        {% endfor %}
+                        {% if package.attestationhistory_set.all %}
+                            <li><a href="#"  data-toggle="modal" data-target="#history_modal">{% get_site_text 'view_attestation_history' %}</a></li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-3">
+            <div class="card collective-card package-card">
+                <div class="card-body">
+                    <img class="img-fluid package-card-image" src="
+                            {% if package.image %}{{ package.image.url }}{% else %}{% static "frontend/img/logo.svg" %}{% endif %}"
+                         alt="{{ package.name }} icon."/>
+                    <ul class="list-unstyled package-card-list">
+                        <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
+                            <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
+                            {% get_site_text 'initiatives' %}{% endif %}</li>
+                        <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</li>
+                        <li><i class="fa fa-edit"></i> {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
+                        {% if package.meta_packages %}
+                            <li>
+                                <i class="fa fa-box"> </i> {% get_site_text 'included_in' %}
+                                {% for mp in package.meta_packages %}{{ mp.name }}{% if not forloop.last %},
+                                {% endif %}{% endfor %}
+                            </li>
+                        {% endif %}
+                        {% if package.meta_only %}
+                            <li><i class="fa fa-people-group"> </i> {% get_site_text 'only_in_collectives' %}</li>
+                        {% endif %}
+                    </ul>
+                    {% if package_type == 'meta' %}
+                        <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue btn-block">{% get_site_text 'add_to_quote' %} <span class="fa fa-plus"></span></a>
+                    {% elif not package.meta_only %}
+                        <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary btn-obc-blue btn-block">{% get_site_text 'add_to_quote' %} <span class="fa fa-plus"></span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="history_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
+                    <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body package-modal-body">
+                    <ul>
+                        {% for history in package.attestationhistory_set.all %}
+                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }} on {{ history.date_time }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{% get_site_text 'close' %}</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumb %}
+
+<!-- Desktop -->
+{% block header %}
+    <div class="row text-center">
+        <div class="col-1"></div>
+        <div class="col text-center">
+            <h1 class="text-center">{{ package.name }}</h1>
+        </div>
+
+        <div class="col-1"></div>
+    </div>
+    <div class="row book-info-row">
+        <div class="col-2"></div>
+        <div class="col">
+            <span class="colinfo"><i class="fa fa-building"></i> {% if package_type == 'package' %}
+                <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                 initiatives{% endif %}</span>
         </div>
         <div class="col">

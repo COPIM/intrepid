@@ -3921,111 +3921,51 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 457,
+        "pk": 468,
         "fields": {
-            "key": "debugger_platform_managers",
-            "body": "Platform Managers at OBC setup bandings that have tiers that are either banded or based on FTE (“Jisc Collections” → “Band 1”, “Band 2” / “Carnegie” → “Big (1000 FTE)”, “Medium (500 FTE)”, “Small (100 FTE)”).",
-            "help_text": "Explanation of platform managers setting up bandings.",
+            "key": "standards_attestation_history",
+            "body": "Standards Attestation History",
+            "help_text": "Modal title for standards attestation history.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 458,
+        "pk": 469,
         "fields": {
-            "key": "debugger_packages_associated_bandings",
-            "body": "Packages have associated bandings (“Open Book Publishers Membership” can say it uses “Jisc” and “Carnegie”).",
-            "help_text": "Explanation of packages having associated bandings.",
+            "key": "membership_offer",
+            "body": "Membership Offer",
+            "help_text": "Header for membership offer section.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 459,
+        "pk": 470,
         "fields": {
-            "key": "debugger_packages_specify_currencies",
-            "body": "Packages can specify which currencies they provide an associated banding in. So Jisc Collections, “Band 1”, could be paid for in GBP or USD.",
-            "help_text": "Explanation of packages specifying currencies.",
+            "key": "included_packages",
+            "body": "Included Packages",
+            "help_text": "Header for included packages section.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 460,
+        "pk": 471,
         "fields": {
-            "key": "debugger_packages_set_default_banding",
-            "body": "Packages can set the default banding that they wish to use.",
-            "help_text": "Explanation of packages setting default banding.",
+            "key": "standards",
+            "body": "Standards",
+            "help_text": "Header for standards section.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 461,
+        "pk": 472,
         "fields": {
-            "key": "debugger_packages_set_prices",
-            "body": "Packages set prices for currency-associated-bandings (BandingTypeCurrencyEntries). (E.g. a price for Jisc Band 1 in GBP).",
-            "help_text": "Explanation of packages setting prices.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 462,
-        "fields": {
-            "key": "debugger_payment_processors_associated",
-            "body": "Payment processors are associated with a currency-associated banding. So LYRASIS are set to handle all prices in Jisc Band 1 in USD.",
-            "help_text": "Explanation of payment processors associated with banding.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 463,
-        "fields": {
-            "key": "debugger_find_prices",
-            "body": "Find any/all prices in the user’s preferred currency.",
-            "help_text": "Step in the flow to find prices in user's preferred currency.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 464,
-        "fields": {
-            "key": "debugger_check_match_user_info",
-            "body": "Check if we can match this against the user’s stored information (FTE/bandings).",
-            "help_text": "Step in the flow to check match against user's stored information.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 465,
-        "fields": {
-            "key": "debugger_fallback_default_banding",
-            "body": "If not, fall back to package default banding and currency.",
-            "help_text": "Step in the flow to fall back to default banding and currency.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 466,
-        "fields": {
-            "key": "debugger_check_match_user_info_again",
-            "body": "Check if we can match this against the user’s stored information (FTE/bandings).",
-            "help_text": "Repeat step in the flow to check match against user's stored information.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 467,
-        "fields": {
-            "key": "debugger_ask_user_details",
-            "body": "If not, ask user to give their details.",
-            "help_text": "Step in the flow to ask user for details.",
+            "key": "standards_info",
+            "body": "Information about standards.",
+            "help_text": "Information text for standards section.",
             "rich_text": false
         }
     }
