@@ -4458,5 +4458,15 @@
             "help_text": "Column heading for lower limit",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 526,
+        "fields": {
+            "key": "save_selected_vocabs",
+            "body": "Save Selected Vocabularies to Banding",
+            "help_text": "Button text on selecting vocabs page",
+            "rich_text": false
+        }
     }
 ]
