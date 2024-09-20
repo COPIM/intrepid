@@ -49,13 +49,13 @@
 
                         <select class="form-control" aria-label="user to test" id="user" name="user">
                             {% for user in user_list %}
-                                <option id="user-{{ user.pk }}" value="{{ user.pk }}" {% if user.pk == user_to_test.pk %}selected="selected"{% endif %}>{{ user.profile.full_name }} ({{ user.username }})</option>
+                                <option id="user-{{ user.pk }}" value="{{ user.pk }}" {% if user_to_test and user.pk == user_to_test.pk %}selected="selected"{% endif %}>{{ user.profile.full_name }} ({{ user.username }})</option>
                             {% endfor %}
                         </select>
 
                         <select class="form-control" aria-label="package to test" id="package" name="package">
                             {% for package in packages %}
-                                <option id="package-{{ package.pk }}" value="{{ package.pk }}" {% if package.pk == package_to_test.pk %}selected="selected"{% endif %}>{{ package.name }}</option>
+                                <option id="package-{{ package.pk }}" value="{{ package.pk }}" {% if package_to_test and package.pk == package_to_test.pk %}selected="selected"{% endif %}>{{ package.name }}</option>
                             {% endfor %}
                         </select>
                     <p>
