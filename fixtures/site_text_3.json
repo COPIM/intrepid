@@ -3198,5 +3198,35 @@
             "help_text": "Button text for updating email statuses",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 379,
+        "fields": {
+            "key": "to",
+            "body": "To",
+            "help_text": "Table heading for recipient",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 380,
+        "fields": {
+            "key": "subject",
+            "body": "Subject",
+            "help_text": "Table heading for email subject",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 381,
+        "fields": {
+            "key": "date",
+            "body": "Date",
+            "help_text": "Table heading for date sent",
+            "rich_text": false
+        }
     }
 ]
