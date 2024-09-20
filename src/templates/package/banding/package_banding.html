@@ -21,13 +21,13 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Bandings for “{{ package.name }}”</h1>
+            <h1>{% get_site_text 'bandings_for' %} “{{ package.name }}”</h1>
             {% if not has_default %}
                 <div class="alert-warning">
-                    <p><i class="fa fa-exclamation-triangle"></i> This package does not have pricing information set for the default currency ({{ package.default_country.currency }}).</p>
+                    <p><i class="fa fa-exclamation-triangle"></i> {% get_site_text 'no_pricing_info' %} ({{ package.default_country.currency }}).</p>
                 </div>
             {% endif %}
-            <p class="lead">The following bandings are associated with this package.</p>
+            <p class="lead">{% get_site_text 'bandings_associated' %}</p>
             <form method="POST">
                 {% csrf_token %}
                 {{ bandings_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this banding"></input>
@@ -60,8 +60,8 @@ Initiatives
 
         <div class="row">
             <div class="col-12">
-                <h1>Basic Price Overview</h1>
-                <p class="lead">Here you can see, at a glance, all prices associated with this package.</p>
+                <h1>{% get_site_text 'basic_price_overview' %}</h1>
+                <p class="lead">{% get_site_text 'price_overview_description' %}</p>
             </div>
         </div>
 

@@ -1,8 +1,8 @@
 {% extends "base/admin_base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Create Banding Type{% endblock %}
-{% block page-title %}Create Banding Type{% endblock %}
+{% block title %}{% get_site_text 'create_banding_type' %}{% endblock %}
+{% block page-title %}{% get_site_text 'create_banding_type' %}{% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
@@ -13,9 +13,7 @@
 {% block content %}
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">
-                Create a new Banding Type by providing required metadata. Once the banding type has been created you can select the relevant banding vocabularies.
-            </p>
+            <p class="lead">{% get_site_text 'create_banding_type_description' %}</p>
             <form method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}

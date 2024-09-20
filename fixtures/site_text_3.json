@@ -3988,5 +3988,155 @@
             "help_text": "Text on view baskets page.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 475,
+        "fields": {
+            "key": "manage_redirect_for",
+            "body": "Manage Redirect for",
+            "help_text": "Title for managing redirect for a banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 476,
+        "fields": {
+            "key": "redirect_description",
+            "body": "This allows you to specify that the user should be directed to an external site (such as the Jisc Collections catalogue page) at the end of the signup. To undo this, simply leave the redirect blank.",
+            "help_text": "Description for redirect functionality.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 477,
+        "fields": {
+            "key": "create_banding_type",
+            "body": "Create Banding Type",
+            "help_text": "Title for creating a new banding type.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 478,
+        "fields": {
+            "key": "create_banding_type_description",
+            "body": "Create a new Banding Type by providing required metadata. Once the banding type has been created you can select the relevant banding vocabularies.",
+            "help_text": "Description for creating a new banding type.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 479,
+        "fields": {
+            "key": "currencies_for",
+            "body": "Currencies for",
+            "help_text": "Title for currencies associated with a banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 480,
+        "fields": {
+            "key": "in",
+            "body": "in",
+            "help_text": "Preposition used in titles.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 481,
+        "fields": {
+            "key": "currencies_associated",
+            "body": "The following currencies are associated with this banding.",
+            "help_text": "Description for currencies associated with a banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 482,
+        "fields": {
+            "key": "select_payment_processor",
+            "body": "Select a Payment Processor",
+            "help_text": "Option text for selecting a payment processor.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 483,
+        "fields": {
+            "key": "payment_processors_listed",
+            "body": "Listed below are payment processors for",
+            "help_text": "Description for payment processors listed for a country.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 484,
+        "fields": {
+            "key": "set_or_leave_empty",
+            "body": "You can set one or leave it empty to handle billing yourself.",
+            "help_text": "Description for setting or leaving payment processor empty.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 485,
+        "fields": {
+            "key": "bandings_for",
+            "body": "Bandings for",
+            "help_text": "Title for bandings associated with a package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 486,
+        "fields": {
+            "key": "no_pricing_info",
+            "body": "This package does not have pricing information set for the default currency",
+            "help_text": "Warning text for missing pricing information.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 487,
+        "fields": {
+            "key": "bandings_associated",
+            "body": "The following bandings are associated with this package.",
+            "help_text": "Description for bandings associated with a package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 488,
+        "fields": {
+            "key": "basic_price_overview",
+            "body": "Basic Price Overview",
+            "help_text": "Title for basic price overview section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 489,
+        "fields": {
+            "key": "price_overview_description",
+            "body": "Here you can see, at a glance, all prices associated with this package.",
+            "help_text": "Description for basic price overview section.",
+            "rich_text": false
+        }
     }
 ]
