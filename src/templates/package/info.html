@@ -125,7 +125,7 @@
             <div class="card collective-card package-card">
                 <div class="card-body">
                     <img class="img-fluid package-card-image" src="
-                            {% if package.image %}{{ package.image.url }}{% else %}{% static "frontend/img/logo.svg" %}{% endif %}"
+                            {% if package.image %}{{ package.image.url }}{% else %}{% static 'frontend/img/logo.svg' %}{% endif %}"
                          alt="{{ package.name }} icon."/>
                     <ul class="list-unstyled package-card-list">
                         <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
@@ -292,7 +292,7 @@
             <div class="card collective-card package-card">
                 <div class="card-body">
                     <img class="img-fluid package-card-image" src="
-                            {% if package.image %}{{ package.image.url }}{% else %}{% static "frontend/img/logo.svg" %}{% endif %}"
+                            {% if package.image %}{{ package.image.url }}{% else %}{% static 'frontend/img/logo.svg' %}{% endif %}"
                          alt="{{ package.name }} icon."/>
                     <ul class="list-unstyled package-card-list">
                         <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
