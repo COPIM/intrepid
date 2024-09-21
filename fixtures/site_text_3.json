@@ -5239,5 +5239,115 @@
             "help_text": "Button text for contacts page",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 591,
+        "fields": {
+            "key": "list_documents",
+            "body": "List Documents",
+            "help_text": "Title for listing documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 592,
+        "fields": {
+            "key": "media_files_affiliated_with",
+            "body": "Media Files Affiliated with",
+            "help_text": "Title for media files affiliated with a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 593,
+        "fields": {
+            "key": "media_files_accessible",
+            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
+            "help_text": "Description for media files accessibility",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 594,
+        "fields": {
+            "key": "load_new_file",
+            "body": "Load New File",
+            "help_text": "Heading for loading a new file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 595,
+        "fields": {
+            "key": "upload_file",
+            "body": "Upload File",
+            "help_text": "Button text for uploading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 596,
+        "fields": {
+            "key": "name",
+            "body": "Name",
+            "help_text": "Table heading for name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 597,
+        "fields": {
+            "key": "view",
+            "body": "View",
+            "help_text": "Table heading for view",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 598,
+        "fields": {
+            "key": "date_uploaded",
+            "body": "Date Uploaded",
+            "help_text": "Table heading for date uploaded",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 599,
+        "fields": {
+            "key": "delete",
+            "body": "Delete",
+            "help_text": "Table heading for delete",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 600,
+        "fields": {
+            "key": "download_file",
+            "body": "Download File",
+            "help_text": "Link text for downloading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 601,
+        "fields": {
+            "key": "delete_file",
+            "body": "Delete File",
+            "help_text": "Button text for deleting a file",
+            "rich_text": false
+        }
     }
 ]
