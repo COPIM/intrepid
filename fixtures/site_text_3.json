@@ -4688,6 +4688,26 @@
             "help_text": "Helper text on order complete",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 553,
+        "fields": {
+            "key": "order_form",
+            "body": "Order Form",
+            "help_text": "Title for the order form page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 554,
+        "fields": {
+            "key": "order_form_sub_h",
+            "body": "Please complete the order form below.",
+            "help_text": "Subheading for the order form page",
+            "rich_text": false
+        }
     }
 
 ]
