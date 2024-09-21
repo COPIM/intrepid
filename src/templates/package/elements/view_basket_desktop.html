@@ -46,7 +46,7 @@
                                     <button class="btn btn-sm btn-link"
                                             formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
                                         <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}"
-                                             alt="Remove from basket"/>
+                                             alt="{% get_site_text 'remove_from_basket' %}"/>
                                     </button>
                                 </td>
                             </tr>
@@ -70,7 +70,7 @@
                                     <button class="btn btn-sm btn-link"
                                             formaction="{% url 'basket_remove_meta_from_basket' basket.pk package.pk %}">
                                         <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}"
-                                             alt="Remove from basket"/>
+                                             alt="{% get_site_text 'remove_from_basket' %}"/>
                                     </button>
                                 </td>
                             </tr>

@@ -4778,5 +4778,15 @@
             "help_text": "Label for totals section.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 545,
+        "fields": {
+            "key": "remove_from_basket",
+            "body": "Remove from Basket",
+            "help_text": "Alt text on mobile",
+            "rich_text": false
+        }
     }
 ]
