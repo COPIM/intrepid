@@ -4909,4 +4909,24 @@
             "rich_text": false
         }
     },
+    {
+        "model": "cms.sitetext",
+        "pk": 573,
+        "fields": {
+            "key": "versions",
+            "body": "Versions",
+            "help_text": "Text for documents page.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 574,
+        "fields": {
+            "key": "document",
+            "body": "Document",
+            "help_text": "Text for documents page.",
+            "rich_text": false
+        }
+    }
 ]
