@@ -4541,11 +4541,121 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 534,
+        "pk": 535,
         "fields": {
-            "key": "order_approval",
-            "body": "Order Approval",
-            "help_text": "Heading for order approval section",
+            "key": "order_documents",
+            "body": "Order Documents",
+            "help_text": "Heading for order documents section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 536,
+        "fields": {
+            "key": "order_documents_info",
+            "body": "Here you can find the documents related to your order.",
+            "help_text": "Information about order documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 537,
+        "fields": {
+            "key": "download_order_documents",
+            "body": "Download Order Documents",
+            "help_text": "Button text for downloading order documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 538,
+        "fields": {
+            "key": "order_complete_contact",
+            "body": "If you have any questions, please contact us.",
+            "help_text": "Contact information for order completion",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 539,
+        "fields": {
+            "key": "initiative",
+            "body": "Initiative",
+            "help_text": "Table heading for initiative",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 540,
+        "fields": {
+            "key": "packages",
+            "body": "Packages",
+            "help_text": "Table heading for packages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 541,
+        "fields": {
+            "key": "contact_email",
+            "body": "Contact Email",
+            "help_text": "Table heading for contact email",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 542,
+        "fields": {
+            "key": "package_name",
+            "body": "Package Name",
+            "help_text": "Table heading for package name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 543,
+        "fields": {
+            "key": "cost",
+            "body": "Cost",
+            "help_text": "Table heading for cost",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 544,
+        "fields": {
+            "key": "approved_by_initiative",
+            "body": "Approved by Initiative?",
+            "help_text": "Table heading for initiative approval",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 545,
+        "fields": {
+            "key": "approval",
+            "body": "Approval",
+            "help_text": "Table heading for approval",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 546,
+        "fields": {
+            "key": "invoice_status",
+            "body": "Invoice Status",
+            "help_text": "Table heading for invoice status",
             "rich_text": false
         }
     }

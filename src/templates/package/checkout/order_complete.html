@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block title %}
-    Order No. {{ order.order_number }}
+    {% get_site_text 'order_number' %} {{ order.order_number }}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.order_number }}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">{% get_site_text 'orders_and_documents' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'order_number' %} {{ order.order_number }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -22,9 +22,7 @@
         <div class="col-1"></div>
         <div class="col text-left">
             <h1 class="text-left">{% get_site_text 'completed_order' %}</h1>
-            <p class="subhead-no-offset">Your order with order number {{ order.order_number }} is now complete. If you
-                require assistance with your order
-                ensure you quote this order number.</p>
+            <p class="subhead-no-offset">{% get_site_text 'order_complete_body' %}</p>
         </div>
         <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
                                 alt="Quotations logo"/></div>
@@ -36,21 +34,20 @@
     <div class="row catalogue-main spacer-top-40">
         <div class="col-1"></div>
         <div class="col">
-            <h2>{% get_site_text 'order_docs' %}</h2>
+            <h2>{% get_site_text 'order_documents' %}</h2>
             <div class="text-center package-styled-text">
-                {% get_site_text 'order_docs_info' %}
+                {% get_site_text 'order_documents_info' %}
                 <p>
-                    <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
-                        Order Documents</a>
+                    <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_order_documents' %}</a>
                 </p>
 
-                {% get_site_text 'order_com_contact' %}
+                {% get_site_text 'order_complete_contact' %}
             </div>
             <table class="table package-table">
                 <tr class="header-row">
-                    <th>Initiative</th>
-                    <th>Package(s)</th>
-                    <th>Contact Email</th>
+                    <th>{% get_site_text 'initiative' %}</th>
+                    <th>{% get_site_text 'packages' %}</th>
+                    <th>{% get_site_text 'contact_email' %}</th>
                 </tr>
                 {% for k, row in contact_rows.items %}
                     <tr>
@@ -68,12 +65,12 @@
                 {% csrf_token %}
                 <table class="table package-table">
                     <tr class="header-row">
-                        <th>Package Name</th>
-                        <th>Cost</th>
-                        <th>Approved by Initiative?</th>
-                        <th>Approval</th>
-                        <th>Payment Processor</th>
-                        <th>Invoice Status</th>
+                        <th>{% get_site_text 'package_name' %}</th>
+                        <th>{% get_site_text 'cost' %}</th>
+                        <th>{% get_site_text 'approved_by_initiative' %}</th>
+                        <th>{% get_site_text 'approval' %}</th>
+                        <th>{% get_site_text 'payment_processor' %}</th>
+                        <th>{% get_site_text 'invoice_status' %}</th>
                     </tr>
                     {% for signup in order.packagesignup_set.all %}
                         <tr>
