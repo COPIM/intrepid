@@ -47,7 +47,7 @@
                                 <td>{{ element.form_element.get_kind_display }}</td>
                                 <td>{% if element.form_element.required %}<i class="far fa-check-square"></i>{% else %}<i class="far fa-square"></i>{% endif %}</td>
                                 <td>{{ element.form_element.choices }}</td>
-                                <td><form method="POST" action="{% url 'form_element_package_delete' package.pk initiative.pk element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                                <td><form method="POST" action="{% url 'form_element_package_delete' package.pk initiative.pk element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                             </tr>
                         {% endfor %}
                         </tbody>
