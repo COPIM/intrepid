@@ -25,9 +25,9 @@
                     {% csrf_token %}
                     <table class="table package-table">
                         <tr class="header-row">
-                            <th>Offer</th>
-                            <th>Cost</th>
-                            <th>Remove</th>
+                            <th>{% get_site_text 'offer' %}</th>
+                            <th>{% get_site_text 'cost' %}</th>
+                            <th>{% get_site_text 'remove' %}</th>
                         </tr>
                         {% for package in basket.packages.all %}
                             <tr>
@@ -88,7 +88,7 @@
                     {% if basket.list_of_conflicting_packages %}
                         <tr>
                             <td colspan="2">
-                                <strong>Duplicate Offers: </strong>Your selection includes one or more duplicate offers. Any duplicate offers are automatically removed from your quote to ensure you are only charged once.
+                                <strong>{% get_site_text 'duplicate_offers' %}</strong>{% get_site_text 'duplicate_offers_description' %}
                             </td>
                         </tr>
                         {% for package in basket.list_of_conflicting_packages %}
@@ -146,7 +146,7 @@
                     {% endif %}
                     <tr>
                         <td>
-                            <strong>Total</strong>
+                            <strong>{% get_site_text 'total' %}</strong>
                         </td>
                         <td class="text-right">
                             {% if converted_total %}
@@ -161,7 +161,7 @@
                             {% if not converted_currency == user_currency.currency %}
                                 <tr>
                                     <td colspan="2">
-                                        <small>*No offers have yet been set up in your chosen currency. Instead, we have provided an indicative price. We recommend you get in touch with us at <a href="mailto:info@openbookcollective.org">info@openbookcollective.org</a> so we can provide you with a custom quotation.</small>
+                                        <small>{% get_site_text 'indicative_price_warning' %}</small>
                                     </td>
                                 </tr>
                             {% endif %}
