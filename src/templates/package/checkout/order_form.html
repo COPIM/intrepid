@@ -13,7 +13,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'oa_inits_header' %}</li>
-    <li class="breadcrumb-item" aria-current="page">Quotations</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'quotations' %}</li>
     <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'quotation_header' %}: {{ basket.name }}</li>
     <li class="breadcrumb-item active" aria-current="page">{% get_site_text_no_edit 'order_form' %}</li>
 {% endblock breadcrumb %}
