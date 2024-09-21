@@ -4708,6 +4708,96 @@
             "help_text": "Subheading for the order form page",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 555,
+        "fields": {
+            "key": "your_quotation",
+            "body": "Your quotation",
+            "help_text": "Title for the quotation section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 556,
+        "fields": {
+            "key": "quotation_generated",
+            "body": "We have generated a quotation for you to review, with a unique quotation number",
+            "help_text": "Text for the generated quotation",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 557,
+        "fields": {
+            "key": "quotation_reference",
+            "body": "Please refer to this quotation number if you would like to discuss any details with us.",
+            "help_text": "Text for referring to the quotation number",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 558,
+        "fields": {
+            "key": "order_documents_description",
+            "body": "We've zipped up the documents for all of the packages you are signing up for. Please read them and then either approve the signup below or contact the initiative to discuss the terms. Also, some types of signup (those going through Jisc Collections) require you to input your details on an external site. Please check the links below carefully under the 'external' column.",
+            "help_text": "Description for order documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 559,
+        "fields": {
+            "key": "contact_details",
+            "body": "Contact Details",
+            "help_text": "Title for the contact details section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 560,
+        "fields": {
+            "key": "contact_details_description",
+            "body": "Once you have read the order documents you can contact the initiatives to discuss them or approve the signup. If necessary the package manager can upload new terms. Once you and the package manager have both approved the signup terms will be locked in place.",
+            "help_text": "Description for contact details",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 561,
+        "fields": {
+            "key": "approval",
+            "body": "Approval",
+            "help_text": "Title for the approval section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 562,
+        "fields": {
+            "key": "approval_description",
+            "body": "When you are happy with the package terms you can mark the signup as approved. You may need to wait for the Initiative to approve the signup also in order to finalise the signup.",
+            "help_text": "Description for approval process",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 563,
+        "fields": {
+            "key": "approve_this_signup",
+            "body": "Approve this Signup",
+            "help_text": "Button text for approving the signup",
+            "rich_text": false
+        }
     }
 
 ]
