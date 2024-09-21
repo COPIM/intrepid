@@ -4658,5 +4658,36 @@
             "help_text": "Table heading for invoice status",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 547,
+        "fields": {
+            "key": "package_media_files",
+            "body": "Package Media Files",
+            "help_text": "Heading on order complete page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 548,
+        "fields": {
+            "key": "your_order_pre",
+            "body": "Your order with order number",
+            "help_text": "Heading on order complete page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 549,
+        "fields": {
+            "key": "your_order_post",
+            "body": "is now complete. If you require assistance with your order ensure you quote this order number.",
+            "help_text": "Helper text on order complete",
+            "rich_text": false
+        }
     }
+
 ]
