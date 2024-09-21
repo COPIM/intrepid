@@ -4631,6 +4631,16 @@
     },
     {
         "model": "cms.sitetext",
+        "pk": 530,
+        "fields": {
+            "key": "approval",
+            "body": "Approval",
+            "help_text": "Table heading for offer",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
         "pk": 531,
         "fields": {
             "key": "offer",
