@@ -4748,5 +4748,35 @@
             "help_text": "Link text for contract.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 542,
+        "fields": {
+            "key": "quotation_packages",
+            "body": "Quotation Packages",
+            "help_text": "Heading for quotation packages section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 543,
+        "fields": {
+            "key": "quotation_breakdown",
+            "body": "Quotation Breakdown",
+            "help_text": "Heading for quotation breakdown section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 544,
+        "fields": {
+            "key": "totals",
+            "body": "Totals",
+            "help_text": "Label for totals section.",
+            "rich_text": false
+        }
     }
 ]
