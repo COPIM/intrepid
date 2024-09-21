@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block title %}
-    Order No. {{ order.pk }}
+    {% get_site_text 'order_number' %} {{ order.pk }}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.pk }}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">{% get_site_text 'orders_and_documents' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'order_number' %} {{ order.pk }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -22,7 +22,7 @@
         <div class="col-1"></div>
         <div class="col text-left">
             <h1 class="text-left">{% get_site_text 'completed_order' %}</h1>
-            <p class="subhead-no-offset">Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is {{ order.pk }}.</p>
+            <p class="subhead-no-offset">{% get_site_text 'order_complete_message' %} {{ order.pk }}.</p>
         </div>
         <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
                                 alt="Quotations logo"/></div>
@@ -35,9 +35,9 @@
         <div class="col-1"></div>
         <div class="col">
             {% get_site_text 'order_complete_body' %}
-            <h3>Quotation Details</h3>
+            <h3>{% get_site_text 'quotation_details' %}</h3>
             {% get_site_text 'order_documents' %}
-            <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">Download Quotation</a>
+            <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
         </div>
         <div class="col-1"></div>
     </div>
