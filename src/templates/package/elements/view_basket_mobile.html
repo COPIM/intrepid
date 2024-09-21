@@ -17,7 +17,7 @@
                                     <td>
                                         <button class="btn btn-sm btn-link"
                                                 formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
-                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="{% get_site_text 'remove_from_basket' %}"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -28,7 +28,7 @@
                                     <td>
                                         <button class="btn btn-sm btn-link"
                                                 formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
-                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="{% get_site_text 'remove_from_basket' %}"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -89,7 +89,7 @@
                     <div class="col">
                         <h3>{% get_site_text 'quotation_additional' %}</h3>
                         {% get_site_text 'quotation_add_text' %}
-                        <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                        <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'add' %}</a></p>
                     </div>
 
                     {% if basket.package_set %}
