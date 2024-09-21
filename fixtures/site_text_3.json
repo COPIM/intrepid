@@ -4789,4 +4789,25 @@
             "rich_text": false
         }
     }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 546,
+    "fields": {
+        "key": "form_elements_setup_for",
+        "body": "Form Elements Setup for",
+        "help_text": "Title for form elements setup page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 547,
+    "fields": {
+        "key": "select_data_for_signup",
+        "body": "Please select the data that you require from users in order to signup to this package.",
+        "help_text": "Instruction for selecting data for signup",
+        "rich_text": false
+    }
+}
 ]
