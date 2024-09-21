@@ -50,7 +50,7 @@
                 {% for k, row in contact_rows.items %}
                     <tr>
                         <td><strong>{{ row.initiative.name }}</strong></td>
-                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} & {% elif not forloop.first and not forloop.last %}, {% endif %}{{ package.name }}{% endfor %}</td>
+                        <td>{% for package in row.packages %}{{ package.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ row.contact_email }}</td>
                     </tr>
                 {% endfor %}
@@ -144,7 +144,7 @@
                 {% for k, row in contact_rows.items %}
                     <tr>
                         <td><strong>{{ row.initiative.name }}</strong></td>
-                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} & {% elif not forloop.first and not forloop.last %}, {% endif %}{{ package.name }}{% endfor %}</td>
+                        <td>{% for package in row.packages %}{{ package.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ row.contact_email }}</td>
                     </tr>
                 {% endfor %}
