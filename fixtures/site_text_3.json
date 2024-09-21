@@ -4848,8 +4848,7 @@
             "help_text": "Button text for agreeing to terms of signup.",
             "rich_text": false
         }
-    }
-
+    },
     {
         "model": "cms.sitetext",
         "pk": 567,
