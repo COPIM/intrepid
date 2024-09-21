@@ -4631,11 +4631,71 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 530,
+        "pk": 531,
         "fields": {
-            "key": "approval",
-            "body": "Approval",
-            "help_text": "Table heading for approval",
+            "key": "offer",
+            "body": "Offer",
+            "help_text": "Table heading for offer",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 532,
+        "fields": {
+            "key": "remove",
+            "body": "Remove",
+            "help_text": "Table heading for remove",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 533,
+        "fields": {
+            "key": "duplicate_offers",
+            "body": "Duplicate Offers: ",
+            "help_text": "Label for duplicate offers",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 534,
+        "fields": {
+            "key": "duplicate_offers_description",
+            "body": "Your selection includes one or more duplicate offers. Any duplicate offers are automatically removed from your quote to ensure you are only charged once.",
+            "help_text": "Description for duplicate offers",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 535,
+        "fields": {
+            "key": "totals_ignore_duplicates",
+            "body": "Totals ignore duplicate offers.",
+            "help_text": "Note that totals ignore duplicate offers",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 536,
+        "fields": {
+            "key": "total",
+            "body": "Total",
+            "help_text": "Label for total",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 537,
+        "fields": {
+            "key": "indicative_price_warning",
+            "body": "*No offers have yet been set up in your chosen currency. Instead, we have provided an indicative price. We recommend you get in touch with us at <a href=\"mailto:info@openbookcollective.org\">info@openbookcollective.org</a> so we can provide you with a custom quotation.",
+            "help_text": "Warning about indicative pricing",
             "rich_text": false
         }
     }
