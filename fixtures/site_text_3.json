@@ -4938,6 +4938,66 @@
             "help_text": "Button text for removing an attestation",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 569,
+        "fields": {
+            "key": "create_new_package",
+            "body": "Create New Package",
+            "help_text": "Text for creating a new package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 570,
+        "fields": {
+            "key": "select_banding_type",
+            "body": "Select a banding type for this package",
+            "help_text": "Instruction to select a banding type",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 571,
+        "fields": {
+            "key": "or",
+            "body": "or",
+            "help_text": "Conjunction 'or'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 572,
+        "fields": {
+            "key": "manage_available_bandings",
+            "body": "manage available bandings",
+            "help_text": "Link text to manage available bandings",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 573,
+        "fields": {
+            "key": "uses_fte",
+            "body": "Uses FTE",
+            "help_text": "Column heading for Uses FTE",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 574,
+        "fields": {
+            "key": "select",
+            "body": "Select",
+            "help_text": "Button text for selecting an option",
+            "rich_text": false
+        }
     }
     ,
     {
