@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item">Platform Management</li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item">{% get_site_text 'platform_management' %}</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page">Form Elements Setup</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'form_elements_setup' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -20,8 +20,8 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% block title %}Form Elements Setup for {{ package.name }}{% endblock %}</h1>
-                <p class="lead">Please select the data that you require from users in order to signup to this package.</p>
+                <h1>{% block title %}{% get_site_text 'form_elements_setup_for' %} {{ package.name }}{% endblock %}</h1>
+                <p class="lead">{% get_site_text 'select_data_for_signup' %}</p>
                 <form method="POST">
                 {% csrf_token %}
                 {{ field_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this field"></input>
@@ -33,10 +33,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Required</th>
-                                <th>Choices</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'type' %}</th>
+                                <th>{% get_site_text 'required' %}</th>
+                                <th>{% get_site_text 'choices' %}</th>
                                 <th></th>
                             </tr>
                         </thead>
