@@ -62,11 +62,11 @@
                 {% csrf_token %}
                 <table class="table package-table" id="approval_table">
                     <tr class="header-row">
-                        <th>Package Name</th>
-                        <th>Cost</th>
-                        <th>Approved by Provider?</th>
-                        <th>Approval</th>
-                        <th>External</th>
+                        <th>{% get_site_text 'package_name' %}</th>
+                        <th>{% get_site_text 'cost' %}</th>
+                        <th>{% get_site_text 'approved_by_provider' %}</th>
+                        <th>{% get_site_text 'approval' %}</th>
+                        <th>{% get_site_text 'external' %}</th>
                     </tr>
                     {% for signup in order.packagesignup_set.all %}
                         <tr>

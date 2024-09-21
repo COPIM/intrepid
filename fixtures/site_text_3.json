@@ -4798,6 +4798,36 @@
             "help_text": "Button text for approving the signup",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 564,
+        "fields": {
+            "key": "approved_by_provider",
+            "body": "Approved by Provider?",
+            "help_text": "Table heading for provider approval status.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 565,
+        "fields": {
+            "key": "external",
+            "body": "External",
+            "help_text": "Table heading for external links.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 566,
+        "fields": {
+            "key": "agree_terms_of_signup",
+            "body": "Agree to Terms of Signup",
+            "help_text": "Button text for agreeing to terms of signup.",
+            "rich_text": false
+        }
     }
 
 ]
