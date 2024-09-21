@@ -48,7 +48,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/quotation_group.png' %}"
-                 alt="Build your quote image"/>
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{% get_site_text 'completed_order' %}</h1>
         </div>
         <div class="col-1"></div>
@@ -57,7 +57,7 @@
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is {{ order.pk }}.</p>
+            <p>{% get_site_text 'thanks_for_your_interest' %} {{ order.pk }}.</p>
         </div>
         <div class="col-1"></div>
     </div>
@@ -67,5 +67,5 @@
     {% get_site_text 'order_complete_body' %}
     <h3>Quotation Details</h3>
     {% get_site_text 'order_documents' %}
-    <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">Download Quotation</a>
+    <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
 {% endblock body-mobile %}
