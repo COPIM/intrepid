@@ -4808,6 +4808,46 @@
             "help_text": "Instruction for selecting data for signup",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 556,
+        "fields": {
+            "key": "create_new_package",
+            "body": "Create New Package",
+            "help_text": "Breadcrumb text for creating a new package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 557,
+        "fields": {
+            "key": "add_new_package",
+            "body": "Add New Package",
+            "help_text": "Heading text for adding a new package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 558,
+        "fields": {
+            "key": "add_edit_package_lead",
+            "body": "Add new and edit existing package.",
+            "help_text": "Lead text for adding or editing a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 559,
+        "fields": {
+            "key": "package_review_notice",
+            "body": "Before this package is displayed for signup it will be reviewed by a member of staff.",
+            "help_text": "Notice about package review before signup",
+            "rich_text": false
+        }
     }
     ,
     {
