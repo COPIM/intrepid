@@ -4878,6 +4878,16 @@
             "help_text": "Button text for saving attestation",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 563,
+        "fields": {
+            "key": "add_edit_package_lead",
+            "body": "Add new and edit existing package.",
+            "help_text": "Lead text for adding or editing a package",
+            "rich_text": false
+        }
     }
     ,
     {
