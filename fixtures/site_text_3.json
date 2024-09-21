@@ -4810,4 +4810,75 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 548,
+    "fields": {
+        "key": "manage_contacts_for",
+        "body": "Manage Contacts for",
+        "help_text": "Title for managing contacts for a banding type",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 549,
+    "fields": {
+        "key": "manage_contacts",
+        "body": "Manage Contacts",
+        "help_text": "Breadcrumb text for managing contacts",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 550,
+    "fields": {
+        "key": "select_contacts_for_events",
+        "body": "Select contacts for event types. These contacts will be sent an email when the event occurs.",
+        "help_text": "Instruction for selecting contacts for events",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 551,
+    "fields": {
+        "key": "contacts_access_warning",
+        "body": "Warning: Contacts have access to signup data which may be sensitive.",
+        "help_text": "Warning about contacts having access to sensitive data",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 552,
+    "fields": {
+        "key": "add_new_contact",
+        "body": "Add a New Contact",
+        "help_text": "Button text for adding a new contact",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 553,
+    "fields": {
+        "key": "signup_notification",
+        "body": "Signup Notification",
+        "help_text": "Table heading for signup notification",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 554,
+    "fields": {
+        "key": "access_control_notification",
+        "body": "Access Control Notification",
+        "help_text": "Table heading for access control notification",
+        "rich_text": false
+    }
+}
 ]
