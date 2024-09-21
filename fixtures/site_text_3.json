@@ -5078,6 +5078,86 @@
             "help_text": "Button text for deleting a file",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 583,
+        "fields": {
+            "key": "media_files",
+            "body": "Media Files",
+            "help_text": "Breadcrumb text for media files",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 584,
+        "fields": {
+            "key": "media_files_affiliated_with",
+            "body": "Media Files Affiliated with",
+            "help_text": "Title for media files affiliated with a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 585,
+        "fields": {
+            "key": "media_files_accessible",
+            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
+            "help_text": "Description for media files accessibility",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 586,
+        "fields": {
+            "key": "load_new_file",
+            "body": "Load New File",
+            "help_text": "Heading for loading a new file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 587,
+        "fields": {
+            "key": "upload_file",
+            "body": "Upload File",
+            "help_text": "Button text for uploading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 588,
+        "fields": {
+            "key": "date_uploaded",
+            "body": "Date Uploaded",
+            "help_text": "Table heading for date uploaded",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 589,
+        "fields": {
+            "key": "download_file",
+            "body": "Download File",
+            "help_text": "Link text for downloading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 590,
+        "fields": {
+            "key": "delete_file",
+            "body": "Delete File",
+            "help_text": "Button text for deleting a file",
+            "rich_text": false
+        }
     }
     ,
     {
