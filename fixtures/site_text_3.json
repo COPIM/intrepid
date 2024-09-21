@@ -11,6 +11,26 @@
     },
     {
         "model": "cms.sitetext",
+        "pk": 573,
+        "fields": {
+            "key": "packages",
+            "body": "Packages",
+            "help_text": "Breadcrumb text for packages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 574,
+        "fields": {
+            "key": "documents",
+            "body": "Documents",
+            "help_text": "Breadcrumb text for documents",
+            "rich_text": false
+        }
+    }
+    {
+        "model": "cms.sitetext",
         "pk": 68,
         "fields": {
             "key": "activate_account",

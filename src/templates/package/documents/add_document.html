@@ -5,9 +5,9 @@
 
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
-    <li class="breadcrumb-item" aria-current="page">Packages</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'packages' %}</li>
     <li class="breadcrumb-item" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_documents' package.pk initiative.pk %}">Documents</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_documents' package.pk initiative.pk %}">{% get_site_text 'documents' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{% if revision %}{% get_site_text 'revise_document' %}{% else %}{% get_site_text 'add_new_document' %}{% endif %}</li>
 {% endblock breadcrumb %}
 
@@ -20,7 +20,7 @@
                 {% if revision %}
                     <p class="lead">{% get_site_text 'revise_document_for' %} {{ package.name }}</p>
                 {% else %}
-                    <p class="lead">{% get_site_text 'add_new_document_to' %} {{ iniatiative.name }}{% get_site_text 's_package' %} {{ package.name }}.</p>
+                    <p class="lead">{% get_site_text 'add_new_document_to' %} {{ initiative.name }}{% get_site_text 's_package' %} {{ package.name }}.</p>
                 {% endif %}
 
                 <form method="POST" enctype="multipart/form-data">
