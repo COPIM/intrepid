@@ -1,14 +1,14 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-List Documents
+{% get_site_text 'list_documents' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page">Documents</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'documents' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -17,10 +17,10 @@ List Documents
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Documents Affiliated with “{{ package.name }}” ({{ initiative.name }})</h1>
-            <p class="lead">Warning: all documents here will be public and visible to everybody. These are designed to be contracts and other details of the package.</p>
+            <h1>{% get_site_text 'documents_affiliated_with' %} “{{ package.name }}” ({{ initiative.name }})</h1>
+            <p class="lead">{% get_site_text 'documents_warning' %}</p>
             <a href="{% url 'add_document' package.pk initiative.pk %}?return={{ request.path|urlencode }}" class="btn btn-success">
-                <i class="fa fa-plus"> </i> Add New Document
+                <i class="fa fa-plus"> </i> {% get_site_text 'add_new_document' %}
             </a>
 
             <br/> <br/>
@@ -28,21 +28,21 @@ List Documents
             <table class="table table-striped" id="initiatives">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>View</th>
-                        <th>Revise</th>
-                        <th>Versions</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'view' %}</th>
+                        <th>{% get_site_text 'revise' %}</th>
+                        <th>{% get_site_text 'versions' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for document in documents %}
                     <tr>
                         <td>{{ document.name }}</td>
-                        <td><a href="{% url 'view_document' package.id initiative.id document.id %}">View Document</a></td>
-                        <td><a href="{% url 'upload_new_document' package.id initiative.id document.id %}">Revise Document</a></td>
-                        <td><a href="#" data-toggle="modal" data-target="#document-{{ document.pk }}">View Versions</a></td>
-                        <td><form method="POST" action="{% url 'delete_document' package.id initiative.id document.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete Document"/></form></td>
+                        <td><a href="{% url 'view_document' package.id initiative.id document.id %}">{% get_site_text 'view_document' %}</a></td>
+                        <td><a href="{% url 'upload_new_document' package.id initiative.id document.id %}">{% get_site_text 'revise_document' %}</a></td>
+                        <td><a href="#" data-toggle="modal" data-target="#document-{{ document.pk }}">{% get_site_text 'view_versions' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_document' package.id initiative.id document.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete_document' %}"/></form></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -61,28 +61,28 @@ List Documents
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Reverting will overwrite the current document details with the verison's.w</p>
+                        <p>{% get_site_text 'reverting_warning' %}</p>
                         <table class="table">
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Download</th>
-                                <th>Revert</th>
+                                <th>{% get_site_text 'id' %}</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'download' %}</th>
+                                <th>{% get_site_text 'revert' %}</th>
                             </tr>
                             {% for version in document.packagedocumenthistorical_set.all %}
                                 <tr>
                                     <td>#{{ version.pk }}</td>
                                     <td>{{ version.name }}</td>
-                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">Download</a></td>
+                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">{% get_site_text 'download' %}</a></td>
                                     <td>
                                         <form method="POST" action="{% url 'revert_document_version' package.pk initiative.pk document.pk %}">
                                             {% csrf_token %}
-                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">Revert Document to this Version</button>
+                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">{% get_site_text 'revert_document_to_version' %}</button>
                                         </form>
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr><td colspan="4">No versions recorded for this document.</td></tr>
+                                <tr><td colspan="4">{% get_site_text 'no_versions_recorded' %}</td></tr>
                             {% endfor %}
                         </table>
                     </div>
