@@ -28,7 +28,7 @@
             "help_text": "Breadcrumb text for documents",
             "rich_text": false
         }
-    }
+    },
     {
         "model": "cms.sitetext",
         "pk": 68,
