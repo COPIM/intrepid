@@ -4888,6 +4888,56 @@
             "help_text": "Lead text for adding or editing a package",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 564,
+        "fields": {
+            "key": "standards_attested_to_by",
+            "body": "Standards Attested to by",
+            "help_text": "Title for standards attested to by a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 565,
+        "fields": {
+            "key": "standards_attested_description",
+            "body": "The following standards are attested to by this package.",
+            "help_text": "Description for standards attested to by a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 566,
+        "fields": {
+            "key": "attest_to_this_standard",
+            "body": "Attest to this standard",
+            "help_text": "Button text for attesting to a standard",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 567,
+        "fields": {
+            "key": "edit_attestation",
+            "body": "Edit Attestation",
+            "help_text": "Button text for editing an attestation",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 568,
+        "fields": {
+            "key": "remove_attestation",
+            "body": "Remove Attestation",
+            "help_text": "Button text for removing an attestation",
+            "rich_text": false
+        }
     }
     ,
     {
