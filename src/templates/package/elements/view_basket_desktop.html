@@ -106,7 +106,7 @@
                         <td>
                             <strong>{% get_site_text 'totals' prefetched %}</strong>
                             {% if basket.conflicts %}
-                                <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
+                                <p class="in_conflict"><small>{% get_site_text 'totals_ignore_duplicates' %}</small>
                                 </p>{% endif %}
                         </td>
                         <td class="text-right" colspan="4">
