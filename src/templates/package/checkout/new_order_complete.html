@@ -4,7 +4,7 @@
 
 
 {% block css %}
-    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/packages.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
@@ -24,7 +24,7 @@
             <h1 class="text-left">{% get_site_text 'completed_order' %}</h1>
             <p class="subhead-no-offset">{% get_site_text 'order_complete_message' %} {{ order.pk }}.</p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+        <div class="col-2"><img class="catalogue-image" src="{% static 'frontend/img/quotation_group.png' %}"
                                 alt="Quotations logo"/></div>
         <div class="col-1"></div>
     </div>
@@ -47,7 +47,7 @@
     <div class="row catalogue-header-mobile">
         <div class="col-1"></div>
         <div class="col-10">
-            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/quotation_group.png" %}"
+            <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/quotation_group.png' %}"
                  alt="Build your quote image"/>
             <h1>{% get_site_text 'completed_order' %}</h1>
         </div>
