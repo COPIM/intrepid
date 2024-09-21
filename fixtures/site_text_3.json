@@ -4518,5 +4518,35 @@
             "help_text": "Help text for quotation complete",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 532,
+        "fields": {
+            "key": "order_complete_body",
+            "body": "Your order with order number {{ order.order_number }} is now complete. If you require assistance with your order ensure you quote this order number.",
+            "help_text": "Message displayed when an order is complete",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 533,
+        "fields": {
+            "key": "order_documents",
+            "body": "Download Order Documents",
+            "help_text": "Button text for downloading order documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 534,
+        "fields": {
+            "key": "order_approval",
+            "body": "Order Approval",
+            "help_text": "Heading for order approval section",
+            "rich_text": false
+        }
     }
 ]
