@@ -5349,5 +5349,35 @@
             "help_text": "Button text for deleting a file",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 602,
+        "fields": {
+            "key": "revert",
+            "body": "Revert",
+            "help_text": "Button text for reverting a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 603,
+        "fields": {
+            "key": "revert_warning",
+            "body": "Reverting will overwrite the current document details with the version's.",
+            "help_text": "Revert warning",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 604,
+        "fields": {
+            "key": "no_versions",
+            "body": "No versions recorded for this document.",
+            "help_text": "No versions text",
+            "rich_text": false
+        }
     }
 ]

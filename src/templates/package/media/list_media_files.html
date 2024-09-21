@@ -68,33 +68,33 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Reverting will overwrite the current document details with the verison's.w</p>
+                        <p>{% get_site_text 'revert_warning' %}</p>
                         <table class="table">
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Download</th>
-                                <th>Revert</th>
+                                <th>{% get_site_text 'id' %}</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'download_file' %}</th>
+                                <th>{% get_site_text 'revert' %}</th>
                             </tr>
                             {% for version in document.packagedocumenthistorical_set.all %}
                                 <tr>
                                     <td>#{{ version.pk }}</td>
                                     <td>{{ version.name }}</td>
-                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">Download</a></td>
+                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">{% get_site_text 'download_file' %}</a></td>
                                     <td>
                                         <form method="POST" action="{% url 'revert_document_version' package.pk initiative.pk document.pk %}">
                                             {% csrf_token %}
-                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">Revert Document to this Version</button>
+                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">{% get_site_text 'revert' %}</button>
                                         </form>
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr><td colspan="4">No versions recorded for this document.</td></tr>
+                                <tr><td colspan="4">{% get_site_text 'no_versions' %}</td></tr>
                             {% endfor %}
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% get_site_text 'close' %}</button>
                     </div>
                 </div>
             </div>
