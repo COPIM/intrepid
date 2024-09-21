@@ -4830,4 +4830,64 @@
         }
     }
 
+    {
+        "model": "cms.sitetext",
+        "pk": 567,
+        "fields": {
+            "key": "revise_document",
+            "body": "Revise Document",
+            "help_text": "Text for revising a document.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 568,
+        "fields": {
+            "key": "add_new_document",
+            "body": "Add New Document",
+            "help_text": "Text for adding a new document.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 569,
+        "fields": {
+            "key": "revise_document_for",
+            "body": "Revise document for",
+            "help_text": "Text for revising a document for a specific package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 570,
+        "fields": {
+            "key": "add_new_document_to",
+            "body": "Add a new document to",
+            "help_text": "Text for adding a new document to a specific initiative's package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 571,
+        "fields": {
+            "key": "s_package",
+            "body": "'s package,",
+            "help_text": "Text for indicating possession of a package.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 572,
+        "fields": {
+            "key": "metadata",
+            "body": "Metadata",
+            "help_text": "Text for metadata section.",
+            "rich_text": false
+        }
+    }
 ]
