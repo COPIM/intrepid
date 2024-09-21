@@ -4,7 +4,7 @@
 
 
 {% block css %}
-    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/packages.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
@@ -26,7 +26,7 @@
                 {% get_site_text 'quotation_generated' %} {{ order.order_number }}. {% get_site_text 'quotation_reference' %}
             </p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+        <div class="col-2"><img class="catalogue-image" src="{% static 'frontend/img/quotation_group.png' %}"
                                 alt="Quotations logo"/></div>
         <div class="col-1"></div>
     </div>
@@ -109,7 +109,7 @@
     <div class="row catalogue-header-mobile">
         <div class="col-1"></div>
         <div class="col-10">
-            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
+            <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/collective_five.svg' %}"
                  alt="Build your quote image"/>
             <h1>{% get_site_text 'your_quotation' %}</h1>
         </div>
