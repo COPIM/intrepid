@@ -8,8 +8,8 @@
                         {% csrf_token %}
                         <table class="table package-table">
                             <tr class="header-row">
-                                <th>Offer</th>
-                                <th>Remove</th>
+                                <th>{% get_site_text 'offer' %}</th>
+                                <th>{% get_site_text 'remove' %}</th>
                             </tr>
                             {% for package in basket.packages.all %}
                                 <tr>
@@ -40,8 +40,8 @@
                         {% csrf_token %}
                         <table class="table package-table">
                             <tr class="header-row">
-                                <th>Package</th>
-                                <th class="text-right">Price</th>
+                                <th>{% get_site_text 'package' %}</th>
+                                <th class="text-right">{% get_site_text 'price' %}</th>
                             </tr>
                             {% for cost in package_costs %}
                                 <tr{% if cost.package in basket.list_of_conflicting_packages %}
@@ -64,16 +64,16 @@
                                         {% if cost.cost.country %}{{ cost.cost.country.currency }}{% else %}
                                             {{ cost.cost.default_currency }}{% endif %}
                                     {% else %}
-                                        No banding or price found.
+                                        {% get_site_text 'no_banding_or_price_found' %}
                                     {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}
                             <tr class="total">
                                 <td>
-                                    <strong>Totals</strong>
+                                    <strong>{% get_site_text 'totals' %}</strong>
                                     {% if basket.conflicts %}
-                                        <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
+                                        <p class="in_conflict"><small>{% get_site_text 'totals_ignore_duplicates' %}</small>
                                         </p>{% endif %}
                                 </td>
                                 <td class="text-right" colspan="3">
@@ -99,13 +99,13 @@
                 <div class="col-12 spacer-top-20">
                     <div class="card contact-us-card">
                         <div class="card-body">
-                            <h3 class="card-title text-center">Want to discuss your quote?</h3>
+                            <h3 class="card-title text-center">{% get_site_text 'discuss_quote' %}</h3>
                             <div class="text-center">
                                 <img class="img-fluid text-center"
                                      src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
                             </div>
                             <div class="text-center spacer-top-20">
-                                <button class="contact-us-button">Contact Us</button>
+                                <button class="contact-us-button">{% get_site_text 'contact_us' %}</button>
                             </div>
                         </div>
                     </div>

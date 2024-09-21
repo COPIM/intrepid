@@ -4708,5 +4708,35 @@
             "help_text": "Warning about indicative pricing",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 538,
+        "fields": {
+            "key": "no_banding_or_price_found",
+            "body": "No banding or price found.",
+            "help_text": "Message displayed when no banding or price is found.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 539,
+        "fields": {
+            "key": "discuss_quote",
+            "body": "Want to discuss your quote?",
+            "help_text": "Prompt to discuss the quote.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 540,
+        "fields": {
+            "key": "contact_us",
+            "body": "Contact Us",
+            "help_text": "Button text for contacting us.",
+            "rich_text": false
+        }
     }
 ]
