@@ -57,7 +57,8 @@
                                         Months
                                          {% for document in cost.package.packagedocument_set.all %}
                                             {% if document.pdf_file %}<a href="{{ document.pdf_file.url }}"><img class="fluid-image"
-                                                                                       src="{% static "frontend/img/contract.png" %}" alt="Contract document"></a> Contract{% endif %}
+                                                                                       src="{% static "frontend/img/contract.png" %}" alt="{% get_site_text 'contract' %}"></a>
+                                        {% get_site_text 'contract' %}{% endif %}
                                         {% endfor %}
                                     </td>
                                     <td class="text-right">{% if cost.banding and cost.cost %}{{ cost.cost.value }}
@@ -102,7 +103,7 @@
                             <h3 class="card-title text-center">{% get_site_text 'discuss_quote' %}</h3>
                             <div class="text-center">
                                 <img class="img-fluid text-center"
-                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
+                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="{% get_site_text 'contact_us' %}">
                             </div>
                             <div class="text-center spacer-top-20">
                                 <button class="contact-us-button">{% get_site_text 'contact_us' %}</button>
