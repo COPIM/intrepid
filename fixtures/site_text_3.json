@@ -4461,11 +4461,51 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 526,
+        "pk": 527,
         "fields": {
-            "key": "save_selected_vocabs",
-            "body": "Save Selected Vocabularies to Banding",
-            "help_text": "Button text on selecting vocabs page",
+            "key": "order_number",
+            "body": "Order No.",
+            "help_text": "Text for order number display",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 528,
+        "fields": {
+            "key": "orders_and_documents",
+            "body": "Orders & Documents",
+            "help_text": "Breadcrumb text for orders and documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 529,
+        "fields": {
+            "key": "order_complete_message",
+            "body": "Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is",
+            "help_text": "Message displayed when an order is complete",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 530,
+        "fields": {
+            "key": "quotation_details",
+            "body": "Quotation Details",
+            "help_text": "Heading for quotation details section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 531,
+        "fields": {
+            "key": "download_quotation",
+            "body": "Download Quotation",
+            "help_text": "Button text for downloading the quotation",
             "rich_text": false
         }
     }
