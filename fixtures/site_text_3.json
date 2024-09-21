@@ -4848,6 +4848,36 @@
             "help_text": "Notice about package review before signup",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 560,
+        "fields": {
+            "key": "standard_attestation_configuration",
+            "body": "Standard Attestation Configuration",
+            "help_text": "Title for standard attestation configuration page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 561,
+        "fields": {
+            "key": "add_edit_standard_attestation",
+            "body": "Add a new or edit an existing standard attestation",
+            "help_text": "Lead text for adding or editing standard attestations",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 562,
+        "fields": {
+            "key": "save_attestation",
+            "body": "Save Attestation",
+            "help_text": "Button text for saving attestation",
+            "rich_text": false
+        }
     }
     ,
     {
