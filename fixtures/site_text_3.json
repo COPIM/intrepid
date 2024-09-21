@@ -4508,5 +4508,15 @@
             "help_text": "Button text for downloading the quotation",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 532,
+        "fields": {
+            "key": "thanks_for_your_interest",
+            "body": "Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is",
+            "help_text": "Help text for quotation complete",
+            "rich_text": false
+        }
     }
 ]
