@@ -5258,6 +5258,16 @@
             "help_text": "Title for the highlights section",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 649,
+        "fields": {
+            "key": "view_our_full_catalogue",
+            "body": "View Our Full Catalogue",
+            "help_text": "Button text to view the full catalogue",
+            "rich_text": false
+        }
     }
     ,
     {
