@@ -5778,5 +5778,25 @@
             "help_text": "Placeholder text for search name input",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 646,
+        "fields": {
+            "key": "date_newest",
+            "body": "Date Newest",
+            "help_text": "Option text in advanced Thoth search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 647,
+        "fields": {
+            "key": "date_oldest",
+            "body": "Date Oldest",
+            "help_text": "Option text in advanced Thoth search",
+            "rich_text": false
+        }
     }
 ]
