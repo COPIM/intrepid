@@ -5441,4 +5441,65 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 611,
+    "fields": {
+        "key": "manage_meta_package",
+        "body": "Manage Meta Package",
+        "help_text": "Title for managing a meta package",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 612,
+    "fields": {
+        "key": "create_new_meta_package",
+        "body": "Create New Meta Package",
+        "help_text": "Title for creating a new meta package",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 613,
+    "fields": {
+        "key": "meta_packages",
+        "body": "Meta Packages",
+        "help_text": "Heading for meta packages section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 614,
+    "fields": {
+        "key": "meta_packages_description",
+        "body": "A list of all the meta packages available (both active and inactive). As meta packages span multiple initiatives they can only be managed by staff.",
+        "help_text": "Description for meta packages section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 615,
+    "fields": {
+        "key": "add_new_meta_package",
+        "body": "Add New Meta Package",
+        "help_text": "Button text for adding a new meta package",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 616,
+    "fields": {
+        "key": "contact",
+        "body": "Contact",
+        "help_text": "Table heading for contact",
+        "rich_text": false
+    }
+}
 ]
