@@ -5158,6 +5158,36 @@
             "help_text": "Button text for deleting a file",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 623,
+        "fields": {
+            "key": "reset_your_password",
+            "body": "Reset your password",
+            "help_text": "Title for the password reset complete page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 624,
+        "fields": {
+            "key": "password_set_info",
+            "body": "Your password has been set.  You may now log in.",
+            "help_text": "Information text after password reset",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 625,
+        "fields": {
+            "key": "log_in",
+            "body": "Log in",
+            "help_text": "Text for login link",
+            "rich_text": false
+        }
     }
     ,
     {
