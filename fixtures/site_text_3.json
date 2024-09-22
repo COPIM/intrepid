@@ -5869,5 +5869,15 @@
         "help_text": "Link text for advanced search",
         "rich_text": false
     }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 655,
+    "fields": {
+        "key": "filters",
+        "body": "Filters",
+        "help_text": "Heading text in Thoth",
+        "rich_text": false
+    }
 }
 ]
