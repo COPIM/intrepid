@@ -5935,4 +5935,25 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 662,
+    "fields": {
+        "key": "pricing",
+        "body": "Pricing",
+        "help_text": "Text for pricing",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 663,
+    "fields": {
+        "key": "contact_us",
+        "body": "Contact Us",
+        "help_text": "Text for contact us link",
+        "rich_text": false
+    }
+}
 ]
