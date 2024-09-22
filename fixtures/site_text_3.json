@@ -5218,6 +5218,36 @@
             "help_text": "Button text for resetting password",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 545,
+        "fields": {
+            "key": "summary",
+            "body": "Summary",
+            "help_text": "Button text for summary",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 546,
+        "fields": {
+            "key": "more_info",
+            "body": "More Info",
+            "help_text": "Button text for more information",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 547,
+        "fields": {
+            "key": "pricing",
+            "body": "Pricing",
+            "help_text": "Button text for pricing",
+            "rich_text": false
+        }
     }
     ,
     {
