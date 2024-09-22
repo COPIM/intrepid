@@ -8,7 +8,7 @@
 {% endblock js %}
 
 {% block title %}
-Books
+{% get_site_text 'books' %}
 {% endblock title %}
 
 <!-- desktop -->
@@ -29,14 +29,14 @@ Books
         <div class="row search-row">
             <div class="col-1"></div>
             <div class="col-2">
-                <h3>Search</h3>
-                <a href="{% url 'advanced_search' %}">Search the catalogue</a>
+                <h3>{% get_site_text 'search' %}</h3>
+                <a href="{% url 'advanced_search' %}">{% get_site_text 'search_the_catalogue' %}</a>
             </div>
             <div class="col-1"></div>
             <div class="col-3">
-                <h3>Initiative</h3>
+                <h3>{% get_site_text 'initiative' %}</h3>
                 <select class="initiative-box" type="text" id="initiative" name="initiative" onchange="this.form.submit()">
-                    <option value="0">Select an Initiative</option>
+                    <option value="0">{% get_site_text 'select_an_initiative' %}</option>
                     {% for init in initiatives %}
                         <option value="{{ init.pk }}">{{ init.name }}</option>
                     {% endfor %}
@@ -44,10 +44,10 @@ Books
             </div>
             <div class="col-1"></div>
             <div class="col-3">
-                <h3>Sort</h3>
+                <h3>{% get_site_text 'sort' %}</h3>
                 <select class="sort-box" type="text" name="sort" id="sort" onchange="this.form.submit()">
-                    <option>Date Newest</option>
-                    <option>Date Oldest</option>
+                    <option>{% get_site_text 'date_newest' %}</option>
+                    <option>{% get_site_text 'date_oldest' %}</option>
                 </select>
             </div>
         </div>
@@ -55,7 +55,7 @@ Books
 
     <div class="row catalogue-main">
         <div class="col">
-            <h2>Latest Titles</h2>
+            <h2>{% get_site_text 'latest_titles' %}</h2>
         </div>
     </div>
 
@@ -88,15 +88,15 @@ Books
     <div class="pagination row">
         <div class="col">
             <span class="step-links">
-                {% if works.has_previous %}<a onclick="update('page', '1')" class="left-pill-paginator">&laquo; first</a><a onclick="update('page', '{{ works.previous_page_number }}')" class="mid-pill-paginator">previous</a>{% endif %}{% if works.has_next %}<a onclick="update('page', '{{ works.next_page_number }}')" class="mid-pill-paginator">next</a><a onclick="update('page', '{{ num_pages }}')" class="right-pill-paginator">last &raquo;</a>{% endif %}
+                {% if works.has_previous %}<a onclick="update('page', '1')" class="left-pill-paginator">&laquo; {% get_site_text 'first' %}</a><a onclick="update('page', '{{ works.previous_page_number }}')" class="mid-pill-paginator">{% get_site_text 'previous' %}</a>{% endif %}{% if works.has_next %}<a onclick="update('page', '{{ works.next_page_number }}')" class="mid-pill-paginator">{% get_site_text 'next' %}</a><a onclick="update('page', '{{ num_pages }}')" class="right-pill-paginator">{% get_site_text 'last' %} &raquo;</a>{% endif %}
             </span>
 
             <span class="current">
-                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+                <br/>{% get_site_text 'page_of' %} {{ works.number }} {% get_site_text 'of' %} {{ works.paginator.num_pages }}
             </span>
 
             <span class="current">
-                <br/>Or try the <a class="current" href="{% url 'advanced_search' %}">advanced search</a>.
+                <br/>{% get_site_text 'or_try_the' %} <a class="current" href="{% url 'advanced_search' %}">{% get_site_text 'advanced_search' %}</a>.
             </span>
         </div>
     </div>

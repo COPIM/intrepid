@@ -5799,4 +5799,75 @@
             "rich_text": false
         }
     }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 648,
+    "fields": {
+        "key": "books",
+        "body": "Books",
+        "help_text": "Title for the books section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 649,
+    "fields": {
+        "key": "search",
+        "body": "Search",
+        "help_text": "Label for search section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 650,
+    "fields": {
+        "key": "select_an_initiative",
+        "body": "Select an Initiative",
+        "help_text": "Option text for selecting an initiative",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 651,
+    "fields": {
+        "key": "sort",
+        "body": "Sort",
+        "help_text": "Label for sort section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 652,
+    "fields": {
+        "key": "latest_titles",
+        "body": "Latest Titles",
+        "help_text": "Heading for latest titles section",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 653,
+    "fields": {
+        "key": "or_try_the",
+        "body": "Or try the",
+        "help_text": "Text for suggesting an alternative search",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 654,
+    "fields": {
+        "key": "advanced_search",
+        "body": "advanced search",
+        "help_text": "Link text for advanced search",
+        "rich_text": false
+    }
+}
 ]
