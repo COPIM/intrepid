@@ -5593,5 +5593,55 @@
         "help_text": "Button text for resetting password",
         "rich_text": false
     }
-}
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 626,
+        "fields": {
+            "key": "enter_new_password_twice",
+            "body": "Please enter your new password twice so we can verify you typed it in correctly.",
+            "help_text": "Instruction text for entering new password twice.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 627,
+        "fields": {
+            "key": "new_password",
+            "body": "New password:",
+            "help_text": "Label for new password field.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 628,
+        "fields": {
+            "key": "confirm_password",
+            "body": "Confirm password:",
+            "help_text": "Label for confirm password field.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 629,
+        "fields": {
+            "key": "change_my_password",
+            "body": "Change my password",
+            "help_text": "Button text for changing password.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 630,
+        "fields": {
+            "key": "change",
+            "body": "Change",
+            "help_text": "Button text for change action.",
+            "rich_text": false
+        }
+    }
 ]
