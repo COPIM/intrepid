@@ -3,7 +3,7 @@
 {% block title %}{% if package %}{% get_site_text 'manage_meta_package' %}{% else %}{% get_site_text 'create_new_meta_package' %}{% endif %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_meta_packages' %}">Meta Packages</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_meta_packages' %}">{% get_site_text 'meta_packages' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -45,10 +45,10 @@
                                 {% boolean_font_awesome package.active %}
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="{% url 'manage_meta_package' package.pk %}">Edit</a>
+                                <a class="btn btn-primary" href="{% url 'manage_meta_package' package.pk %}">{% get_site_text 'edit' %}</a>
                             </td>
                             <td>
-                                <a class="btn btn-danger delete">Delete</a>
+                                <a class="btn btn-danger delete">{% get_site_text 'delete' %}</a>
                             </td>
                         </tr>
                     {% endfor %}
