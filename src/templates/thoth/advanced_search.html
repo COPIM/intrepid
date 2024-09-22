@@ -29,7 +29,7 @@
             <form method="post">
                 {% csrf_token %}
                 <h4>{% get_site_text 'add_to_search' %}</h4>
-                <input class="form-control" type="text" name="search" id="search" placeholder="Search"/> <select class="form-control" name="type_of_search" id="type_of_search"><option value="FT">{% get_site_text 'free_text' %}</option><option value="KW">{% get_site_text 'keyword' %}</option><option value="AU">{% get_site_text 'author' %}</option></select> <input class="form-control" type="submit" value="{% get_site_text 'add_search' %}"/>
+                <input class="form-control" type="text" name="search" id="search" placeholder="{% get_site_text 'search' %}"/> <select class="form-control" name="type_of_search" id="type_of_search"><option value="FT">{% get_site_text 'free_text' %}</option><option value="KW">{% get_site_text 'keyword' %}</option><option value="AU">{% get_site_text 'author' %}</option></select> <input class="form-control" type="submit" value="{% get_site_text 'add_search' %}"/>
                 <p>{% get_site_text 'author_search_note' %}</p>
             </form>
         </div>
@@ -141,8 +141,8 @@
                         {% endfor %}
                     </select>
                     <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
-                        <option>Date Newest</option>
-                        <option>Date Oldest</option>
+                        <option value="Date Newest">{% get_site_text 'date_newest' %}</option>
+                        <option value="Date Oldest">{% get_site_text 'date_oldest' %}</option>
                     </select>
                 </form>
               </div>
@@ -182,8 +182,8 @@
      <div class="pagination-mobile row">
         <div class="col">
             <span class="step-links">
-                {% if works.has_previous %}<a href="?page=1">first</a> | <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% endif %}
-                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">next</a> | <a href="?page={{ works.paginator.num_pages }}">last</a>{% endif %}
+                {% if works.has_previous %}<a href="?page=1">{% get_site_text 'first' %}</a> | <a href="?page={{ page_obj.previous_page_number }}">{% get_site_text 'previous' %}</a>{% endif %}
+                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">{% get_site_text 'next' %}</a> | <a href="?page={{ works.paginator.num_pages }}">{% get_site_text 'last' %}</a>{% endif %}
             </span>
 
             <span class="current">

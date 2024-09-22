@@ -46,8 +46,8 @@
             <div class="col-3">
                 <h3>{% get_site_text 'sort' %}</h3>
                 <select class="sort-box" type="text" name="sort" id="sort" onchange="this.form.submit()">
-                    <option>{% get_site_text 'date_newest' %}</option>
-                    <option>{% get_site_text 'date_oldest' %}</option>
+                    <option value="Date Newest">{% get_site_text 'date_newest' %}</option>
+                    <option value="Date Oldest">{% get_site_text 'date_oldest' %}</option>
                 </select>
             </div>
         </div>
@@ -128,20 +128,20 @@
         <div class="col-10">
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                Filters
+                  {% get_site_text 'filters' %}
               </button>
               <div class="dropdown-menu catalogue-filters-mobile" aria-labelledby="dropdownMenuButton">
                 <form method="get">
                     <input class="search-box" type="text" id="search-mobile" name="search" placeholder="Search Title, Author"/><br/>
                     <select class="initiative-box" type="text" id="initiative" name="initiative" onchange="this.form.submit()">
-                        <option value="0">Select an Initiative</option>
+                        <option value="0">{% get_site_text 'select_an_initiative' %}</option>
                          {% for init in initiatives %}
                                 <option value="{{ init.pk }}" {% if init_term and init.pk == init_term %}selected="selected"{% endif %}>{{ init.name }}</option>
                         {% endfor %}
                     </select>
                     <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
-                        <option>Date Newest</option>
-                        <option>Date Oldest</option>
+                        <option value="Date Newest">{% get_site_text 'date_newest' %}</option>
+                        <option value="Date Oldest">{% get_site_text 'date_oldest' %}</option>
                     </select>
                 </form>
               </div>
@@ -181,8 +181,8 @@
      <div class="pagination-mobile row">
         <div class="col">
             <span class="step-links">
-                {% if works.has_previous %}<a href="?page=1">first</a> | <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% endif %}
-                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">next</a> | <a href="?page={{ works.paginator.num_pages }}">last</a>{% endif %}
+                {% if works.has_previous %}<a href="?page=1">{% get_site_text 'first' %}</a> | <a href="?page={{ page_obj.previous_page_number }}">{% get_site_text 'previous' %}</a>{% endif %}
+                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">{% get_site_text 'next' %}</a> | <a href="?page={{ works.paginator.num_pages }}">{% get_site_text 'last' %}</a>{% endif %}
             </span>
 
             <span class="current">
