@@ -5977,4 +5977,45 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 666,
+    "fields": {
+        "key": "standards",
+        "body": "Standards",
+        "help_text": "Text for standards section heading",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 667,
+    "fields": {
+        "key": "standards_info",
+        "body": "Information about standards.",
+        "help_text": "Information text for standards section.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 668,
+    "fields": {
+        "key": "no_standards",
+        "body": "This package adheres to none of our standards.",
+        "help_text": "Text for indicating package adheres to no standards.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 669,
+    "fields": {
+        "key": "view_attestation_history",
+        "body": "View attestation history",
+        "help_text": "Link text for viewing attestation history.",
+        "rich_text": false
+    }
+}
 ]
