@@ -5663,5 +5663,55 @@
             "help_text": "Instructions if no password reset email is received.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 633,
+        "fields": {
+            "key": "email_greeting",
+            "body": "Dear {{ user.first_name }} {{ user.last_name }},",
+            "help_text": "Greeting in the password reset email.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 634,
+        "fields": {
+            "key": "password_reset_request",
+            "body": "You're receiving this email because you requested a password reset for your user account at {{ site_name }}.",
+            "help_text": "Notification of password reset request.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 635,
+        "fields": {
+            "key": "password_reset_instruction",
+            "body": "Please go to the following page and choose a new password:",
+            "help_text": "Instruction to reset password.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 636,
+        "fields": {
+            "key": "username_reminder",
+            "body": "Your username, in case you’ve forgotten: {{ user.get_username }}",
+            "help_text": "Reminder of username in password reset email.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 637,
+        "fields": {
+            "key": "site_name",
+            "body": "{{ site_name }}",
+            "help_text": "Site name in the email.",
+            "rich_text": false
+        }
     }
 ]
