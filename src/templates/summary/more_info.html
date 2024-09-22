@@ -30,7 +30,7 @@
         </div>
         <div class="col">
             <span class="colinfo">
-                <i class="fa fa-envelope"></i> <a target="_blank" href="mailto:{{ initiative.contact_email }}">Email Us</a>
+                <i class="fa fa-envelope"></i> <a target="_blank" href="mailto:{{ initiative.contact_email }}">{% get_site_text 'contact_us' %}</a>
             </span>
         </div>
         <div class="col-2"></div>
@@ -74,7 +74,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
-                 alt="Build your quote image"/>
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{{ initiative.name }}</h1>
         </div>
         <div class="col-1"></div>

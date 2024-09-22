@@ -49,7 +49,7 @@
                 <div class="modal-body package-modal-body">
                     <ul>
                         {% for history in package.attestationhistory_set.all %}
-                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }} on {{ history.date_time }}</li>
+                            <li>{{ history.standard.standard_name }} {{ history.add_or_remove }}, {{ history.date_time }}</li>
                         {% endfor %}
                     </ul>
                 </div>
