@@ -5713,5 +5713,25 @@
             "help_text": "Site name in the email.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 638,
+        "fields": {
+            "key": "reset_your_password",
+            "body": "Reset your password",
+            "help_text": "Title for the password reset form page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 639,
+        "fields": {
+            "key": "password_reset_form_instructions",
+            "body": "Enter your email address below. If a matching account has been found a reset email will be sent to your inbox. Please ensure you check any junk mail or filter folders.",
+            "help_text": "Instructions for the password reset form",
+            "rich_text": false
+        }
     }
 ]
