@@ -42,7 +42,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title white-text">Standards Attestation History</h4>
+                <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                 <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
             </div>
 
@@ -58,7 +58,8 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    {% get_site_text 'close' %}</button>
             </div>
 
         </div>

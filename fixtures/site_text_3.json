@@ -513,16 +513,6 @@
         "model": "cms.sitetext",
         "pk": 118,
         "fields": {
-            "key": "contact",
-            "body": "Contact",
-            "help_text": "Menu option that reads 'Contact'",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 119,
-        "fields": {
             "key": "logout",
             "body": "Logout",
             "help_text": "Menu option that reads 'Logout'",
@@ -531,7 +521,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 120,
+        "pk": 119,
         "fields": {
             "key": "confirm_delete",
             "body": "Are you sure you want to delete this object?",
@@ -541,7 +531,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 121,
+        "pk": 120,
         "fields": {
             "key": "dashboard_caps",
             "body": "DASHBOARD",
@@ -551,7 +541,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 122,
+        "pk": 121,
         "fields": {
             "key": "dashboard",
             "body": "Dashboard",
@@ -561,7 +551,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 123,
+        "pk": 122,
         "fields": {
             "key": "my_information",
             "body": "My Information",
@@ -571,7 +561,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 124,
+        "pk": 123,
         "fields": {
             "key": "my_saved_quotes",
             "body": "My Saved Quotes",
@@ -581,7 +571,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 125,
+        "pk": 124,
         "fields": {
             "key": "my_searches",
             "body": "My Searches/Feed",
@@ -591,7 +581,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 126,
+        "pk": 125,
         "fields": {
             "key": "payment_processing",
             "body": "Payment Processing",
@@ -601,7 +591,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 127,
+        "pk": 126,
         "fields": {
             "key": "initiative_manager",
             "body": "Initiative Manager",
@@ -611,7 +601,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 128,
+        "pk": 127,
         "fields": {
             "key": "my_initiatives",
             "body": "My Initiatives",
@@ -621,7 +611,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 129,
+        "pk": 128,
         "fields": {
             "key": "signups",
             "body": "Signups",
@@ -631,7 +621,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 130,
+        "pk": 129,
         "fields": {
             "key": "price_debugger",
             "body": "Price Debugger",
@@ -641,7 +631,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 131,
+        "pk": 130,
         "fields": {
             "key": "staff",
             "body": "Staff",
@@ -651,17 +641,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 132,
-        "fields": {
-            "key": "package_approval",
-            "body": "Package Approval",
-            "help_text": "A menu heading for 'Package Approval'",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 133,
+        "pk": 131,
         "fields": {
             "key": "order_management",
             "body": "Order Management",
@@ -671,17 +651,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 134,
-        "fields": {
-            "key": "meta_packages",
-            "body": "Meta Packages",
-            "help_text": "A menu heading for 'Meta Packages'",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 135,
+        "pk": 132,
         "fields": {
             "key": "email_logs",
             "body": "Email Logs",
@@ -691,7 +661,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 136,
+        "pk": 133,
         "fields": {
             "key": "payment_processors",
             "body": "Payment Processors",
@@ -701,7 +671,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 137,
+        "pk": 134,
         "fields": {
             "key": "content_management",
             "body": "Content Management",
@@ -711,7 +681,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 138,
+        "pk": 135,
         "fields": {
             "key": "all_pages",
             "body": "All Pages",
@@ -721,7 +691,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 139,
+        "pk": 136,
         "fields": {
             "key": "site_wide_news",
             "body": "Site Wide News",
@@ -731,7 +701,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 140,
+        "pk": 137,
         "fields": {
             "key": "page_update_feed",
             "body": "Page Update Feed",
@@ -741,7 +711,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 141,
+        "pk": 138,
         "fields": {
             "key": "who_we_are",
             "body": "Who We Are",
@@ -751,7 +721,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 142,
+        "pk": 139,
         "fields": {
             "key": "homepage_quotes",
             "body": "Homepage Quotes",
@@ -761,7 +731,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 143,
+        "pk": 140,
         "fields": {
             "key": "platform_management",
             "body": "Platform Management",
@@ -771,7 +741,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 144,
+        "pk": 141,
         "fields": {
             "key": "add_initiative",
             "body": "Add Initiative",
@@ -781,7 +751,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 145,
+        "pk": 142,
         "fields": {
             "key": "standards_attestation",
             "body": "Standards Attestation",
@@ -791,7 +761,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 146,
+        "pk": 143,
         "fields": {
             "key": "form_elements",
             "body": "Form Elements",
@@ -801,7 +771,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 147,
+        "pk": 144,
         "fields": {
             "key": "banding_vocabularies",
             "body": "Banding Vocabularies",
@@ -811,7 +781,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 148,
+        "pk": 145,
         "fields": {
             "key": "view_permissions",
             "body": "View Permissions",
@@ -821,7 +791,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 149,
+        "pk": 146,
         "fields": {
             "key": "thoth_sync",
             "body": "Thoth Sync",
@@ -831,7 +801,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 150,
+        "pk": 147,
         "fields": {
             "key": "subjects",
             "body": "Subjects",
@@ -841,7 +811,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 151,
+        "pk": 148,
         "fields": {
             "key": "backups",
             "body": "Backups",
@@ -851,7 +821,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 152,
+        "pk": 149,
         "fields": {
             "key": "navbar",
             "body": "Navbar",
@@ -861,7 +831,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 153,
+        "pk": 150,
         "fields": {
             "key": "toggle_navigation",
             "body": "Toggle Navigation",
@@ -871,7 +841,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 154,
+        "pk": 151,
         "fields": {
             "key": "quotations",
             "body": "Quotations",
@@ -881,7 +851,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 155,
+        "pk": 152,
         "fields": {
             "key": "search",
             "body": "Search",
@@ -891,7 +861,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 156,
+        "pk": 153,
         "fields": {
             "key": "open_book_collective",
             "body": "Open Book Collective",
@@ -901,7 +871,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 157,
+        "pk": 154,
         "fields": {
             "key": "biography_of",
             "body": "Biography of",
@@ -911,7 +881,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 158,
+        "pk": 155,
         "fields": {
             "key": "news",
             "body": "News",
@@ -921,7 +891,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 159,
+        "pk": 156,
         "fields": {
             "key": "open_quote",
             "body": "Open quotation mark",
@@ -931,7 +901,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 160,
+        "pk": 157,
         "fields": {
             "key": "close_quote",
             "body": "Close quotation mark",
@@ -941,7 +911,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 161,
+        "pk": 158,
         "fields": {
             "key": "what_we_stand_for",
             "body": "What We Stand For",
@@ -951,7 +921,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 162,
+        "pk": 159,
         "fields": {
             "key": "membership",
             "body": "Membership",
@@ -961,7 +931,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 163,
+        "pk": 160,
         "fields": {
             "key": "governance",
             "body": "Governance",
@@ -971,7 +941,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 164,
+        "pk": 161,
         "fields": {
             "key": "how_it_works",
             "body": "How It Works",
@@ -981,7 +951,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 165,
+        "pk": 162,
         "fields": {
             "key": "funding_and_fees",
             "body": "Funding and Fees",
@@ -991,7 +961,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 166,
+        "pk": 163,
         "fields": {
             "key": "supporters",
             "body": "Supporters",
@@ -1001,7 +971,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 167,
+        "pk": 164,
         "fields": {
             "key": "platform",
             "body": "Platform",
@@ -1011,7 +981,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 168,
+        "pk": 165,
         "fields": {
             "key": "initiatives",
             "body": "Initiatives",
@@ -1021,7 +991,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 169,
+        "pk": 166,
         "fields": {
             "key": "catalogue",
             "body": "Catalogue",
@@ -1031,7 +1001,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 170,
+        "pk": 167,
         "fields": {
             "key": "twitter",
             "body": "Twitter/X",
@@ -1041,7 +1011,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 171,
+        "pk": 168,
         "fields": {
             "key": "mastodon",
             "body": "Mastodon",
@@ -1051,7 +1021,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 172,
+        "pk": 169,
         "fields": {
             "key": "email_contact",
             "body": "Email",
@@ -1061,7 +1031,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 173,
+        "pk": 170,
         "fields": {
             "key": "open_book_collective_abbreviation",
             "body": "OBC",
@@ -1071,7 +1041,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 174,
+        "pk": 171,
         "fields": {
             "key": "terms_of_use",
             "body": "Terms of Use",
@@ -1081,7 +1051,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 175,
+        "pk": 172,
         "fields": {
             "key": "privacy_policy",
             "body": "Privacy Policy",
@@ -1091,7 +1061,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 176,
+        "pk": 173,
         "fields": {
             "key": "accessibility",
             "body": "Accessibility",
@@ -1101,7 +1071,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 177,
+        "pk": 174,
         "fields": {
             "key": "watch_video",
             "body": "Watch video",
@@ -1111,7 +1081,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 178,
+        "pk": 175,
         "fields": {
             "key": "stronger_oa",
             "body": "Stronger OA Communities",
@@ -1121,7 +1091,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 179,
+        "pk": 176,
         "fields": {
             "key": "build_your_subscription",
             "body": "Build your Subscription",
@@ -1131,7 +1101,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 180,
+        "pk": 177,
         "fields": {
             "key": "sustainable_funding_model",
             "body": "Sustainable Funding Model",
@@ -1141,7 +1111,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 181,
+        "pk": 178,
         "fields": {
             "key": "search_the_catalogue",
             "body": "Search the catalogue",
@@ -1151,7 +1121,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 182,
+        "pk": 179,
         "fields": {
             "key": "robust_infrastructure",
             "body": "Robust Infrastructure",
@@ -1161,7 +1131,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 183,
+        "pk": 180,
         "fields": {
             "key": "apply_for_membership",
             "body": "Apply for Membership",
@@ -1171,7 +1141,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 184,
+        "pk": 181,
         "fields": {
             "key": "diversity_in_oa",
             "body": "Diversity in OA",
@@ -1181,7 +1151,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 185,
+        "pk": 182,
         "fields": {
             "key": "libraries",
             "body": "Libraries",
@@ -1191,7 +1161,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 186,
+        "pk": 183,
         "fields": {
             "key": "authors_and_readers",
             "body": "Authors and Readers",
@@ -1201,7 +1171,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 187,
+        "pk": 184,
         "fields": {
             "key": "publishers",
             "body": "Publishers",
@@ -1211,7 +1181,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 188,
+        "pk": 185,
         "fields": {
             "key": "a_news_item",
             "body": "A News Item",
@@ -1221,7 +1191,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 189,
+        "pk": 186,
         "fields": {
             "key": "funders",
             "body": "Funders",
@@ -1231,7 +1201,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 190,
+        "pk": 187,
         "fields": {
             "key": "image_community",
             "body": "An image representing community",
@@ -1241,7 +1211,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 191,
+        "pk": 188,
         "fields": {
             "key": "image_sustainability",
             "body": "An image representing sustainability",
@@ -1251,7 +1221,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 192,
+        "pk": 189,
         "fields": {
             "key": "image_infrastructure",
             "body": "An image representing infrastructure",
@@ -1261,7 +1231,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 193,
+        "pk": 190,
         "fields": {
             "key": "image_diversity",
             "body": "An image representing diversity",
@@ -1271,7 +1241,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 194,
+        "pk": 191,
         "fields": {
             "key": "featured_books",
             "body": "Featured Books",
@@ -1281,7 +1251,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 195,
+        "pk": 192,
         "fields": {
             "key": "news_updates",
             "body": "News Updates",
@@ -1291,7 +1261,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 196,
+        "pk": 193,
         "fields": {
             "key": "initiatives_subhead",
             "body": "At the core of the Open Book Collective are our initiatives. These range from open-access book publishers to indexing services and directories. You can find out more about these initiatives here.",
@@ -1301,7 +1271,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 197,
+        "pk": 194,
         "fields": {
             "key": "collections_and_collectives",
             "body": "Collections and Collectives",
@@ -1311,7 +1281,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 198,
+        "pk": 195,
         "fields": {
             "key": "publishers_and_service_providers",
             "body": "Publishers and Service Providers",
@@ -1321,7 +1291,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 199,
+        "pk": 196,
         "fields": {
             "key": "your_quotes",
             "body": "Your Quotes",
@@ -1331,17 +1301,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 200,
-        "fields": {
-            "key": "summary",
-            "body": "Summary",
-            "help_text": "Text on nav page that reads 'Summary'",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 201,
+        "pk": 197,
         "fields": {
             "key": "more",
             "body": "More",
@@ -1351,17 +1311,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 202,
-        "fields": {
-            "key": "pricing",
-            "body": "Pricing",
-            "help_text": "Text on nav page and elsewhere that reads 'Pricing'",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 203,
+        "pk": 198,
         "fields": {
             "key": "updates_from_the_open_book_collective",
             "body": "Updates from the Open Book Collective",
@@ -1371,7 +1321,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 204,
+        "pk": 199,
         "fields": {
             "key": "register_for_the_open_book_collective",
             "body": "Register for the Open Book Collective",
@@ -1381,7 +1331,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 205,
+        "pk": 200,
         "fields": {
             "key": "repeat_email",
             "body": "Repeat email",
@@ -1391,7 +1341,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 206,
+        "pk": 201,
         "fields": {
             "key": "password",
             "body": "Password",
@@ -1401,7 +1351,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 207,
+        "pk": 202,
         "fields": {
             "key": "repeat_password",
             "body": "Repeat password",
@@ -1411,7 +1361,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 208,
+        "pk": 203,
         "fields": {
             "key": "sign_up",
             "body": "Sign up",
@@ -1421,7 +1371,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 209,
+        "pk": 204,
         "fields": {
             "key": "who_we_are_subhead",
             "body": "We are a team of librarians, publishers, publishing service providers and academics committed to collectively reimagining and reconfiguring the funding and circulation of open access monographs.",
@@ -1431,7 +1381,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 210,
+        "pk": 205,
         "fields": {
             "key": "board_of_stewards",
             "body": "Board of Stewards",
@@ -1441,7 +1391,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 211,
+        "pk": 206,
         "fields": {
             "key": "view_biography",
             "body": "View Biography",
@@ -1451,7 +1401,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 212,
+        "pk": 207,
         "fields": {
             "key": "membership_committee",
             "body": "Membership Committee",
@@ -1461,7 +1411,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 213,
+        "pk": 208,
         "fields": {
             "key": "management_team",
             "body": "Management Team",
@@ -1471,7 +1421,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 214,
+        "pk": 209,
         "fields": {
             "key": "secretariat",
             "body": "Secretariat",
@@ -1481,7 +1431,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 215,
+        "pk": 210,
         "fields": {
             "key": "finance_committee",
             "body": "Finance Committee",
@@ -1491,7 +1441,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 216,
+        "pk": 211,
         "fields": {
             "key": "previous_board_members",
             "body": "Previous Board Members",
@@ -1501,7 +1451,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 217,
+        "pk": 212,
         "fields": {
             "key": "find_out_more",
             "body": "Find out more about the OBC and who is behind it.",
@@ -1511,7 +1461,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 218,
+        "pk": 213,
         "fields": {
             "key": "pricing_country",
             "body": "Pricing on the page below is based on your detected or set country:",
@@ -1521,7 +1471,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 219,
+        "pk": 214,
         "fields": {
             "key": "change_country",
             "body": "Change your country.",
@@ -1531,7 +1481,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 220,
+        "pk": 215,
         "fields": {
             "key": "build_your_quote",
             "body": "Build Your Quote",
@@ -1541,7 +1491,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 221,
+        "pk": 216,
         "fields": {
             "key": "all_initiatives",
             "body": "All Initiatives",
@@ -1551,7 +1501,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 222,
+        "pk": 217,
         "fields": {
             "key": "all_subjects",
             "body": "All Subjects",
@@ -1561,7 +1511,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 223,
+        "pk": 218,
         "fields": {
             "key": "recommended",
             "body": "Recommended",
@@ -1571,17 +1521,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 224,
-        "fields": {
-            "key": "name",
-            "body": "Name",
-            "help_text": "Name text for dropdown",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 225,
+        "pk": 219,
         "fields": {
             "key": "no_results",
             "body": "No results to match your search",
@@ -1591,7 +1531,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 226,
+        "pk": 220,
         "fields": {
             "key": "more_information",
             "body": "More Information",
@@ -1601,7 +1541,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 227,
+        "pk": 221,
         "fields": {
             "key": "collective_signup_disabled",
             "body": "Collective package signup is disabled.",
@@ -1611,7 +1551,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 228,
+        "pk": 222,
         "fields": {
             "key": "learn_more",
             "body": "Learn More",
@@ -1621,7 +1561,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 229,
+        "pk": 223,
         "fields": {
             "key": "edit_package",
             "body": "Edit package",
@@ -1631,7 +1571,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 230,
+        "pk": 224,
         "fields": {
             "key": "initiative_only",
             "body": "Initiative only",
@@ -1641,7 +1581,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 231,
+        "pk": 225,
         "fields": {
             "key": "initiative_package_signup_disabled",
             "body": "Initiative package signup is disabled.",
@@ -1651,7 +1591,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 232,
+        "pk": 226,
         "fields": {
             "key": "list",
             "body": "List",
@@ -1661,7 +1601,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 233,
+        "pk": 227,
         "fields": {
             "key": "layout_preserve",
             "body": "In order to preserve the layout on the landing page, initiatives should have either 1 page, 2 pages, or 5 pages",
@@ -1671,7 +1611,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 234,
+        "pk": 228,
         "fields": {
             "key": "title",
             "body": "Title",
@@ -1681,7 +1621,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 235,
+        "pk": 229,
         "fields": {
             "key": "created",
             "body": "Created",
@@ -1691,7 +1631,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 236,
+        "pk": 230,
         "fields": {
             "key": "last_updated_by",
             "body": "Last Updated By",
@@ -1701,7 +1641,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 237,
+        "pk": 231,
         "fields": {
             "key": "display",
             "body": "Display",
@@ -1711,7 +1651,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 238,
+        "pk": 232,
         "fields": {
             "key": "url",
             "body": "URL",
@@ -1721,7 +1661,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 239,
+        "pk": 233,
         "fields": {
             "key": "edit",
             "body": "Edit",
@@ -1731,7 +1671,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 240,
+        "pk": 234,
         "fields": {
             "key": "diff",
             "body": "Diff",
@@ -1741,7 +1681,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 241,
+        "pk": 235,
         "fields": {
             "key": "create",
             "body": "Create",
@@ -1751,7 +1691,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 242,
+        "pk": 236,
         "fields": {
             "key": "manage_data",
             "body": "You can manage the data for this page below. There are two save options available.",
@@ -1761,7 +1701,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 243,
+        "pk": 237,
         "fields": {
             "key": "save_page",
             "body": "Save - creates a new version of your page but does not make it live.",
@@ -1771,7 +1711,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 244,
+        "pk": 238,
         "fields": {
             "key": "save_page_make_current",
             "body": "Save and Make Current Version - creates a new version and also makes it the live version.",
@@ -1781,7 +1721,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 245,
+        "pk": 239,
         "fields": {
             "key": "can_control_versions",
             "body": "You can control versions, and which of them is live, from the",
@@ -1791,7 +1731,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 246,
+        "pk": 240,
         "fields": {
             "key": "detail_page",
             "body": "detail page",
@@ -1801,7 +1741,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 247,
+        "pk": 241,
         "fields": {
             "key": "institution_target",
             "body": "Institution (Optional: targets this update at a specific institution)",
@@ -1811,7 +1751,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 248,
+        "pk": 242,
         "fields": {
             "key": "save_and_make_current",
             "body": "Save and Make Current Version",
@@ -1821,7 +1761,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 249,
+        "pk": 243,
         "fields": {
             "key": "edit_homepage_quotation",
             "body": "Edit homepage quotation",
@@ -1831,7 +1771,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 250,
+        "pk": 244,
         "fields": {
             "key": "homepage_quotation_configuration",
             "body": "Homepage Quotation Configuration",
@@ -1841,7 +1781,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 251,
+        "pk": 245,
         "fields": {
             "key": "who_we_are_entry",
             "body": "Who We Are entry",
@@ -1851,7 +1791,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 252,
+        "pk": 246,
         "fields": {
             "key": "edit_site_text",
             "body": "Edit Site Text:",
@@ -1861,7 +1801,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 253,
+        "pk": 247,
         "fields": {
             "key": "featured_thoth_titles",
             "body": "Featured Thoth Titles",
@@ -1871,7 +1811,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 254,
+        "pk": 248,
         "fields": {
             "key": "thoth_display",
             "body": "Note: these display as three per line, so multiples of three will look best.",
@@ -1881,7 +1821,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 255,
+        "pk": 249,
         "fields": {
             "key": "view_book",
             "body": "View book",
@@ -1891,7 +1831,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 256,
+        "pk": 250,
         "fields": {
             "key": "delete_featured_title",
             "body": "Delete this Featured Title",
@@ -1901,7 +1841,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 257,
+        "pk": 251,
         "fields": {
             "key": "no_featured_books",
             "body": "No featured books",
@@ -1911,7 +1851,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 258,
+        "pk": 252,
         "fields": {
             "key": "fixed_pages_explainer",
             "body": "Certain locations within the CMS are fixed (e.g. \"Terms and Conditions\"). This page allows you to map these entries to CMS entries.",
@@ -1921,7 +1861,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 259,
+        "pk": 253,
         "fields": {
             "key": "control_fixed_versions",
             "body": "You can control versions, and which of them is live, from the",
@@ -1931,7 +1871,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 260,
+        "pk": 254,
         "fields": {
             "key": "homepage_quotation_configuration_explainer",
             "body": "This page allows you to configure the display of quotations on the home page. You can add as many quotations as you like, but only the first four will show on the homepage.",
@@ -1941,7 +1881,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 261,
+        "pk": 255,
         "fields": {
             "key": "quote",
             "body": "Quote",
@@ -1951,7 +1891,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 262,
+        "pk": 256,
         "fields": {
             "key": "person",
             "body": "Person",
@@ -1961,7 +1901,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 263,
+        "pk": 257,
         "fields": {
             "key": "organization",
             "body": "Organization",
@@ -1971,7 +1911,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 264,
+        "pk": 258,
         "fields": {
             "key": "no_quotations",
             "body": "No quotations.",
@@ -1981,7 +1921,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 265,
+        "pk": 259,
         "fields": {
             "key": "details",
             "body": "Details",
@@ -1991,7 +1931,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 266,
+        "pk": 260,
         "fields": {
             "key": "target_institution",
             "body": "Target Institution",
@@ -2001,7 +1941,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 267,
+        "pk": 261,
         "fields": {
             "key": "sequence",
             "body": "Sequence",
@@ -2011,7 +1951,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 268,
+        "pk": 262,
         "fields": {
             "key": "current_version",
             "body": "Current version",
@@ -2021,7 +1961,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 269,
+        "pk": 263,
         "fields": {
             "key": "view_current_version",
             "body": "View Current Version",
@@ -2031,7 +1971,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 270,
+        "pk": 264,
         "fields": {
             "key": "id",
             "body": "ID",
@@ -2041,7 +1981,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 271,
+        "pk": 265,
         "fields": {
             "key": "created_by",
             "body": "Created by",
@@ -2051,7 +1991,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 272,
+        "pk": 266,
         "fields": {
             "key": "view_version",
             "body": "View version",
@@ -2061,7 +2001,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 273,
+        "pk": 267,
         "fields": {
             "key": "set_as_current_version",
             "body": "Set as Current Version",
@@ -2071,7 +2011,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 274,
+        "pk": 268,
         "fields": {
             "key": "this_is_current",
             "body": "This is the current version",
@@ -2081,7 +2021,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 275,
+        "pk": 269,
         "fields": {
             "key": "no_other_versions",
             "body": "No other versions",
@@ -2091,7 +2031,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 276,
+        "pk": 270,
         "fields": {
             "key": "preview",
             "body": "Preview",
@@ -2101,7 +2041,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 277,
+        "pk": 271,
         "fields": {
             "key": "not_found",
             "body": "not found",
@@ -2111,7 +2051,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 278,
+        "pk": 272,
         "fields": {
             "key": "site_wide_news_config",
             "body": "Site-Wide News Configuration",
@@ -2121,7 +2061,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 279,
+        "pk": 273,
         "fields": {
             "key": "site_wide_news_config_items",
             "body": "Configures Site-Wide News Items",
@@ -2131,7 +2071,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 280,
+        "pk": 274,
         "fields": {
             "key": "page",
             "body": "Page",
@@ -2141,7 +2081,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 281,
+        "pk": 275,
         "fields": {
             "key": "remove_from_homepage",
             "body": "Remove from Homepage",
@@ -2151,7 +2091,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 282,
+        "pk": 276,
         "fields": {
             "key": "date_time",
             "body": "Date/Time",
@@ -2161,7 +2101,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 283,
+        "pk": 277,
         "fields": {
             "key": "add_to_homepage",
             "body": "Add to Homepage",
@@ -2171,7 +2111,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 284,
+        "pk": 278,
         "fields": {
             "key": "update_feed",
             "body": "Update Feed",
@@ -2181,7 +2121,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 285,
+        "pk": 279,
         "fields": {
             "key": "lists_updates_to_pages",
             "body": "Lists updates to pages and versions.",
@@ -2191,7 +2131,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 286,
+        "pk": 280,
         "fields": {
             "key": "page_update",
             "body": "Page/Update",
@@ -2201,7 +2141,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 287,
+        "pk": 281,
         "fields": {
             "key": "update",
             "body": "Update",
@@ -2211,7 +2151,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 288,
+        "pk": 282,
         "fields": {
             "key": "who_we_are_configuration",
             "body": "Who We Are Configuration",
@@ -2221,7 +2161,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 289,
+        "pk": 283,
         "fields": {
             "key": "contacts_for_initiatives",
             "body": "Contacts for your initiatives",
@@ -2231,7 +2171,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 290,
+        "pk": 284,
         "fields": {
             "key": "contacts_for_initiatives_explainer",
             "body": "Contacts for the initiative can be assigned to receive notifications on signups and on changes to access controls. Note that anybody listed here can use their access code to view signups and access controls for the listed initiative.",
@@ -2241,7 +2181,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 291,
+        "pk": 285,
         "fields": {
             "key": "contacts_add_edit",
             "body": "Add new and edit existing contacts.",
@@ -2251,7 +2191,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 292,
+        "pk": 286,
         "fields": {
             "key": "view_quotes_in_progress",
             "body": "View Quotes in Progress",
@@ -2261,7 +2201,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 293,
+        "pk": 287,
         "fields": {
             "key": "books_in_packages",
             "body": "Books in Packages at OBC",
@@ -2271,7 +2211,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 294,
+        "pk": 288,
         "fields": {
             "key": "authors_from_institution",
             "body": "Authors from Your Institution",
@@ -2281,7 +2221,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 295,
+        "pk": 289,
         "fields": {
             "key": "funded_presses",
             "body": "Funded Presses at OBC",
@@ -2291,7 +2231,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 296,
+        "pk": 290,
         "fields": {
             "key": "books_indexed",
             "body": "Books Indexed",
@@ -2301,7 +2241,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 297,
+        "pk": 291,
         "fields": {
             "key": "books_published",
             "body": "Books Published by OBC Presses",
@@ -2311,7 +2251,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 298,
+        "pk": 292,
         "fields": {
             "key": "book_authorship_map",
             "body": "Book Authorship Map",
@@ -2321,7 +2261,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 299,
+        "pk": 293,
         "fields": {
             "key": "collapse",
             "body": "Collapse",
@@ -2331,7 +2271,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 300,
+        "pk": 294,
         "fields": {
             "key": "disable_signup_note",
             "body": "Note: Disabling all signups will overrule the individual options.",
@@ -2341,7 +2281,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 301,
+        "pk": 295,
         "fields": {
             "key": "status",
             "body": "Status",
@@ -2351,7 +2291,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 302,
+        "pk": 296,
         "fields": {
             "key": "no_documents",
             "body": "No Documents",
@@ -2361,7 +2301,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 303,
+        "pk": 297,
         "fields": {
             "key": "complete_order_form",
             "body": "Complete Order Form",
@@ -2371,7 +2311,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 304,
+        "pk": 298,
         "fields": {
             "key": "change_current_country",
             "body": "Change Current Country",
@@ -2381,7 +2321,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 305,
+        "pk": 299,
         "fields": {
             "key": "we_have_detected_your_country_as",
             "body": "We have detected your current country as:",
@@ -2391,7 +2331,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 306,
+        "pk": 300,
         "fields": {
             "key": "update_country",
             "body": "Update Country",
@@ -2401,7 +2341,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 307,
+        "pk": 301,
         "fields": {
             "key": "delete_text",
             "body": "Are you sure you want to delete this object? NB: No data can be recovered from this operation.",
@@ -2411,7 +2351,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 308,
+        "pk": 302,
         "fields": {
             "key": "adding",
             "body": "Adding",
@@ -2421,7 +2361,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 309,
+        "pk": 303,
         "fields": {
             "key": "existing_quotations",
             "body": "Existing Quotations",
@@ -2431,7 +2371,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 310,
+        "pk": 304,
         "fields": {
             "key": "no_existing_quotations",
             "body": "You do not have any existing quotations.",
@@ -2441,7 +2381,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 311,
+        "pk": 305,
         "fields": {
             "key": "add_to",
             "body": "Add to",
@@ -2451,7 +2391,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 312,
+        "pk": 306,
         "fields": {
             "key": "create_new_quotation",
             "body": "Create New Quotation",
@@ -2461,7 +2401,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 313,
+        "pk": 307,
         "fields": {
             "key": "your_reference_number_is",
             "body": "Your reference number is",
@@ -2471,7 +2411,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 314,
+        "pk": 308,
         "fields": {
             "key": "please_quote_it",
             "body": "Please quote it if you need to get in touch with us.",
@@ -2481,7 +2421,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 315,
+        "pk": 309,
         "fields": {
             "key": "initiative_details",
             "body": "Initiative Details",
@@ -2491,7 +2431,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 316,
+        "pk": 310,
         "fields": {
             "key": "expanded_initiative",
             "body": "Expanded information of a given initiative including name and accounts associated with it.",
@@ -2501,7 +2441,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 317,
+        "pk": 311,
         "fields": {
             "key": "basic_information",
             "body": "Basic Information",
@@ -2511,7 +2451,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 318,
+        "pk": 312,
         "fields": {
             "key": "description",
             "body": "Description",
@@ -2521,7 +2461,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 319,
+        "pk": 313,
         "fields": {
             "key": "accounts",
             "body": "Accounts",
@@ -2531,7 +2471,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 320,
+        "pk": 314,
         "fields": {
             "key": "accounts_helper",
             "body": "Below are the accounts linked to this Initiative. Linked accounts have permission to create and edit initiative pages and updates.",
@@ -2541,7 +2481,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 321,
+        "pk": 315,
         "fields": {
             "key": "unlink",
             "body": "Unlink",
@@ -2551,7 +2491,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 322,
+        "pk": 316,
         "fields": {
             "key": "edit_initiative",
             "body": "Edit Initiative",
@@ -2561,7 +2501,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 323,
+        "pk": 317,
         "fields": {
             "key": "initiative_packages",
             "body": "Initiative Packages",
@@ -2571,7 +2511,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 324,
+        "pk": 318,
         "fields": {
             "key": "packages_owned_by",
             "body": "Packages Owned By",
@@ -2581,7 +2521,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 325,
+        "pk": 319,
         "fields": {
             "key": "data_fields",
             "body": "Data Fields",
@@ -2591,17 +2531,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 326,
-        "fields": {
-            "key": "standards",
-            "body": "Standards",
-            "help_text": "Table text on Edit Initiative page",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 327,
+        "pk": 320,
         "fields": {
             "key": "access_control",
             "body": "Access Control",
@@ -2611,17 +2541,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 328,
-        "fields": {
-            "key": "media_files",
-            "body": "Media Files",
-            "help_text": "Table text on Edit Initiative page",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 329,
+        "pk": 321,
         "fields": {
             "key": "initiative_list",
             "body": "Initiative List",
@@ -2631,7 +2551,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 330,
+        "pk": 322,
         "fields": {
             "key": "initiative_list_helper",
             "body": "View, edit, delete and create initiative objects.",
@@ -2641,7 +2561,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 331,
+        "pk": 323,
         "fields": {
             "key": "initiatives_staff",
             "body": "As a staff member you will see all Initiatives listed here.",
@@ -2651,7 +2571,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 332,
+        "pk": 324,
         "fields": {
             "key": "initiatives_manager",
             "body": "A list of Initiatives for which you are a manager.",
@@ -2661,7 +2581,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 333,
+        "pk": 325,
         "fields": {
             "key": "managers",
             "body": "Managers",
@@ -2671,7 +2591,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 334,
+        "pk": 326,
         "fields": {
             "key": "orders",
             "body": "Orders",
@@ -2681,7 +2601,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 335,
+        "pk": 327,
         "fields": {
             "key": "invoicing",
             "body": "Invoicing",
@@ -2691,7 +2611,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 336,
+        "pk": 328,
         "fields": {
             "key": "pages",
             "body": "Pages",
@@ -2701,7 +2621,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 337,
+        "pk": 329,
         "fields": {
             "key": "updates",
             "body": "Updates",
@@ -2711,7 +2631,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 338,
+        "pk": 330,
         "fields": {
             "key": "invoice_management",
             "body": "Invoice Management",
@@ -2721,7 +2641,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 339,
+        "pk": 331,
         "fields": {
             "key": "order_helper",
             "body": "Listed here are the ordered packages that require invoicing. Note, these packages may not make up the whole order, but contain those that you are a payment processor for.",
@@ -2731,7 +2651,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 340,
+        "pk": 332,
         "fields": {
             "key": "latest_status_change",
             "body": "Latest Status Change",
@@ -2741,7 +2661,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 341,
+        "pk": 333,
         "fields": {
             "key": "change_status",
             "body": "Change Status",
@@ -2751,7 +2671,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 342,
+        "pk": 334,
         "fields": {
             "key": "new",
             "body": "New",
@@ -2761,7 +2681,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 343,
+        "pk": 335,
         "fields": {
             "key": "invoice_sent",
             "body": "Invoice Sent",
@@ -2771,7 +2691,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 344,
+        "pk": 336,
         "fields": {
             "key": "invoice_paid",
             "body": "Invoice Paid",
@@ -2781,7 +2701,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 345,
+        "pk": 337,
         "fields": {
             "key": "begin_processing_signup",
             "body": "Begin Processing Signup",
@@ -2791,7 +2711,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 346,
+        "pk": 338,
         "fields": {
             "key": "no_status_updates",
             "body": "No Status Updates",
@@ -2801,7 +2721,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 347,
+        "pk": 339,
         "fields": {
             "key": "edit_payment_processor",
             "body": "Edit Payment Processor",
@@ -2811,7 +2731,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 348,
+        "pk": 340,
         "fields": {
             "key": "add_payment_processor",
             "body": "Add Payment Processor",
@@ -2821,7 +2741,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 349,
+        "pk": 341,
         "fields": {
             "key": "hold_ctrl",
             "body": "Hold control (ctrl) to select multiple managers and countries.",
@@ -2831,7 +2751,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 350,
+        "pk": 342,
         "fields": {
             "key": "order_helper_invoices",
             "body": "Listed below are the orders that contain a package for which you are listed as one of the payment processors for. You will be able to see the details of the order that relate to you including billing information and agreed pricing.",
@@ -2841,7 +2761,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 351,
+        "pk": 343,
         "fields": {
             "key": "customer",
             "body": "Customer",
@@ -2851,7 +2771,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 352,
+        "pk": 344,
         "fields": {
             "key": "invoice_statuses",
             "body": "Invoice Statuses",
@@ -2861,7 +2781,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 353,
+        "pk": 345,
         "fields": {
             "key": "amount",
             "body": "Amount",
@@ -2871,7 +2791,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 354,
+        "pk": 346,
         "fields": {
             "key": "countries",
             "body": "Countries",
@@ -2881,7 +2801,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 355,
+        "pk": 347,
         "fields": {
             "key": "form_elements_setup",
             "body": "Form Elements Setup",
@@ -2891,7 +2811,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 356,
+        "pk": 348,
         "fields": {
             "key": "email_log_entries",
             "body": "Email Log Entries",
@@ -2901,7 +2821,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 357,
+        "pk": 349,
         "fields": {
             "key": "email_logs_description",
             "body": "This page allows platform managers to view email logs.",
@@ -2911,7 +2831,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 358,
+        "pk": 350,
         "fields": {
             "key": "success",
             "body": "Success",
@@ -2921,7 +2841,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 359,
+        "pk": 351,
         "fields": {
             "key": "failed",
             "body": "Failed",
@@ -2931,7 +2851,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 360,
+        "pk": 352,
         "fields": {
             "key": "sending",
             "body": "Sending",
@@ -2941,7 +2861,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 361,
+        "pk": 353,
         "fields": {
             "key": "update_statuses",
             "body": "Update Statuses",
@@ -2951,7 +2871,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 362,
+        "pk": 354,
         "fields": {
             "key": "to",
             "body": "To",
@@ -2961,7 +2881,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 363,
+        "pk": 355,
         "fields": {
             "key": "subject",
             "body": "Subject",
@@ -2971,7 +2891,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 364,
+        "pk": 356,
         "fields": {
             "key": "date",
             "body": "Date",
@@ -2981,7 +2901,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 365,
+        "pk": 357,
         "fields": {
             "key": "quotation_name",
             "body": "Quotation Name",
@@ -2991,7 +2911,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 366,
+        "pk": 358,
         "fields": {
             "key": "data_field",
             "body": "Data Field",
@@ -3001,7 +2921,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 367,
+        "pk": 359,
         "fields": {
             "key": "value",
             "body": "Value",
@@ -3011,7 +2931,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 368,
+        "pk": 360,
         "fields": {
             "key": "package",
             "body": "Package",
@@ -3021,7 +2941,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 369,
+        "pk": 361,
         "fields": {
             "key": "user",
             "body": "User",
@@ -3031,7 +2951,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 370,
+        "pk": 362,
         "fields": {
             "key": "view_data",
             "body": "View Data",
@@ -3041,7 +2961,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 371,
+        "pk": 363,
         "fields": {
             "key": "signup_date",
             "body": "Signup Date",
@@ -3051,7 +2971,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 372,
+        "pk": 364,
         "fields": {
             "key": "access",
             "body": "Access",
@@ -3061,7 +2981,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 373,
+        "pk": 365,
         "fields": {
             "key": "debugger_intro",
             "body": "The pricing structure in OBC is complicated. This tool allows you to test your pricing logic works as expected.",
@@ -3071,7 +2991,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 374,
+        "pk": 366,
         "fields": {
             "key": "debugger_prerequisite",
             "body": "Understanding how OBC pricings are controlled is a prerequisite:",
@@ -3081,7 +3001,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 375,
+        "pk": 367,
         "fields": {
             "key": "debugger_flow_intro",
             "body": "The default flow for applying prices is:",
@@ -3091,7 +3011,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 376,
+        "pk": 368,
         "fields": {
             "key": "debug_button",
             "body": "Debug",
@@ -3101,7 +3021,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 377,
+        "pk": 369,
         "fields": {
             "key": "debug_result",
             "body": "Debug result",
@@ -3111,7 +3031,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 378,
+        "pk": 370,
         "fields": {
             "key": "signups_lead",
             "body": "Signups to Your Initiatives",
@@ -3121,7 +3041,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 379,
+        "pk": 371,
         "fields": {
             "key": "export_csv",
             "body": "You can also export this data to CSV",
@@ -3131,7 +3051,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 380,
+        "pk": 372,
         "fields": {
             "key": "export_csv_link",
             "body": "export this data to CSV",
@@ -3141,7 +3061,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 381,
+        "pk": 373,
         "fields": {
             "key": "gdpr_warning",
             "body": "(Warning: This file may contain sensitive personal data subject to GDPR or other data protection legislation.)",
@@ -3151,7 +3071,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 382,
+        "pk": 374,
         "fields": {
             "key": "approved_by_org",
             "body": "Approved by Org",
@@ -3161,7 +3081,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 383,
+        "pk": 375,
         "fields": {
             "key": "form_elements_lead",
             "body": "This page allows platform managers to specify form elements that will be available to initiatives.",
@@ -3171,7 +3091,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 384,
+        "pk": 376,
         "fields": {
             "key": "add_new",
             "body": "Add New",
@@ -3181,7 +3101,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 385,
+        "pk": 377,
         "fields": {
             "key": "baskets_active_quote",
             "body": "Active Quote",
@@ -3191,7 +3111,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 386,
+        "pk": 378,
         "fields": {
             "key": "signup_to",
             "body": "Signup to",
@@ -3201,7 +3121,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 387,
+        "pk": 379,
         "fields": {
             "key": "by",
             "body": "by",
@@ -3211,7 +3131,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 388,
+        "pk": 380,
         "fields": {
             "key": "signup_information",
             "body": "Signup Information",
@@ -3221,7 +3141,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 389,
+        "pk": 381,
         "fields": {
             "key": "organisation_approval_status",
             "body": "Organisation Approval Status",
@@ -3231,7 +3151,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 390,
+        "pk": 382,
         "fields": {
             "key": "organisation_approval_explanation",
             "body": "If the organisation signing up has approved then this means they are not requesting any changes to the package terms and you can go ahead an approve it.",
@@ -3241,7 +3161,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 391,
+        "pk": 383,
         "fields": {
             "key": "approved_on",
             "body": "Approved on",
@@ -3251,7 +3171,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 392,
+        "pk": 384,
         "fields": {
             "key": "not_approved",
             "body": "Not approved",
@@ -3261,7 +3181,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 393,
+        "pk": 385,
         "fields": {
             "key": "initiative_approval_status",
             "body": "Initiative Approval Status",
@@ -3271,7 +3191,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 394,
+        "pk": 386,
         "fields": {
             "key": "signup_approved_on",
             "body": "This signup was approved on",
@@ -3281,7 +3201,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 395,
+        "pk": 387,
         "fields": {
             "key": "signup_not_approved",
             "body": "This signup has not been approved.",
@@ -3291,7 +3211,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 396,
+        "pk": 388,
         "fields": {
             "key": "approve_signup",
             "body": "Approve Signup",
@@ -3301,7 +3221,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 397,
+        "pk": 389,
         "fields": {
             "key": "upload_custom_document",
             "body": "You can upload a custom document for the package if the organisation signing up has requested changes to standard terms. This document must incorporate all documents for this agreement as it will override all others.",
@@ -3311,7 +3231,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 398,
+        "pk": 390,
         "fields": {
             "key": "signups_and_access_control",
             "body": "Signups and Access Control",
@@ -3321,7 +3241,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 399,
+        "pk": 391,
         "fields": {
             "key": "access_control_lead",
             "body": "Some types of open access deal have unique perks for specific institutions (e.g. Opening the Future). This page allows for the generation of an access control list for subscription portions of such programmes.",
@@ -3331,7 +3251,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 400,
+        "pk": 392,
         "fields": {
             "key": "access_control_download",
             "body": "The access control list is downloadable by",
@@ -3341,7 +3261,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 401,
+        "pk": 393,
         "fields": {
             "key": "all_contacts",
             "body": "all contacts",
@@ -3351,47 +3271,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 402,
-        "fields": {
-            "key": "no_packages_standards",
-            "body": "No packages adhere to our standards.",
-            "help_text": "Text for indicating no packages adhere to standards.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 403,
-        "fields": {
-            "key": "no_standards",
-            "body": "This package adheres to none of our standards.",
-            "help_text": "Text for indicating package adheres to no standards.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 404,
-        "fields": {
-            "key": "view_attestation_history",
-            "body": "View attestation history",
-            "help_text": "Link text for viewing attestation history.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 405,
-        "fields": {
-            "key": "only_in_collectives",
-            "body": "Only available in collectives",
-            "help_text": "Text for indicating availability only in collectives.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 406,
+        "pk": 394,
         "fields": {
             "key": "create_add_packages",
             "body": "Create and add packages to your quotations.",
@@ -3401,7 +3281,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 407,
+        "pk": 395,
         "fields": {
             "key": "new_form_element",
             "body": "New Form Element",
@@ -3411,7 +3291,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 408,
+        "pk": 396,
         "fields": {
             "key": "add_edit_form_element",
             "body": "Add a new or edit an existing form element",
@@ -3421,7 +3301,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 409,
+        "pk": 397,
         "fields": {
             "key": "save_element",
             "body": "Save Element",
@@ -3431,7 +3311,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 410,
+        "pk": 398,
         "fields": {
             "key": "uncompleted_quotations",
             "body": "A list of your uncompleted quotations.",
@@ -3441,7 +3321,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 411,
+        "pk": 399,
         "fields": {
             "key": "view_select_packages",
             "body": "View and select packages available for signup.",
@@ -3451,7 +3331,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 412,
+        "pk": 400,
         "fields": {
             "key": "individual_packages",
             "body": "Individual packages.",
@@ -3461,7 +3341,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 413,
+        "pk": 401,
         "fields": {
             "key": "no_packages_display",
             "body": "There are no Packages to display.",
@@ -3471,7 +3351,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 414,
+        "pk": 402,
         "fields": {
             "key": "groups_of_packages",
             "body": "Groups of packages.",
@@ -3481,7 +3361,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 415,
+        "pk": 403,
         "fields": {
             "key": "no_meta_packages_display",
             "body": "There are no Meta Packages to display.",
@@ -3491,7 +3371,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 416,
+        "pk": 404,
         "fields": {
             "key": "add_access_control_entry",
             "body": "Add an Access Control Entry",
@@ -3501,7 +3381,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 417,
+        "pk": 405,
         "fields": {
             "key": "add_access_control_instruction",
             "body": "Add a new access control instruction.",
@@ -3511,7 +3391,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 418,
+        "pk": 406,
         "fields": {
             "key": "access_control_warning",
             "body": "Warning: These entries cannot be deleted, but they can be reversed by adding the opposite instruction (i.e. revoke).",
@@ -3521,7 +3401,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 419,
+        "pk": 407,
         "fields": {
             "key": "revoke",
             "body": "Revoke",
@@ -3531,7 +3411,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 420,
+        "pk": 408,
         "fields": {
             "key": "grant",
             "body": "Grant",
@@ -3541,17 +3421,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 421,
-        "fields": {
-            "key": "standards_attestation_history",
-            "body": "Standards Attestation History",
-            "help_text": "Modal title for standards attestation history.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 422,
+        "pk": 409,
         "fields": {
             "key": "membership_offer",
             "body": "Membership Offer",
@@ -3561,7 +3431,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 423,
+        "pk": 410,
         "fields": {
             "key": "included_packages",
             "body": "Included Packages",
@@ -3571,17 +3441,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 424,
-        "fields": {
-            "key": "standards_info",
-            "body": "Information about standards.",
-            "help_text": "Information text for standards section.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 425,
+        "pk": 411,
         "fields": {
             "key": "process_signup",
             "body": "Process Signup",
@@ -3591,7 +3451,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 426,
+        "pk": 412,
         "fields": {
             "key": "no_active_quotes",
             "body": "No active quotes to display.",
@@ -3601,7 +3461,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 427,
+        "pk": 413,
         "fields": {
             "key": "manage_redirect_for",
             "body": "Manage Redirect for",
@@ -3611,7 +3471,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 428,
+        "pk": 414,
         "fields": {
             "key": "redirect_description",
             "body": "This allows you to specify that the user should be directed to an external site (such as the Jisc Collections catalogue page) at the end of the signup. To undo this, simply leave the redirect blank.",
@@ -3621,7 +3481,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 429,
+        "pk": 415,
         "fields": {
             "key": "create_banding_type",
             "body": "Create Banding Type",
@@ -3631,7 +3491,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 430,
+        "pk": 416,
         "fields": {
             "key": "create_banding_type_description",
             "body": "Create a new Banding Type by providing required metadata. Once the banding type has been created you can select the relevant banding vocabularies.",
@@ -3641,7 +3501,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 431,
+        "pk": 417,
         "fields": {
             "key": "currencies_for",
             "body": "Currencies for",
@@ -3651,7 +3511,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 432,
+        "pk": 418,
         "fields": {
             "key": "in",
             "body": "in",
@@ -3661,7 +3521,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 433,
+        "pk": 419,
         "fields": {
             "key": "currencies_associated",
             "body": "The following currencies are associated with this banding.",
@@ -3671,7 +3531,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 434,
+        "pk": 420,
         "fields": {
             "key": "select_payment_processor",
             "body": "Select a Payment Processor",
@@ -3681,7 +3541,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 435,
+        "pk": 421,
         "fields": {
             "key": "payment_processors_listed",
             "body": "Listed below are payment processors for",
@@ -3691,7 +3551,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 436,
+        "pk": 422,
         "fields": {
             "key": "set_or_leave_empty",
             "body": "You can set one or leave it empty to handle billing yourself.",
@@ -3701,7 +3561,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 437,
+        "pk": 423,
         "fields": {
             "key": "bandings_for",
             "body": "Bandings for",
@@ -3711,7 +3571,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 438,
+        "pk": 424,
         "fields": {
             "key": "no_pricing_info",
             "body": "This package does not have pricing information set for the default currency",
@@ -3721,7 +3581,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 439,
+        "pk": 425,
         "fields": {
             "key": "bandings_associated",
             "body": "The following bandings are associated with this package.",
@@ -3731,7 +3591,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 440,
+        "pk": 426,
         "fields": {
             "key": "basic_price_overview",
             "body": "Basic Price Overview",
@@ -3741,7 +3601,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 441,
+        "pk": 427,
         "fields": {
             "key": "price_overview_description",
             "body": "Here you can see, at a glance, all prices associated with this package.",
@@ -3751,7 +3611,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 442,
+        "pk": 428,
         "fields": {
             "key": "create_new_banding_type",
             "body": "Create New Banding Type",
@@ -3761,7 +3621,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 443,
+        "pk": 429,
         "fields": {
             "key": "save_new_banding_type",
             "body": "Save New Banding Type",
@@ -3771,7 +3631,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 444,
+        "pk": 430,
         "fields": {
             "key": "banding_types_list",
             "body": "Banding Types List",
@@ -3781,7 +3641,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 445,
+        "pk": 431,
         "fields": {
             "key": "edit_bandings",
             "body": "Edit Bandings",
@@ -3791,7 +3651,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 446,
+        "pk": 432,
         "fields": {
             "key": "add_this_banding",
             "body": "Add this banding",
@@ -3801,7 +3661,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 447,
+        "pk": 433,
         "fields": {
             "key": "edit_currencies",
             "body": "Edit Currencies",
@@ -3811,7 +3671,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 448,
+        "pk": 434,
         "fields": {
             "key": "remove_banding_and_prices",
             "body": "Remove Banding and Prices",
@@ -3821,7 +3681,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 449,
+        "pk": 435,
         "fields": {
             "key": "add_this_currency",
             "body": "Add this currency",
@@ -3831,7 +3691,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 450,
+        "pk": 436,
         "fields": {
             "key": "edit_prices",
             "body": "Edit Prices",
@@ -3841,7 +3701,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 451,
+        "pk": 437,
         "fields": {
             "key": "remove_currency_and_prices",
             "body": "Remove Currency and Prices",
@@ -3851,7 +3711,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 452,
+        "pk": 438,
         "fields": {
             "key": "payment_processor",
             "body": "Payment Processor",
@@ -3861,7 +3721,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 453,
+        "pk": 439,
         "fields": {
             "key": "manage_payment_processor_for",
             "body": "Manage Payment Processor for",
@@ -3871,7 +3731,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 454,
+        "pk": 440,
         "fields": {
             "key": "current_payment_processor",
             "body": "For this banding and currency the payment processor is currently set to",
@@ -3881,7 +3741,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 455,
+        "pk": 441,
         "fields": {
             "key": "prices_for",
             "body": "Prices for",
@@ -3891,7 +3751,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 456,
+        "pk": 442,
         "fields": {
             "key": "for",
             "body": "for",
@@ -3901,7 +3761,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 457,
+        "pk": 443,
         "fields": {
             "key": "set_prices_for_band",
             "body": "Please set the prices for this band.",
@@ -3911,7 +3771,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 458,
+        "pk": 444,
         "fields": {
             "key": "save_prices",
             "body": "Save Prices",
@@ -3921,7 +3781,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 459,
+        "pk": 445,
         "fields": {
             "key": "manage_redirect",
             "body": "Manage Redirect",
@@ -3931,7 +3791,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 460,
+        "pk": 446,
         "fields": {
             "key": "banding_types_list_description",
             "body": "A list of all of the Banding Types available for package creation.",
@@ -3941,7 +3801,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 461,
+        "pk": 447,
         "fields": {
             "key": "banding_types_warning",
             "body": "Warning: package banding types cannot be changed after they are created as this will destroy current quotations.",
@@ -3951,7 +3811,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 462,
+        "pk": 448,
         "fields": {
             "key": "add_new_banding_type",
             "body": "Add New Banding Type",
@@ -3961,7 +3821,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 463,
+        "pk": 449,
         "fields": {
             "key": "is_fte",
             "body": "Is FTE?",
@@ -3971,7 +3831,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 464,
+        "pk": 450,
         "fields": {
             "key": "linked_vocabs",
             "body": "# Linked Vocabs",
@@ -3981,7 +3841,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 465,
+        "pk": 451,
         "fields": {
             "key": "manage_banding_type_vocabs_for",
             "body": "Manage Banding Type Vocabs for",
@@ -3991,7 +3851,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 466,
+        "pk": 452,
         "fields": {
             "key": "manage_vocabs_for",
             "body": "Manage Vocabs for",
@@ -4001,7 +3861,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 467,
+        "pk": 453,
         "fields": {
             "key": "select_vocabs_description",
             "body": "Select vocabs for this Banding Type. When a Initiative creates packages they will use these as the basis for their Banding/Prices.",
@@ -4011,7 +3871,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 468,
+        "pk": 454,
         "fields": {
             "key": "add_new_vocabulary",
             "body": "Add a new vocabulary",
@@ -4021,7 +3881,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 469,
+        "pk": 455,
         "fields": {
             "key": "text",
             "body": "Text",
@@ -4031,7 +3891,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 470,
+        "pk": 456,
         "fields": {
             "key": "upper_limit",
             "body": "Upper Limit",
@@ -4041,7 +3901,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 471,
+        "pk": 457,
         "fields": {
             "key": "lower_limit",
             "body": "Lower Limit",
@@ -4051,7 +3911,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 472,
+        "pk": 458,
         "fields": {
             "key": "order_complete_message",
             "body": "Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is",
@@ -4061,7 +3921,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 473,
+        "pk": 459,
         "fields": {
             "key": "quotation_details",
             "body": "Quotation Details",
@@ -4071,7 +3931,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 474,
+        "pk": 460,
         "fields": {
             "key": "download_quotation",
             "body": "Download Quotation",
@@ -4081,7 +3941,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 475,
+        "pk": 461,
         "fields": {
             "key": "thanks_for_your_interest",
             "body": "Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is",
@@ -4091,7 +3951,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 476,
+        "pk": 462,
         "fields": {
             "key": "order_complete_body",
             "body": "Your order with order number {{ order.order_number }} is now complete. If you require assistance with your order ensure you quote this order number.",
@@ -4101,7 +3961,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 477,
+        "pk": 463,
         "fields": {
             "key": "order_documents_info",
             "body": "Here you can find the documents related to your order.",
@@ -4111,7 +3971,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 478,
+        "pk": 464,
         "fields": {
             "key": "download_order_documents",
             "body": "Download Order Documents",
@@ -4121,7 +3981,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 479,
+        "pk": 465,
         "fields": {
             "key": "order_complete_contact",
             "body": "If you have any questions, please contact us.",
@@ -4131,7 +3991,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 480,
+        "pk": 466,
         "fields": {
             "key": "contact_email",
             "body": "Contact Email",
@@ -4141,17 +4001,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 481,
-        "fields": {
-            "key": "package_name",
-            "body": "Package Name",
-            "help_text": "Table heading for package name",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 482,
+        "pk": 467,
         "fields": {
             "key": "cost",
             "body": "Cost",
@@ -4161,7 +4011,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 483,
+        "pk": 468,
         "fields": {
             "key": "invoice_status",
             "body": "Invoice Status",
@@ -4171,7 +4021,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 484,
+        "pk": 469,
         "fields": {
             "key": "package_media_files",
             "body": "Package Media Files",
@@ -4181,7 +4031,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 485,
+        "pk": 470,
         "fields": {
             "key": "your_order_pre",
             "body": "Your order with order number",
@@ -4191,7 +4041,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 486,
+        "pk": 471,
         "fields": {
             "key": "your_order_post",
             "body": "is now complete. If you require assistance with your order ensure you quote this order number.",
@@ -4201,7 +4051,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 487,
+        "pk": 472,
         "fields": {
             "key": "order_form",
             "body": "Order Form",
@@ -4211,7 +4061,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 488,
+        "pk": 473,
         "fields": {
             "key": "order_form_sub_h",
             "body": "Please complete the order form below.",
@@ -4221,7 +4071,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 489,
+        "pk": 474,
         "fields": {
             "key": "your_quotation",
             "body": "Your quotation",
@@ -4231,7 +4081,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 490,
+        "pk": 475,
         "fields": {
             "key": "quotation_generated",
             "body": "We have generated a quotation for you to review, with a unique quotation number",
@@ -4241,7 +4091,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 491,
+        "pk": 476,
         "fields": {
             "key": "quotation_reference",
             "body": "Please refer to this quotation number if you would like to discuss any details with us.",
@@ -4251,7 +4101,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 492,
+        "pk": 477,
         "fields": {
             "key": "order_documents_description",
             "body": "We've zipped up the documents for all of the packages you are signing up for. Please read them and then either approve the signup below or contact the initiative to discuss the terms. Also, some types of signup (those going through Jisc Collections) require you to input your details on an external site. Please check the links below carefully under the 'external' column.",
@@ -4261,7 +4111,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 493,
+        "pk": 478,
         "fields": {
             "key": "contact_details_description",
             "body": "Once you have read the order documents you can contact the initiatives to discuss them or approve the signup. If necessary the package manager can upload new terms. Once you and the package manager have both approved the signup terms will be locked in place.",
@@ -4271,7 +4121,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 494,
+        "pk": 479,
         "fields": {
             "key": "approval_description",
             "body": "When you are happy with the package terms you can mark the signup as approved. You may need to wait for the Initiative to approve the signup also in order to finalise the signup.",
@@ -4281,7 +4131,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 495,
+        "pk": 480,
         "fields": {
             "key": "approve_this_signup",
             "body": "Approve this Signup",
@@ -4291,7 +4141,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 496,
+        "pk": 481,
         "fields": {
             "key": "approved_by_provider",
             "body": "Approved by Provider?",
@@ -4301,7 +4151,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 497,
+        "pk": 482,
         "fields": {
             "key": "external",
             "body": "External",
@@ -4311,7 +4161,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 498,
+        "pk": 483,
         "fields": {
             "key": "agree_terms_of_signup",
             "body": "Agree to Terms of Signup",
@@ -4321,7 +4171,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 499,
+        "pk": 484,
         "fields": {
             "key": "revise_document",
             "body": "Revise Document",
@@ -4331,7 +4181,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 500,
+        "pk": 485,
         "fields": {
             "key": "add_new_document",
             "body": "Add New Document",
@@ -4341,7 +4191,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 501,
+        "pk": 486,
         "fields": {
             "key": "revise_document_for",
             "body": "Revise document for",
@@ -4351,7 +4201,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 502,
+        "pk": 487,
         "fields": {
             "key": "add_new_document_to",
             "body": "Add a new document to",
@@ -4361,7 +4211,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 503,
+        "pk": 488,
         "fields": {
             "key": "s_package",
             "body": "'s package,",
@@ -4371,7 +4221,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 504,
+        "pk": 489,
         "fields": {
             "key": "metadata",
             "body": "Metadata",
@@ -4381,7 +4231,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 505,
+        "pk": 490,
         "fields": {
             "key": "versions",
             "body": "Versions",
@@ -4391,7 +4241,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 506,
+        "pk": 491,
         "fields": {
             "key": "document",
             "body": "Document",
@@ -4401,7 +4251,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 507,
+        "pk": 492,
         "fields": {
             "key": "packages",
             "body": "Packages",
@@ -4411,7 +4261,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 508,
+        "pk": 493,
         "fields": {
             "key": "documents",
             "body": "Documents",
@@ -4421,7 +4271,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 509,
+        "pk": 494,
         "fields": {
             "key": "orders_and_documents",
             "body": "Orders and Documents",
@@ -4431,7 +4281,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 510,
+        "pk": 495,
         "fields": {
             "key": "contacts",
             "body": "Contacts",
@@ -4441,7 +4291,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 511,
+        "pk": 496,
         "fields": {
             "key": "fixed_pages",
             "body": "Fixed Pages",
@@ -4451,7 +4301,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 512,
+        "pk": 497,
         "fields": {
             "key": "contact_details",
             "body": "Contact Details",
@@ -4461,7 +4311,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 513,
+        "pk": 498,
         "fields": {
             "key": "site_setup",
             "body": "Site Setup",
@@ -4471,7 +4321,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 514,
+        "pk": 499,
         "fields": {
             "key": "banding_types",
             "body": "Banding Types",
@@ -4481,47 +4331,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 515,
-        "fields": {
-            "key": "close",
-            "body": "Close",
-            "help_text": "Close text for modals",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 516,
-        "fields": {
-            "key": "month_contract",
-            "body": "month contract",
-            "help_text": "Appended after the number of months the contract runs for",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 517,
-        "fields": {
-            "key": "add_to_quote",
-            "body": "Add to Quote",
-            "help_text": "Button in collective element",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 518,
-        "fields": {
-            "key": "included_in",
-            "body": "Included in",
-            "help_text": "Preamble text to specify which packages are included in which metapackages",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 519,
+        "pk": 500,
         "fields": {
             "key": "add",
             "body": "Add",
@@ -4531,27 +4341,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 520,
-        "fields": {
-            "key": "view",
-            "body": "View",
-            "help_text": "The word 'View' for the heading on CMS management pages",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 521,
-        "fields": {
-            "key": "delete",
-            "body": "Delete",
-            "help_text": "Text used in tables",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 522,
+        "pk": 501,
         "fields": {
             "key": "initiative",
             "body": "Initiative",
@@ -4561,7 +4351,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 523,
+        "pk": 502,
         "fields": {
             "key": "quotes",
             "body": "Quotes",
@@ -4571,7 +4361,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 524,
+        "pk": 503,
         "fields": {
             "key": "order_number",
             "body": "Order Number",
@@ -4581,7 +4371,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 525,
+        "pk": 504,
         "fields": {
             "key": "number_of_packages",
             "body": "Number of Packages",
@@ -4591,7 +4381,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 526,
+        "pk": 505,
         "fields": {
             "key": "active",
             "body": "Active",
@@ -4601,7 +4391,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 527,
+        "pk": 506,
         "fields": {
             "key": "price",
             "body": "Price",
@@ -4611,7 +4401,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 528,
+        "pk": 507,
         "fields": {
             "key": "approved_by_initiative",
             "body": "Approved by Initiative",
@@ -4621,7 +4411,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 529,
+        "pk": 508,
         "fields": {
             "key": "order_documents",
             "body": "Download Order Documents",
@@ -4631,7 +4421,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 530,
+        "pk": 509,
         "fields": {
             "key": "approval",
             "body": "Approval",
@@ -4641,7 +4431,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 531,
+        "pk": 510,
         "fields": {
             "key": "offer",
             "body": "Offer",
@@ -4651,7 +4441,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 532,
+        "pk": 511,
         "fields": {
             "key": "remove",
             "body": "Remove",
@@ -4661,7 +4451,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 533,
+        "pk": 512,
         "fields": {
             "key": "duplicate_offers",
             "body": "Duplicate Offers: ",
@@ -4671,7 +4461,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 534,
+        "pk": 513,
         "fields": {
             "key": "duplicate_offers_description",
             "body": "Your selection includes one or more duplicate offers. Any duplicate offers are automatically removed from your quote to ensure you are only charged once.",
@@ -4681,7 +4471,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 535,
+        "pk": 514,
         "fields": {
             "key": "totals_ignore_duplicates",
             "body": "Totals ignore duplicate offers.",
@@ -4691,7 +4481,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 536,
+        "pk": 515,
         "fields": {
             "key": "total",
             "body": "Total",
@@ -4701,7 +4491,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 537,
+        "pk": 516,
         "fields": {
             "key": "indicative_price_warning",
             "body": "*No offers have yet been set up in your chosen currency. Instead, we have provided an indicative price. We recommend you get in touch with us at <a href=\"mailto:info@openbookcollective.org\">info@openbookcollective.org</a> so we can provide you with a custom quotation.",
@@ -4711,7 +4501,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 538,
+        "pk": 517,
         "fields": {
             "key": "no_banding_or_price_found",
             "body": "No banding or price found.",
@@ -4721,7 +4511,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 539,
+        "pk": 518,
         "fields": {
             "key": "discuss_quote",
             "body": "Want to discuss your quote?",
@@ -4731,17 +4521,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 540,
-        "fields": {
-            "key": "contact_us",
-            "body": "Contact Us",
-            "help_text": "Button text for contacting us.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 541,
+        "pk": 519,
         "fields": {
             "key": "contract",
             "body": "Contract",
@@ -4751,7 +4531,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 542,
+        "pk": 520,
         "fields": {
             "key": "quotation_packages",
             "body": "Quotation Packages",
@@ -4761,7 +4541,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 543,
+        "pk": 521,
         "fields": {
             "key": "quotation_breakdown",
             "body": "Quotation Breakdown",
@@ -4771,7 +4551,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 544,
+        "pk": 522,
         "fields": {
             "key": "totals",
             "body": "Totals",
@@ -4781,7 +4561,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 545,
+        "pk": 523,
         "fields": {
             "key": "remove_from_basket",
             "body": "Remove from Basket",
@@ -4791,7 +4571,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 546,
+        "pk": 524,
         "fields": {
             "key": "form_elements_setup_for",
             "body": "Form Elements Setup for",
@@ -4801,7 +4581,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 547,
+        "pk": 525,
         "fields": {
             "key": "select_data_for_signup",
             "body": "Please select the data that you require from users in order to signup to this package.",
@@ -4811,17 +4591,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 556,
-        "fields": {
-            "key": "create_new_package",
-            "body": "Create New Package",
-            "help_text": "Breadcrumb text for creating a new package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 557,
+        "pk": 526,
         "fields": {
             "key": "add_new_package",
             "body": "Add New Package",
@@ -4831,17 +4601,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 558,
-        "fields": {
-            "key": "add_edit_package_lead",
-            "body": "Add new and edit existing package.",
-            "help_text": "Lead text for adding or editing a package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 559,
+        "pk": 527,
         "fields": {
             "key": "package_review_notice",
             "body": "Before this package is displayed for signup it will be reviewed by a member of staff.",
@@ -4851,7 +4611,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 560,
+        "pk": 528,
         "fields": {
             "key": "standard_attestation_configuration",
             "body": "Standard Attestation Configuration",
@@ -4861,7 +4621,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 561,
+        "pk": 529,
         "fields": {
             "key": "add_edit_standard_attestation",
             "body": "Add a new or edit an existing standard attestation",
@@ -4871,7 +4631,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 562,
+        "pk": 530,
         "fields": {
             "key": "save_attestation",
             "body": "Save Attestation",
@@ -4881,17 +4641,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 563,
-        "fields": {
-            "key": "add_edit_package_lead",
-            "body": "Add new and edit existing package.",
-            "help_text": "Lead text for adding or editing a package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 564,
+        "pk": 531,
         "fields": {
             "key": "standards_attested_to_by",
             "body": "Standards Attested to by",
@@ -4901,7 +4651,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 565,
+        "pk": 532,
         "fields": {
             "key": "standards_attested_description",
             "body": "The following standards are attested to by this package.",
@@ -4911,7 +4661,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 566,
+        "pk": 533,
         "fields": {
             "key": "attest_to_this_standard",
             "body": "Attest to this standard",
@@ -4921,7 +4671,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 567,
+        "pk": 534,
         "fields": {
             "key": "edit_attestation",
             "body": "Edit Attestation",
@@ -4931,7 +4681,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 568,
+        "pk": 535,
         "fields": {
             "key": "remove_attestation",
             "body": "Remove Attestation",
@@ -4941,17 +4691,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 569,
-        "fields": {
-            "key": "create_new_package",
-            "body": "Create New Package",
-            "help_text": "Text for creating a new package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 570,
+        "pk": 536,
         "fields": {
             "key": "select_banding_type",
             "body": "Select a banding type for this package",
@@ -4961,7 +4701,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 571,
+        "pk": 537,
         "fields": {
             "key": "or",
             "body": "or",
@@ -4971,7 +4711,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 572,
+        "pk": 538,
         "fields": {
             "key": "manage_available_bandings",
             "body": "manage available bandings",
@@ -4981,7 +4721,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 573,
+        "pk": 539,
         "fields": {
             "key": "uses_fte",
             "body": "Uses FTE",
@@ -4991,7 +4731,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 574,
+        "pk": 540,
         "fields": {
             "key": "select",
             "body": "Select",
@@ -5001,177 +4741,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 575,
-        "fields": {
-            "key": "list_documents",
-            "body": "List Documents",
-            "help_text": "Title for listing documents",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 576,
-        "fields": {
-            "key": "media_files_affiliated_with",
-            "body": "Media Files Affiliated with",
-            "help_text": "Title for media files affiliated with a package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 577,
-        "fields": {
-            "key": "media_files_accessible",
-            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
-            "help_text": "Description for media files accessibility",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 578,
-        "fields": {
-            "key": "load_new_file",
-            "body": "Load New File",
-            "help_text": "Heading for loading a new file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 579,
-        "fields": {
-            "key": "upload_file",
-            "body": "Upload File",
-            "help_text": "Button text for uploading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 580,
-        "fields": {
-            "key": "date_uploaded",
-            "body": "Date Uploaded",
-            "help_text": "Table heading for date uploaded",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 581,
-        "fields": {
-            "key": "download_file",
-            "body": "Download File",
-            "help_text": "Link text for downloading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 582,
-        "fields": {
-            "key": "delete_file",
-            "body": "Delete File",
-            "help_text": "Button text for deleting a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 583,
-        "fields": {
-            "key": "media_files",
-            "body": "Media Files",
-            "help_text": "Breadcrumb text for media files",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 584,
-        "fields": {
-            "key": "media_files_affiliated_with",
-            "body": "Media Files Affiliated with",
-            "help_text": "Title for media files affiliated with a package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 585,
-        "fields": {
-            "key": "media_files_accessible",
-            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
-            "help_text": "Description for media files accessibility",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 586,
-        "fields": {
-            "key": "load_new_file",
-            "body": "Load New File",
-            "help_text": "Heading for loading a new file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 587,
-        "fields": {
-            "key": "upload_file",
-            "body": "Upload File",
-            "help_text": "Button text for uploading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 588,
-        "fields": {
-            "key": "date_uploaded",
-            "body": "Date Uploaded",
-            "help_text": "Table heading for date uploaded",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 589,
-        "fields": {
-            "key": "download_file",
-            "body": "Download File",
-            "help_text": "Link text for downloading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 590,
-        "fields": {
-            "key": "delete_file",
-            "body": "Delete File",
-            "help_text": "Button text for deleting a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 623,
-        "fields": {
-            "key": "reset_your_password",
-            "body": "Reset your password",
-            "help_text": "Title for the password reset complete page",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 624,
+        "pk": 541,
         "fields": {
             "key": "password_set_info",
             "body": "Your password has been set.  You may now log in.",
@@ -5181,7 +4751,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 625,
+        "pk": 542,
         "fields": {
             "key": "log_in",
             "body": "Log in",
@@ -5191,67 +4761,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 640,
-        "fields": {
-            "key": "reset_your_password",
-            "body": "Reset your password",
-            "help_text": "Title for the password reset form page",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 641,
-        "fields": {
-            "key": "password_reset_form_instructions",
-            "body": "Enter your email address below. If a matching account has been found a reset email will be sent to your inbox. Please ensure you check any junk mail or filter folders.",
-            "help_text": "Instructions for the password reset form",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 642,
-        "fields": {
-            "key": "reset_password",
-            "body": "Reset Password",
-            "help_text": "Button text for resetting password",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 545,
-        "fields": {
-            "key": "summary",
-            "body": "Summary",
-            "help_text": "Button text for summary",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 546,
-        "fields": {
-            "key": "more_info",
-            "body": "More Info",
-            "help_text": "Button text for more information",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 547,
-        "fields": {
-            "key": "pricing",
-            "body": "Pricing",
-            "help_text": "Button text for pricing",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 648,
+        "pk": 543,
         "fields": {
             "key": "highlights",
             "body": "Highlights",
@@ -5261,7 +4771,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 649,
+        "pk": 544,
         "fields": {
             "key": "view_our_full_catalogue",
             "body": "View Our Full Catalogue",
@@ -5271,98 +4781,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 650,
-        "fields": {
-            "key": "package_name",
-            "body": "Package Name",
-            "help_text": "Title for the package name",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 651,
-        "fields": {
-            "key": "month_contract",
-            "body": "month contract",
-            "help_text": "Text for month contract",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 652,
-        "fields": {
-            "key": "standards_attestation_history",
-            "body": "Standards Attestation History",
-            "help_text": "Title for standards attestation history",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 653,
-        "fields": {
-            "key": "no_packages_standards",
-            "body": "No packages adhere to our standards.",
-            "help_text": "Text for no packages adhere to standards",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 654,
-        "fields": {
-            "key": "no_standards",
-            "body": "This package adheres to none of our standards.",
-            "help_text": "Text for no standards",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 655,
-        "fields": {
-            "key": "view_attestation_history",
-            "body": "View attestation history",
-            "help_text": "Link text for viewing attestation history",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 656,
-        "fields": {
-            "key": "included_in",
-            "body": "Included in",
-            "help_text": "Text for included in",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 657,
-        "fields": {
-            "key": "only_in_collectives",
-            "body": "Only available in collectives",
-            "help_text": "Text for only available in collectives",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 658,
-        "fields": {
-            "key": "add_to_quote",
-            "body": "Add to Quote",
-            "help_text": "Button text for adding to quote",
-            "rich_text": false
-        }
-    }
-    ,
-    {
-        "model": "cms.sitetext",
-        "pk": 548,
+        "pk": 545,
         "fields": {
             "key": "manage_contacts_for",
             "body": "Manage Contacts for",
@@ -5372,7 +4791,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 549,
+        "pk": 546,
         "fields": {
             "key": "manage_contacts",
             "body": "Manage Contacts",
@@ -5382,7 +4801,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 550,
+        "pk": 547,
         "fields": {
             "key": "select_contacts_for_events",
             "body": "Select contacts for event types. These contacts will be sent an email when the event occurs.",
@@ -5392,7 +4811,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 551,
+        "pk": 548,
         "fields": {
             "key": "contacts_access_warning",
             "body": "Warning: Contacts have access to signup data which may be sensitive.",
@@ -5402,7 +4821,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 552,
+        "pk": 549,
         "fields": {
             "key": "add_new_contact",
             "body": "Add a New Contact",
@@ -5412,7 +4831,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 553,
+        "pk": 550,
         "fields": {
             "key": "signup_notification",
             "body": "Signup Notification",
@@ -5422,7 +4841,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 554,
+        "pk": 551,
         "fields": {
             "key": "access_control_notification",
             "body": "Access Control Notification",
@@ -5432,7 +4851,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 555,
+        "pk": 552,
         "fields": {
             "key": "save_contacts_to_package",
             "body": "Save Contacts to Package",
@@ -5442,117 +4861,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 591,
-        "fields": {
-            "key": "list_documents",
-            "body": "List Documents",
-            "help_text": "Title for listing documents",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 592,
-        "fields": {
-            "key": "media_files_affiliated_with",
-            "body": "Media Files Affiliated with",
-            "help_text": "Title for media files affiliated with a package",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 593,
-        "fields": {
-            "key": "media_files_accessible",
-            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
-            "help_text": "Description for media files accessibility",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 594,
-        "fields": {
-            "key": "load_new_file",
-            "body": "Load New File",
-            "help_text": "Heading for loading a new file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 595,
-        "fields": {
-            "key": "upload_file",
-            "body": "Upload File",
-            "help_text": "Button text for uploading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 596,
-        "fields": {
-            "key": "name",
-            "body": "Name",
-            "help_text": "Table heading for name",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 597,
-        "fields": {
-            "key": "view",
-            "body": "View",
-            "help_text": "Table heading for view",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 598,
-        "fields": {
-            "key": "date_uploaded",
-            "body": "Date Uploaded",
-            "help_text": "Table heading for date uploaded",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 599,
-        "fields": {
-            "key": "delete",
-            "body": "Delete",
-            "help_text": "Table heading for delete",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 600,
-        "fields": {
-            "key": "download_file",
-            "body": "Download File",
-            "help_text": "Link text for downloading a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 601,
-        "fields": {
-            "key": "delete_file",
-            "body": "Delete File",
-            "help_text": "Button text for deleting a file",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 602,
+        "pk": 553,
         "fields": {
             "key": "revert",
             "body": "Revert",
@@ -5562,7 +4871,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 603,
+        "pk": 554,
         "fields": {
             "key": "revert_warning",
             "body": "Reverting will overwrite the current document details with the version's.",
@@ -5572,201 +4881,147 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 604,
+        "pk": 555,
         "fields": {
             "key": "no_versions",
             "body": "No versions recorded for this document.",
             "help_text": "No versions text",
             "rich_text": false
         }
-    }
-,
-{
-    "model": "cms.sitetext",
-    "pk": 605,
-    "fields": {
-        "key": "package_approval",
-        "body": "Package Approval",
-        "help_text": "Title for package approval page",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 606,
-    "fields": {
-        "key": "packages_not_approved",
-        "body": "Listed here are packages that have not been approved for display.",
-        "help_text": "Description for packages not approved",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 607,
-    "fields": {
-        "key": "package_name",
-        "body": "Package Name",
-        "help_text": "Table heading for package name",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 608,
-    "fields": {
-        "key": "banding_type",
-        "body": "Banding Type",
-        "help_text": "Table heading for banding type",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 609,
-    "fields": {
-        "key": "default_country_currency",
-        "body": "Default Country/Currency",
-        "help_text": "Table heading for default country/currency",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 610,
-    "fields": {
-        "key": "approve",
-        "body": "Approve",
-        "help_text": "Button text for approve",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 611,
-    "fields": {
-        "key": "manage_meta_package",
-        "body": "Manage Meta Package",
-        "help_text": "Title for managing a meta package",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 612,
-    "fields": {
-        "key": "create_new_meta_package",
-        "body": "Create New Meta Package",
-        "help_text": "Title for creating a new meta package",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 613,
-    "fields": {
-        "key": "meta_packages",
-        "body": "Meta Packages",
-        "help_text": "Heading for meta packages section",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 614,
-    "fields": {
-        "key": "meta_packages_description",
-        "body": "A list of all the meta packages available (both active and inactive). As meta packages span multiple initiatives they can only be managed by staff.",
-        "help_text": "Description for meta packages section",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 615,
-    "fields": {
-        "key": "add_new_meta_package",
-        "body": "Add New Meta Package",
-        "help_text": "Button text for adding a new meta package",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 616,
-    "fields": {
-        "key": "contact",
-        "body": "Contact",
-        "help_text": "Table heading for contact",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 617,
-    "fields": {
-        "key": "meta_packages_group_description",
-        "body": "Meta Packages are a group of other packages that a library can subscribe to.",
-        "help_text": "Description for meta packages group",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 618,
-    "fields": {
-        "key": "username_email_info",
-        "body": "Your username will be the email address you used to register your account.",
-        "help_text": "Information about username being the email address",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 619,
-    "fields": {
-        "key": "login_error",
-        "body": "Your username and password didn't match. Please try again.",
-        "help_text": "Error message for login failure",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 620,
-    "fields": {
-        "key": "no_access_info",
-        "body": "Your account doesn't have access to this page. To proceed, please login with an account that has access.",
-        "help_text": "Information about no access to a page",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 621,
-    "fields": {
-        "key": "login_to_see_page",
-        "body": "Please login to see this page.",
-        "help_text": "Prompt to login to see a page",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 622,
-    "fields": {
-        "key": "reset_password",
-        "body": "Reset Password",
-        "help_text": "Button text for resetting password",
-        "rich_text": false
-    }
     },
     {
         "model": "cms.sitetext",
-        "pk": 626,
+        "pk": 556,
+        "fields": {
+            "key": "packages_not_approved",
+            "body": "Listed here are packages that have not been approved for display.",
+            "help_text": "Description for packages not approved",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 557,
+        "fields": {
+            "key": "banding_type",
+            "body": "Banding Type",
+            "help_text": "Table heading for banding type",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 558,
+        "fields": {
+            "key": "default_country_currency",
+            "body": "Default Country/Currency",
+            "help_text": "Table heading for default country/currency",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 559,
+        "fields": {
+            "key": "approve",
+            "body": "Approve",
+            "help_text": "Button text for approve",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 560,
+        "fields": {
+            "key": "manage_meta_package",
+            "body": "Manage Meta Package",
+            "help_text": "Title for managing a meta package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 561,
+        "fields": {
+            "key": "create_new_meta_package",
+            "body": "Create New Meta Package",
+            "help_text": "Title for creating a new meta package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 562,
+        "fields": {
+            "key": "meta_packages_description",
+            "body": "A list of all the meta packages available (both active and inactive). As meta packages span multiple initiatives they can only be managed by staff.",
+            "help_text": "Description for meta packages section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 563,
+        "fields": {
+            "key": "add_new_meta_package",
+            "body": "Add New Meta Package",
+            "help_text": "Button text for adding a new meta package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 564,
+        "fields": {
+            "key": "meta_packages_group_description",
+            "body": "Meta Packages are a group of other packages that a library can subscribe to.",
+            "help_text": "Description for meta packages group",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 565,
+        "fields": {
+            "key": "username_email_info",
+            "body": "Your username will be the email address you used to register your account.",
+            "help_text": "Information about username being the email address",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 566,
+        "fields": {
+            "key": "login_error",
+            "body": "Your username and password didn't match. Please try again.",
+            "help_text": "Error message for login failure",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 567,
+        "fields": {
+            "key": "no_access_info",
+            "body": "Your account doesn't have access to this page. To proceed, please login with an account that has access.",
+            "help_text": "Information about no access to a page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 568,
+        "fields": {
+            "key": "login_to_see_page",
+            "body": "Please login to see this page.",
+            "help_text": "Prompt to login to see a page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 569,
         "fields": {
             "key": "enter_new_password_twice",
             "body": "Please enter your new password twice so we can verify you typed it in correctly.",
@@ -5776,7 +5031,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 627,
+        "pk": 570,
         "fields": {
             "key": "new_password",
             "body": "New password:",
@@ -5786,7 +5041,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 628,
+        "pk": 571,
         "fields": {
             "key": "confirm_password",
             "body": "Confirm password:",
@@ -5796,7 +5051,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 629,
+        "pk": 572,
         "fields": {
             "key": "change_my_password",
             "body": "Change my password",
@@ -5806,7 +5061,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 630,
+        "pk": 573,
         "fields": {
             "key": "change",
             "body": "Change",
@@ -5816,7 +5071,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 631,
+        "pk": 574,
         "fields": {
             "key": "password_reset_instructions",
             "body": "If an account with the email you entered exists we've sent you instructions for resetting your password. You should receive this message shortly.",
@@ -5826,17 +5081,17 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 632,
+        "pk": 575,
         "fields": {
             "key": "password_reset_no_email",
-            "body": "If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.",
+            "body": "If you don\u2019t receive an email, please make sure you\u2019ve entered the address you registered with, and check your spam folder.",
             "help_text": "Instructions if no password reset email is received.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 633,
+        "pk": 576,
         "fields": {
             "key": "email_greeting",
             "body": "Dear {{ user.first_name }} {{ user.last_name }},",
@@ -5846,7 +5101,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 634,
+        "pk": 577,
         "fields": {
             "key": "password_reset_request",
             "body": "You're receiving this email because you requested a password reset for your user account at {{ site_name }}.",
@@ -5856,7 +5111,7 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 635,
+        "pk": 578,
         "fields": {
             "key": "password_reset_instruction",
             "body": "Please go to the following page and choose a new password:",
@@ -5866,17 +5121,17 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 636,
+        "pk": 579,
         "fields": {
             "key": "username_reminder",
-            "body": "Your username, in case you’ve forgotten: {{ user.get_username }}",
+            "body": "Your username, in case you\u2019ve forgotten: {{ user.get_username }}",
             "help_text": "Reminder of username in password reset email.",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 637,
+        "pk": 580,
         "fields": {
             "key": "site_name",
             "body": "{{ site_name }}",
@@ -5886,136 +5141,372 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 638,
+        "pk": 581,
         "fields": {
-            "key": "reset_your_password",
-            "body": "Reset your password",
-            "help_text": "Title for the password reset form page",
+            "key": "email_us",
+            "body": "Email Us",
+            "help_text": "Text for email us link",
             "rich_text": false
         }
     },
     {
         "model": "cms.sitetext",
-        "pk": 639,
+        "pk": 582,
+        "fields": {
+            "key": "contact",
+            "body": "Contact",
+            "help_text": "Menu option that reads 'Contact'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 583,
+        "fields": {
+            "key": "package_approval",
+            "body": "Package Approval",
+            "help_text": "A menu heading for 'Package Approval'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 584,
+        "fields": {
+            "key": "meta_packages",
+            "body": "Meta Packages",
+            "help_text": "A menu heading for 'Meta Packages'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 585,
+        "fields": {
+            "key": "summary",
+            "body": "Summary",
+            "help_text": "Text on nav page that reads 'Summary'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 586,
+        "fields": {
+            "key": "pricing",
+            "body": "Pricing",
+            "help_text": "Text on nav page and elsewhere that reads 'Pricing'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 587,
+        "fields": {
+            "key": "name",
+            "body": "Name",
+            "help_text": "Name text for dropdown",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 588,
+        "fields": {
+            "key": "standards",
+            "body": "Standards",
+            "help_text": "Table text on Edit Initiative page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 589,
+        "fields": {
+            "key": "media_files",
+            "body": "Media Files",
+            "help_text": "Table text on Edit Initiative page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 590,
+        "fields": {
+            "key": "no_packages_standards",
+            "body": "No packages adhere to our standards.",
+            "help_text": "Text for indicating no packages adhere to standards.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 591,
+        "fields": {
+            "key": "no_standards",
+            "body": "This package adheres to none of our standards.",
+            "help_text": "Text for indicating package adheres to no standards.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 592,
+        "fields": {
+            "key": "view_attestation_history",
+            "body": "View attestation history",
+            "help_text": "Link text for viewing attestation history.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 593,
+        "fields": {
+            "key": "only_in_collectives",
+            "body": "Only available in collectives",
+            "help_text": "Text for indicating availability only in collectives.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 594,
+        "fields": {
+            "key": "standards_attestation_history",
+            "body": "Standards Attestation History",
+            "help_text": "Modal title for standards attestation history.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 595,
+        "fields": {
+            "key": "standards_info",
+            "body": "Information about standards.",
+            "help_text": "Information text for standards section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 596,
+        "fields": {
+            "key": "package_name",
+            "body": "Package Name",
+            "help_text": "Table heading for package name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 597,
+        "fields": {
+            "key": "close",
+            "body": "Close",
+            "help_text": "Close text for modals",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 598,
+        "fields": {
+            "key": "month_contract",
+            "body": "month contract",
+            "help_text": "Appended after the number of months the contract runs for",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 599,
+        "fields": {
+            "key": "add_to_quote",
+            "body": "Add to Quote",
+            "help_text": "Button in collective element",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 600,
+        "fields": {
+            "key": "included_in",
+            "body": "Included in",
+            "help_text": "Preamble text to specify which packages are included in which metapackages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 601,
+        "fields": {
+            "key": "view",
+            "body": "View",
+            "help_text": "The word 'View' for the heading on CMS management pages",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 602,
+        "fields": {
+            "key": "delete",
+            "body": "Delete",
+            "help_text": "Text used in tables",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 603,
+        "fields": {
+            "key": "contact_us",
+            "body": "Contact Us",
+            "help_text": "Button text for contacting us.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 604,
+        "fields": {
+            "key": "create_new_package",
+            "body": "Create New Package",
+            "help_text": "Breadcrumb text for creating a new package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 605,
+        "fields": {
+            "key": "add_edit_package_lead",
+            "body": "Add new and edit existing package.",
+            "help_text": "Lead text for adding or editing a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 606,
+        "fields": {
+            "key": "list_documents",
+            "body": "List Documents",
+            "help_text": "Title for listing documents",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 607,
+        "fields": {
+            "key": "media_files_affiliated_with",
+            "body": "Media Files Affiliated with",
+            "help_text": "Title for media files affiliated with a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 608,
+        "fields": {
+            "key": "media_files_accessible",
+            "body": "Media Files are accessible only to libraries who have subscribed to one of your packages.",
+            "help_text": "Description for media files accessibility",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 609,
+        "fields": {
+            "key": "load_new_file",
+            "body": "Load New File",
+            "help_text": "Heading for loading a new file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 610,
+        "fields": {
+            "key": "upload_file",
+            "body": "Upload File",
+            "help_text": "Button text for uploading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 611,
+        "fields": {
+            "key": "date_uploaded",
+            "body": "Date Uploaded",
+            "help_text": "Table heading for date uploaded",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 612,
+        "fields": {
+            "key": "download_file",
+            "body": "Download File",
+            "help_text": "Link text for downloading a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 613,
+        "fields": {
+            "key": "delete_file",
+            "body": "Delete File",
+            "help_text": "Button text for deleting a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 614,
+        "fields": {
+            "key": "reset_your_password",
+            "body": "Reset your password",
+            "help_text": "Title for the password reset complete page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 615,
         "fields": {
             "key": "password_reset_form_instructions",
             "body": "Enter your email address below. If a matching account has been found a reset email will be sent to your inbox. Please ensure you check any junk mail or filter folders.",
             "help_text": "Instructions for the password reset form",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 616,
+        "fields": {
+            "key": "reset_password",
+            "body": "Reset Password",
+            "help_text": "Button text for resetting password",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 617,
+        "fields": {
+            "key": "more_info",
+            "body": "More Info",
+            "help_text": "Button text for more information",
+            "rich_text": false
+        }
     }
-,
-{
-    "model": "cms.sitetext",
-    "pk": 659,
-    "fields": {
-        "key": "more_info",
-        "body": "More Info",
-        "help_text": "Text for more information",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 660,
-    "fields": {
-        "key": "standards_attestation_history",
-        "body": "Standards Attestation History",
-        "help_text": "Title for standards attestation history",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 661,
-    "fields": {
-        "key": "close",
-        "body": "Close",
-        "help_text": "Text for closing a modal",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 662,
-    "fields": {
-        "key": "pricing",
-        "body": "Pricing",
-        "help_text": "Text for pricing",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 663,
-    "fields": {
-        "key": "contact_us",
-        "body": "Contact Us",
-        "help_text": "Text for contact us link",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 664,
-    "fields": {
-        "key": "email_us",
-        "body": "Email Us",
-        "help_text": "Text for email us link",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 665,
-    "fields": {
-        "key": "summary",
-        "body": "Summary",
-        "help_text": "Text for summary",
-        "rich_text": false
-    }
-}
-,
-{
-    "model": "cms.sitetext",
-    "pk": 666,
-    "fields": {
-        "key": "standards",
-        "body": "Standards",
-        "help_text": "Text for standards section heading",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 667,
-    "fields": {
-        "key": "standards_info",
-        "body": "Information about standards.",
-        "help_text": "Information text for standards section.",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 668,
-    "fields": {
-        "key": "no_standards",
-        "body": "This package adheres to none of our standards.",
-        "help_text": "Text for indicating package adheres to no standards.",
-        "rich_text": false
-    }
-},
-{
-    "model": "cms.sitetext",
-    "pk": 669,
-    "fields": {
-        "key": "view_attestation_history",
-        "body": "View attestation history",
-        "help_text": "Link text for viewing attestation history.",
-        "rich_text": false
-    }
-}
 ]
