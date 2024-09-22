@@ -5643,5 +5643,25 @@
             "help_text": "Button text for change action.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 631,
+        "fields": {
+            "key": "password_reset_instructions",
+            "body": "If an account with the email you entered exists we've sent you instructions for resetting your password. You should receive this message shortly.",
+            "help_text": "Instructions for password reset email.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 632,
+        "fields": {
+            "key": "password_reset_no_email",
+            "body": "If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.",
+            "help_text": "Instructions if no password reset email is received.",
+            "rich_text": false
+        }
     }
 ]
