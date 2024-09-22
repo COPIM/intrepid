@@ -187,7 +187,7 @@
             </span>
 
             <span class="current">
-                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+                <br/>{% get_site_text 'page_of' %} {{ works.number }} {% get_site_text 'of' %} {{ works.paginator.num_pages }}
             </span>
         </div>
     </div>

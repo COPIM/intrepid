@@ -5758,5 +5758,25 @@
             "help_text": "Collective Catalogue heading and alt text",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 644,
+        "fields": {
+            "key": "search_placeholder",
+            "body": "Search",
+            "help_text": "Placeholder text for search input",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 645,
+        "fields": {
+            "key": "search_name_placeholder",
+            "body": "Search name to save",
+            "help_text": "Placeholder text for search name input",
+            "rich_text": false
+        }
     }
 ]
