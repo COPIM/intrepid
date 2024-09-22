@@ -20,7 +20,7 @@
     <div class="row text-center">
         <div class="col-1"></div>
         <div class="col text-center">
-            <h1 class="text-center">{{ package.name }}</h1>
+            <h1 class="text-center">{% get_site_text 'package_name' %}</h1>
         </div>
 
         <div class="col-1"></div>
@@ -30,10 +30,10 @@
         <div class="col">
             <span class="colinfo"><i class="fa fa-building"></i> {% if package_type == 'package' %}
                 <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
-                initiatives{% endif %}</span>
+                {% get_site_text 'initiatives' %}{% endif %}</span>
         </div>
         <div class="col">
-            <span class="colinfo"><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</span>
+            <span class="colinfo"><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</span>
         </div>
         <div class="col">
             <span class="colinfo">
@@ -48,7 +48,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title white-text">Standards Attestation History</h4>
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                     <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -87,7 +87,7 @@
                 {% endfor %}
                 </ul>
                 {% if request.site.enable_standards %}
-                    <h3>Standards</h3>
+                    <h3>{% get_site_text 'standards' %}</h3>
                     {% get_site_text 'standards_info' %}
                     <ul>
                         {% for standard, packages in package.standards.items %}
@@ -100,7 +100,7 @@
                                 </ul>
                             </li>
                         {% empty %}
-                            <li>No packages adhere to our standards.</li>
+                            <li>{% get_site_text 'no_packages_standards' %}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -112,10 +112,10 @@
                         {% for standard in package.standards %}
                             <li><a target="_blank" href="{{ standard.details_url }}">{{ standard.standard.standard_name }}</a></li>
                         {% empty %}
-                            <li>This package adheres to none of our standards.</li>
+                            <li>{% get_site_text 'no_standards' %}</li>
                         {% endfor %}
                         {% if package.attestationhistory_set.all %}
-                            <li><a href="#"  data-toggle="modal" data-target="#history_modal">View attestation history</a></li>
+                            <li><a href="#"  data-toggle="modal" data-target="#history_modal">{% get_site_text 'view_attestation_history' %}</a></li>
                         {% endif %}
                     </ul>
                     {% endif %}
@@ -135,17 +135,17 @@
                         <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
                         {% if package.meta_packages %}
                             <li>
-                                <i class="fa fa-box"> </i> Included in
+                                <i class="fa fa-box"> </i> {% get_site_text 'included_in' %}
                                 {% for mp in package.meta_packages %}{{ mp.name }}{% if not forloop.last %},
                                 {% endif %}{% endfor %}
                             </li>
                         {% endif %}
                         {% if package.meta_only %}
-                            <li><i class="fa fa-people-group"> </i> Only available in collectives</li>
+                            <li><i class="fa fa-people-group"> </i> {% get_site_text 'only_in_collectives' %}</li>
                         {% endif %}
                     </ul>
                     {% if package_type == 'meta' %}
-                        <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue btn-block">Add to Quote <span class="fa fa-plus"></span></a>
+                        <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue btn-block">{% get_site_text 'add_to_quote' %} <span class="fa fa-plus"></span></a>
                     {% elif not package.meta_only %}
                         <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary btn-obc-blue btn-block">Add to Quote <span class="fa fa-plus"></span></a>
                     {% endif %}
