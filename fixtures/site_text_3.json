@@ -5904,4 +5904,35 @@
             "rich_text": false
         }
     }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 659,
+    "fields": {
+        "key": "more_info",
+        "body": "More Info",
+        "help_text": "Text for more information",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 660,
+    "fields": {
+        "key": "standards_attestation_history",
+        "body": "Standards Attestation History",
+        "help_text": "Title for standards attestation history",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 661,
+    "fields": {
+        "key": "close",
+        "body": "Close",
+        "help_text": "Text for closing a modal",
+        "rich_text": false
+    }
+}
 ]
