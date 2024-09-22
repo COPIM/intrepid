@@ -5508,5 +5508,245 @@
             "help_text": "Button text for more information",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 618,
+        "fields": {
+            "key": "books",
+            "body": "Books",
+            "help_text": "Title for the books section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 619,
+        "fields": {
+            "key": "build_advanced_search",
+            "body": "Build an Advanced Search",
+            "help_text": "Title for building an advanced search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 620,
+        "fields": {
+            "key": "collective_catalogue_description",
+            "body": "The collective catalogue displays books that are in the Thoth system and that are supported by the work and funding model of the Open Book Collective.",
+            "help_text": "Description of the collective catalogue",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 621,
+        "fields": {
+            "key": "add_to_search",
+            "body": "Add to Search",
+            "help_text": "Button text for adding to search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 622,
+        "fields": {
+            "key": "free_text",
+            "body": "Free text",
+            "help_text": "Option for free text search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 623,
+        "fields": {
+            "key": "keyword",
+            "body": "Keyword",
+            "help_text": "Option for keyword search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 624,
+        "fields": {
+            "key": "author",
+            "body": "Author",
+            "help_text": "Option for author search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 625,
+        "fields": {
+            "key": "add_search",
+            "body": "Add search",
+            "help_text": "Button text for adding a search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 626,
+        "fields": {
+            "key": "author_search_note",
+            "body": "Note: to search for author names, place your query in quotation marks to match a full name",
+            "help_text": "Note for searching author names",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 627,
+        "fields": {
+            "key": "search_configuration",
+            "body": "Search Configuration",
+            "help_text": "Title for search configuration section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 628,
+        "fields": {
+            "key": "type",
+            "body": "Type",
+            "help_text": "Column heading for type",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 629,
+        "fields": {
+            "key": "value",
+            "body": "Value",
+            "help_text": "Column heading for value",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 630,
+        "fields": {
+            "key": "remove",
+            "body": "Remove",
+            "help_text": "Button text for removing an item",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 631,
+        "fields": {
+            "key": "delete",
+            "body": "Delete",
+            "help_text": "Button text for deleting an item",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 632,
+        "fields": {
+            "key": "save_this_search",
+            "body": "Save this search",
+            "help_text": "Button text for saving a search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 633,
+        "fields": {
+            "key": "reset_search",
+            "body": "Reset search",
+            "help_text": "Button text for resetting a search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 634,
+        "fields": {
+            "key": "delete_all_terms",
+            "body": "Delete all terms from this search",
+            "help_text": "Button text for deleting all search terms",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 635,
+        "fields": {
+            "key": "manage_your_searches",
+            "body": "Manage your searches",
+            "help_text": "Link text for managing searches",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 636,
+        "fields": {
+            "key": "first",
+            "body": "first",
+            "help_text": "Pagination text for first page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 637,
+        "fields": {
+            "key": "previous",
+            "body": "previous",
+            "help_text": "Pagination text for previous page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 638,
+        "fields": {
+            "key": "next",
+            "body": "next",
+            "help_text": "Pagination text for next page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 639,
+        "fields": {
+            "key": "last",
+            "body": "last",
+            "help_text": "Pagination text for last page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 640,
+        "fields": {
+            "key": "page_of",
+            "body": "Page",
+            "help_text": "Pagination text for current page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 641,
+        "fields": {
+            "key": "of",
+            "body": "of",
+            "help_text": "Pagination text for 'of' in page count",
+            "rich_text": false
+        }
     }
 ]
