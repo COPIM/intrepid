@@ -5268,6 +5268,96 @@
             "help_text": "Button text to view the full catalogue",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 650,
+        "fields": {
+            "key": "package_name",
+            "body": "Package Name",
+            "help_text": "Title for the package name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 651,
+        "fields": {
+            "key": "month_contract",
+            "body": "month contract",
+            "help_text": "Text for month contract",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 652,
+        "fields": {
+            "key": "standards_attestation_history",
+            "body": "Standards Attestation History",
+            "help_text": "Title for standards attestation history",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 653,
+        "fields": {
+            "key": "no_packages_standards",
+            "body": "No packages adhere to our standards.",
+            "help_text": "Text for no packages adhere to standards",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 654,
+        "fields": {
+            "key": "no_standards",
+            "body": "This package adheres to none of our standards.",
+            "help_text": "Text for no standards",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 655,
+        "fields": {
+            "key": "view_attestation_history",
+            "body": "View attestation history",
+            "help_text": "Link text for viewing attestation history",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 656,
+        "fields": {
+            "key": "included_in",
+            "body": "Included in",
+            "help_text": "Text for included in",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 657,
+        "fields": {
+            "key": "only_in_collectives",
+            "body": "Only available in collectives",
+            "help_text": "Text for only available in collectives",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 658,
+        "fields": {
+            "key": "add_to_quote",
+            "body": "Add to Quote",
+            "help_text": "Button text for adding to quote",
+            "rich_text": false
+        }
     }
     ,
     {
