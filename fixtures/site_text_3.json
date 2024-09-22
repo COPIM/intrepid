@@ -5188,6 +5188,36 @@
             "help_text": "Text for login link",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 640,
+        "fields": {
+            "key": "reset_your_password",
+            "body": "Reset your password",
+            "help_text": "Title for the password reset form page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 641,
+        "fields": {
+            "key": "password_reset_form_instructions",
+            "body": "Enter your email address below. If a matching account has been found a reset email will be sent to your inbox. Please ensure you check any junk mail or filter folders.",
+            "help_text": "Instructions for the password reset form",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 642,
+        "fields": {
+            "key": "reset_password",
+            "body": "Reset Password",
+            "help_text": "Button text for resetting password",
+            "rich_text": false
+        }
     }
     ,
     {
