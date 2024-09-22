@@ -5513,4 +5513,55 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 618,
+    "fields": {
+        "key": "username_email_info",
+        "body": "Your username will be the email address you used to register your account.",
+        "help_text": "Information about username being the email address",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 619,
+    "fields": {
+        "key": "login_error",
+        "body": "Your username and password didn't match. Please try again.",
+        "help_text": "Error message for login failure",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 620,
+    "fields": {
+        "key": "no_access_info",
+        "body": "Your account doesn't have access to this page. To proceed, please login with an account that has access.",
+        "help_text": "Information about no access to a page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 621,
+    "fields": {
+        "key": "login_to_see_page",
+        "body": "Please login to see this page.",
+        "help_text": "Prompt to login to see a page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 622,
+    "fields": {
+        "key": "reset_password",
+        "body": "Reset Password",
+        "help_text": "Button text for resetting password",
+        "rich_text": false
+    }
+}
 ]
