@@ -1,6 +1,6 @@
 {% extends "base/admin_base.html" %}
 {% load django_bootstrap5 crispy_forms_tags booleans %}
-{% block title %}{% if package %}Manage Meta Package{% else %}Create New Meta Package{% endif %}{% endblock %}
+{% block title %}{% if package %}{% get_site_text 'manage_meta_package' %}{% else %}{% get_site_text 'create_new_meta_package' %}{% endif %}{% endblock %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'list_meta_packages' %}">Meta Packages</a></li>
@@ -11,18 +11,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>Meta Packages</h1>
-                <p class="lead">A list of all the meta packages available (both active and inactive). As meta packages span multiple initiatives they can only be managed by staff.</p>
-                <p><a href="{% url 'create_meta_package' %}" class="btn btn-success float-end"><i class="fa fa-plus"></i> Add New Meta Package</a></p>
+                <h1>{% get_site_text 'meta_packages' %}</h1>
+                <p class="lead">{% get_site_text 'meta_packages_description' %}</p>
+                <p><a href="{% url 'create_meta_package' %}" class="btn btn-success float-end"><i class="fa fa-plus"></i> {% get_site_text 'add_new_meta_package' %}</a></p>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Package Name</th>
-                        <th># Packages</th>
-                        <th>Contact</th>
-                        <th>Active</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'package_name' %}</th>
+                        <th>{% get_site_text 'number_of_packages' %}</th>
+                        <th>{% get_site_text 'contact' %}</th>
+                        <th>{% get_site_text 'active' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                     </thead>
                     <tbody>
