@@ -5248,6 +5248,16 @@
             "help_text": "Button text for pricing",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 648,
+        "fields": {
+            "key": "highlights",
+            "body": "Highlights",
+            "help_text": "Title for the highlights section",
+            "rich_text": false
+        }
     }
     ,
     {
