@@ -5380,4 +5380,65 @@
             "rich_text": false
         }
     }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 605,
+    "fields": {
+        "key": "package_approval",
+        "body": "Package Approval",
+        "help_text": "Title for package approval page",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 606,
+    "fields": {
+        "key": "packages_not_approved",
+        "body": "Listed here are packages that have not been approved for display.",
+        "help_text": "Description for packages not approved",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 607,
+    "fields": {
+        "key": "package_name",
+        "body": "Package Name",
+        "help_text": "Table heading for package name",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 608,
+    "fields": {
+        "key": "banding_type",
+        "body": "Banding Type",
+        "help_text": "Table heading for banding type",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 609,
+    "fields": {
+        "key": "default_country_currency",
+        "body": "Default Country/Currency",
+        "help_text": "Table heading for default country/currency",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 610,
+    "fields": {
+        "key": "approve",
+        "body": "Approve",
+        "help_text": "Button text for approve",
+        "rich_text": false
+    }
+}
 ]
