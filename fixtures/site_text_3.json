@@ -5502,4 +5502,15 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 617,
+    "fields": {
+        "key": "meta_packages_group_description",
+        "body": "Meta Packages are a group of other packages that a library can subscribe to.",
+        "help_text": "Description for meta packages group",
+        "rich_text": false
+    }
+}
 ]
