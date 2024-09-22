@@ -5956,4 +5956,25 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 664,
+    "fields": {
+        "key": "email_us",
+        "body": "Email Us",
+        "help_text": "Text for email us link",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 665,
+    "fields": {
+        "key": "summary",
+        "body": "Summary",
+        "help_text": "Text for summary",
+        "rich_text": false
+    }
+}
 ]
