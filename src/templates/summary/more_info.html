@@ -6,11 +6,11 @@
     <link href="{% static "frontend/css/tables.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %}{{ initiative.name }} - More Info{% endblock title %}
+{% block title %}{{ initiative.name }} - {% get_site_text 'more_info' %}{% endblock title %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'oa_inits_header' %}</li>
-    <li class="breadcrumb-item active" aria-current="page">{{ initiaitve.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ initiative.name }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -41,7 +41,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title white-text">Standards Attestation History</h4>
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                     <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -56,7 +56,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{% get_site_text 'close' %}</button>
                 </div>
 
             </div>
