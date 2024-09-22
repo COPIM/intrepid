@@ -5748,5 +5748,15 @@
             "help_text": "Pagination text for 'of' in page count",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 642,
+        "fields": {
+            "key": "collective_catalogue",
+            "body": "Collective Catalogue",
+            "help_text": "Collective Catalogue heading and alt text",
+            "rich_text": false
+        }
     }
 ]

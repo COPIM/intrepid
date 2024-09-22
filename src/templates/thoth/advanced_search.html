@@ -18,7 +18,7 @@
             <h1 class="text-left">{% get_site_text 'build_advanced_search' %}</h1>
             <p class="subhead-no-offset">{% get_site_text 'collective_catalogue_description' %}</p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/></div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="{% get_site_text 'collective_catalogue' %}"/></div>
         <div class="col-1"></div>
     </div>
 {% endblock %}
@@ -42,7 +42,7 @@
                     <tr>
                         <td>{{ element.get_search_type_display }}</td>
                         <td>{{ element.text_content }}</td>
-                        <td><form method="post">{% csrf_token %}<input class="form-control" type="hidden" name="to_del" id="to_del" value="{{ element.pk }}"/><input class="form-control" type="submit" value="{% get_site_text 'delete' %}" id="Delete" name="Delete"/></form></td>
+                        <td><form method="post">{% csrf_token %}<input class="form-control" type="hidden" name="to_del" id="to_del" value="{{ element.pk }}"/><input class="form-control" type="submit" value="{% get_site_text 'delete' %}" id="Delete" name="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -108,7 +108,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/>
-            <h1>Collective Catalogue</h1>
+            <h1>{% get_site_text 'collective_catalogue' %}</h1>
             <p>
                 {% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
             </p>
@@ -119,7 +119,7 @@
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>This is the collective catalogue, showcasing publications from presses at the Open Book Collective.</p>
+            <p>{% get_site_text 'collective_catalogue_description' %}</p>
         </div>
         <div class="col-1"></div>
     </div>
