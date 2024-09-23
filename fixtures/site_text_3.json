@@ -6441,5 +6441,25 @@
         "help_text": "Button text for adding a new vocabulary",
         "rich_text": false
     }
-}
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 694,
+        "fields": {
+            "key": "banding_vocabulary_configuration",
+            "body": "Banding Vocabulary Configuration",
+            "help_text": "Title for the banding vocabulary configuration page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 695,
+        "fields": {
+            "key": "add_or_edit_banding_vocabulary",
+            "body": "Add a new or edit an existing banding vocabulary",
+            "help_text": "Lead text for adding or editing a banding vocabulary",
+            "rich_text": false
+        }
+    }
 ]
