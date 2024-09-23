@@ -2223,7 +2223,7 @@
         "model": "cms.sitetext",
         "pk": 289,
         "fields": {
-            "key": "book_authorship_map",
+            "key": "books_authorship_map",
             "body": "Book Authorship Map",
             "help_text": "Text on dashboard",
             "rich_text": false
@@ -3996,26 +3996,6 @@
             "key": "your_order_post",
             "body": "is now complete. If you require assistance with your order ensure you quote this order number.",
             "help_text": "Helper text on order complete",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 467,
-        "fields": {
-            "key": "order_form",
-            "body": "Order Form",
-            "help_text": "Title for the order form page",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 468,
-        "fields": {
-            "key": "order_form_sub_h",
-            "body": "Please complete the order form below.",
-            "help_text": "Subheading for the order form page",
             "rich_text": false
         }
     },
@@ -6436,6 +6416,266 @@
             "key": "books",
             "body": "Books",
             "help_text": "Title for the books section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 711,
+        "fields": {
+            "key": "remove_banding_and_currencies",
+            "body": "Remove Banding and Currencies",
+            "help_text": "Button text for removing banding and currencies.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 712,
+        "fields": {
+            "key": "revert_document_to_version",
+            "body": "Revert document to version",
+            "help_text": "Button text for reverting a file",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 713,
+        "fields": {
+            "key": "debugger_packages_set_default_banding",
+            "body": "Packages can set the default banding that they wish to use.",
+            "help_text": "Text on the debugger page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 714,
+        "fields": {
+            "key": "order_form_footer",
+            "body": "",
+            "help_text": "Text on the order page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 714,
+        "fields": {
+            "key": "debugger_packages_associated_bandings",
+            "body": "Packages have associated bandings (“Open Book Publishers Membership” can say it uses “Jisc” and “Carnegie”).",
+            "help_text": "Text on the debugger page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 715,
+        "fields": {
+            "key": "latest_publications",
+            "body": "Latest Publications",
+            "help_text": "Header on the Latest Publications page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 716,
+        "fields": {
+            "key": "debugger_platform_managers",
+            "body": "Platform Managers at OBC setup bandings that have tiers that are either banded or based on FTE (“Jisc Collections” → “Band 1”, “Band 2” / “Carnegie” → “Big (1000 FTE)”, “Medium (500 FTE)”, “Small (100 FTE)”).",
+            "help_text": "Text on the debugger page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 717,
+        "fields": {
+            "key": "required",
+            "body": "Required",
+            "help_text": "Table text on the list_order_invoices page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 718,
+        "fields": {
+            "key": "change_access",
+            "body": "Change Access",
+            "help_text": "Breadcrumb for change access",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 719,
+        "fields": {
+            "key": "order",
+            "body": "Order",
+            "help_text": "Text for 'order'",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 720,
+        "fields": {
+            "key": "debugger_check_match_user_info",
+            "body": "Check if we can match this against the user’s stored information (FTE/bandings).",
+            "help_text": "Step in the flow to check match against user's stored information.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 721,
+        "fields": {
+            "key": "view_versions",
+            "body": "View Versions",
+            "help_text": "Link text for viewing document versions",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 722,
+        "fields": {
+            "key": "debugger_packages_specify_currencies",
+            "body": "Packages can specify which currencies they provide an associated banding in. So Jisc Collections, “Band 1”, could be paid for in GBP or USD.",
+            "help_text": "Explanation of packages specifying currencies.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 723,
+        "fields": {
+            "key": "reverting_warning",
+            "body": "Reverting will overwrite the current document details with the version's.",
+            "help_text": "Warning about reverting document versions",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 724,
+        "fields": {
+            "key": "debugger_packages_set_prices",
+            "body": "Packages set prices for currency-associated-bandings (BandingTypeCurrencyEntries). (E.g. a price for Jisc Band 1 in GBP).",
+            "help_text": "Explanation of packages setting prices.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 725,
+        "fields": {
+            "key": "documents_affiliated_with",
+            "body": "Documents Affiliated with",
+            "help_text": "Heading for documents affiliated with a package",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 726,
+        "fields": {
+            "key": "order_form_totals",
+            "body": "Order Totals",
+            "help_text": "Heading for totals on the Order Form page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 727,
+        "fields": {
+            "key": "debugger_fallback_default_banding",
+            "body": "If not, fall back to package default banding and currency.",
+            "help_text": "Step in the flow to fall back to default banding and currency.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 728,
+        "fields": {
+            "key": "no_versions_recorded",
+            "body": "No versions recorded for this document.",
+            "help_text": "Message when no document versions are recorded",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 729,
+        "fields": {
+            "key": "debugger_ask_user_details",
+            "body": "If not, ask user to give their details.",
+            "help_text": "Step in the flow to ask user for details.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 730,
+        "fields": {
+            "key": "debugger_payment_processors_associated",
+            "body": "Payment processors are associated with a currency-associated banding. So LYRASIS are set to handle all prices in Jisc Band 1 in USD.",
+            "help_text": "Explanation of payment processors associated with banding.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 731,
+        "fields": {
+            "key": "manage_vocabs",
+            "body": "Manage Vocabs",
+            "help_text": "Breadcrumb text for managing vocabs",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 732,
+        "fields": {
+            "key": "choices",
+            "body": "Choices",
+            "help_text": "Table text for choices",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 733,
+        "fields": {
+            "key": "documents_warning",
+            "body": "Warning: all documents here will be public and visible to everybody. These are designed to be contracts and other details of the package.",
+            "help_text": "Warning about document visibility",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 734,
+        "fields": {
+            "key": "debugger_find_prices",
+            "body": "Find any/all prices in the user’s preferred currency.",
+            "help_text": "Step in the flow to find prices in user's preferred currency.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 735,
+        "fields": {
+            "key": "view_document",
+            "body": "View Document",
+            "help_text": "Link text for viewing a document",
             "rich_text": false
         }
     }

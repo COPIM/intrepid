@@ -44,7 +44,7 @@
 
     <div class="row">
         <div class="col package-collection-text">
-            {% get_site_text 'initiative_pack' %}
+            {% get_site_text 'initiative_packages' %}
         </div>
     </div>
     {% if request.site.enable_search_on_packages %}
@@ -128,7 +128,7 @@
         <div class="pill-row">
             <button class="left-pill-blue inactive-blue-pill" onclick="location.href='{% url 'package_list' %}'">{% get_site_text 'packages' %}</button><button onclick="location.href='{% url 'initiative_list' %}'" class="right-pill-blue active-pill">{% get_site_text 'initiatives' %}</button>
         </div>
-        <h2>{% get_site_text 'initiatives_header' %}</h2>
+        <h2>{% get_site_text 'initiatives' %}</h2>
     </div>
     </div>
     <div class="row row-spacer">
@@ -143,7 +143,7 @@
 
     <div class="row spacer">
         <div class="col package-col package-collection-text">
-            {% get_site_text 'initiative_pack' %}
+            {% get_site_text 'initiative_packages' %}
             <form method="get">
                 <div class="form-group">
                     <select class="sort-box form-control mb-2 mr-sm-2" type="text" name="initiative" id="sort-mobile"

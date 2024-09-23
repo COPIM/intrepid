@@ -41,7 +41,7 @@
                         <th>{% get_site_text 'name' %}</th>
                         <th>{% get_site_text 'edit_currencies' %}</th>
                         <th>{% get_site_text 'remove_banding_and_prices' %}</th>
-                        <th>{% get_site_text 'edit_redirect' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +50,7 @@
                         <td>{{ banding.banding_type.name }}</td>
                         <td><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding.pk %}" class="btn btn-success">{% get_site_text 'edit_currencies' %}</a></td>
                         <td><form method="POST" action="{% url 'delete_package_banding' package.pk initiative.pk banding.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'remove_banding_and_currencies' %}"/></form></td>
-                        <td><a href="{% url 'edit_redirect_for_banding' package.pk initiative.pk banding.pk %}" class="btn btn-warning">{% get_site_text 'edit_redirect' %}</a></td>
+                        <td><a href="{% url 'edit_redirect_for_banding' package.pk initiative.pk banding.pk %}" class="btn btn-warning">{% get_site_text 'edit' %}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
