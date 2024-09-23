@@ -5969,5 +5969,15 @@
         "help_text": "Heading text in Thoth",
         "rich_text": false
     }
-}
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 646,
+        "fields": {
+            "key": "books_from",
+            "body": "Books from",
+            "help_text": "Heading for books from a specific publisher",
+            "rich_text": false
+        }
+    }
 ]
