@@ -2,16 +2,16 @@
 {% load static %}
 
 {% block title %}
-Books
+{% get_site_text 'books' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'all_books' %}">Books</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'all_books' %}">{% get_site_text 'books' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ publisher.publisher_name }}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
-<h1>Books from {{ publisher.publisher_name }}</h1>
+<h1>{% get_site_text 'books_from' %} {{ publisher.publisher_name }}</h1>
 <section class="basic-information">
 
     <div class="book_list">
