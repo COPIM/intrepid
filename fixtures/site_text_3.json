@@ -6401,4 +6401,45 @@
         "rich_text": false
     }
 }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 690,
+    "fields": {
+        "key": "manage_banding_type_vocabs",
+        "body": "Manage Banding Type Vocabs",
+        "help_text": "Title for managing banding type vocabs",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 691,
+    "fields": {
+        "key": "manage_banded_vocabularies",
+        "body": "Manage Banded Vocabularies",
+        "help_text": "Lead text for managing banded vocabularies",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 692,
+    "fields": {
+        "key": "drag_and_drop_vocab",
+        "body": "Drag and drop the vocabs into groups, this way they will appear in the correct order on the front end.",
+        "help_text": "Instruction for dragging and dropping vocabularies",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 693,
+    "fields": {
+        "key": "add_new_vocab",
+        "body": "Add new vocab",
+        "help_text": "Button text for adding a new vocabulary",
+        "rich_text": false
+    }
+}
 ]
