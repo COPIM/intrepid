@@ -5888,6 +5888,106 @@
             "help_text": "Heading for keywords section.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 677,
+        "fields": {
+            "key": "thoth_sync",
+            "body": "Thoth Sync",
+            "help_text": "Title for Thoth Sync page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 678,
+        "fields": {
+            "key": "syncing_process_description",
+            "body": "Syncing with Thoth is a multi-stage process:",
+            "help_text": "Description of the syncing process with Thoth",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 679,
+        "fields": {
+            "key": "run_test_import",
+            "body": "Run a test import. This verifies that the remote Thoth server is compatible.",
+            "help_text": "Instruction to run a test import",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 680,
+        "fields": {
+            "key": "run_full_import",
+            "body": "Run a full import. This pulls data into the local Thoth database.",
+            "help_text": "Instruction to run a full import",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 681,
+        "fields": {
+            "key": "notify_users",
+            "body": "Notify users.",
+            "help_text": "Instruction to notify users",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 682,
+        "fields": {
+            "key": "run_test",
+            "body": "Run test",
+            "help_text": "Button text for running a test",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 683,
+        "fields": {
+            "key": "run_import",
+            "body": "Run import",
+            "help_text": "Button text for running an import",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 684,
+        "fields": {
+            "key": "notify_users_button",
+            "body": "Notify users",
+            "help_text": "Button text for notifying users",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 685,
+        "fields": {
+            "key": "test_results",
+            "body": "Test results",
+            "help_text": "Label for test results section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 686,
+        "fields": {
+            "key": "last_real_thoth_import",
+            "body": "Last real Thoth import",
+            "help_text": "Label for last real Thoth import section",
+            "rich_text": false
+        }
     }
 ,
 {
