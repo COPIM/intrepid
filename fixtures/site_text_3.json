@@ -6501,5 +6501,25 @@
             "help_text": "Text for adding a new subject",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 702,
+        "fields": {
+            "key": "manage_standards",
+            "body": "Manage Standards",
+            "help_text": "Title for managing standards",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 703,
+        "fields": {
+            "key": "manage_standards_for_attestation",
+            "body": "Manage Standards for Attestation",
+            "help_text": "Lead text for managing standards for attestation",
+            "rich_text": false
+        }
     }
 ]
