@@ -5988,6 +5988,16 @@
             "help_text": "Label for last real Thoth import section",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 705,
+        "fields": {
+            "key": "subject_list_description",
+            "body": "{{ request.site_name }} subject list. Initiatives can pick one or more subjects for their packages.",
+            "help_text": "Description of the subject list.",
+            "rich_text": false
+        }
     }
 ,
 {
