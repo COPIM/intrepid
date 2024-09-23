@@ -6471,5 +6471,35 @@
             "help_text": "Lead text for adding or editing standard attestations",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 697,
+        "fields": {
+            "key": "manage_subject_vocabs",
+            "body": "Manage Subject Vocabs",
+            "help_text": "Title for managing subject vocabularies",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 698,
+        "fields": {
+            "key": "edit_subject",
+            "body": "Edit Subject",
+            "help_text": "Text for editing a subject",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 699,
+        "fields": {
+            "key": "add_new_subject",
+            "body": "Add New Subject",
+            "help_text": "Text for adding a new subject",
+            "rich_text": false
+        }
     }
 ]
