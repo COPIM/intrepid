@@ -6370,4 +6370,35 @@
             "rich_text": false
         }
     }
+,
+{
+    "model": "cms.sitetext",
+    "pk": 687,
+    "fields": {
+        "key": "login_info",
+        "body": "Before logging in to OBC please ensure you have activated your account by following the activation link that has been sent to your registered email address.",
+        "help_text": "Information before logging in.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 688,
+    "fields": {
+        "key": "post_login_info",
+        "body": "Once you have logged in you will be taken to the OBC Dashboard, where you can manage your account.",
+        "help_text": "Information after logging in.",
+        "rich_text": false
+    }
+},
+{
+    "model": "cms.sitetext",
+    "pk": 689,
+    "fields": {
+        "key": "auth_step_info",
+        "body": "",
+        "help_text": "Information for the authentication step.",
+        "rich_text": false
+    }
+}
 ]
