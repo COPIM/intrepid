@@ -39,7 +39,7 @@
                     <tr>
                         <td>{{ vocab.standard_name|safe }}</td>
                         <td><a href="{% url 'standard_edit' vocab.pk %}?return={{ request.path|urlencode }}" class="btn btn-success">Edit</a></td>
-                        <td><form method="POST" action="{% url 'standard_delete' vocab.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        <td><form method="POST" action="{% url 'standard_delete' vocab.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
 
                     </tr>
                     {% endfor %}
@@ -48,7 +48,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <p>
-                    <a class="btn btn-success" href="{% url 'standard_new' %}?return={{ request.path|urlencode }}">Add new standard</a>
+                    <a class="btn btn-success" href="{% url 'standard_new' %}?return={{ request.path|urlencode }}">{% get_site_text 'add_new_standard' %}</a>
                 </p>
             </form>
 

@@ -5,7 +5,7 @@
 {% block page-title %}{% get_site_text 'manage_subject_vocabs' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">{% get_site_text 'manage_subject_vocabs' %}</a></li>
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">
         {% if subject %}{% get_site_text 'edit_subject' %} {{ subject.pk }}{% else %}{% get_site_text 'add_new_subject' %}{% endif %}
