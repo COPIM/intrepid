@@ -30,7 +30,7 @@
                     <tr>
                         <th>{% get_site_text 'name' %}</th>
                         <th>{% get_site_text 'view' %}</th>
-                        <th>{% get_site_text 'revise' %}</th>
+                        <th>{% get_site_text 'revise_document' %}</th>
                         <th>{% get_site_text 'versions' %}</th>
                         <th>{% get_site_text 'delete' %}</th>
                     </tr>
@@ -42,7 +42,7 @@
                         <td><a href="{% url 'view_document' package.id initiative.id document.id %}">{% get_site_text 'view_document' %}</a></td>
                         <td><a href="{% url 'upload_new_document' package.id initiative.id document.id %}">{% get_site_text 'revise_document' %}</a></td>
                         <td><a href="#" data-toggle="modal" data-target="#document-{{ document.pk }}">{% get_site_text 'view_versions' %}</a></td>
-                        <td><form method="POST" action="{% url 'delete_document' package.id initiative.id document.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete_document' %}"/></form></td>
+                        <td><form method="POST" action="{% url 'delete_document' package.id initiative.id document.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -110,7 +110,7 @@
                 <p class="login-text">{% blocktrans %}{% endblocktrans %}</p>
               {% elif wizard.steps.current == 'token' %}
                 {% if device.method == 'call' %}
-                  <p>{% get_site_text '2a_calling' %}</p>
+                  <p>{% get_site_text '2fa_calling' %}</p>
                 {% elif device.method == 'sms' %}
                   <p>{% get_site_text '2fa_text' %}</p>
                 {% else %}
