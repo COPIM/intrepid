@@ -5979,5 +5979,55 @@
             "help_text": "Heading for books from a specific publisher",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 648,
+        "fields": {
+            "key": "featured_books_page_description",
+            "body": "This page allows you to add a new featured title from the Thoth shared catalogue to your initiative's page.",
+            "help_text": "Description for the featured books page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 649,
+        "fields": {
+            "key": "find_the_book",
+            "body": "find the book that you wish to use",
+            "help_text": "Link text to find the book",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 650,
+        "fields": {
+            "key": "featured_books_page_instruction",
+            "body": "In the URL bar, you will see a URL that ends with '/books/book/1309/'. Put that last number in the below box to add the title.",
+            "help_text": "Instruction for adding a book on the featured books page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 651,
+        "fields": {
+            "key": "thoth_import_id_placeholder",
+            "body": "The Thoth import ID",
+            "help_text": "Placeholder text for Thoth import ID input",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 652,
+        "fields": {
+            "key": "save_to_initiative",
+            "body": "Save to Initiative",
+            "help_text": "Button text for saving to initiative",
+            "rich_text": false
+        }
     }
 ]
