@@ -6029,5 +6029,245 @@
             "help_text": "Button text for saving to initiative",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 653,
+        "fields": {
+            "key": "saved_searches",
+            "body": "Saved Searches",
+            "help_text": "Title for saved searches page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 654,
+        "fields": {
+            "key": "saved_searches_description",
+            "body": "These are the searches that you have made previously and saved. You can here re-run these searches or sign up to email alerts.",
+            "help_text": "Description for saved searches page",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 655,
+        "fields": {
+            "key": "search_name",
+            "body": "Search name",
+            "help_text": "Table heading for search name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 656,
+        "fields": {
+            "key": "terms",
+            "body": "Terms",
+            "help_text": "Table heading for search terms",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 657,
+        "fields": {
+            "key": "email_updates",
+            "body": "Email updates",
+            "help_text": "Table heading for email updates",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 658,
+        "fields": {
+            "key": "run_search",
+            "body": "Run search",
+            "help_text": "Table heading for run search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 659,
+        "fields": {
+            "key": "delete",
+            "body": "Delete",
+            "help_text": "Table heading for delete",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 660,
+        "fields": {
+            "key": "subscribe_email_updates",
+            "body": "Subscribe for email updates",
+            "help_text": "Button text for subscribing to email updates",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 661,
+        "fields": {
+            "key": "unsubscribe_email_updates",
+            "body": "Unsubscribe from email updates",
+            "help_text": "Button text for unsubscribing from email updates",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 662,
+        "fields": {
+            "key": "run_this_search",
+            "body": "Run this search",
+            "help_text": "Button text for running a search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 663,
+        "fields": {
+            "key": "delete_this_search",
+            "body": "Delete this Search",
+            "help_text": "Button text for deleting a search",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 664,
+        "fields": {
+            "key": "thoth_feed",
+            "body": "Thoth Feed",
+            "help_text": "Title for Thoth feed section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 665,
+        "fields": {
+            "key": "thoth_feed_description",
+            "body": "These are the books matched by all of the above searches",
+            "help_text": "Description for Thoth feed section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 666,
+        "fields": {
+            "key": "authors",
+            "body": "Authors",
+            "help_text": "Table heading for authors",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 667,
+        "fields": {
+            "key": "book_name",
+            "body": "Book Name",
+            "help_text": "Table heading for book name",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 668,
+        "fields": {
+            "key": "publisher",
+            "body": "Publisher",
+            "help_text": "Table heading for publisher",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 669,
+        "fields": {
+            "key": "date",
+            "body": "Date",
+            "help_text": "Table heading for date",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 670,
+        "fields": {
+            "key": "view",
+            "body": "View",
+            "help_text": "Table heading for view",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 671,
+        "fields": {
+            "key": "catalogue_record",
+            "body": "Catalogue record",
+            "help_text": "Link text for catalogue record",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 672,
+        "fields": {
+            "key": "institutional_updates",
+            "body": "Institutional Updates",
+            "help_text": "Title for institutional updates section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 673,
+        "fields": {
+            "key": "institutional_updates_description",
+            "body": "These are updates directed specifically at your institution (as set in your profile).",
+            "help_text": "Description for institutional updates section",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 674,
+        "fields": {
+            "key": "your_profile",
+            "body": "your profile",
+            "help_text": "Link text for your profile",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 675,
+        "fields": {
+            "key": "update",
+            "body": "Update",
+            "help_text": "Table heading for update",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 676,
+        "fields": {
+            "key": "view_update",
+            "body": "View update",
+            "help_text": "Link text for viewing an update",
+            "rich_text": false
+        }
     }
 ]
