@@ -5798,6 +5798,96 @@
             "help_text": "Option text in advanced Thoth search",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 656,
+        "fields": {
+            "key": "no_abstract",
+            "body": "No abstract.",
+            "help_text": "Text displayed when there is no abstract available.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 657,
+        "fields": {
+            "key": "download_formats",
+            "body": "Download Formats",
+            "help_text": "Heading for download formats section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 658,
+        "fields": {
+            "key": "included_in_packages",
+            "body": "Included in Packages",
+            "help_text": "Heading for included in packages section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 659,
+        "fields": {
+            "key": "publisher_links",
+            "body": "Publisher Links",
+            "help_text": "Heading for publisher links section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 660,
+        "fields": {
+            "key": "publisher_landing_page",
+            "body": "Publisher landing page",
+            "help_text": "Link text for publisher landing page.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 661,
+        "fields": {
+            "key": "doi",
+            "body": "DOI",
+            "help_text": "Link text for DOI.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 662,
+        "fields": {
+            "key": "topics",
+            "body": "Topics",
+            "help_text": "Heading for topics section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 663,
+        "fields": {
+            "key": "metadata_formats",
+            "body": "Metadata Formats",
+            "help_text": "Heading for metadata formats section.",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 664,
+        "fields": {
+            "key": "keywords",
+            "body": "Keywords",
+            "help_text": "Heading for keywords section.",
+            "rich_text": false
+        }
     }
 ,
 {
