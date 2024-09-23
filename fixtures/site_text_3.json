@@ -5998,6 +5998,16 @@
             "help_text": "Description of the subject list.",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 706,
+        "fields": {
+            "key": "permission_denied",
+            "body": "Permission Denied",
+            "help_text": "Text displayed when access is denied.",
+            "rich_text": false
+        }
     }
 ,
 {
