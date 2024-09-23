@@ -6521,5 +6521,15 @@
             "help_text": "Lead text for managing standards for attestation",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 704,
+        "fields": {
+            "key": "add_new_standard",
+            "body": "Add new standard",
+            "help_text": "Button text for adding standards for attestation",
+            "rich_text": false
+        }
     }
 ]
