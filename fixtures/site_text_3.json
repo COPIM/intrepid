@@ -6461,5 +6461,15 @@
             "help_text": "Lead text for adding or editing a banding vocabulary",
             "rich_text": false
         }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 696,
+        "fields": {
+            "key": "add_edit_standard_attestation",
+            "body": "Add a new or edit an existing standard for attestation",
+            "help_text": "Lead text for adding or editing standard attestations",
+            "rich_text": false
+        }
     }
 ]
