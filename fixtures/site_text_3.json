@@ -3904,7 +3904,7 @@
         "pk": 457,
         "fields": {
             "key": "order_complete_body",
-            "body": "Your order with order number {{ order.order_number }} is now complete. If you require assistance with your order ensure you quote this order number.",
+            "body": "is now complete. If you require assistance with your order ensure you quote this order number.",
             "help_text": "Message displayed when an order is complete",
             "rich_text": false
         }
@@ -5004,7 +5004,7 @@
         "pk": 569,
         "fields": {
             "key": "email_greeting",
-            "body": "Dear {{ user.first_name }} {{ user.last_name }},",
+            "body": "Dear",
             "help_text": "Greeting in the password reset email.",
             "rich_text": false
         }
@@ -5014,7 +5014,7 @@
         "pk": 570,
         "fields": {
             "key": "password_reset_request",
-            "body": "You're receiving this email because you requested a password reset for your user account at {{ site_name }}.",
+            "body": "You're receiving this email because you requested a password reset for your user account at ",
             "help_text": "Notification of password reset request.",
             "rich_text": false
         }
@@ -5034,18 +5034,8 @@
         "pk": 572,
         "fields": {
             "key": "username_reminder",
-            "body": "Your username, in case you\u2019ve forgotten: {{ user.get_username }}",
+            "body": "Your username, in case you\u2019ve forgotten: ",
             "help_text": "Reminder of username in password reset email.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 573,
-        "fields": {
-            "key": "site_name",
-            "body": "{{ site_name }}",
-            "help_text": "Site name in the email.",
             "rich_text": false
         }
     },
@@ -5834,7 +5824,7 @@
         "pk": 652,
         "fields": {
             "key": "subject_list_description",
-            "body": "{{ request.site_name }} subject list. Initiatives can pick one or more subjects for their packages.",
+            "body": " subject list. Initiatives can pick one or more subjects for their packages.",
             "help_text": "Description of the subject list.",
             "rich_text": false
         }
@@ -6676,6 +6666,16 @@
             "key": "view_document",
             "body": "View Document",
             "help_text": "Link text for viewing a document",
+            "rich_text": false
+        }
+    },
+    {
+        "model": "cms.sitetext",
+        "pk": 736,
+        "fields": {
+            "key": "order_complete_number",
+            "body": "Your order with order number ",
+            "help_text": "Message displayed when an order is complete",
             "rich_text": false
         }
     }

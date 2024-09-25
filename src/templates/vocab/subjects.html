@@ -22,7 +22,7 @@
 
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">{% get_site_text 'subject_list_description' %}</p>
+            <p class="lead">{{ request.site_name }} {% get_site_text 'subject_list_description' %}</p>
             <p>
                 <a class="btn btn-success" href="{% url 'new_subject' %}?return={{ request.path|urlencode }}">{% get_site_text 'add_new_subject' %}</a>
             </p>
