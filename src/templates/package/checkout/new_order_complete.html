@@ -34,7 +34,7 @@
     <div class="row catalogue-main spacer-top-20">
         <div class="col-1"></div>
         <div class="col">
-            {% get_site_text 'order_complete_body' %}
+            {% get_site_text 'order_complete_number' %} {{ order.order_number }} {% get_site_text 'order_complete_body' %}
             <h3>{% get_site_text 'quotation_details' %}</h3>
             {% get_site_text 'order_documents' %}
             <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
@@ -64,7 +64,7 @@
 {% endblock header-mobile %}
 
 {% block body-mobile %}
-    {% get_site_text 'order_complete_body' %}
+    {% get_site_text 'order_complete_number' %} {{ order.order_number }} {% get_site_text 'order_complete_body' %}
     <h3>Quotation Details</h3>
     {% get_site_text 'order_documents' %}
     <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
