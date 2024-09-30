@@ -20,14 +20,4 @@ class Migration(migrations.Migration):
             name='body_en',
             field=models.TextField(null=True),
         ),
-        migrations.AddField(
-            model_name='sitetext',
-            name='rich_text_de',
-            field=models.BooleanField(default=False),
-        ),
-        migrations.AddField(
-            model_name='sitetext',
-            name='rich_text_en',
-            field=models.BooleanField(default=False),
-        ),
     ]
