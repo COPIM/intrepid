@@ -440,7 +440,7 @@ class SiteText(models.Model):
     A site text object
     """
 
-    key = models.SlugField(max_length=20, unique=True)
+    key = models.SlugField(max_length=255, unique=True)
     body = models.TextField()
     help_text = models.TextField()
     rich_text = models.BooleanField(default=False)
