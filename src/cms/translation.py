@@ -6,7 +6,6 @@ from cms import models
 class SiteTextTranslation(TranslationOptions):
     fields = (
         'body',
-        'rich_text',
     )
 
 
