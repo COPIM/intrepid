@@ -1,0 +1,30 @@
+<div class="modal fade" id="siteTextModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Edit {{ site_text.key }} ({{ lang_code }})</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ site_text.help_text }}</p>
+                <div id="save-message"></div>
+                <form hx-post="{% url 'edit_site_text' site_text.key lang_code %}"
+                      hx-target="#save-message"
+                      hx-swap="innerHTML">
+                    {% csrf_token %}
+
+                    {% if site_text.rich_text %}
+                        <textarea name="body" class="form-control summernote">{{ site_text.body }}</textarea>
+                    {% else %}
+                        <textarea name="body" class="form-control">{{ site_text.body }}</textarea>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,10 @@ from django.shortcuts import (
     reverse,
 )
 from django.views.decorators.http import require_POST
+from django.conf import settings
+from django.utils import translation
+from django.utils import timezone
+
 from fluid_permissions import decorators
 
 import intrepid.views
@@ -16,6 +20,7 @@ from cms import models, forms, utils
 from intrepid import diff_match_patch as dmp_module
 from intrepid.security import user_is_initiative_manager
 from thoth import models as thoth_models
+
 
 
 @user_is_initiative_manager
@@ -1130,3 +1135,57 @@ def edit_site_text(request, key) -> HttpResponse:
         template,
         context,
     )
+
+
+@staff_member_required
+def list_site_text(request):
+    """
+    View to list all site texts with a language selection dropdown.
+    """
+    site_texts = models.SiteText.objects.all()
+    languages = settings.LANGUAGES  # Dynamically get languages from settings
+
+    return render(
+        request,
+        'cms/site_text_list.html',
+        {
+            'site_texts': site_texts,
+            'languages': languages,
+        },
+    )
+
+
+@staff_member_required
+def edit_site_text(request, key, lang_code):
+    """
+    View to handle both displaying the modal for editing site text
+    and saving the updated text in the selected language.
+    """
+    site_text = get_object_or_404(models.SiteText, key=key)
+
+    # Use `with override(lang_code)` to temporarily set the language
+    with translation.override(lang_code):
+        if request.method == 'POST':
+            body = request.POST.get('body')
+
+            # Save the updated site text
+            site_text.body = body
+            site_text.save()
+
+            # Get the current date and time using Django's timezone
+            current_time = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            # Return an HTML success message with the timestamp
+            return HttpResponse(
+                f'<div class="alert alert-success">Saved successfully at {current_time}.</div>'
+            )
+
+        # If GET request, render the full modal for editing
+        return render(
+            request,
+            'cms/htmx/site_text_modal.html',
+            {
+                'site_text': site_text,
+                'lang_code': lang_code,
+            },
+        )
