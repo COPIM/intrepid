@@ -37,8 +37,7 @@
                             {% endfor %}
                         {% endif %}
                         {% if not package.meta_only %}
-                            <a class="package-dropdown-item" href="{% url 'manage_basket_package' package.pk %}">Initiative
-                                only</a>
+                            <a class="package-dropdown-item" href="{% url 'manage_basket_package' package.pk %}">{% get_site_text 'initiative_only' %}</a>
                         {% endif %}
 
                     </div>

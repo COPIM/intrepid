@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor crispy_forms_tags %}
 
-{% block title %}{% trans "Profile" %}{% endblock title %}
+{% block title %}{% get_site_text 'profile' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'profile' %}</a></li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -26,7 +26,7 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% trans "Profile" %}</h1>
+                <h1>{% get_site_text 'profile' %}</h1>
             </div>
             <div class="col-md-3">
                 <form method="post" enctype="multipart/form-data">
@@ -39,7 +39,7 @@
                     {{ form.fte|as_crispy_field }}
 
                     <label for="inst_lookup" class=" requiredField">
-                        Institution
+                        {% get_site_text 'institution' %}
                     </label>
                     <input class="emailinput form-control" id="inst_lookup" name="inst_lookup"/><input id="institution_ROR" name="institution_ROR" type="hidden" value=""/>
 

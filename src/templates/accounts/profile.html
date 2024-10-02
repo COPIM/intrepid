@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}{% trans "Profile" %}{% endblock title %}
+{% block title %}{% get_site_text 'profile' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Profile</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'profile' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -20,14 +20,14 @@
             </div>
             <div class="col-md-3">
                 {% if user.profile.image %}
-                    <img src="{{ user.profile.image.url }}" class="img-fluid" alt="Image of {{ user.profile.full_name }}">
+                    <img src="{{ user.profile.image.url }}" class="img-fluid" alt="{% get_site_text 'image_of' %} {{ user.profile.full_name }}">
                 {% else %}
-                    <img src="{% static 'img/avatar.png' %}" class="img-fluid" alt="Image of {{ user.profile.full_name }}">
+                    <img src="{% static 'img/avatar.png' %}" class="img-fluid" alt="{% get_site_text 'image_of' %} {{ user.profile.full_name }}">
                 {% endif %}
                 <br /><br />
                 <div class="d-grid gap-2">
-                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% trans 'Edit Profile' %}</a>
-                    <a href="{% url 'two_factor:profile' %}" class="btn btn-secondary">{% trans 'Manage Account Security' %}</a>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% get_site_text 'edit_profile' %}</a>
+                    <a href="{% url 'two_factor:profile' %}" class="btn btn-secondary">{% get_site_text 'manage_account_security' %}</a>
                 </div>
             </div>
             <div class="col-md-9">
@@ -39,28 +39,28 @@
                 {% endif %}
                 <table class="table table-borderless">
                     <tr>
-                        <th>{% trans 'Username' %}</th>
+                        <th>{% get_site_text 'username' %}</th>
                         <td>{{ request.user.username }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans 'Full Name' %}</th>
+                        <th>{% get_site_text 'full_name' %}</th>
                         <td>{{ user.profile.full_name }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans 'Email' %}</th>
+                        <th>{% get_site_text 'email' %}</th>
                         <td>{{ request.user.email }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans 'Institution' %}</th>
+                        <th>{% get_site_text 'institution' %}</th>
                         <td>{{ user.profile.institution.institution_name }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans 'Two Factor Authentication Enabled' %}</th>
-                        <td>{% if default_device %}{% trans 'Enabled' %}{% else %}{% trans '2FA is not enabled' %}.{% endif %}</td>
+                        <th>{% get_site_text '2fa_enabled' %}</th>
+                        <td>{% if default_device %}{% get_site_text 'is_enabled' %}{% else %}{% get_site_text 'disabled' %}.{% endif %}</td>
                     </tr>
                     <tr>
-                        <th>{% trans 'Bandings' %}</th>
-                        <td><a href="{% url 'manage_account_bandings' %}">{% trans 'Configure bandings' %}</a></td>
+                        <th>{% get_site_text 'bandings' %}</th>
+                        <td><a href="{% url 'manage_account_bandings' %}">{% get_site_text 'configure_bandings' %}</a></td>
                     </tr>
                 </table>
             </div>

@@ -33,3 +33,57 @@ Intrepid makes use of Fluid Permissions that lets you pair a view with a group a
     one = Site.objects.all()[0]
     one.name = 'Open Book Collective'
     one.save()
+
+# Model Translations
+This is current a WIP. Here are instructions for setting up model translations.
+
+## Models
+Limited, currently, to the SiteText model. This will need to be expanded to cover all texts that appear on the front end.
+
+## Languages
+Initially I've enabled English and German, this can be extended in the future.
+
+## Fallback
+English is the designated fallback language, it will display when a user has not specified another language. Text must also be inserted in English before other languanges.
+
+## Setup
+To setup model translations follow these instructions:
+
+### Requirements
+Modeltranslations is now a requirement so ensure you run:
+
+```shell
+pip3 install -r requirements.txt
+```
+
+### Settings
+Add the following to settings.py
+
+```python
+
+INSTALLED_APPS = [
+    'modeltranslation',
+    ...
+]
+
+# LANGUAGES
+LANGUAGE_CODE = 'en'
+USE_I18N = True
+gettext = lambda s: s
+LANGUAGES = (
+    ('de', gettext('German')),
+    ('en', gettext('English')),
+)
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
+MODELTRANSLATION_LANGUAGES = ('en', 'de')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('en',)
+MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
+```
+
+### Migrations
+Once this is added to your settings.py run the following:
+
+```shell
+python3 src/manage.py migrate
+python src/manage.py update_translation_fields
+```

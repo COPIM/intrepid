@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Open Book Collective | Who We Are
+{% get_site_text 'open_book_collective' %} | {% get_site_text 'who_we_are' %}
 {% endblock title %}
 
 <!-- desktop -->
@@ -10,10 +10,10 @@ Open Book Collective | Who We Are
     <div class="row">
         <div class="col-1"></div>
         <div class="col pull-left">
-            <h1>Who We Are</h1>
-            <p class="subhead-no-offset">We are a team of librarians, publishers, publishing service providers and academics committed to collectively reimagining and reconfiguring the funding and circulation of open access monographs.</p>
+            <h1>{% get_site_text 'who_we_are' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'who_we_are_subhead' %}</p>
         </div>
-        <div class="col-3"><img src="{% static "frontend/img/whoweare.svg" %}" alt="Open Book Collective"
+        <div class="col-3"><img src="{% static "frontend/img/whoweare.svg" %}" alt="{% get_site_text 'who_we_are' %}"
                                                   class="img-fluid img-right"></div>
     </div>
 
@@ -31,7 +31,7 @@ Open Book Collective | Who We Are
         <div class="col-9 text-center board-of-stewards">
             <!--<button class="left-pill-blue" onclick="location.href='#board-of-stewards'">Board of Stewards</button><button onclick="location.href='#membership-committee'" class="mid-pill-blue">Membership Committee</button><button onclick="location.href='#management-team'" class="mid-pill-blue">Management Team</button><button onclick="location.href='#secretariat'" class="right-pill-blue">Secretariat</button>-->
 
-            <h2>Board of Stewards</h2><a id="board-of-stewards"></a>
+            <h2>{% get_site_text 'board_of_stewards' %}</h2><a id="board-of-stewards"></a>
 
             <div class="row">
                 {% for steward in stewards %}
@@ -41,7 +41,7 @@ Open Book Collective | Who We Are
                         </div>
                         <div class="row">
                         <div class="col-12"><p class="person">{{ steward.display_name }}</p>
-                            <p class="institution">{{ steward.affiliation_line }}{% if steward.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ steward.pk }}">View Biography</a>{% endif %}</p></div>
+                            <p class="institution">{{ steward.affiliation_line }}{% if steward.bio %}<br /><a href="#" data-toggle="modal" data-target="#who-{{ steward.pk }}">{% get_site_text 'view_biography' %}</a>{% endif %}</p></div>
                         </div>
                     </div>
                 {% endfor %}
@@ -76,7 +76,7 @@ Open Book Collective | Who We Are
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Membership Committee</h2><a id="membership-committee"></a>
+                        <h2>{% get_site_text 'membership_committee' %}</h2><a id="membership-committee"></a>
                          <div class="row">
                             {% for member in members %}
                                 <div class="col-4">
@@ -124,7 +124,7 @@ Open Book Collective | Who We Are
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Management Team</h2><a id="management-team"></a>
+                        <h2>{% get_site_text 'management_team' %}</h2><a id="management-team"></a>
                         <div class="row">
 
                            {% for manager in managers %}
@@ -173,7 +173,7 @@ Open Book Collective | Who We Are
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Secretariat</h2><a id="secretariat"></a>
+                        <h2>{% get_site_text 'secretariat' %}</h2><a id="secretariat"></a>
                          <div class="row">
                             {% for sec in secretariat %}
                                 <div class="col-4">
@@ -222,7 +222,7 @@ Open Book Collective | Who We Are
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Finance Committee</h2><a id="finance"></a>
+                        <h2>{% get_site_text 'finance_committee' %}</h2><a id="finance"></a>
                          <div class="row">
                             {% for sec in finance %}
                                 <div class="col-4">
@@ -270,7 +270,7 @@ Open Book Collective | Who We Are
                 <div class="row pill-row">
                     <div class="col-3"></div>
                     <div class="col-9 text-center board-of-stewards">
-                        <h2>Previous Board Members</h2><a id="previous"></a>
+                        <h2>{% get_site_text 'previous_board_members' %}</h2><a id="previous"></a>
                          <div class="row">
                             {% for sec in previous %}
                                 <div class="col-4">
@@ -339,21 +339,21 @@ Open Book Collective | Who We Are
 {% block body-mobile %}
     <div class="row login-row-header-mobile">
         <div class="col-12 who-we-are-header-mobile">
-            <img src="{% static "frontend/img/whoweare.svg" %}" alt="Who We Are" class="img-fluid"/><br/>
-            <h1>{% trans "Who We Are" %}</h1>
+            <img src="{% static "frontend/img/whoweare.svg" %}" alt="{% get_site_text 'who_we_are' %}" class="img-fluid"/><br/>
+            <h1>{% get_site_text 'who_we_are' %}</h1>
         </div>
 
     </div>
 
     <div class="row white-background blue-text">
         <div class="col">
-           <p>Find out more about the OBC and who is behind it.</p>
+           <p>{% get_site_text 'find_out_more' %}</p>
         </div>
     </div>
 
     <div class="row grey-background blue-text">
         <div class="col">
-            <h2>Board of Stewards</h2>
+            <h2>{% get_site_text 'board_of_stewards' %}</h2>
             {% for steward in stewards %}
             <div class="person-block-mobile">
                 {% if steward.police_mugshot %}<img src="{{ steward.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ steward.display_name }}" />{% endif %}
@@ -362,7 +362,7 @@ Open Book Collective | Who We Are
             </div>
             {% endfor %}
 
-            <h2>Membership Committee</h2>
+            <h2>{% get_site_text 'membership_committee' %}</h2>
             {% for member in members %}
                 <div class="person-block-mobile">
                     {% if memnber.police_mugshot %}<img src="{{ member.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ member.display_name }}" />{% endif %}
@@ -371,7 +371,7 @@ Open Book Collective | Who We Are
                 </div>
             {% endfor %}
 
-            <h2>Management Team</h2>
+            <h2>{% get_site_text 'management_team' %}</h2>
             {% for manager in managers %}
                 <div class="person-block-mobile">
                     {% if manager.police_mugshot %}<img src="{{ manager.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ manager.display_name}}" />{% endif %}
@@ -380,7 +380,7 @@ Open Book Collective | Who We Are
                 </div>
             {% endfor %}
 
-            <h2>Secretariat</h2>
+            <h2>{% get_site_text 'secretariat' %}</h2>
             {% for sec in secretariat %}
                 <div class="person-block-mobile">
                     {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}
@@ -389,7 +389,7 @@ Open Book Collective | Who We Are
                 </div>
             {% endfor %}
 
-            <h2>Previous Board Members</h2>
+            <h2>{% get_site_text 'previous_board_members' %}</h2>
             {% for sec in previous %}
                 <div class="person-block-mobile">
                     {% if sec.police_mugshot %}<img src="{{ sec.police_mugshot.url }}" class="circle-image circle-image-mobile" alt="{{ sec.display_name}}" />{% endif %}

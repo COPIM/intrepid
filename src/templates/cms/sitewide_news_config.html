@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}Site-Wide News Configuration{% endblock title %}
+{% block title %}{% get_site_text 'site_wide_news_config' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Site-Wide News Configuration</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'site_wide_news_config' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,15 +19,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">Configures Site-Wide News Items</p>
+                <p class="lead">{% get_site_text 'site_wide_news_config_items' %}</p>
                 <table class="table table-hover" id="updates">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Page</th>
-                            <th>Initiative</th>
-                            <th>Order</th>
-                            <th>Remove</th>
+                            <th>{% get_site_text 'page' %}</th>
+                            <th>{% get_site_text 'initiative' %}</th>
+                            <th>{% get_site_text 'sequence' %}</th>
+                            <th>{% get_site_text 'delete' %}</th>
                         </tr>
                     </thead>
                     <tbody class="sortable">
@@ -37,7 +37,7 @@
                             <td>{{ news_item.update_item.title }}</td>
                             <td>{{ news_item.update_item.initiative.name }}</td>
                             <td>{{ news_item.order }}</td>
-                            <td><form method="POST" action="{% url 'sitewide_news_delete' news_item.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove from Homepage"/></form></td>
+                            <td><form method="POST" action="{% url 'sitewide_news_delete' news_item.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'remove_from_homepage' %}"/></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -46,12 +46,12 @@
                 <table class="table table-hover" id="pages">
                     <thead>
                     <tr>
-                        <th>Page ID</th>
-                        <th>Title</th>
-                        <th>Initiative</th>
-                        <th>Date/Time</th>
-                        <th>Edit</th>
-                        <th>Add to Homepage</th>
+                        <th>{% get_site_text 'id' %}</th>
+                        <th>{% get_site_text 'title' %}</th>
+                        <th>{% get_site_text 'initiative' %}</th>
+                        <th>{% get_site_text 'date_time' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'add_to_homepage' %}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,8 +61,8 @@
                             <td>{{ page.title }}</td>
                             <td>{{ page.initiative.name }}</td>
                             <td>{{ page.current_version.created }}</td>
-                            <td><a href="{% url 'page_edit' page.initiative.pk 'update' page.pk %}">Edit</a></td>
-                            <td><form method="POST">{% csrf_token %}<input type="hidden" value="{{ page.pk }}" name="page_to_add"></input><input type="submit" class="btn btn-success" value="Add to Homepage"></input></form></td>
+                            <td><a href="{% url 'page_edit' page.initiative.pk 'update' page.pk %}">{% get_site_text 'edit' %}</a></td>
+                            <td><form method="POST">{% csrf_token %}<input type="hidden" value="{{ page.pk }}" name="page_to_add"></input><input type="submit" class="btn btn-success" value="{% get_site_text 'add_to_homepage' %}"></input></form></td>
                         </tr>
                     {% endfor %}
                     </tbody>

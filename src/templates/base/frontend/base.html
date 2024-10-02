@@ -6,7 +6,7 @@
     {% block css %}
     {% endblock css %}
 
-    <title>{% block title %}Open Book Collective{% endblock title %}</title>
+    <title>{% block title %}{% get_site_text 'open_book_collective' %}{% endblock title %}</title>
     <link rel="icon" type="image/ico" href="{% static "img/favicon.ico" %}"/>
 </head>
 <body>

@@ -2,12 +2,12 @@
 {% load static two_factor %}
 {% load django_bootstrap5 %}
 
-{% block title %}{% if page %}Edit{% else %}Create{% endif %} Who We Are entry{% endblock title %}
+{% block title %}{% if page %}{% get_site_text 'edit' %}{% else %}{% get_site_text 'create' %}{% endif %} {% get_site_text 'who_we_are_entry' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'who_we_are_config' %}">Who We Are</a></li>
-    <li class="breadcrumb-item" aria-current="page">{% if page %}Edit{% else %}
-        Create{% endif %} Who We Are entry</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'who_we_are_config' %}">{% get_site_text 'who_we_are' %}</a></li>
+    <li class="breadcrumb-item" aria-current="page">{% if page %}{% get_site_text 'edit' %}{% else %}
+        {% get_site_text 'create' %}{% endif %} {% get_site_text 'who_we_are_entry' %}</li>
     {% endblock breadcrumb %}
 
 {% block content %}
@@ -16,19 +16,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">{% if page %}Edit{% else %}
-                    Create{% endif %} {{ wwe.display_name }}</p>
+                <p class="lead">{% if page %}{% get_site_text 'edit' %}{% else %}
+                    {% get_site_text 'create' %}{% endif %} {{ wwe.display_name }}</p>
                 <div class="row">
                     <div class="col-md-12">
                         <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
                             {% bootstrap_form wwe_form %}
                             <button type="submit" class="btn btn-primary">
-                                Save
+                                {% get_site_text 'save' %}
                             </button>
                             {% if page %}
                                 <button type="submit" name="set_current" class="btn btn-success">
-                                    Save
+                                    {% get_site_text 'save' %}
                                 </button>
                             {% endif %}
                         </form>

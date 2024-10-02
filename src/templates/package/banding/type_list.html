@@ -1,12 +1,12 @@
 {% extends "base/admin_base.html" %}
 {% load booleans %}
 
-{% block title %}Banding Types{% endblock %}
-{% block page-title %}Banding Types{% endblock %}
+{% block title %}{% get_site_text 'banding_types' %}{% endblock %}
+{% block page-title %}{% get_site_text 'banding_types' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Banding Types</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'banding_types' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -22,18 +22,16 @@
 
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">
-                A list of all of the Banding Types available for package creation.
-            </p>
-            <p class="alert-warning">Warning: package banding types cannot be changed after they are created as this will destroy current quotations.</p>
-            <p><a href="{% url 'package_banding_type_create' %}" class="btn btn-success">Add New Banding Type</a></p>
+            <p class="lead">{% get_site_text 'banding_types_list_description' %}</p>
+            <p class="alert-warning">{% get_site_text 'banding_types_warning' %}</p>
+            <p><a href="{% url 'package_banding_type_create' %}" class="btn btn-success">{% get_site_text 'add_new_banding_type' %}</a></p>
             <table class="table table-striped" id="types">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Is FTE?</th>
-                        <th>Active?</th>
-                        <th># Linked Vocabs</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'is_fte' %}</th>
+                        <th>{% get_site_text 'active' %}</th>
+                        <th>{% get_site_text 'linked_vocabs' %}</th>
                     </tr>
                 </thead>
                 <tbody>

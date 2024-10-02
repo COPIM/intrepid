@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Thoth Sync
+    {% get_site_text 'thoth_sync' %}
 {% endblock title %}
 
 {% block page-title %}
-    Thoth Sync
+    {% get_site_text 'thoth_sync' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Thoth Sync</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'thoth_sync' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -28,19 +28,19 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col">
-                    <p>Syncing with Thoth is a multi-stage process:</p>
+                    <p>{% get_site_text 'syncing_process_description' %}</p>
 
                     <ol>
-                        <li>Run a test import. This verifies that the remote Thoth server is compatible.</li>
-                        <li>Run a full import. This pulls data into the local Thoth database.</li>
-                        <li>Notify users.</li>
+                        <li>{% get_site_text 'run_test_import' %}</li>
+                        <li>{% get_site_text 'run_full_import' %}</li>
+                        <li>{% get_site_text 'notify_users' %}</li>
                     </ol>
                     <p>
-                        {% if test %}<input type="submit" value="Run test" name="test"/>{% endif %}
-                        {%  if not test %}<input type="submit" value="Run import" name="import"/>{% endif %}
+                        {% if test %}<input type="submit" value="{% get_site_text 'run_test' %}" name="test"/>{% endif %}
+                        {%  if not test %}<input type="submit" value="{% get_site_text 'run_import' %}" name="import"/>{% endif %}
                     </p>
                     <p>
-                        <input type="submit" value="Notify users" name="notify"/>
+                        <input type="submit" value="{% get_site_text 'notify_users_button' %}" name="notify"/>
                     </p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
             {% if result %}
             <div class="row">
                 <div class="col">
-                    <p>Test results</p>
+                    <p>{% get_site_text 'test_results' %}</p>
                     <textarea style="width:100%; height:500px">{{ result }}</textarea>
                 </div>
             </div>
@@ -57,7 +57,7 @@
             {% if request.site.last_thoth_log %}
                 <div class="row">
                     <div class="col">
-                        <p>Last real Thoth import ({{ request.site.last_thoth_log_date }})</p>
+                        <p>{% get_site_text 'last_real_thoth_import' %} ({{ request.site.last_thoth_log_date }})</p>
                         <textarea style="width:100%; height:500px">{{ request.site.last_thoth_log }}</textarea>
                     </div>
                 </div>

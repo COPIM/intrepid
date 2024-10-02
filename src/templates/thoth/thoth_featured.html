@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Featured Books
+    {% get_site_text 'featured_books' %}
 {% endblock title %}
 
 {% block page-title %}
-    Featured Books
+    {% get_site_text 'featured_books' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Featured Books</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'featured_books' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -23,11 +23,11 @@
         <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col">
-                    <p>This page allows you to add a new featured title from the Thoth shared catalogue to your initiative's page. To add a new book, first <a href="{% url 'all_books' %}">find the book that you wish to use</a>. In the URL bar, you will see a URL that ends with '/books/book/1309/'. Put that last number in the below box to add the title.</p>
+                    <p>{% get_site_text 'featured_books_page_description' %} <a href="{% url 'all_books' %}">{% get_site_text 'find_the_book' %}</a> {% get_site_text 'featured_books_page_instruction' %}</p>
                     <form method="post">
                         {% csrf_token %}
-                        <input type="text" id="thoth_id" name="thoth_id" class="form-control" placeholder="The Thoth import ID">
-                        <input type="submit" class="btn btn-success" value="Save to Initiative">
+                        <input type="text" id="thoth_id" name="thoth_id" class="form-control" placeholder="{% get_site_text 'thoth_import_id_placeholder' %}">
+                        <input type="submit" class="btn btn-success" value="{% get_site_text 'save_to_initiative' %}">
                     </form>
                 </div>
             </div>

@@ -7,7 +7,7 @@
 {% endblock js %}
 
 {% block title %}
-Books
+{% get_site_text 'books' %}
 {% endblock title %}
 
 <!-- desktop -->
@@ -15,10 +15,10 @@ Books
     <div class="row text-left">
         <div class="col-1"></div>
         <div class="col text-left">
-            <h1 class="text-left">Build an Advanced Search</h1>
-            <p class="subhead-no-offset">The collective catalogue displays books that are in the Thoth system and that are supported by the work and funding model of the Open Book Collective.</p>
+            <h1 class="text-left">{% get_site_text 'build_advanced_search' %}</h1>
+            <p class="subhead-no-offset">{% get_site_text 'collective_catalogue_description' %}</p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/></div>
+        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/catalogue.png" %}" alt="{% get_site_text 'collective_catalogue' %}"/></div>
         <div class="col-1"></div>
     </div>
 {% endblock %}
@@ -28,21 +28,21 @@ Books
         <div class="col">
             <form method="post">
                 {% csrf_token %}
-                <h4>Add to Search</h4>
-                <input class="form-control" type="text" name="search" id="search" placeholder="Search"/> <select class="form-control" name="type_of_search" id="type_of_search"><option value="FT">Free text</option><option value="KW">Keyword</option><option value="AU">Author</option></select> <input class="form-control" type="submit" value="Add search"/>
-                <p>Note: to search for author names, place your query in quotation marks to match a full name</p>
+                <h4>{% get_site_text 'add_to_search' %}</h4>
+                <input class="form-control" type="text" name="search" id="search" placeholder="{% get_site_text 'search' %}"/> <select class="form-control" name="type_of_search" id="type_of_search"><option value="FT">{% get_site_text 'free_text' %}</option><option value="KW">{% get_site_text 'keyword' %}</option><option value="AU">{% get_site_text 'author' %}</option></select> <input class="form-control" type="submit" value="{% get_site_text 'add_search' %}"/>
+                <p>{% get_site_text 'author_search_note' %}</p>
             </form>
         </div>
 
         <div class="col">
-            <h4>Search Configuration</h4>
+            <h4>{% get_site_text 'search_configuration' %}</h4>
             <table style="width:100%">
-                <tr><th>Type</th><th>Value</th><th>Remove</th></tr>
+                <tr><th>{% get_site_text 'type' %}</th><th>{% get_site_text 'value' %}</th><th>{% get_site_text 'remove' %}</th></tr>
                 {% for element in search_elements %}
                     <tr>
                         <td>{{ element.get_search_type_display }}</td>
                         <td>{{ element.text_content }}</td>
-                        <td><form method="post">{% csrf_token %}<input class="form-control" type="hidden" name="to_del" id="to_del" value="{{ element.pk }}"/><input class="form-control" type="submit" value="Delete" id="Delete" name="Delete"/></form></td>
+                        <td><form method="post">{% csrf_token %}<input class="form-control" type="hidden" name="to_del" id="to_del" value="{{ element.pk }}"/><input class="form-control" type="submit" value="{% get_site_text 'delete' %}" id="Delete" name="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -52,12 +52,12 @@ Books
             <form method="post">
                 {% csrf_token %}
                 {% if request.user.is_authenticated %}
-                    {% csrf_token %}<input class="form-control" type="text" name="search_name" id="search_name" placeholder="Search name to save"/><input type="submit" class="form-control" name="save" value="Save this search">
-                    <input type="submit" class="form-control" name="reset" value="Reset search">
+                    {% csrf_token %}<input class="form-control" type="text" name="search_name" id="search_name" placeholder="Search name to save"/><input type="submit" class="form-control" name="save" value="{% get_site_text 'save_this_search' %}">
+                    <input type="submit" class="form-control" name="reset" value="{% get_site_text 'reset_search' %}">
                 {% endif %}
-            <input type="submit" class="form-control" name="delete_all" value="Delete all terms from this search">
+            <input type="submit" class="form-control" name="delete_all" value="{% get_site_text 'delete_all_terms' %}">
             {% if request.user.is_authenticated %}
-                <p><a href="{% url 'saved_searches' %}">Manage your searches</a></p>
+                <p><a href="{% url 'saved_searches' %}">{% get_site_text 'manage_your_searches' %}</a></p>
             {% endif %}
 
             </form>
@@ -93,11 +93,11 @@ Books
     <div class="pagination row">
         <div class="col">
             <span class="step-links">
-                {% if works.has_previous %}<a href="?page=1" class="left-pill-paginator">&laquo; first</a><a href="?page={{ page_obj.previous_page_number }}" class="mid-pill-paginator">previous</a>{% endif %}{% if works.has_next %}<a href="?page={{ works.next_page_number }}" class="mid-pill-paginator">next</a><a href="?page={{ works.paginator.num_pages }}" class="right-pill-paginator">last &raquo;</a>{% endif %}
+                {% if works.has_previous %}<a href="?page=1" class="left-pill-paginator">&laquo; {% get_site_text 'first' %}</a><a href="?page={{ page_obj.previous_page_number }}" class="mid-pill-paginator">{% get_site_text 'previous' %}</a>{% endif %}{% if works.has_next %}<a href="?page={{ works.next_page_number }}" class="mid-pill-paginator">{% get_site_text 'next' %}</a><a href="?page={{ works.paginator.num_pages }}" class="right-pill-paginator">{% get_site_text 'last' %} &raquo;</a>{% endif %}
             </span>
 
             <span class="current">
-                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+                <br/>{% get_site_text 'page_of' %} {{ works.number }} {% get_site_text 'of' %} {{ works.paginator.num_pages }}
             </span>
         </div>
     </div>
@@ -108,7 +108,7 @@ Books
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/catalogue.png" %}" alt="Collective Catalogue"/>
-            <h1>Collective Catalogue</h1>
+            <h1>{% get_site_text 'collective_catalogue' %}</h1>
             <p>
                 {% for contribution in work.contribution_set.all %}<span class="authors-mobile">{% if forloop.first %}{{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% if not forloop.first %}{% if forloop.last %}, and {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% else %}, {{ contribution.contributor }}{% if contribution.institution %} ({{ contribution.institution }}){% endif %}{% endif %}{% endif %}</span>{% endfor %}
             </p>
@@ -119,7 +119,7 @@ Books
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>This is the collective catalogue, showcasing publications from presses at the Open Book Collective.</p>
+            <p>{% get_site_text 'collective_catalogue_description' %}</p>
         </div>
         <div class="col-1"></div>
     </div>
@@ -141,8 +141,8 @@ Books
                         {% endfor %}
                     </select>
                     <select class="sort-box" type="text" name="sort" id="sort-mobile" onchange="this.form.submit()">
-                        <option>Date Newest</option>
-                        <option>Date Oldest</option>
+                        <option value="Date Newest">{% get_site_text 'date_newest' %}</option>
+                        <option value="Date Oldest">{% get_site_text 'date_oldest' %}</option>
                     </select>
                 </form>
               </div>
@@ -182,12 +182,12 @@ Books
      <div class="pagination-mobile row">
         <div class="col">
             <span class="step-links">
-                {% if works.has_previous %}<a href="?page=1">first</a> | <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% endif %}
-                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">next</a> | <a href="?page={{ works.paginator.num_pages }}">last</a>{% endif %}
+                {% if works.has_previous %}<a href="?page=1">{% get_site_text 'first' %}</a> | <a href="?page={{ page_obj.previous_page_number }}">{% get_site_text 'previous' %}</a>{% endif %}
+                {% if works.has_next %}| <a href="?page={{ works.next_page_number }}">{% get_site_text 'next' %}</a> | <a href="?page={{ works.paginator.num_pages }}">{% get_site_text 'last' %}</a>{% endif %}
             </span>
 
             <span class="current">
-                <br/>Page {{ works.number }} of {{ works.paginator.num_pages }}
+                <br/>{% get_site_text 'page_of' %} {{ works.number }} {% get_site_text 'of' %} {{ works.paginator.num_pages }}
             </span>
         </div>
     </div>

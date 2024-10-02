@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
-{% block title %}Package Approval{% endblock %}
-{% block page-title %}Package Approval{% endblock %}
+{% block title %}{% get_site_text 'package_approval' %}{% endblock %}
+{% block page-title %}{% get_site_text 'package_approval' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Package Approval</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'package_approval' %}</li>
 {% endblock %}
 
 {% block content %}
@@ -14,22 +14,20 @@
 
     <section class="content">
         <div class="container-fluid">
-            <p class="lead">
-                Listed here are packages that have not been approved for display.
-            </p>
+            <p class="lead">{% get_site_text 'packages_not_approved' %}</p>
             <form method="POST">
                 {% csrf_token %}
                 <table class="table table-striped" id="approvals">
                     <thead>
                         <tr>
-                            <th>Package Name</th>
-                            <th>Initiative</th>
-                            <th>Banding Type</th>
-                            <th>Default Country/Currency</th>
-                            <th>Description</th>
-                            <th>Approve</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>{% get_site_text 'package_name' %}</th>
+                            <th>{% get_site_text 'initiative' %}</th>
+                            <th>{% get_site_text 'banding_type' %}</th>
+                            <th>{% get_site_text 'default_country_currency' %}</th>
+                            <th>{% get_site_text 'description' %}</th>
+                            <th>{% get_site_text 'approve' %}</th>
+                            <th>{% get_site_text 'edit' %}</th>
+                            <th>{% get_site_text 'delete' %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,17 +39,17 @@
                             <td>{{ package.default_country }}</td>
                             <td>
                                 <a type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#package-{{ package.pk }}">
-                                    View
+                                    {% get_site_text 'view' %}
                                 </a>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-success" name="approve" value="{{ package.pk }}">Approve</button>
+                                <button class="btn btn-sm btn-success" name="approve" value="{{ package.pk }}">{% get_site_text 'approve' %}</button>
                             </td>
                             <td>
-                                <a target="_blank" href="{% url 'manage_package' package.initiative.pk package.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a target="_blank" href="{% url 'manage_package' package.initiative.pk package.pk %}" class="btn btn-sm btn-warning">{% get_site_text 'edit' %}</a>
                             </td>
                             <td>
-                                <button name="delete" value="{{ package.pk }}" class="btn btn-sm btn-danger delete">Delete</button>
+                                <button name="delete" value="{{ package.pk }}" class="btn btn-sm btn-danger delete">{% get_site_text 'delete' %}</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -68,7 +66,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">{{ package.name}} Description</h4>
+                        <h4 class="modal-title">{{ package.name}} {% get_site_text 'description' %}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -79,7 +77,8 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            {% get_site_text 'close' %}</button>
                     </div>
 
                 </div>
@@ -95,7 +94,7 @@
 <script>
     $(document).ready(function () {
         $(".delete").click(function () {
-            if (!confirm("Are you sure you want to delete this package?")) {
+            if (!confirm("{% get_site_text 'confirm_delete' %}")) {
                 return false;
             }
         });

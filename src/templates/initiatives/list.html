@@ -1,25 +1,25 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page">Manager</li>
-    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'manager' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'initiatives' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
     <section class="content">
       <div class="container-fluid">
-        <h1>Initiative List</h1>
-        <p class="lead">View, edit, delete and create initiative objects.</p>
+        <h1>{% get_site_text 'initiative_list' %}</h1>
+        <p class="lead">{% get_site_text 'initiative_list_helper' %}</p>
 
         <table class="table" id="initiatives">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Accounts</th>
+                    <th>{% get_site_text 'name' %}</th>
+                    <th>{% get_site_text 'accounts' %}</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -29,8 +29,8 @@ Initiatives
                 <tr>
                     <td>{{ initiative.name }}</td>
                     <td>{% for account in initiative.users.all %}{{ account.profile.full_name}}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
-                    <td><a href="{% url 'initiative_detail' initiative.pk %}" class="btn btn-primary">View Detail</a></td>
-                    <td><a href="" class="btn btn-danger">Delete</a></td>
+                    <td><a href="{% url 'initiative_detail' initiative.pk %}" class="btn btn-primary">{% get_site_text 'view' %}</a></td>
+                    <td><a href="" class="btn btn-danger">{% get_site_text 'delete' %}</a></td>
                 </tr>
             {% endfor %}
             </tbody>

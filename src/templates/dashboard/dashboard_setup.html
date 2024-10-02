@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Dashboard
+    {% get_site_text 'dashboard' %}
 {% endblock title %}
 
 {% block page-title %}
-    Site Setup
+    {% get_site_text 'site_setup' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Site Setup</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'site_setup' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,7 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-6">
-                    <p>Note: Disabling all signups will overrule the individual options.</p>
+                    <p>{% get_site_text 'disable_signup_note' %}</p>
                     {{ form|crispy }}
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <script>
     $(document).ready(function () {
         $(".delete").click(function () {
-            if (!confirm("Are you sure you want to delete this object? NB: No data can be recovered from this operation.")) {
+            if (!confirm("{% get_site_text 'delete_text' %}")) {
                 return false;
             }
         });

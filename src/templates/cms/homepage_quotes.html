@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Homepage Quote Configuration
+{% get_site_text 'homepage_quotation_configuration' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page">Homepage Quotation Configuration</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'homepage_quotation_configuration' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -19,10 +19,10 @@ Homepage Quote Configuration
 
     <section class="content">
       <div class="container-fluid">
-            <h1>Homepage Quote Configuration</h1>
-            <p class="lead">This page allows you to configure the display of quotations on the home page. You can add as many quotations as you like, but only the first four will show on the homepage.</p>
+            <h1>{% get_site_text 'homepage_quotation_configuration' %}</h1>
+            <p class="lead">{% get_site_text 'homepage_quotation_configuration_explainer' %}</p>
             <a href="{% url 'new_quote' %}" class="btn btn-success">
-                <i class="fa fa-plus"> </i> Add New Quotation
+                <i class="fa fa-plus"> </i> {% get_site_text 'add' %}
             </a>
 
         <br /> <br />
@@ -31,12 +31,12 @@ Homepage Quote Configuration
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Title</th>
-                        <th>Quote</th>
-                        <th>Person</th>
-                        <th>Organization</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'title' %}</th>
+                        <th>{% get_site_text 'quote' %}</th>
+                        <th>{% get_site_text 'person' %}</th>
+                        <th>{% get_site_text 'organization' %}Organization</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody class="sortable">
@@ -47,13 +47,13 @@ Homepage Quote Configuration
                         <td>{{ obj.quotation }}</td>
                         <td>{{ obj.person_attribution }}</td>
                         <td>{{ obj.organization_attribution }}</td>
-                        <td><a href="{% url 'edit_quote' obj.pk %}">Edit</a></td>
-                        <td><form method="POST" action="{% url 'delete_quote' obj.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        <td><a href="{% url 'edit_quote' obj.pk %}">{% get_site_text 'edit' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_quote' obj.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                     </tr>
                     {% empty %}
                     <tr>
                     <td colspan="100">
-                        No quotations. <a href="{% url 'new_quote' %}">Create one?</a>
+                        {% get_site_text 'no_quotations' %} <a href="{% url 'new_quote' %}">{% get_site_text 'add' %}</a>
                     </td>
                     </tr>
                 {% endfor %}

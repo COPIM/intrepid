@@ -27,6 +27,7 @@ django-request==1.6.3
 django-summernote==0.8.11.6
 django-two-factor-auth==1.13.2
 djangorestframework==3.14.0
+django-modeltranslation
 docx==0.2.4
 FluidPermissions @ git+https://github.com/dqprogramming/django-fluid-permissions@c5e039e49956af4f6a5a08122dc7d966f2af5724
 graphqlclient==0.2.4

@@ -6,7 +6,7 @@
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'all_books' %}">Books</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'all_books' %}">{% get_site_text 'books' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ book.full_title }}</li>
 {% endblock breadcrumb %}
 
@@ -81,7 +81,7 @@
             {% elif book.short_abstract %}
                 <p class="abstract-mobile">{{ book.short_abstract|linebreaksbr }}</p>
             {% else %}
-                <p class="abstract-mobile">No abstract.</p>
+                <p class="abstract-mobile">{% get_site_text 'no_abstract' %}</p>
             {% endif %}
         </div>
         <div class="col-1"></div>
@@ -90,27 +90,27 @@
     <div class="metadata-row-mobile row">
     <div class="col-1"></div>
         <div class="col-10">
-            <h2>Download Formats</h2>
+            <h2>{% get_site_text 'download_formats' %}</h2>
             <ul class="metadata-mobile">
                 <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::project_muse/work/{{ book.thoth_id }}">ONIX (Project MUSE)</a></li>
                 <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/onix_3.0::oapen/work/{{ book.thoth_id }}">ONIX (OAPEN)</a></li>
                 <li><i class="fa-solid fa-file"></i> <a href="{{ book.thoth_export_url }}/specifications/csv::thoth/work/{{ book.thoth_id }}">CSV</a></li>
             </ul>
 
-            <h2>Included in Packages</h2>
+            <h2>{% get_site_text 'included_in_packages' %}</h2>
             <ul class="metadata-mobile">
                 {% for package in packages %}
                     <li><i class="fa-solid fa-box"></i> <a href="{% url 'package_info' package.id %}>{{ package }}</a></li>
                 {% endfor %}
             </ul>
 
-            <h2>Publisher Links</h2>
+            <h2>{% get_site_text 'publisher_links' %}</h2>
             <ul class="metadata-mobile">
-                {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">Publisher landing page</a></li>{% endif %}
-                {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">DOI</a></li>{% endif %}
+                {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">{% get_site_text 'publisher_landing_page' %}</a></li>{% endif %}
+                {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">{% get_site_text 'doi' %}</a></li>{% endif %}
             </ul>
 
-            <h2>Topics</h2>
+            <h2>{% get_site_text 'topics' %}</h2>
             <ul>
                 {% for keyword in subjects %}
                     <li><i class="fa-solid fa-tag"></i> {{ keyword.subject_display }}</li>
@@ -186,13 +186,13 @@
             {% elif book.short_abstract %}
                 <p>{{ book.short_abstract|linebreaksbr }}</p>
             {% else %}
-                <p>No abstract.</p>
+                <p>{% get_site_text 'no_abstract' %}</p>
             {% endif %}
 
         <!-- formats box -->
             <div class="row formats-box formats-box-upper">
-                <div class="col"><h2>Metadata Formats</h2></div>
-                <div class="col"><h2>Publisher Links</h2></div>
+                <div class="col"><h2>{% get_site_text 'metadata_formats' %}</h2></div>
+                <div class="col"><h2>{% get_site_text 'publisher_links' %}</h2></div>
             </div>
             <div class="row formats-box formats-box-middle">
                 <div class="col">
@@ -207,14 +207,14 @@
                 </div>
                 <div class="col">
                     <ul>
-                        {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">Publisher landing page</a></li>{% endif %}
-                        {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">DOI</a></li>{% endif %}
+                        {% if book.landing_page %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.landing_page }}">{% get_site_text 'publisher_landing_page' %}</a></li>{% endif %}
+                        {% if book.doi %}<li><i class="fa-solid fa-link"></i> <a href="{{ book.doi }}">{% get_site_text 'doi' %}</a></li>{% endif %}
                     </ul>
                 </div>
             </div>
             <div class="row formats-box formats-box-middle">
-                <div class="col"><h2>Included in Packages</h2></div>
-                <div class="col"><h2>Keywords</h2></div>
+                <div class="col"><h2>{% get_site_text 'included_in_packages' %}</h2></div>
+                <div class="col"><h2>{% get_site_text 'keywords' %}</h2></div>
             </div>
 
             <div class="row formats-box formats-box-lower">

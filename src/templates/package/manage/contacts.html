@@ -1,13 +1,13 @@
 {% extends "base/admin_base.html" %}
 {% load booleans %}
 
-{% block title %}Manage Contacts for {{ banding_type.name }}{% endblock %}
-{% block page-title %}Manage Contacts for {{ banding_type.name }}{% endblock %}
+{% block title %}{% get_site_text 'manage_contacts_for' %} {{ banding_type.name }}{% endblock %}
+{% block page-title %}{% get_site_text 'manage_contacts_for' %} {{ banding_type.name }}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page">Manage Contacts</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'manage_contacts' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -22,21 +22,21 @@
     <section class="content">
         <div class="container-fluid">
             <p class="lead">
-                Select contacts for event types. These contacts will be sent an email when the event occurs.</br>
-                <b class="alert-warning">Warning: Contacts have access to signup data which may be sensitive.</b>
+                {% get_site_text 'select_contacts_for_events' %}<br/>
+                <b class="alert-warning">{% get_site_text 'contacts_access_warning' %}</b>
             </p>
             <p>
-                <a class="btn btn-success" href="{% url 'create_contact' %}"><i class="fas fa-plus"></i> Add a New Contact</a>
+                <a class="btn btn-success" href="{% url 'create_contact' %}"><i class="fas fa-plus"></i> {% get_site_text 'add_new_contact' %}</a>
             </p>
             <form method="POST">
                 {% csrf_token %}
                 <table class="table-striped table" id="vocabs">
                 <thead>
                     <tr>
-                        <th>Signup Notification</th>
-                        <th>Access Control Notification</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th>{% get_site_text 'signup_notification' %}</th>
+                        <th>{% get_site_text 'access_control_notification' %}</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'email' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,7 +51,7 @@
                 </tbody>
                 </table>
                 <p>
-                    <button class="btn btn-primary">Save Contacts to Package</button>
+                    <button class="btn btn-primary">{% get_site_text 'save_contacts_to_package' %}</button>
                 </p>
             </form>
 

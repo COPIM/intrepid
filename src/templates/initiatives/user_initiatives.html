@@ -1,11 +1,11 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Initiatives</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'initiatives' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -18,23 +18,23 @@ Initiatives
 
     <section class="content">
       <div class="container-fluid">
-            <h1>Initiative List</h1>
-            <p class="lead">{% if request.user.is_staff %}As a staff member you will see all Initiatives listed here.{% else %}A list of Initiatives for which you are a manager.{% endif %}</p>
+            <h1>{% get_site_text 'initiative_list' %}</h1>
+            <p class="lead">{% if request.user.is_staff %}{% get_site_text 'initiatives_staff' %}{% else %}{% get_site_text 'initiatives_manager' %}{% endif %}</p>
 
-            <table class="table table-striped"PageUpdate id="initiatives">
+            <table class="table table-striped" id="initiatives">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Managers</th>
-                        <th>Active</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'managers' %}</th>
+                        <th>{% get_site_text 'active' %}</th>
                         <!--<th># of Packages</th>-->
-                        <th>Add New Package</th>
-                        <th>View Packages</th>
-                        <th>Featured Books</th>
-                        <th>Orders</th>
-                        <th>Invoicing</th>
-                        <th>Pages</th>
-                        <th>Updates</th>
+                        <th>{% get_site_text 'add' %}</th>
+                        <th>{% get_site_text 'view' %}</th>
+                        <th>{% get_site_text 'featured_books' %}</th>
+                        <th>{% get_site_text 'orders' %}</th>
+                        <th>{% get_site_text 'invoicing' %}</th>
+                        <th>{% get_site_text 'pages' %}</th>
+                        <th>{% get_site_text 'updates' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,13 +44,13 @@ Initiatives
                         <td>{% for account in initiative.users.all %}{{ account.profile.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ initiative.active_display }}</td>
 
-                        <td><a href="{% url 'start_package' initiative.pk %}">Add New Package</a></td>
-                        <td><a href="{% url 'initiative_packages' initiative.pk %}">View Packages</a></td>
-                        <td><a href="{% url 'featured_books' initiative.pk %}">Featured Books</a></td>
-                        <td><a href="{% url 'initiative_order_list' initiative.pk %}">Orders</a></td>
-                        <td><a href="{% url 'list_order_invoices_initiative' initiative.pk %}">Invoicing</a></td>
-                        <td><a href="{% url 'page_list' initiative.pk 'page' %}">Manage Pages</a></td>
-                        <td><a href="{% url 'page_list' initiative.pk 'update' %}">Manage Updates</a></td>
+                        <td><a href="{% url 'start_package' initiative.pk %}">{% get_site_text 'add' %}</a></td>
+                        <td><a href="{% url 'initiative_packages' initiative.pk %}">{% get_site_text 'view' %}</a></td>
+                        <td><a href="{% url 'featured_books' initiative.pk %}">{% get_site_text 'featured_books' %}</a></td>
+                        <td><a href="{% url 'initiative_order_list' initiative.pk %}">{% get_site_text 'orders' %}</a></td>
+                        <td><a href="{% url 'list_order_invoices_initiative' initiative.pk %}">{% get_site_text 'invoicing' %}</a></td>
+                        <td><a href="{% url 'page_list' initiative.pk 'page' %}">{% get_site_text 'pages' %}</a></td>
+                        <td><a href="{% url 'page_list' initiative.pk 'update' %}">{% get_site_text 'updates' %}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -2,7 +2,7 @@
 {% load i18n two_factor static crispy_forms_tags %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item">Register</li>
+    <li class="breadcrumb-item">{% get_site_text 'register' %}</li>
 {% endblock %}
 
 {% block js %}
@@ -20,9 +20,9 @@
                         <div class="col-8 login-row-header">
                             <div class="row">
                                 <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}"
-                                                        alt="Register" class="img-fluid login-padlock"/></div>
+                                                        alt="{% get_site_text 'register' %}" class="img-fluid login-padlock"/></div>
                                 <div class="col-8 login-header">
-                                    <h1>{% block title %}{% trans "Register a new account" %}{% endblock %}</h1>
+                                    <h1>{% block title %}{% get_site_text 'register_a_new_account' %}{% endblock %}</h1>
                                 </div>
                             </div>
                             <div class="col-4"></div>
@@ -34,9 +34,9 @@
                         <div class="col-2"></div>
                         <div class="col-8 login-row">
                             <form action="" method="post">{% csrf_token %}
-                                <p>Please note that after initial account creation an email will be sent to the address you supply, please click the link in this email to activate your account. You will not be able to login until you have activated your account.</p>
+                                <p>{% get_site_text 'account_email' %}</p>
                                 {{ form|crispy }}
-                                <button class="btn btn-primary">Create Account</button>
+                                <button class="btn btn-primary">{% get_site_text 'create_account' %}</button>
                             </form>
                         </div>
                         <div class="col-2"></div>
@@ -58,7 +58,7 @@
         <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Register"
                                 class="img-fluid login-padlock"/></div>
         <div class="col-8 login-header">
-            <h1>{% trans "Register a new account" %}</h1>
+            <h1>{% get_site_text 'register_a_new_account' %}</h1>
         </div>
         <div class="col-3"></div>
     </div>
@@ -66,9 +66,9 @@
     <div class="row login-row">
         <div class="col">
             <form action="" method="post">{% csrf_token %}
-                <p>Please note that after initial account creation an email will be sent to the address you supply, please click the link in this email to activate your account. You will not be able to login until you have activated your account.</p>
+                <p>{% get_site_text 'account_email' %}</p>
                 {{ form|crispy }}
-                <button class="btn btn-primary">Create Account</button>
+                <button class="btn btn-primary">{% get_site_text 'create_account' %}</button>
             </form>
         </div>
     </div>>

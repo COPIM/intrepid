@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Open Book Collective | {{ page.title }}
+{% get_site_text 'open_book_collective' %} | {{ page.title }}
 {% endblock title %}
 
 <!-- desktop -->
@@ -69,9 +69,9 @@ Open Book Collective | {{ page.title }}
         <div class="row">
             <div class="col-12 image-col">
                 {% if not page.mid_page_image %}
-                    <img src="{% static "frontend/img/default_cms.png" %}" alt="News" class="img-fluid cms-image"/>
+                    <img src="{% static "frontend/img/default_cms.png" %}" alt="{% get_site_text 'news' %}" class="img-fluid cms-image"/>
                 {% else %}
-                    <img src="{{ page.mid_page_image.url }}" alt="News" class="img-fluid cms-image"/>
+                    <img src="{{ page.mid_page_image.url }}" alt="{% get_site_text 'news' %}" class="img-fluid cms-image"/>
                 {% endif %}
             </div>
         </div>
@@ -96,11 +96,11 @@ Open Book Collective | {{ page.title }}
             <div class="col-1"></div>
             <div class="col-10">
                 {% if page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="{% get_site_text 'open_quote' %}" class="img-fluid quote-image"/><br/>
                 {% endif %}
                 <p class="pull-quote">{{ page.current_version.pull_quote|striptags }}</p>
                 {% if page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="{% get_site_text 'close_quote' %}" class="img-fluid close-quote-image"/><br/>
                 {% endif %}
             </div>
             <div class="col-1"></div>
@@ -131,7 +131,7 @@ Open Book Collective | {{ page.title }}
 {% block body-mobile %}
     <div class="row login-row-header-mobile">
         <div class="col-12 who-we-are-header-mobile">
-            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="News" class="img-fluid"/><br/>
+            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="{% get_site_text 'news' %}" class="img-fluid"/><br/>
             <h1>{{ page.title }}</h1>
         </div>
 
@@ -166,11 +166,11 @@ Open Book Collective | {{ page.title }}
             <div class="col-1"></div>
             <div class="col-10">
                 {% if page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="{% get_site_text 'open_quote' %}" class="img-fluid quote-image"/><br/>
                 {% endif %}
                 <p class="pull-quote">{{ page.current_version.pull_quote|striptags }}</p>
                 {% if page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="{% get_site_text 'close_quote' %}" class="img-fluid close-quote-image"/><br/>
                 {% endif %}
             </div>
             <div class="col-1"></div>
