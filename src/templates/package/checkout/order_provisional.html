@@ -128,7 +128,7 @@
 {% block body-mobile %}
     <div class="catalogue-main">
         <div class="col">
-            <h2>{% get_site_text 'order_documents' %}</h2>
+            <h2>{% get_site_text 'order_documents_button' %}</h2>
             <p class="package-styled-text">{% get_site_text 'order_documents_description' %}</p>
             <p>
                 <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_order_documents' %}</a>

@@ -16,7 +16,6 @@
         {% if request.site.enable_standards %}
             <h3 class="text-left spacer-top-10">{% get_site_text 'standards' %}</h3>
             {% get_site_text 'standards_info' %}
-            {% get_site_text 'standards_info' %}
             <ul>
                 {% for standard in package.standards %}
                     <li><a target="_blank"
