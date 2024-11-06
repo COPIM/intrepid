@@ -3051,16 +3051,6 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 372,
-        "fields": {
-            "key": "baskets_active_quote",
-            "body": "Active Quote",
-            "help_text": "Header text for active quote section.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
         "pk": 373,
         "fields": {
             "key": "signup_to",
@@ -3903,7 +3893,7 @@
         "model": "cms.sitetext",
         "pk": 457,
         "fields": {
-            "key": "order_complete_body",
+            "key": "order_complete_body_partial",
             "body": "is now complete. If you require assistance with your order ensure you quote this order number.",
             "help_text": "Message displayed when an order is complete",
             "rich_text": false
@@ -4343,7 +4333,7 @@
         "model": "cms.sitetext",
         "pk": 503,
         "fields": {
-            "key": "order_documents",
+            "key": "order_documents_button",
             "body": "Download Order Documents",
             "help_text": "Button text for downloading order documents",
             "rich_text": false
@@ -4431,51 +4421,11 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 512,
-        "fields": {
-            "key": "discuss_quote",
-            "body": "Want to discuss your quote?",
-            "help_text": "Prompt to discuss the quote.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
         "pk": 513,
         "fields": {
             "key": "contract",
             "body": "Contract",
             "help_text": "Link text for contract.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 514,
-        "fields": {
-            "key": "quotation_packages",
-            "body": "Quotation Packages",
-            "help_text": "Heading for quotation packages section.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 515,
-        "fields": {
-            "key": "quotation_breakdown",
-            "body": "Quotation Breakdown",
-            "help_text": "Heading for quotation breakdown section.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 516,
-        "fields": {
-            "key": "totals",
-            "body": "Totals",
-            "help_text": "Label for totals section.",
             "rich_text": false
         }
     },
@@ -5181,16 +5131,6 @@
     },
     {
         "model": "cms.sitetext",
-        "pk": 588,
-        "fields": {
-            "key": "standards_info",
-            "body": "Information about standards.",
-            "help_text": "Information text for standards section.",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
         "pk": 589,
         "fields": {
             "key": "package_name",
@@ -5236,16 +5176,6 @@
             "key": "included_in",
             "body": "Included in",
             "help_text": "Preamble text to specify which packages are included in which metapackages",
-            "rich_text": false
-        }
-    },
-    {
-        "model": "cms.sitetext",
-        "pk": 594,
-        "fields": {
-            "key": "contact_us",
-            "body": "Contact Us",
-            "help_text": "Button text for contacting us.",
             "rich_text": false
         }
     },
