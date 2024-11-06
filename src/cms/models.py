@@ -406,7 +406,9 @@ class HomePageQuote(models.Model):
 
     pill_name = models.CharField(max_length=255, blank=True, null=True)
     quotation = models.TextField(max_length=255, blank=True, null=True)
-    person_attribution = models.CharField(max_length=255, blank=True, null=True)
+    person_attribution = models.CharField(
+        max_length=255, blank=True, null=True
+    )
     organization_attribution = models.CharField(
         max_length=255, blank=True, null=True
     )
@@ -455,6 +457,9 @@ class SiteText(models.Model):
         :return: the text, with an edit link if the user is staff
         """
         request = context.get("request")
+
+        return self.body
+
         if not request.user or not request.user.is_staff:
             return self.body
         elif request.user and request.user.is_staff:
