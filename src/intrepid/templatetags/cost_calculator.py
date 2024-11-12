@@ -75,6 +75,38 @@ def meta_package_cost(costs, meta_package, converted_currency):
 
 
 @register.simple_tag()
+def package_cost_multiplier(costs, package, order, converted_currency=None):
+    """
+    Get the cost for a package.
+    :param costs: the costs
+    :param package: the package to get the cost for
+    :param converted_currency: the currency to convert to
+    :return: the cost
+    """
+    for cost in costs:
+        if cost.get("package") == package:
+            if (
+                converted_currency
+                and converted_currency != cost.get("cost").country.currency
+            ):
+                convert_value = currency_convert.convert(
+                    currency_from=cost.get("cost").country.currency,
+                    currency_to=converted_currency,
+                    value=cost.get("cost").value,
+                )
+
+                convert_value = convert_value * order.term
+
+                return mark_safe(
+                    "<em>{}*</em>".format(
+                        format_price(convert_value, converted_currency)
+                    )
+                )
+            else:
+                return cost.get("cost") * order.term
+
+
+@register.simple_tag()
 def package_cost(costs, package, converted_currency=None):
     """
     Get the cost for a package.
@@ -112,6 +144,14 @@ def format_price(cost, currency):
     :return: a formatted currency string
     """
     return utils.format_price(cost, currency)
+
+
+@register.simple_tag()
+def format_price_multiplier(cost, currency, order):
+    """
+    Format a price.
+    """
+    return utils.format_price(int(cost) * int(order.term), currency)
 
 
 @register.simple_tag()
