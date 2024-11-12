@@ -136,7 +136,9 @@ class BandingType(models.Model):
                 self.vocabs.remove(vocab)
 
         if new_vocabs:
-            vocab_utils.notify_initiatives_new_vocabs(self, new_vocabs, request)
+            vocab_utils.notify_initiatives_new_vocabs(
+                self, new_vocabs, request
+            )
 
         return new_vocabs
 
@@ -781,6 +783,8 @@ class Basket(models.Model):
         help_text="If False this basket will not show in active baskets.",
     )
 
+    term = models.IntegerField(default=1)
+
     def package_set(self) -> set[Package]:
         """
         Returns a set of packages that are in this basket
@@ -1389,6 +1393,9 @@ class Order(models.Model):
         blank=True, null=True, default=datetime.date.today
     )
 
+    # the term length in years
+    term = models.IntegerField(default=1)
+
     # the associated basket for this order
     basket = models.ForeignKey(
         Basket,
@@ -1558,8 +1565,10 @@ class Order(models.Model):
         :return: None
         """
         self.email_address = form.cleaned_data.get("email_address")
+        self.term = form.cleaned_data.get("term_length")
+
         for k, v in form.cleaned_data.items():
-            if not k == "email_address":
+            if not k == "email_address" and not k == "term_length":
                 form_element = AggregateFormElement.objects.get(pk=k)
                 answer, _ = OrderFormAnswer.objects.update_or_create(
                     order=self,
