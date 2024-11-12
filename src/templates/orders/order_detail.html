@@ -36,13 +36,15 @@
                         </tr>
                         <tr>
                             <th colspan="1">Order Date</th>
-                            <th colspan="2">Order Valid Period</th>
-                            <th colspan="2">Initiative</th>
+                            <th colspan="1">Order Valid Period</th>
+                            <th colspan="1">Initiative</th>
+                            <th colspan="2">Term Length</th>
                         </tr>
                         <tr>
                             <td colspan="1">{{ order.order_date }}</td>
-                            <td colspan="2">{{ order.valid_period }}</td>
-                            <td colspan="2">{{ order.initiative }}</td>
+                            <td colspan="1">{{ order.valid_period }}</td>
+                            <td colspan="1">{{ order.initiative }}</td>
+                            <td colspan="2">{{ order.term }} {% get_site_text "years" %}</td>
                         </tr>
                         <tr>
                             <th colspan="3">Documents</th>
@@ -89,7 +91,7 @@
                             <tr>
                                 <th>Package Name</th>
                                 <th>Package Initiative</th>
-                                <th>Cost</th>
+                                <th>Cost over Term ({{ order.term }} {% get_site_text "years" %})</th>
                                 <th>Payment Processor</th>
                                 <th>Invoice Status</th>
                                 <th>Remove</th>
@@ -98,7 +100,7 @@
                                 <tr>
                                     <td>{{ signup.associated_package.name }}</td>
                                     <td>{{ signup.associated_package.initiative.name }}</td>
-                                    <td>{{ signup.formatted_price }}</td>
+                                    <td>{{ signup.formatted_price_multiplier }}</td>
                                     <td>
                                         {% if signup.payment_processor.payment_processor %}
                                             <a href="{% url 'detail_invoice' signup.payment_processor.payment_processor.pk order.pk %}">{{ signup.payment_processor.payment_processor }}</a>

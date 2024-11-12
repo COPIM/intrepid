@@ -1749,6 +1749,16 @@ class PackageSignup(models.Model):
         """
         return utils.format_price(self.price, self.currency.currency)
 
+    @property
+    def formatted_price_multiplier(self) -> str:
+        """
+        Returns a formatted price
+        :return: str
+        """
+        return utils.format_price(
+            self.price * self.associated_order.term, self.currency.currency
+        )
+
 
 class MediaFile(models.Model):
     """
