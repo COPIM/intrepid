@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load django_bootstrap5 %}
 
-{% block title %}Payment Processors{% endblock %}
+{% block title %}{% get_site_text 'payment_processors' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Payment Processors</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'payment_processors' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -12,17 +12,17 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Payment Processors</h1>
-                    <p><a href="{% url 'new_payment_processor' %}" class="btn btn-primary">Add New Payment Processor</a></p>
+                    <h1>{% get_site_text 'payment_processors' %}</h1>
+                    <p><a href="{% url 'new_payment_processor' %}" class="btn btn-primary">{% get_site_text 'add' %}</a></p>
                     <form method="POST">
                         {% csrf_token %}
                         <table class="table" id="orders">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Countries</th>
-                                <th>Delete</th>
-                                <th>Edit</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'countries' %}</th>
+                                <th>{% get_site_text 'delete' %}</th>
+                                <th>{% get_site_text 'edit' %}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -34,8 +34,8 @@
                                             {{ country }}{% if not forloop.last %}, {% endif %}
                                         {% endfor %}
                                     </td>
-                                    <td><form method="POST">{% csrf_token %}<button class="btn btn-danger delete" name="delete" value="{{ processor.pk }}">Delete</button></form></td>
-                                    <td><a href="{% url 'edit_payment_processor' processor.pk %}" class="btn btn-primary">Edit</a></td>
+                                    <td><form method="POST">{% csrf_token %}<button class="btn btn-danger delete" name="delete" value="{{ processor.pk }}">{% get_site_text 'delete' %}</button></form></td>
+                                    <td><a href="{% url 'edit_payment_processor' processor.pk %}" class="btn btn-primary">{% get_site_text 'edit' %}</a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

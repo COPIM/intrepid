@@ -40,8 +40,7 @@
             <div class="col-12 text-center">
                 {% if package_type and package_type == 'meta' %}
                     <a href="{% url 'all_books' %}"
-                       class="megenta-pill-button-more">View Our Full
-                        Catalogue</a>
+                       class="megenta-pill-button-more">{% get_site_text 'view_our_full_catalogue' %}</a>
                 {% else %}
                     <a href="{% url 'all_books' %}?initiative={{ initiative.pk }}"
                        class="megenta-pill-button-more">View Our Full

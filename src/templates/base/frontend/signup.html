@@ -10,9 +10,9 @@
         <div class="col-2"></div>
         <div class="col-8 login-row-header">
             <div class="row">
-                <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Login" class="img-fluid login-padlock"/></div>
+                <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="{% get_site_text 'login' %}" class="img-fluid login-padlock"/></div>
                 <div class="col-8 login-header">
-                    <h1>{% block title %}{% trans "Register for Open Book Collective" %}{% endblock %}</h1>
+                    <h1>{% block title %}{% get_site_text 'register_for_the_open_book_collective' %}{% endblock %}</h1>
                 </div>
             </div>
             <div class="col-4"></div>
@@ -24,18 +24,18 @@
         <div class="col-2"></div>
             <div class="col-8 login-row">
               <form action="" method="post">{% csrf_token %}
-                  <input type="text" id="username" value="" placeholder="Username" class="username" />
+                  <input type="text" id="username" value="" placeholder="{% get_site_text 'username' %}" class="username" />
 
-                  <input type="text" id="email1" value="" placeholder="Email" class="email" />
-                  <input type="text" id="email2" value="" placeholder="Repeat email" class="email" />
+                  <input type="text" id="email1" value="" placeholder="{% get_site_text 'email' %}" class="email" />
+                  <input type="text" id="email2" value="" placeholder="{% get_site_text 'repeat_email' %}" class="email" />
 
-                  <input type="text" id="password1" value="" placeholder="Password" class="password" />
-                  <input type="text" id="password2" value="" placeholder="Repeat password" class="password" />
+                  <input type="text" id="password1" value="" placeholder="{% get_site_text 'password' %}" class="password" />
+                  <input type="text" id="password2" value="" placeholder="{% get_site_text 'repeat_password' %}" class="password" />
 
                   {# hidden submit button to enable [enter] key #}
                   <input type="submit" value="" class="d-none" />
 
-                  <input class="submit_button" type="submit" value="{% translate 'Sign Up' %}"></input>
+                  <input class="submit_button" type="submit" value="{% get_site_text 'sign_up' %}"></input>
 
               </form>
         </div>
@@ -57,9 +57,9 @@
 
 {% block body-mobile %}
     <div class="row login-row-header-mobile">
-        <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="Login" class="img-fluid login-padlock"/></div>
+        <div class="col-4"><img src="{% static "frontend/img/login_padlock.svg" %}" alt="{% get_site_text 'login' %}" class="img-fluid login-padlock"/></div>
         <div class="col-8 login-header">
-            <h1>{% trans "Register for Open Book Collective" %}</h1>
+            <h1>{% get_site_text 'register_for_the_open_book_collective' %}</h1>
         </div>
         <div class="col-3"></div>
     </div>
@@ -67,18 +67,18 @@
     <div class="row login-row">
         <div class="col top-pad">
           <form action="" method="post">{% csrf_token %}
-          <input type="text" id="username" value="" placeholder="Username" class="username" />
+          <input type="text" id="username" value="" placeholder="{% get_site_text 'username' %}" class="username" />
 
-          <input type="text" id="email1" value="" placeholder="Email" class="email" />
-          <input type="text" id="email2" value="" placeholder="Repeat email" class="email" />
+          <input type="text" id="email1" value="" placeholder="{% get_site_text 'email' %}" class="email" />
+          <input type="text" id="email2" value="" placeholder="{% get_site_text 'repeat_email' %}" class="email" />
 
-          <input type="text" id="password1" value="" placeholder="Password" class="password" />
-          <input type="text" id="password2" value="" placeholder="Repeat password" class="password" />
+          <input type="text" id="password1" value="" placeholder="{% get_site_text 'password' %}" class="password" />
+          <input type="text" id="password2" value="" placeholder="{% get_site_text 'repeat_password' %}" class="password" />
 
           {# hidden submit button to enable [enter] key #}
           <input type="submit" value="" class="d-none" />
 
-          <input class="submit_button" type="submit" value="{% translate 'Sign Up' %}"></input>
+          <input class="submit_button" type="submit" value="{% get_site_text 'sign_up' %}"></input>
 
           </form>
         </div>

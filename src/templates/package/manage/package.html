@@ -4,8 +4,8 @@
 {% block breadcrumb %}
 
     
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
 {% endblock breadcrumb %}
 
@@ -14,18 +14,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% if package %}Edit {{ package.name }}{% else %}Add New Package{% endif %}</h1>
-                <p class="lead">Add new and edit existing package.</p>
+                <h1>{% if package %}{% get_site_text 'edit_package' %} {{ package.name }}{% else %}{% get_site_text 'add_new_package' %}{% endif %}</h1>
+                <p class="lead">{% get_site_text 'add_edit_package_lead' %}</p>
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-7">
-                            <h2>Metadata</h2>
+                            <h2>{% get_site_text 'metadata' %}</h2>
                             {% crispy form %}
                         </div>
                         <div class="col-md-12">
-                            <button class="btn btn-success">Save</button>
+                            <button class="btn btn-success">{% get_site_text 'save' %}</button>
                         </div>
                     </div>
                 </form>

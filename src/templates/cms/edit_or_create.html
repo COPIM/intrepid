@@ -2,16 +2,16 @@
 {% load static two_factor %}
 {% load django_bootstrap5 %}
 
-{% block title %}{% if page %}Edit{% else %}Create{% endif %} {{ page_or_update|capfirst }}{% endblock title %}
+{% block title %}{% if page %}{% get_site_text 'edit' %}{% else %}{% get_site_text 'create' %}{% endif %} {{ page_or_update|capfirst }}{% endblock title %}
 
 {% block breadcrumb %}
         <li class="breadcrumb-item" aria-current="page"><a
-                href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+                href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
         <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
         <li class="breadcrumb-item" aria-current="page"><a
-                href="{% url 'page_list' initiative.pk page_or_update %}">{{ page_or_update|capfirst }} List</a></li>
-        <li class="breadcrumb-item" aria-current="page">{% if page %}Edit{% else %}
-            Create{% endif %} {{ page.title }}</li>
+                href="{% url 'page_list' initiative.pk page_or_update %}">{{ page_or_update|capfirst }} {% get_site_text 'list' %}</a></li>
+        <li class="breadcrumb-item" aria-current="page">{% if page %}{% get_site_text 'edit' %}{% else %}
+            {% get_site_text 'create' %}{% endif %} {{ page.title }}</li>
     {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -32,39 +32,36 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">{% if page %}Edit{% else %}
-                    Create{% endif %} {{ page.title }} {{ page_or_update|capfirst }}</p>
+                <p class="lead">{% if page %}{% get_site_text 'edit' %}{% else %}
+                    {% get_site_text 'create' %}{% endif %} {{ page.title }} {{ page_or_update|capfirst }}</p>
                 <div class="row">
                     <div class="col-md-12">
-                        <p>
-                            You can manage the data for your {{ page_or_update }} below. There are two save options
-                            available.
+                        <p>{{ page_or_update }}: {% get_site_text 'manage_data' %}
                         </p>
                         <ul>
-                            <li>Save - creates a new version of your page but does not make it live.</li>
-                            <li>Save and Make Current Version - creates a new version and also makes it the live version.
-                            </li>
+                            <li>{% get_site_text 'save_page' %}</li>
+                            <li>{% get_site_text 'save_page_make_current' %}</li>
                         </ul>
                         {% if page %}
-                        <p>You can control versions, and which of them is live, from the <a
-                                href="{% url 'page_detail' initiative.pk page_or_update page.pk %}">detail</a> page.</p>
+                        <p>{% get_site_text 'can_control_versions' %} <a
+                                href="{% url 'page_detail' initiative.pk page_or_update page.pk %}">{% get_site_text 'detail_page' %}</a>.</p>
                         {% endif %}
                         <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
                             {% bootstrap_form page_form %}
 
                             <label for="inst_lookup" class=" requiredField">
-                                Institution (Optional: targets this update at a specific institution)
+                                {% get_site_text 'institution_target' %}
                             </label>
                             <input class="emailinput form-control" id="inst_lookup" name="inst_lookup"/><input id="institution_ROR" name="institution_ROR" type="hidden" value=""/>
 
                             {% bootstrap_form version_form %}
                             <button type="submit" class="btn btn-primary">
-                                Save
+                                {% get_site_text 'save' %}
                             </button>
                             {% if page %}
                                 <button type="submit" name="set_current" class="btn btn-success">
-                                    Save and Make Current Version
+                                    {% get_site_text 'save_and_make_current' %}
                                 </button>
                             {% endif %}
                         </form>

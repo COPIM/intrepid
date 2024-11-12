@@ -12,12 +12,12 @@
             <div class="col-5">
                 <ul class="list-unstyled">
                     {% if package.recommended %}
-                        <li><i class="fa fa-check-circle"></i> Recommended
+                        <li><i class="fa fa-check-circle"></i> {% get_site_text 'recommended' %}
                         </li>
                     {% endif %}
-                    <li><i class="fa fa-building"></i> {{ package.initiative_list|length }} Initiatives</li>
-                    <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</li>
-                    <li><i class="fa fa-edit"></i> Pricing {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
+                    <li><i class="fa fa-building"></i> {{ package.initiative_list|length }} {% get_site_text 'initiatives' %}</li>
+                    <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</li>
+                    <li><i class="fa fa-edit"></i> {% get_site_text 'pricing' %} {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
                 </ul>
             </div>
         </div>
@@ -25,14 +25,14 @@
     <div class="card-footer text-muted">
         <div class="row">
             <div class="col-6">
-                <p><i class="fa fa-arrow-right"></i> <a href="{% url 'summary_meta_package' package.pk %}">More Information</a></p>
+                <p><i class="fa fa-arrow-right"></i> <a href="{% url 'summary_meta_package' package.pk %}">{% get_site_text 'more_information' %}</a></p>
             </div>
             <div class="col-6">
                 {% if request.site.enable_signup and request.site.enable_meta_package_signup %}
-                <a class="btn btn-primary btn-obc-blue float-right" href="{% url 'manage_basket_meta_package' package.pk %}">Add to Quote <span class="fa fa-plus"></span>
+                <a class="btn btn-primary btn-obc-blue float-right" href="{% url 'manage_basket_meta_package' package.pk %}">{% get_site_text 'add_to_quote' %} <span class="fa fa-plus"></span>
                 </a>
                 {% else %}
-                    Collective package signup is disabled.
+                    {% get_site_text 'collective_signup_disabled' %}
                 {% endif %}
             </div>
         </div>

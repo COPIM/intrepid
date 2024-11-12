@@ -4,16 +4,16 @@
 
 
 {% block css %}
-    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/packages.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
-    Order No. {{ order.order_number }}
+    {% get_site_text 'order_number' %} {{ order.order_number }}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.order_number }}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">{% get_site_text 'orders_and_documents' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'order_number' %} {{ order.order_number }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -21,12 +21,12 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col text-left">
-            <h1 class="text-left">Your quotation</h1>
+            <h1 class="text-left">{% get_site_text 'your_quotation' %}</h1>
             <p class="subhead-no-offset">
-                We have generated a quotation for you to review, with a unique quotation number {{ order.order_number }}. Please refer to this quotation number if you would like to discuss any details with us.
+                {% get_site_text 'quotation_generated' %} {{ order.order_number }}. {% get_site_text 'quotation_reference' %}
             </p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+        <div class="col-2"><img class="catalogue-image" src="{% static 'frontend/img/quotation_group.png' %}"
                                 alt="Quotations logo"/></div>
         <div class="col-1"></div>
     </div>
@@ -38,23 +38,19 @@
         <div class="col package-styled-text">
             {% get_site_text 'order_text_1' %}
             <p class="text-center">
-                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
-                    Order
-                    Documents</a>
+                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_order_documents' %}</a>
             </p>
             {% get_site_text 'order_text_2' %}
             <table class="table package-table">
                 <tr class="header-row">
-                    <th>Initiative</th>
-                    <th>Package(s)</th>
-                    <th>Contact Email</th>
+                    <th>{% get_site_text 'initiative' %}</th>
+                    <th>{% get_site_text 'packages' %}</th>
+                    <th>{% get_site_text 'contact_email' %}</th>
                 </tr>
                 {% for k, row in contact_rows.items %}
                     <tr>
                         <td><strong>{{ row.initiative.name }}</strong></td>
-                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
-                        {% elif not forloop.first and not forloop.last %}, {% endif %}
-                            {{ package.name }}{% endfor %}</td>
+                        <td>{% for package in row.packages %}{{ package.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ row.contact_email }}</td>
                     </tr>
                 {% endfor %}
@@ -66,11 +62,11 @@
                 {% csrf_token %}
                 <table class="table package-table" id="approval_table">
                     <tr class="header-row">
-                        <th>Package Name</th>
-                        <th>Cost</th>
-                        <th>Approved by Provider?</th>
-                        <th>Approval</th>
-                        <th>External</th>
+                        <th>{% get_site_text 'package_name' %}</th>
+                        <th>{% get_site_text 'cost' %}</th>
+                        <th>{% get_site_text 'approved_by_provider' %}</th>
+                        <th>{% get_site_text 'approval' %}</th>
+                        <th>{% get_site_text 'external' %}</th>
                     </tr>
                     {% for signup in order.packagesignup_set.all %}
                         <tr>
@@ -80,7 +76,7 @@
                                 {% if signup.initiative_approved %}
                                     <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
                                 {% else %}
-                                    <i class="fa fa-times-circle"></i> Not approved
+                                    <i class="fa fa-times-circle"></i> {% get_site_text 'not_approved' %}
                                 {% endif %}
                             </td>
                             <td>
@@ -89,7 +85,7 @@
                                 {% else %}
                                     <button class="btn btn-sm btn-primary btn-obc-blue" name="approve"
                                             value="{{ signup.pk }}">
-                                        Agree terms of signup
+                                        {% get_site_text 'agree_terms_of_signup' %}
                                     </button>
                                 {% endif %}
                             </td>
@@ -113,9 +109,9 @@
     <div class="row catalogue-header-mobile">
         <div class="col-1"></div>
         <div class="col-10">
-            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
+            <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/collective_five.svg' %}"
                  alt="Build your quote image"/>
-            <h1>Your quotation</h1>
+            <h1>{% get_site_text 'your_quotation' %}</h1>
         </div>
         <div class="col-1"></div>
     </div>
@@ -123,7 +119,7 @@
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>We have generated a quotation for you to review, with a unique quotation number {{ order.order_number }}. Please refer to this quotation number if you would like to discuss any details with us.</p>
+            <p>{% get_site_text 'quotation_generated' %} {{ order.order_number }}. {% get_site_text 'quotation_reference' %}</p>
         </div>
         <div class="col-1"></div>
     </div>
@@ -132,53 +128,39 @@
 {% block body-mobile %}
     <div class="catalogue-main">
         <div class="col">
-            <h2>Order Documents</h2>
-            <p class="package-styled-text">
-                We've zipped up the documents for all of the packages you are signing up for. Please read them and then
-                either
-                approve the signup below or contact the initiative to discuss the terms. Also, some types of signup (those going through Jisc Collections) require you to input your details on an external site. Please check the links below carefully under the "external" column.
-            </p>
+            <h2>{% get_site_text 'order_documents_button' %}</h2>
+            <p class="package-styled-text">{% get_site_text 'order_documents_description' %}</p>
             <p>
-                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">Download
-                    Order
-                    Documents</a>
+                <a href="{% url 'frozen_document' order.document.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_order_documents' %}</a>
             </p>
-            <h2>Contact Details</h2>
-            <p class="package-styled-text">Once you have read the order documents you can contact the initiatives to
-                discuss
-                them or approve the signup. If necessary the package manager can upload new terms. Once you and the
-                package
-                manager have both approved the signup terms will be locked in place.</p>
+            <h2>{% get_site_text 'contact_details' %}</h2>
+            <p class="package-styled-text">{% get_site_text 'contact_details_description' %}</p>
             <table class="table package-table table-responsive">
                 <tr class="header-row">
-                    <th>Initiative</th>
-                    <th>Package(s)</th>
-                    <th>Contact Email</th>
+                    <th>{% get_site_text 'initiative' %}</th>
+                    <th>{% get_site_text 'packages' %}</th>
+                    <th>{% get_site_text 'contact_email' %}</th>
                 </tr>
                 {% for k, row in contact_rows.items %}
                     <tr>
                         <td><strong>{{ row.initiative.name }}</strong></td>
-                        <td>{% for package in row.packages %}{% if forloop.last and not forloop.first %} &
-                        {% elif not forloop.first and not forloop.last %}, {% endif %}
-                            {{ package.name }}{% endfor %}</td>
+                        <td>{% for package in row.packages %}{{ package.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ row.contact_email }}</td>
                     </tr>
                 {% endfor %}
             </table>
 
-            <h2>Approval</h2>
-            <p class="package-styled-text">When you are happy with the package terms you can mark the signup as
-                approved. You
-                may need to wait for the Initiative to approve the signup also in order to finalise the signup.</p>
+            <h2>{% get_site_text 'approval' %}</h2>
+            <p class="package-styled-text">{% get_site_text 'approval_description' %}</p>
             <form method="POST">
                 {% csrf_token %}
                 <table class="table package-table table-responsive">
                     <tr class="header-row">
-                        <th>Package Name</th>
-                        <th>Cost</th>
-                        <th>Approved by Initiative?</th>
-                        <th>Approval</th>
-                        <th>External</th>
+                        <th>{% get_site_text 'package_name' %}</th>
+                        <th>{% get_site_text 'cost' %}</th>
+                        <th>{% get_site_text 'approved_by_initiative' %}</th>
+                        <th>{% get_site_text 'approval' %}</th>
+                        <th>{% get_site_text 'external' %}</th>
                     </tr>
                     {% for signup in order.packagesignup_set.all %}
                         <tr>
@@ -188,7 +170,7 @@
                                 {% if signup.initiative_approved %}
                                     <i class="fa fa-check-circle"></i> {{ signup.initiative_approved }}
                                 {% else %}
-                                    <i class="fa fa-times-circle"></i> Not approved
+                                    <i class="fa fa-times-circle"></i> {% get_site_text 'not_approved' %}
                                 {% endif %}
                             </td>
                             <td>
@@ -197,7 +179,7 @@
                                 {% else %}
                                     <button class="btn btn-sm btn-primary btn-obc-blue" name="approve"
                                             value="{{ signup.pk }}">
-                                        Approve this Signup
+                                        {% get_site_text 'approve_this_signup' %}
                                     </button>
                                 {% endif %}
                             </td>

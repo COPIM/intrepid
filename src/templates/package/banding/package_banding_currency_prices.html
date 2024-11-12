@@ -2,14 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">Edit Bandings</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">{% get_site_text 'edit_bandings' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding_type_entry.pk %}">{{ banding_type_entry.banding_type.name }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ currency.country.currency }}</li>
 {% endblock breadcrumb %}
@@ -20,15 +20,15 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Prices for {{ currency.country.currency }} ({{ banding_type_entry.banding_type.name }}) for “{{ package.name }}”</h1>
-            <p class="lead">Please set the prices for this band.</p>
+            <h1>{% get_site_text 'prices_for' %} {{ currency.country.currency }} ({{ banding_type_entry.banding_type.name }}) {% get_site_text 'for' %} “{{ package.name }}”</h1>
+            <p class="lead">{% get_site_text 'set_prices_for_band' %}</p>
             <br/> <br/>
             <div class="row">
                 <div class="col-6">
                     <form method="POST">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <input type="submit" class="btn-success btn" value="Save Prices"/>
+                    <input type="submit" class="btn-success btn" value="{% get_site_text 'save_prices' %}"/>
                 </form>
                 </div>
             </div>

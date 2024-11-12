@@ -2,16 +2,16 @@
 {% load static %}
 
 {% block title %}
-Books
+{% get_site_text 'books' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'all_books' %}">Books</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'all_books' %}">{% get_site_text 'books' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ publisher.publisher_name }}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
-<h1>Books from {{ publisher.publisher_name }}</h1>
+<h1>{% get_site_text 'books_from' %} {{ publisher.publisher_name }}</h1>
 <section class="basic-information">
 
     <div class="book_list">
@@ -33,17 +33,17 @@ Books
     <div class="pagination">
         <span class="step-links">
             {% if works.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <a href="?page=1">&laquo; {% get_site_text 'first' %}</a>
+                <a href="?page={{ page_obj.previous_page_number }}">{% get_site_text 'previous' %}</a>
             {% endif %}
 
             <span class="current">
-                Page {{ works.number }} of {{ works.paginator.num_pages }}.
+                {% get_site_text 'page' %} {{ works.number }} {% get_site_text 'of' %} {{ works.paginator.num_pages }}.
             </span>
 
             {% if works.has_next %}
-                <a href="?page={{ works.next_page_number }}">next</a>
-                <a href="?page={{ works.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ works.next_page_number }}">{% get_site_text 'next' %}</a>
+                <a href="?page={{ works.paginator.num_pages }}">{% get_site_text 'last' %} &raquo;</a>
             {% endif %}
         </span>
     </div>

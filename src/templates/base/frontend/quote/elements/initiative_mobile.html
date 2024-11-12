@@ -11,7 +11,7 @@
 
         <div class="row">
             <div class="col">
-                <a href="{% url 'public_initiative' initiative.pk %}">Learn More</a>
+                <a href="{% url 'public_initiative' initiative.pk %}">{% get_site_text 'learn_more' %}</a>
             </div>
         </div>
 

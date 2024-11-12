@@ -1,58 +1,58 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-{{ object.title }} Details
+{{ object.title }}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'page_list' initiative.pk page_or_update %}">{{ page_or_update|capfirst }} List</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'page_list' initiative.pk page_or_update %}">{{ page_or_update|capfirst }} {% get_site_text 'list' %}</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ object.title }}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
 <section class="content">
     <div class="container-fluid">
-        <p class="lead">{{ page_or_update|capfirst }}: "{{ object.title }}" for {{ initiative.name }}.</p>
+        <p class="lead">{{ page_or_update|capfirst }}: "{{ object.title }}" / {{ initiative.name }}.</p>
 
         <div class="row">
             <div class="col-md-5">
-                <h2>Details</h2>
+                <h2>{% get_site_text 'details' %}</h2>
                 <table class="table">
                     <tr>
-                        <th>Title</th>
+                        <th>{% get_site_text 'title' %}</th>
                         <td>{{ object.title }}</td>
                     </tr>
                     <tr>
-                        <th>Created</th>
+                        <th>{% get_site_text 'created' %}</th>
                         <td>{{ object.created }}</td>
                     </tr>
                     <tr>
-                        <th>Updated by</th>
+                        <th>{% get_site_text 'last_updated_by' %}</th>
                         <td>{{ object.updated_by.profile.full_name }}</td>
                     </tr>
                     <tr>
-                        <th>Display?</th>
+                        <th>{% get_site_text 'display' %}?</th>
                         <td>{{ object.display }}</td>
                     </tr>
                     <tr>
-                        <th>Target Institution</th>
+                        <th>{% get_site_text 'target_institution' %}</th>
                         <td>{{ object.target_institution.institution_name }}</td>
                     </tr>
                     <tr>
-                        <th>Sequence</th>
+                        <th>{% get_site_text 'sequence' %}</th>
                         <td>{{ object.sequence }}</td>
                     </tr>
                     <tr>
                         <th>Edit</th>
-                        <td><a class="btn btn-sm btn-primary" href="{% url 'page_edit' initiative.pk page_or_update object.pk %}"><i class="fa fa-edit"></i> Edit
+                        <td><a class="btn btn-sm btn-primary" href="{% url 'page_edit' initiative.pk page_or_update object.pk %}"><i class="fa fa-edit"></i> {% get_site_text 'edit' %}
                             {{ page_or_update }}</a></td>
                     </tr>
                 </table>
-                <p class="lead">Current Version: #{{ object.current_version.pk }} {{ object.current_version.created }} created by {{ object.current_version.created_by.profile.full_name }}</p>
+                <p class="lead">{% get_site_text 'current_version' %}: #{{ object.current_version.pk }} {{ object.current_version.created }}, {{ object.current_version.created_by.profile.full_name }}</p>
                 <a href="{% url 'view_current_version' initiative.pk page_or_update object.pk %}" class="btn btn-primary" target="_blank">
-                    <i class="fa fa-eye"> </i> View Current Version
+                    <i class="fa fa-eye"> </i> {% get_site_text 'view_current_version' %}
                 </a>
             </div>
             <div class="col-md-7">
@@ -60,9 +60,9 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Created</th>
-                        <th>Created By</th>
+                        <th>{% get_site_text 'id' %}</th>
+                        <th>{% get_site_text 'created' %}</th>
+                        <th>{% get_site_text 'created_by' %}</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -76,27 +76,27 @@
                             <td>{{ version.created_by.profile.full_name }}</td>
                             <td><a href="{% url 'view_version' initiative.pk page_or_update object.pk version.pk %}"
                                    target="_blank" class="btn btn-primary btn-sm">
-                                <i class="fa fa-eye"> </i> View Version
+                                <i class="fa fa-eye"> </i> {% get_site_text 'view_version' %}
                             </a></td>
                             <td>{% if version != object.current_version %}
                                 <form method="POST" class="mb-0">
                                     {% csrf_token %}
                                     <button name="set_current" value="{{ version.pk }}" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-check"> </i> Set as Current Version
+                                        <i class="fa fa-check"> </i> {% get_site_text 'set_as_current_version' %}
                                     </button>
                                 </form>
 
                                 {% else %}
-                                    <button class="btn btn-outline-danger btn-sm" disabled>This is the current version.</button>
+                                    <button class="btn btn-outline-danger btn-sm" disabled>{% get_site_text 'this_is_current' %}</button>
                                 {% endif %}
                             </td>
                             <td>
-                                <a target="_blank" href="{% url 'diff_versions' initiative.pk page_or_update object.pk object.current_version.pk version.pk %}" class="btn btn-primary btn-sm">Diff</a>
+                                <a target="_blank" href="{% url 'diff_versions' initiative.pk page_or_update object.pk object.current_version.pk version.pk %}" class="btn btn-primary btn-sm">{% get_site_text 'diff' %}</a>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="100">No other versions</td>
+                            <td colspan="100">{% get_site_text 'no_other_versions' %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}{% trans "Orders and Documents" %}{% endblock title %}
+{% block title %}{% get_site_text 'orders_and_documents' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Orders and Documents</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'orders_and_documents' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
         <div class="col-md-12">
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">Orders and Documents</h3>
+              <h3 class="card-title">{% get_site_text 'orders_and_documents' %}</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
@@ -28,12 +28,12 @@
                 <table class="table table-hover table-striped">
                   <tbody>
                     <tr>
-                        <th>Order Number</th>
-                        <th>Order Date</th>
-                        <th>Number of Packages</th>
-                        <th>Status</th>
-                        <th>Documents</th>
-                        <th>Details</th>
+                        <th>{% get_site_text 'order_number' %}</th>
+                        <th>{% get_site_text 'date_time' %}</th>
+                        <th>{% get_site_text 'number_of_packages' %}</th>
+                        <th>{% get_site_text 'status' %}</th>
+                        <th>{% get_site_text 'documents' %}</th>
+                        <th>{% get_site_text 'details' %}</th>
                     </tr>
                     {% for order in orders %}
                         <tr>
@@ -41,14 +41,14 @@
                             <td class="mailbox-date">{{ order.order_date }}</td>
                             <td>{{ order.packagesignup_set.all.count }}</td>
                             <td>{{ order.get_status_display }}</td>
-                            <td class="mailbox-subject">{% if order.document %}<a href="{% url 'frozen_document' order.document.pk %}"><span class="fas fa-download"></span> Order Documents</a>{% else %}Order has no documents{% endif %}</td>
+                            <td class="mailbox-subject">{% if order.document %}<a href="{% url 'frozen_document' order.document.pk %}"><span class="fas fa-download"></span> {% get_site_text 'documents' %}</a>{% else %}{% get_site_text 'no_documents' %}{% endif %}</td>
                             <td>
                             {% if order.status == 'new' %}
-                                <a href="{% url 'order_form' order.pk %}" class="btn btn-primary">Complete Order Form</a>
+                                <a href="{% url 'order_form' order.pk %}" class="btn btn-primary">{% get_site_text 'complete_order_form' %}</a>
                             {% elif order.status == 'provisional' %}
-                                <a href="{% url 'order_provisional' order.pk %}" class="btn btn-primary">View Order Details</a>
+                                <a href="{% url 'order_provisional' order.pk %}" class="btn btn-primary">{% get_site_text 'details' %}</a>
                             {% elif order.status == 'complete' %}
-                                <a href="{% url 'order_complete' order.pk %}" class="btn btn-primary">View Order Details</a>
+                                <a href="{% url 'order_complete' order.pk %}" class="btn btn-primary">{% get_site_text 'details' %}</a>
                             {% endif %}
                         </td>
                         </tr>

@@ -8,8 +8,8 @@
                         {% csrf_token %}
                         <table class="table package-table">
                             <tr class="header-row">
-                                <th>Offer</th>
-                                <th>Remove</th>
+                                <th>{% get_site_text 'offer' %}</th>
+                                <th>{% get_site_text 'remove' %}</th>
                             </tr>
                             {% for package in basket.packages.all %}
                                 <tr>
@@ -17,7 +17,7 @@
                                     <td>
                                         <button class="btn btn-sm btn-link"
                                                 formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
-                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="{% get_site_text 'remove_from_basket' %}"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -28,7 +28,7 @@
                                     <td>
                                         <button class="btn btn-sm btn-link"
                                                 formaction="{% url 'basket_remove_from_basket' basket.pk package.pk %}">
-                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="Remove from basket"/>
+                                            <img class="img-fluid" src="{% static "frontend/img/blue-cross.png" %}" alt="{% get_site_text 'remove_from_basket' %}"/>
                                         </button>
                                     </td>
                                 </tr>
@@ -40,8 +40,8 @@
                         {% csrf_token %}
                         <table class="table package-table">
                             <tr class="header-row">
-                                <th>Package</th>
-                                <th class="text-right">Price</th>
+                                <th>{% get_site_text 'package' %}</th>
+                                <th class="text-right">{% get_site_text 'price' %}</th>
                             </tr>
                             {% for cost in package_costs %}
                                 <tr{% if cost.package in basket.list_of_conflicting_packages %}
@@ -57,23 +57,24 @@
                                         Months
                                          {% for document in cost.package.packagedocument_set.all %}
                                             {% if document.pdf_file %}<a href="{{ document.pdf_file.url }}"><img class="fluid-image"
-                                                                                       src="{% static "frontend/img/contract.png" %}" alt="Contract document"></a> Contract{% endif %}
+                                                                                       src="{% static "frontend/img/contract.png" %}" alt="{% get_site_text 'contract' %}"></a>
+                                        {% get_site_text 'contract' %}{% endif %}
                                         {% endfor %}
                                     </td>
                                     <td class="text-right">{% if cost.banding and cost.cost %}{{ cost.cost.value }}
                                         {% if cost.cost.country %}{{ cost.cost.country.currency }}{% else %}
                                             {{ cost.cost.default_currency }}{% endif %}
                                     {% else %}
-                                        No banding or price found.
+                                        {% get_site_text 'no_banding_or_price_found' %}
                                     {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}
                             <tr class="total">
                                 <td>
-                                    <strong>Totals</strong>
+                                    <strong>{% get_site_text 'totals' %}</strong>
                                     {% if basket.conflicts %}
-                                        <p class="in_conflict"><small>Totals ignore duplicate offers.</small>
+                                        <p class="in_conflict"><small>{% get_site_text 'totals_ignore_duplicates' %}</small>
                                         </p>{% endif %}
                                 </td>
                                 <td class="text-right" colspan="3">
@@ -88,7 +89,7 @@
                     <div class="col">
                         <h3>{% get_site_text 'quotation_additional' %}</h3>
                         {% get_site_text 'quotation_add_text' %}
-                        <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                        <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'add' %}</a></p>
                     </div>
 
                     {% if basket.package_set %}
@@ -99,13 +100,13 @@
                 <div class="col-12 spacer-top-20">
                     <div class="card contact-us-card">
                         <div class="card-body">
-                            <h3 class="card-title text-center">Want to discuss your quote?</h3>
+                            <h3 class="card-title text-center">{% get_site_text 'discuss_quote' %}</h3>
                             <div class="text-center">
                                 <img class="img-fluid text-center"
-                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
+                                     src="{% static "frontend/img/quote_lightbulb.png" %}" alt="{% get_site_text 'contact_us' %}">
                             </div>
                             <div class="text-center spacer-top-20">
-                                <button class="contact-us-button">Contact Us</button>
+                                <button class="contact-us-button">{% get_site_text 'contact_us' %}</button>
                             </div>
                         </div>
                     </div>

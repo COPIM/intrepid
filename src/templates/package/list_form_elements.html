@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item">Platform Management</li>
-    <li class="breadcrumb-item active" aria-current="page">Form Elements Setup</li>
+    <li class="breadcrumb-item">{% get_site_text 'platform_management' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'form_elements_setup' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -21,10 +21,10 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% block title %}Form Elements Setup{% endblock %}</h1>
-                <p class="lead">This page allows platform managers to specify form elements that will be available to initiatives.</p>
+                <h1>{% block title %}{% get_site_text 'form_elements_setup' %}{% endblock %}</h1>
+                <p class="lead">{% get_site_text 'form_elements_lead' %}</p>
                 <p><a href="{% url 'form_element_create' %}" class="btn btn-success float-end">
-                <i class="fa fa-plus"> </i> Add New</a></p>
+                <i class="fa fa-plus"> </i> {% get_site_text 'add_new' %}</a></p>
             </div>
             <div class="col-md-12">
                 <form method="POST">
@@ -33,10 +33,10 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Required</th>
-                                <th>Choices</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'type' %}</th>
+                                <th>{% get_site_text 'required' %}</th>
+                                <th>{% get_site_text 'choices' %}</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -50,7 +50,7 @@
                                 <td>{% if element.required %}<i class="far fa-check-square"></i>{% else %}<i class="far fa-square"></i>{% endif %}</td>
                                 <td>{{ element.choices }}</td>
                                 <td><a href="{% url 'form_element_edit' element.id %}" class="btn btn-primary">Edit</a></td>
-                                <td><form method="POST" action="{% url 'form_element_delete' element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                                <td><form method="POST" action="{% url 'form_element_delete' element.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
                             </tr>
                         {% endfor %}
                         </tbody>

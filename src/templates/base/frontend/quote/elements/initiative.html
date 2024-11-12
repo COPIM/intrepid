@@ -10,10 +10,10 @@
 
             <div class="col-3">
                 <a class="card-title" href="{% url 'public_initiative' initiative.pk %}"><img class="img-fluid" src="{% if initiative.image %}{{ initiative.image.url }}{% else %}{% static "frontend/img/logo.svg" %}{% endif %}"
-                                                                                              alt="{{ initiative.name }} icon."/></a>
+                                                                                              alt="{{ initiative.name }}"/></a>
                 <div class="dropdown">
                     <a class="btn btn-primary btn-obc-blue btn-package float-right m-t-40"
-                            type="button" id="dropdownMenuButton" href="{% url 'public_initiative' initiative.pk %}">Learn More</a>
+                            type="button" id="dropdownMenuButton" href="{% url 'public_initiative' initiative.pk %}">{% get_site_text 'learn_more' %}</a>
                 </div>
 
             </div>

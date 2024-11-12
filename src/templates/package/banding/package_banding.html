@@ -1,14 +1,14 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ package.name }} Packages</li>
-    <li class="breadcrumb-item active" aria-current="page">Edit Bandings</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ package.name }} {% get_site_text 'packages' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'edit_bandings' %}</li>
 {% endblock breadcrumb %}
 
 {% block dashboard_js %}
@@ -21,16 +21,16 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Bandings for “{{ package.name }}”</h1>
+            <h1>{% get_site_text 'bandings_for' %} “{{ package.name }}”</h1>
             {% if not has_default %}
                 <div class="alert-warning">
-                    <p><i class="fa fa-exclamation-triangle"></i> This package does not have pricing information set for the default currency ({{ package.default_country.currency }}).</p>
+                    <p><i class="fa fa-exclamation-triangle"></i> {% get_site_text 'no_pricing_info' %} ({{ package.default_country.currency }}).</p>
                 </div>
             {% endif %}
-            <p class="lead">The following bandings are associated with this package.</p>
+            <p class="lead">{% get_site_text 'bandings_associated' %}</p>
             <form method="POST">
                 {% csrf_token %}
-                {{ bandings_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this banding"></input>
+                {{ bandings_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="{% get_site_text 'add_this_banding' %}"></input>
             </form>
 
             <br/> <br/>
@@ -38,19 +38,19 @@ Initiatives
             <table class="table table-striped" id="bandings">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Edit Currencies</th>
-                        <th>Remove Banding and Prices</th>
-                        <th>Edit Redirect</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'edit_currencies' %}</th>
+                        <th>{% get_site_text 'remove_banding_and_prices' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for banding in bandings %}
                     <tr>
                         <td>{{ banding.banding_type.name }}</td>
-                        <td><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding.pk %}" class="btn btn-success">Edit Currencies</a></td>
-                        <td><form method="POST" action="{% url 'delete_package_banding' package.pk initiative.pk banding.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove Banding and Currencies"/></form></td>
-                        <td><a href="{% url 'edit_redirect_for_banding' package.pk initiative.pk banding.pk %}" class="btn btn-warning">Edit Redirect</a></td>
+                        <td><a href="{% url 'manage_package_banding_currencies' package.pk initiative.pk banding.pk %}" class="btn btn-success">{% get_site_text 'edit_currencies' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_package_banding' package.pk initiative.pk banding.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'remove_banding_and_currencies' %}"/></form></td>
+                        <td><a href="{% url 'edit_redirect_for_banding' package.pk initiative.pk banding.pk %}" class="btn btn-warning">{% get_site_text 'edit' %}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -60,8 +60,8 @@ Initiatives
 
         <div class="row">
             <div class="col-12">
-                <h1>Basic Price Overview</h1>
-                <p class="lead">Here you can see, at a glance, all prices associated with this package.</p>
+                <h1>{% get_site_text 'basic_price_overview' %}</h1>
+                <p class="lead">{% get_site_text 'price_overview_description' %}</p>
             </div>
         </div>
 

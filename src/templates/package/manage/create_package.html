@@ -3,10 +3,10 @@
 
 {% block breadcrumb %}
 
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a>
     <li class="breadcrumb-item" aria-current="page">{{ initiative.name }}</li>
-    <li class="breadcrumb-item" aria-current="page">Packages</li>
-    <li class="breadcrumb-item" aria-current="page">{% if package %}Edit {{ package.name }}{% else %}Create New Package{% endif %}</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'packages' %}</li>
+    <li class="breadcrumb-item" aria-current="page">{% if package %}{% get_site_text 'edit_package' %} {{ package.name }}{% else %}{% get_site_text 'create_new_package' %}{% endif %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -14,18 +14,18 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>{% if package %}Edit {{ package.name }}{% else %}Add New Package{% endif %}</h1>
-                <p class="lead">Add new and edit existing package.</p>
+                <h1>{% if package %}{% get_site_text 'edit_package' %} {{ package.name }}{% else %}{% get_site_text 'add_new_package' %}{% endif %}</h1>
+                <p class="lead">{% get_site_text 'add_edit_package_lead' %}</p>
 
-                <p>Before this package is displayed for signup it will be reviewed by a member of staff.</p>
+                <p>{% get_site_text 'package_review_notice' %}</p>
 
                 <form method="POST">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-9">
-                            <h2>Metadata</h2>
+                            <h2>{% get_site_text 'metadata' %}</h2>
                             {% bootstrap_form form %}
-                            <button class="btn btn-success">Save</button>
+                            <button class="btn btn-success">{% get_site_text 'save' %}</button>
                         </div>
                     </div>
                 </form>

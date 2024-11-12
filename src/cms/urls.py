@@ -177,4 +177,14 @@ urlpatterns = [
         views.edit_site_text,
         name="edit_site_text",
     ),
+    path(
+        'site-texts/',
+        views.list_site_text,
+        name='list_site_text',
+    ),
+    path(
+        'site-texts/<str:key>/<str:lang_code>/',
+        views.edit_site_text,
+         name='edit_site_text',
+    ),
 ]

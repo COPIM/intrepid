@@ -8,13 +8,13 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <p class="package-styled-text"><i class="fa fa-arrow-right"></i> <a href="{% url 'summary_meta_package' package.pk %}">More</a></p>
+                <p class="package-styled-text"><i class="fa fa-arrow-right"></i> <a href="{% url 'summary_meta_package' package.pk %}">{% get_site_text 'more' %}</a></p>
             </div>
             <div class="col-6">
                 {% if meta %}
-                <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">Add</a>
+                <a href="{% url 'manage_basket_meta_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">{% get_site_text 'add' %}</a>
                 {% else %}
-                <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">Add</a>
+                <a href="{% url 'manage_basket_package' package.pk %}" class="btn btn-primary btn-obc-blue float-right">{% get_site_text 'add' %}</a>
                 {% endif %}
             </div>
         </div>

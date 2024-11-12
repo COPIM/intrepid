@@ -4,16 +4,16 @@
 
 
 {% block css %}
-    <link href="{% static "frontend/css/packages.css" %}" rel="stylesheet">
+    <link href="{% static 'frontend/css/packages.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}
-    Order No. {{ order.pk }}
+    {% get_site_text 'order_number' %} {{ order.pk }}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">Orders & Documents</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Order No. {{ order.pk }}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'documents' %}">{% get_site_text 'orders_and_documents' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'order_number' %} {{ order.pk }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -22,9 +22,9 @@
         <div class="col-1"></div>
         <div class="col text-left">
             <h1 class="text-left">{% get_site_text 'completed_order' %}</h1>
-            <p class="subhead-no-offset">Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is {{ order.pk }}.</p>
+            <p class="subhead-no-offset">{% get_site_text 'order_complete_message' %} {{ order.pk }}.</p>
         </div>
-        <div class="col-2"><img class="catalogue-image" src="{% static "frontend/img/quotation_group.png" %}"
+        <div class="col-2"><img class="catalogue-image" src="{% static 'frontend/img/quotation_group.png' %}"
                                 alt="Quotations logo"/></div>
         <div class="col-1"></div>
     </div>
@@ -34,10 +34,10 @@
     <div class="row catalogue-main spacer-top-20">
         <div class="col-1"></div>
         <div class="col">
-            {% get_site_text 'order_complete_body' %}
-            <h3>Quotation Details</h3>
+            {% get_site_text 'order_complete_number' %} {{ order.order_number }} {% get_site_text 'order_complete_body_partial' %}
+            <h3>{% get_site_text 'quotation_details' %}</h3>
             {% get_site_text 'order_documents' %}
-            <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">Download Quotation</a>
+            <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
         </div>
         <div class="col-1"></div>
     </div>
@@ -47,8 +47,8 @@
     <div class="row catalogue-header-mobile">
         <div class="col-1"></div>
         <div class="col-10">
-            <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/quotation_group.png" %}"
-                 alt="Build your quote image"/>
+            <img class="catalogue-image-mobile img-fluid" src="{% static 'frontend/img/quotation_group.png' %}"
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{% get_site_text 'completed_order' %}</h1>
         </div>
         <div class="col-1"></div>
@@ -57,15 +57,15 @@
     <div class="catalogue-info-row-mobile row">
         <div class="col-1"></div>
         <div class="col-10">
-            <p>Thanks for your interest in supporting Open Access book publishing. Your quotation is now complete. Your reference number is {{ order.pk }}.</p>
+            <p>{% get_site_text 'thanks_for_your_interest' %} {{ order.pk }}.</p>
         </div>
         <div class="col-1"></div>
     </div>
 {% endblock header-mobile %}
 
 {% block body-mobile %}
-    {% get_site_text 'order_complete_body' %}
+    {% get_site_text 'order_complete_number' %} {{ order.order_number }} {% get_site_text 'order_complete_body_partial' %}
     <h3>Quotation Details</h3>
     {% get_site_text 'order_documents' %}
-    <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">Download Quotation</a>
+    <a href="{% url 'download_order_document' order.pk %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'download_quotation' %}</a>
 {% endblock body-mobile %}

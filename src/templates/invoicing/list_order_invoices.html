@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load django_bootstrap5 invoicing %}
 
-{% block title %}Invoice Management - {{ payment_processor.name }}{% endblock %}
+{% block title %}{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">Invoice Management - {{ payment_processor.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -12,19 +12,19 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Invoice Management - {{ payment_processor.name }}</h1>
-                    <p>Listed below are the orders that contain a package for which you are listed as one of the payment processors for. You will be able to see the details of the order that relate to you including billing information and agreed pricing.</p>
+                    <h1>{% get_site_text 'invoice_management' %} - {{ payment_processor.name }}</h1>
+                    <p>{% get_site_text 'order_helper_invoices' %}</p>
                     <form method="POST">
                         {% csrf_token %}
                         <table class="table" id="orders">
                             <thead>
                             <tr>
-                                <th>Order Number</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Invoice Statuses</th>
-                                <th>View</th>
+                                <th>{% get_site_text 'id' %}</th>
+                                <th>{% get_site_text 'customer' %}</th>
+                                <th>{% get_site_text 'date_time' %}</th>
+                                <th>{% get_site_text 'status' %}</th>
+                                <th>{% get_site_text 'invoice_statuses' %}</th>
+                                <th>{% get_site_text 'view' %}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -44,9 +44,9 @@
                                     <td>
                                         <table class="table table-borderless table-sm small">
                                             <tr>
-                                                <th>Package</th>
-                                                <th>Amount</th>
-                                                <th>Status</th>
+                                                <th>{% get_site_text 'package' %}</th>
+                                                <th>{% get_site_text 'amount' %}</th>
+                                                <th>{% get_site_text 'status' %}</th>
                                             </tr>
                                             {% for signup in order_signups %}
                                                 <tr>
@@ -59,7 +59,7 @@
                                     </td>
                                     <td>
                                         <a href="{% url 'detail_invoice' payment_processor.pk order.pk %}"
-                                           class="btn btn-primary btn-sm">View Details</a>
+                                           class="btn btn-primary btn-sm">{% get_site_text 'view' %}</a>
                                     </td>
                                 </tr>
                             {% endfor %}

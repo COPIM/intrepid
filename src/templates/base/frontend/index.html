@@ -21,7 +21,7 @@
     <div class="main-mobile container-fluid d-sm-block d-xs-block d-md-none">
         <div class="main-mobile">
             <div class="row">
-                <div class="col text-center"><img src="{% static "frontend/img/home_orb.svg" %}" alt="Open Book Collective"
+                <div class="col text-center"><img src="{% static "frontend/img/home_orb.svg" %}" alt="{% get_site_text 'open_book_collective' prefetched %}"
                                                   class="img-fluid logo-mobile">
                 </div>
             </div>
@@ -34,13 +34,13 @@
             </div>
             <div class="row">
                 <div class="col text-center video">
-                    <button class="pill_button video-pill" href="#youTubeModalMobile" data-toggle="modal">Watch Video</button>
+                    <button class="pill_button video-pill" href="#youTubeModalMobile" data-toggle="modal">{% get_site_text 'watch_video' prefetched %}</button>
                 </div>
             </div>
 
             <!-- home chart -->
             <div class="row">
-                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Stronger OA communities" src="{% static "frontend/img/home_chart.svg" %}">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="{% get_site_text 'stronger_oa' prefetched %}" src="{% static "frontend/img/home_chart.svg" %}">
                 </div>
             </div>
             <div class="row">
@@ -51,12 +51,12 @@
             </div>
 
             <div class="col-12">
-                <a href="{% url 'package_list' %}" class="pill-button">Build Your Subscription</a>
+                <a href="{% url 'package_list' %}" class="pill-button">{% get_site_text 'build_your_subscription' prefetched %}</a>
             </div>
 
             <!-- flower chart -->
             <div class="row">
-                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Sustainable funding model" src="{% static "frontend/img/home_flower.svg" %}">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="{% get_site_text 'sustainable_funding_model' prefetched %}" src="{% static "frontend/img/home_flower.svg" %}">
                 </div>
             </div>
             <div class="row">
@@ -67,12 +67,12 @@
             </div>
 
             <div class="col-12">
-                <a href="{% url 'all_books' %}" class="pill-button">Search the Catalogue</a>
+                <a href="{% url 'all_books' %}" class="pill-button">{% get_site_text 'search_the_catalogue' prefetched %}</a>
             </div>
 
             <!-- cloud chart -->
             <div class="row">
-                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Robust infrastructure" src="{% static "frontend/img/home_cloud.svg" %}">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="{% get_site_text 'robust_infrastructure' prefetched %}" src="{% static "frontend/img/home_cloud.svg" %}">
                 </div>
             </div>
             <div class="row">
@@ -82,12 +82,12 @@
                 <div class="col section-break"><p class="blurb text-center">{% get_site_text 'index_col_3_body' prefetched %}</p></div>
             </div>
             <div class="col-12">
-                <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button">Apply for Membership</a>
+                <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button">{% get_site_text 'apply_for_membership' prefetched %}</a>
             </div>
 
             <!-- clip chart -->
             <div class="row">
-                <div class="col text-center section-break"><img class="img_fluid home_img" alt="Diversity in OA" src="{% static "frontend/img/home_clip.svg" %}">
+                <div class="col text-center section-break"><img class="img_fluid home_img" alt="{% get_site_text 'diversity_in_oa' prefetched %}" src="{% static "frontend/img/home_clip.svg" %}">
                 </div>
             </div>
             <div class="row">
@@ -107,7 +107,7 @@
                 <div class="col">
                     <h2>{% get_site_text 'action_col_1_header' prefetched %}</h2><br/>
                     <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_1_sub' prefetched %}</p>
-                    <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="Libraries"></img></p>
+                    <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="{% get_site_text 'libraries' prefetched %}"></img></p>
                     <ul class="benefit text-left">
                         {% get_site_text 'action_col_1_list' prefetched %}
                     </ul>
@@ -118,7 +118,7 @@
                 <div class="col">
                     <h2>{% get_site_text 'action_col_2_header' prefetched %}</h2><br/>
                     <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_2_sub' prefetched %}</p>
-                    <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="Authors and readers"></img></p>
+                    <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="{% get_site_text 'authors_and_readers' prefetched %}"></img></p>
                     <ul class="benefit text-left">
                         {% get_site_text 'action_col_2_list' prefetched %}
                     </ul>
@@ -130,7 +130,7 @@
                 <div class="col">
                     <h2>{% get_site_text 'action_col_3_header' prefetched %}</h2><br/>
                     <p class="text-center font-weight-bold action-blurb">{% get_site_text 'action_col_3_sub' prefetched %}</p>
-                    <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="Publishers"></img>
+                    <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="{% get_site_text 'publishers' prefetched %}"></img>
                     </p>
                     <ul class="benefit text-left">
                         {% get_site_text 'action_col_2_list' prefetched %}
@@ -230,7 +230,7 @@
                 <div class="row news-cards">
                     <div class="col">
                         <div class="card">
-                          <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                          <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="{% get_site_text 'a_news_item' prefetched %}">
                           <div class="card-body">
                             <p class="card-text">{{ news_item.update_item.title }}</p>
                           </div>
@@ -244,7 +244,7 @@
 
     <div class="container-fluid d-sm-block d-xs-block d-md-none">
         <div class="take-action-mobile text-center white-background">
-            <h1>Funders</h1>
+            <h1>{% get_site_text 'funders' prefetched %}</h1>
             <div class="row news-cards">
                     <div class="col-12">
                         <img class="img-fluid" src="/media/funders/UKRI.png">
@@ -288,20 +288,20 @@
                     <br/>
                     <span class="blurb">{% get_site_text 'index_sub_header' prefetched %}</span>
                     <br/><br/>
-                    <button class="pill_button video-button" href="#youTubeModal" data-toggle="modal">Watch Video</button>
+                    <button class="pill_button video-button" href="#youTubeModal" data-toggle="modal">{% get_site_text 'watch_video' prefetched %}</button>
                 </div>
                 <div class="col-6">
-                    <img src="{% static "frontend/img/home_orb.svg" %}" alt="Open Book Collective" class="img-fluid">
+                    <img src="{% static "frontend/img/home_orb.svg" %}" alt="{% get_site_text 'open_book_collective' prefetched %}" class="img-fluid">
                 </div>
             </div>
         </div>
 
         <div class="bottom">
             <div class="row">
-                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_chart.svg" %}" alt="An image representing community"></div>
-                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_flower.svg" %}" alt="An image representing sustainability"></div>
-                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_cloud.svg" %}" alt="An image representing infrastructure"></div>
-                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_clip.svg" %}" alt="An image representing diversity"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_chart.svg" %}" alt="{% get_site_text 'image_community' prefetched %}"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_flower.svg" %}" alt="{% get_site_text 'image_sustainability' prefetched %}"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_cloud.svg" %}" alt="{% get_site_text 'image_infrastructure' prefetched %}"></div>
+                <div class="col-3 img-col"><img class="img_fluid home_img" src="{% static "frontend/img/home_clip.svg" %}" alt="{% get_site_text 'image_diversity' prefetched %}"></div>
             </div>
             <div class="row home_heads">
                 <div class="col-3"><h2>{% get_site_text 'index_col_1_header' prefetched %}</h2></div>
@@ -367,14 +367,14 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-only-action">
-                            <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="Libraries"></img></p>
+                            <p><img src="{% static "frontend/img/home_libraries.svg" %}" class="homepage-library" alt="{% get_site_text 'libraries' prefetched %}"></img></p>
                         </div>
                         <div class="col-4 white-background bright-blue-foreground dash-right-border text-center middle-border-action">
-                            <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="Authors and Readers"></img>
+                            <p><img src="{% static "frontend/img/home_authors.svg" %}" class="homepage-authors" alt="{% get_site_text 'authors_and_readers' prefetched %}"></img>
                             </p>
                         </div>
                         <div class="col-4 white-background dark-blue-foreground text-center right-border-action">
-                            <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="Publishers"></img>
+                            <p><img src="{% static "frontend/img/home_publishers.svg" %}" class="homepage-publishers" alt="{% get_site_text 'publishers' prefetched %}"></img>
                             </p>
                         </div>
                     </div>
@@ -410,13 +410,13 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-4 white-background purple-foreground text-center dash-right-border left-border-bottom-action">
-                            <a href="{% url 'package_list' %}" class="pill-button-library">Build Your Subscription</a>
+                            <a href="{% url 'package_list' %}" class="pill-button-library">{% get_site_text 'build_your_subscription' prefetched %}</a>
                         </div>
                         <div class="col-4 white-background dash-right-border middle-border-bottom-action">
-                            <a href="{% url 'all_books' %}" class="pill-button-author">Search the Catalogue</a>
+                            <a href="{% url 'all_books' %}" class="pill-button-author">{% get_site_text 'search_the_catalogue' prefetched %}</a>
                         </div>
                         <div class="col-4 white-background right-border-bottom-action">
-                            <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button-publisher">Apply for Membership</a>
+                            <a href="{% url 'fixed_page' 'why_support_oa' %}" class="pill-button-publisher">{% get_site_text 'apply_for_membership' prefetched %}</a>
                         </div>
                     </div>
                 </div>
@@ -500,13 +500,13 @@
     {% if news_items_exists %}
     <div class="container-fluid pale-blue d-none d-md-block">
         <div class="news">
-            <a href="{% url 'sitewide_news' %}"><h1>News</h1></a>
+            <a href="{% url 'sitewide_news' %}"><h1>{% get_site_text 'news' prefetched %}</h1></a>
             <div class="row news-cards">
                 {% for news_item in news_items %}
                     <div class="col-3">
                     <a href="{% url 'news_item' news_item.update_item.pk %}">
                         <div class="card">
-                            <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                            <img class="card-img-top" src="{% if news_item.update_item.thumbnail_image %}{{ news_item.update_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="{% get_site_text 'a_news_item' prefetched %}">
                             <div class="card-body">
                                 <p class="card-text">{{ news_item.update_item.title }}</p>
                             </div>
@@ -521,7 +521,7 @@
     {% endif %}
         <div class="container-fluid pale-blue d-none d-md-block">
             <div class="news">
-                <h1>Funders</h1>
+                <h1>{% get_site_text 'funders' prefetched %}</h1>
                 <div class="row news-cards">
                     <div class="col-6">
                         <img class="img-fluid" src="/media/funders/UKRI.png">
