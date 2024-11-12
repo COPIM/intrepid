@@ -575,7 +575,9 @@ def unlink_frozen_doc(order) -> None:
             os.unlink(file_path)
 
 
-def generate_package_docs_zip(order, request) -> "models.FrozenPackageDocument":
+def generate_package_docs_zip(
+    order, request
+) -> "models.FrozenPackageDocument":
     """
     This function is used to generate a zip file of the documents for a given
     :param order: the order to generate the zip file for
@@ -755,9 +757,11 @@ def send_new_order_notification(
         "order": order,
     }
     email_template.send(
-        to=order.associated_user.email
-        if order.associated_user
-        else order.email_address,
+        to=(
+            order.associated_user.email
+            if order.associated_user
+            else order.email_address
+        ),
         context=context,
         attachments=[quote_path, accept_path],
     )
@@ -884,11 +888,7 @@ def format_price(cost, currency) -> str:
     :return: the formatted price
     """
     try:
-        return babel.numbers.format_currency(
-            cost,
-            currency,
-            locale='en_US'
-        )
+        return babel.numbers.format_currency(cost, currency, locale="en_US")
     except (
         babel.numbers.UnknownCurrencyError,
         babel.numbers.UnknownCurrencyFormatError,
@@ -1027,20 +1027,35 @@ def generate_doc(
         )
 
     if order.converted_currency and order.converted_value:
+        processing_fee_calc = order.platform_fee * order.term
+
         processing_fee = format_price(
-            order.platform_fee, order.converted_currency
+            processing_fee_calc, order.converted_currency
         )
         total = "{}".format(
             format_price(
-                (order.converted_value + order.platform_fee),
+                (
+                    order.converted_value * order.term
+                    + order.platform_fee * order.term
+                ),
                 order.converted_currency,
             )
         )
     else:
         costs, currency_totals = order.basket.cost(identifier, identifier_type)
         for k, v in currency_totals.items():
-            processing_fee = format_price(order.platform_fee, k)
-            total = "{}".format(format_price((v + order.platform_fee), k))
+            processing_fee = format_price(
+                int(order.platform_fee) * int(order.term), k
+            )
+            total = "{}".format(
+                format_price(
+                    (
+                        int(v) * int(order.term)
+                        + int(order.platform_fee) * int(order.term)
+                    ),
+                    k,
+                )
+            )
     css = [
         os.path.join(
             settings.BASE_DIR, "static", "frontend", "css", "bootstrap.min.css"
@@ -1213,7 +1228,7 @@ def generate_acceptance_doc(
     order_doc.add_paragraph("Yes / No")
     add_bold_paragraph(
         order_doc,
-        "Do you give permission for the OBC and/or supported initiatives to use your institution's logo to acknowledge your institution’s support on their channels -- including on respective websites and social media channels, as well as in presentations? "
+        "Do you give permission for the OBC and/or supported initiatives to use your institution's logo to acknowledge your institution’s support on their channels -- including on respective websites and social media channels, as well as in presentations? ",
     )
     add_bold_paragraph(
         order_doc,
@@ -1281,9 +1296,7 @@ def get_user_currency(identifier, identifier_type) -> "models.Country":
 
 
 def add_pre_calc_to_objects(country_code, packages):
-    country = models.Country.objects.get(
-        code=country_code
-    )
+    country = models.Country.objects.get(code=country_code)
 
     for package in packages:
         try:
@@ -1303,7 +1316,7 @@ def add_pre_calc_to_objects(country_code, packages):
                 )
             except (
                 models.Country.DoesNotExist,
-                models.PreCalcMinMax.DoesNotExist
+                models.PreCalcMinMax.DoesNotExist,
             ):
                 package.pre_calc = models.PreCalcMinMax.objects.get(
                     country=package.default_country,
@@ -1313,9 +1326,7 @@ def add_pre_calc_to_objects(country_code, packages):
 
 
 def add_pre_calc_to_meta_objects(country_code, packages):
-    country = models.Country.objects.get(
-        code=country_code
-    )
+    country = models.Country.objects.get(code=country_code)
 
     for package in packages:
         try:
@@ -1335,11 +1346,10 @@ def add_pre_calc_to_meta_objects(country_code, packages):
                 )
             except (
                 models.Country.DoesNotExist,
-                models.PreCalcMinMax.DoesNotExist
+                models.PreCalcMinMax.DoesNotExist,
             ):
                 package.pre_calc = models.PreCalcMinMax.objects.get(
                     country=package.default_country,
                     meta_package=package,
                 )
     return packages
-

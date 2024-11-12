@@ -1,4 +1,4 @@
-{% load static conflicts currency_display cost_calculator %}
+{% load static conflicts currency_display cost_calculator site_text %}
 <html>
 <meta charset="utf-8">
 <head>
@@ -57,7 +57,7 @@
             <table class="table table-bordered">
                 <tr>
                     <th>OBC Offer Selection</th>
-                    <th>Amount</th>
+                    <th>Amount (for {{ order.term }} years)</th>
                 </tr>
 
                 {% for meta_package in order.basket.meta_packages.all %}
@@ -74,7 +74,7 @@
                         </td>
                         <td>
                             {% for currency, amount in calculated_meta_package_cost.items %}
-                                {% format_price amount currency %}{% if not forloop.last %}, {% endif %}
+                                {% format_price_multiplier amount currency order %}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
@@ -82,7 +82,7 @@
                 {% for package in order.basket.packages.all %}
                     <tr>
                         <td><strong>{{ package.name }}</strong> ({% get_banding package_costs package %})</td>
-                        <td>{% package_cost package_costs package converted_currency %}</td>
+                        <td>{% package_cost_multiplier package_costs order package converted_currency %}</td>
                     </tr>
                 {% endfor %}
                 <tr>

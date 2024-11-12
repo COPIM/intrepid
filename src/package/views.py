@@ -1017,17 +1017,19 @@ def order_form(request, order_id) -> HttpResponse:
             multiplier = 1
 
         order.converted_value = order.converted_value * int(multiplier)
-        order.platform_fee = order.platform_fee * int(multiplier)
 
-        order_amount = "Offers: {} {}".format(
+        # don't set order.platform fee here as we will recalculate at the end
+        platform_fee_calc = order.platform_fee * int(multiplier)
+
+        order_amount = "{} {}".format(
             order.converted_currency, order.converted_value
         )
-        platform_fee = "OBC Processing Fee: {} {}".format(
-            order.converted_currency, order.platform_fee
+        platform_fee = "{} {}".format(
+            order.converted_currency, platform_fee_calc
         )
-        total = "Total: {}".format(
+        total = "{}".format(
             utils.format_price(
-                (order.converted_value + order.platform_fee),
+                (order.converted_value + platform_fee_calc),
                 order.converted_currency,
             )
         )
@@ -1040,12 +1042,12 @@ def order_form(request, order_id) -> HttpResponse:
                 multiplier = 1
 
             v = v * int(multiplier)
-            order.platform_fee = order.platform_fee * int(multiplier)
+            platform_fee_calc = order.platform_fee * int(multiplier)
 
             order_amount = utils.format_price(v, k)
-            platform_fee = utils.format_price(order.platform_fee, k)
+            platform_fee = utils.format_price(platform_fee_calc, k)
 
-            total = utils.format_price((v + order.platform_fee), k)
+            total = utils.format_price((v + platform_fee_calc), k)
 
     signups = order.packagesignup_set.all()
     form = forms.GeneratedForm(
