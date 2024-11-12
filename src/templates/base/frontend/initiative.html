@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-{{ initiative.name }} | {{ current_page.title }} | Open Book Collective
+{{ initiative.name }} | {{ current_page.title }} | {% get_site_text 'open_book_collective' prefetched %}
 {% endblock title %}
 
 {% block css %}
@@ -53,11 +53,11 @@
             <div class="col-1"></div>
             <div class="col-10">
                 {% if current_page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="{% get_site_text 'open_quote' prefetched %}" class="img-fluid quote-image"/><br/>
                 {% endif %}
                 <p class="pull-quote">{{ current_page.current_version.pull_quote|striptags }}</p>
                 {% if current_page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="{% get_site_text 'close_quote' prefetched %}" class="img-fluid close-quote-image"/><br/>
                 {% endif %}
             </div>
             <div class="col-1"></div>
@@ -73,7 +73,7 @@
 
      <div class="row row-spacer">
         <div class="col">
-        <h1>Packages</h1>
+        <h1>{% get_site_text 'packages' prefetched %}</h1>
         </div>
         {% for package in initiative.packages.all %}
             <div class="col-12 package-col">
@@ -87,7 +87,7 @@
     {% if featured_books %}
      <div class="row row-spacer catalogue-main-mobile catalogue-main-mobile-initiative">
         <div class="col">
-        <h1>Featured Books</h1>
+        <h1>{% get_site_text 'featured_books' prefetched %}</h1>
         </div>
      </div>
         <div class="row catalogue-main-mobile catalogue-main-mobile-initiative">
@@ -120,13 +120,13 @@
 
     {% if news_items %}
      <div class="news-mobile">
-        <h1>News</h1>
+        <h1>{% get_site_text 'news' prefetched %}</h1>
         {% for news_item in news_items %}
             <div class="row news-cards">
                 <div class="col news-item">
                 <a href="{% url 'news_item' news_item.pk %}">
                     <div class="card">
-                        <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                        <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="{% get_site_text 'a_news_item' prefetched %}">
                         <div class="card-body">
                             <p class="small-date-mobile">{{ news_item.created }}</p>
                             <p class="card-text">{{ news_item.title }}</p>
@@ -199,9 +199,9 @@
         <div class="row">
             <div class="col-12 image-col">
                 {% if not current_page.mid_page_image %}
-                    <img src="{% static "frontend/img/default_cms.png" %}" alt="News" class="img-fluid cms-image"/>
+                    <img src="{% static "frontend/img/default_cms.png" %}" alt="{% get_site_text 'news' prefetched %}" class="img-fluid cms-image"/>
                 {% else %}
-                    <img src="{{ current_page.mid_page_image.url }}" alt="News" class="img-fluid cms-image"/>
+                    <img src="{{ current_page.mid_page_image.url }}" alt="{% get_site_text 'news' prefetched %}" class="img-fluid cms-image"/>
                 {% endif %}
             </div>
         </div>
@@ -235,11 +235,11 @@
             <div class="col-1"></div>
             <div class="col-10">
                 {% if current_page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/open_quote.png" %}" alt="Open Quote" class="img-fluid quote-image"/><br/>
+                    <img src="{% static "frontend/img/open_quote.png" %}" alt="{% get_site_text 'open_quote' prefetched %}" class="img-fluid quote-image"/><br/>
                 {% endif %}
                 <p class="pull-quote">{{ current_page.current_version.pull_quote|striptags }}</p>
                 {% if current_page.current_version.show_quote_icons %}
-                    <img src="{% static "frontend/img/close_quote.png" %}" alt="Open Quote" class="img-fluid close-quote-image"/><br/>
+                    <img src="{% static "frontend/img/close_quote.png" %}" alt="{% get_site_text 'close_quote' prefetched %}" class="img-fluid close-quote-image"/><br/>
                 {% endif %}
             </div>
             <div class="col-1"></div>
@@ -273,7 +273,7 @@
             <div class="row row-spacer">
                 <div class="col">
                     <a id="packages">&nbsp;</a>
-                    <h2 class="packages-header">Packages</h2>
+                    <h2 class="packages-header">{% get_site_text 'packages' prefetched %}</h2>
                 </div>
             </div>
             <div class="row row-spacer">
@@ -291,7 +291,7 @@
         <div class="row row-spacer">
             <div class="col">
                 <a id="packages">&nbsp;</a>
-                <h2 class="packages-header">Featured Books</h2>
+                <h2 class="packages-header">{% get_site_text 'featured_books' prefetched %}</h2>
             </div>
         </div>
         <div class="row catalogue-main">
@@ -326,7 +326,7 @@
         <div class="row">
             <div class="col">
                 <a id="packages">&nbsp;</a>
-                <h2 class="packages-header">News Updates</h2>
+                <h2 class="packages-header">{% get_site_text 'news_updates' prefetched %}</h2>
             </div>
         </div>
         <div class="row row-spacer">
@@ -336,7 +336,7 @@
                         <div class="col-4 news-item">
                         <a href="{% url 'news_item' news_item.pk %}">
                             <div class="card">
-                                <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="A news item">
+                                <img class="card-img-top" src="{% if news_item.thumbnail_image %}{{ news_item.thumbnail_image.url }}{% else %}{% static "frontend/img/home_news_one.png" %}{% endif %}" alt="{% get_site_text 'a_news_item' prefetched %}">
                                 <div class="card-body">
                                     <p class="small-date">{{ news_item.created }}</p>
                                     <p class="card-text">{{ news_item.title }}</p>

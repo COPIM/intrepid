@@ -1,14 +1,14 @@
 {% extends "base/admin_base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Manage Subject Vocabs{% endblock %}
-{% block page-title %}Manage Subject Vocabs{% endblock %}
+{% block title %}{% get_site_text 'manage_subject_vocabs' %}{% endblock %}
+{% block page-title %}{% get_site_text 'manage_subject_vocabs' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">Manage Subject Vocabs</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">{% get_site_text 'manage_subject_vocabs' %}</a></li>
     <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subjects' %}">
-        {% if subject %}Edit Subject {{ subject.pk }}{% else %}Add New Subject{% endif %}
+        {% if subject %}{% get_site_text 'edit_subject' %} {{ subject.pk }}{% else %}{% get_site_text 'add_new_subject' %}{% endif %}
     </a></li>
 {% endblock %}
 
@@ -22,14 +22,14 @@
     <section class="content">
         <div class="container-fluid">
             <p class="lead">
-                {% if subject %}Edit Subject {{ subject.pk }}{% else %}Add New Subject{% endif %}
+                {% if subject %}{% get_site_text 'edit_subject' %} {{ subject.pk }}{% else %}{% get_site_text 'add_new_subject' %}{% endif %}
             </p>
             <div class="row">
                 <div class="col-md-6">
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button class="btn btn-success">Save</button>
+                        <button class="btn btn-success">{% get_site_text 'save' %}</button>
                     </form>
                 </div>
             </div>

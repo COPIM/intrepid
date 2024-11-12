@@ -6,18 +6,17 @@
       <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <h1>Login</h1>
-                <p>Your username will be the email address you used to register your account.</p>
+                <h1>{% get_site_text 'login' %}</h1>
+                <p>{% get_site_text 'username_email_info' %}</p>
                 {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
+                <p>{% get_site_text 'login_error' %}</p>
                 {% endif %}
 
                 {% if next %}
                     {% if user.is_authenticated %}
-                    <p>Your account doesn't have access to this page. To proceed,
-                    please login with an account that has access.</p>
+                    <p>{% get_site_text 'no_access_info' %}</p>
                     {% else %}
-                    <p>Please login to see this page.</p>
+                    <p>{% get_site_text 'login_to_see_page' %}</p>
                     {% endif %}
                 {% endif %}
 
@@ -26,8 +25,8 @@
                 {% bootstrap_form form %}
                 <input type="hidden" name="next" value="{{ next }}">
                 <div class="d-grid gap-2">
-                    <button value="Login" class="btn btn-primary">Login</button>
-                    <a href="{% url 'password_reset' %}" class="btn btn-secondary">Reset Password</a>
+                    <button value="Login" class="btn btn-primary">{% get_site_text 'login' %}</button>
+                    <a href="{% url 'password_reset' %}" class="btn btn-secondary">{% get_site_text 'reset_password' %}</a>
                 </div>
                 </form>
             </div>

@@ -1,14 +1,14 @@
 {% extends "base/admin_base.html" %}
 
 {% block title %}
-Initiatives
+{% get_site_text 'initiatives' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' initiative.pk %}">{{ initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">Edit Bandings</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'package_bandings' package.pk initiative.pk %}">{% get_site_text 'edit_bandings' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ banding_type_entry.banding_type.name }}</li>
 {% endblock breadcrumb %}
 
@@ -22,11 +22,11 @@ Initiatives
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Currencies for {{ banding_type_entry.banding_type.name }} in “{{ package.name }}”</h1>
-            <p class="lead">The following currencies are associated with this banding.</p>
+            <h1>{% get_site_text 'currencies_for' %} {{ banding_type_entry.banding_type.name }} {% get_site_text 'in' %} “{{ package.name }}”</h1>
+            <p class="lead">{% get_site_text 'currencies_associated' %}</p>
             <form method="POST">
                 {% csrf_token %}
-                {{ country_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="Add this currency">
+                {{ country_list }} <input class="btn btn-success" type="submit" name="add_new" id="add_new" value="{% get_site_text 'add_this_currency' %}">
             </form>
 
             <br/> <br/>
@@ -34,19 +34,19 @@ Initiatives
             <table class="table table-striped" id="currency">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Edit Prices</th>
-                        <th>Remove Currency and Prices</th>
-                        <th>Payment Processor</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'edit_prices' %}</th>
+                        <th>{% get_site_text 'remove_currency_and_prices' %}</th>
+                        <th>{% get_site_text 'payment_processor' %}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for banding_currency in banding_type_currencies %}
                     <tr>
                         <td>{{ banding_currency.country }}</td>
-                        <td><a href="{% url 'manage_package_banding_currencies_prices' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}" class="btn btn-success">Edit Prices</a></td>
-                        <td><form method="POST" action="{% url 'delete_package_banding_currency' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Remove Banding and Prices"/></form></td>
-                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#paymentprocessor-{{ banding_currency.pk }}">{{ banding_currency.payment_processor|default_if_none:"Select a Payment Processor" }}</a></td>
+                        <td><a href="{% url 'manage_package_banding_currencies_prices' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}" class="btn btn-success">{% get_site_text 'edit_prices' %}</a></td>
+                        <td><form method="POST" action="{% url 'delete_package_banding_currency' package.pk initiative.pk banding_currency.banding_type_entry.pk banding_currency.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'remove_currency_and_prices' %}"/></form></td>
+                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#paymentprocessor-{{ banding_currency.pk }}">{{ banding_currency.payment_processor|default_if_none:"{% get_site_text 'select_payment_processor' %}" }}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -61,7 +61,7 @@ Initiatives
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Manage Payment Processor for {{ banding_currency.country }}</h4>
+                    <h4 class="modal-title">{% get_site_text 'manage_payment_processor_for' %} {{ banding_currency.country }}</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -69,23 +69,23 @@ Initiatives
                 <div class="modal-body">
                     <form method="POST">
                         {% csrf_token %}
-                        <p>Listed below are payment processors for {{ banding_currency.country }}. You can set one or leave it empty to handle billing yourself.</p>
-                        {% if banding_currency.payment_processor %}<p>For this banding and currency the payment processor is currently set to <strong>{{ banding_currency.payment_processor }}</strong></p>{% endif %}
-                        <label for="select_payment_processor">Select a Payment Processor</label><br/>
+                        <p>{% get_site_text 'payment_processors_listed' %} {{ banding_currency.country }}. {% get_site_text 'set_or_leave_empty' %}</p>
+                        {% if banding_currency.payment_processor %}<p>{% get_site_text 'current_payment_processor' %} <strong>{{ banding_currency.payment_processor }}</strong></p>{% endif %}
+                        <label for="select_payment_processor">{% get_site_text 'select_payment_processor' %}</label><br/>
                         <select name="select_payment_processor" id="select_payment_processor" class="form-control">
-                            <option value="">----------</option>
+                            <option value="">{% get_site_text 'select_payment_processor' %}</option>
                             {% for processor in banding_currency.country.paymentprocessor_set.all %}
                                 <option value="{{ processor.pk }}">{{ processor }}</option>
                             {% endfor %}
                         </select>
                         <br />
-                        <button name="payment_processor" value="{{ banding_currency.pk }}" class="btn btn-success form-control">Save Payment Processor</button>
+                        <button name="payment_processor" value="{{ banding_currency.pk }}" class="btn btn-success form-control">{% get_site_text 'save' %}</button>
                     </form>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{% get_site_text 'close' %}</button>
                 </div>
 
             </div>

@@ -3,11 +3,11 @@
 {% load crispy_forms_tags %}
 
 
-{% block title %}Standard Attestation Configuration{% endblock title %}
+{% block title %}{% get_site_text 'standard_attestation_configuration' %}{% endblock title %}
 
 {% block breadcrumb %}
-        <li class="breadcrumb-item" aria-current="page">Platform Management</li>
-        <li class="breadcrumb-item" aria-current="page">Standard Attestation Configuration</li>
+        <li class="breadcrumb-item" aria-current="page">{% get_site_text 'platform_management' %}</li>
+        <li class="breadcrumb-item" aria-current="page">{% get_site_text 'standard_attestation_configuration' %}</li>
     {% endblock breadcrumb %}
 
 {% block content %}
@@ -19,7 +19,7 @@
         <h2>{{ standard.standard_name }}</h2>
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">Add a new or edit an existing standard attestation</p>
+                <p class="lead">{% get_site_text 'add_edit_standard_attestation' %}</p>
                 {{ standard.text|safe }}
                 <form method="POST">
                     {% csrf_token %}
@@ -32,7 +32,7 @@
 
                     <div class="row">
                         <div class="col-lg-12 col-md-12">
-                            <button type="submit" name="set_current" class="btn btn-success">Save Attestation</button>
+                            <button type="submit" name="set_current" class="btn btn-success">{% get_site_text 'save_attestation' %}</button>
                         </div>
                     </div>
                 </form>

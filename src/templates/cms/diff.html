@@ -1,10 +1,10 @@
 {% extends "base/admin_base.html" %}
 {% load static two_factor %}
 
-{% block title %}{{ page.title }} Diff{% endblock title %}
+{% block title %}{{ page.title }} {% get_site_text 'diff' %}{% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page">{{ page.title }} Diff</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ page.title }} {% get_site_text 'diff' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -12,7 +12,7 @@
     <div class="container-fluid">
 		<div class="row">
 		    <div class="col-md-12">
-		        <p class="lead">Diffing {{ version_one.pk }} and {{ version_two.pk }}</p>
+		        <p class="lead">Diffing {{ version_one.pk }} / {{ version_two.pk }}</p>
 		        {{ diff_out|safe }}
 		    </div>
 		</div>

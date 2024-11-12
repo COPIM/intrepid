@@ -3,7 +3,7 @@
 <div class="row catalogue-main spacer-top-20">
     <div class="col-1"></div>
     <div class="col">
-        <p class="lead">Your reference number is {{ order.pk }}, please quote it if you need to get in touch with us.</p>
+        <p class="lead">{% get_site_text 'your_reference_number_is' %} {{ order.pk }}. {% get_site_text 'please_quote_it' %}</p>
 
         <h2 class="text-left" style="margin-top: 0;">{% get_site_text 'order_form_details_h' %}</h2>
         {% get_site_text 'order_form_details' %}

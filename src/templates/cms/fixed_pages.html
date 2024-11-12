@@ -3,10 +3,10 @@
 {% load django_bootstrap5 %}
 {% load crispy_forms_tags %}
 
-{% block title %}Fixed Pages{% endblock title %}
+{% block title %}{% get_site_text 'fixed_pages' %}{% endblock title %}
 
 {% block breadcrumb %}
-        <li class="breadcrumb-item" aria-current="page">Fixed Page</li>
+        <li class="breadcrumb-item" aria-current="page">{% get_site_text 'fixed_pages' %}</li>
     {% endblock breadcrumb %}
 
 {% block content %}
@@ -14,25 +14,25 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="lead">Fixed Pages</p>
+                <p class="lead">{% get_site_text 'fixed_pages' %}</p>
                 <div class="row">
                     <div class="col-md-12">
                         <p>
-                            Certain locations within the CMS are fixed (e.g. "Terms and Conditions"). This page allows you to map these entries to CMS entries.
+                            {% get_site_text 'fixed_pages_explainer' %}
                         </p>
                         {% if page %}
-                        <p>You can control versions, and which of them is live, from the <a
-                                href="{% url 'page_detail' initiative.pk page_or_update page.pk %}">detail</a> page.</p>
+                        <p>{% get_site_text 'control_fixed_versions' %} <a
+                                href="{% url 'page_detail' initiative.pk page_or_update page.pk %}">{% get_site_text 'detail_page' %}</a>.</p>
                         {% endif %}
                         <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
                             {{ form | crispy }}
                             <button type="submit" class="btn btn-primary">
-                                Save
+                                {% get_site_text 'save' %}
                             </button>
                             {% if page %}
                                 <button type="submit" name="set_current" class="btn btn-success">
-                                    Save
+                                    {% get_site_text 'save' %}
                                 </button>
                             {% endif %}
                         </form>

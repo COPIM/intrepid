@@ -1,22 +1,22 @@
 {% extends "base/base.html" %}
 
-{% block title %}{% trans "Manage Accounts" %}{% endblock title %}
+{% block title %}{% get_site_text 'manage_accounts' %}{% endblock title %}
 
 {% block breadcrumb %}
 
     
-    <li class="breadcrumb-item active" aria-current="page">Manage Accounts</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'manage_accounts' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
 <table class="table" id="accounts">
     <thead>
     <tr>
-        <th>Username</th>
-        <th>Email Address</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Affiliation</th>
+        <th>{% get_site_text 'username' %}</th>
+        <th>{% get_site_text 'email' %}</th>
+        <th>{% get_site_text 'first_name' %}</th>
+        <th>{% get_site_text 'last_name' %}</th>
+        <th>{% get_site_text 'affiliation' %}</th>
     </tr>
     </thead>
     <tbody>

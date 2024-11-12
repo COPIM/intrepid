@@ -6,11 +6,11 @@
     <link href="{% static "frontend/css/tables.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %}{{ initiative.name }} - More Info{% endblock title %}
+{% block title %}{{ initiative.name }} - {% get_site_text 'more_info' %}{% endblock title %}
 
 {% block breadcrumb %}
     <li class="breadcrumb-item" aria-current="page">{% get_site_text_no_edit 'oa_inits_header' %}</li>
-    <li class="breadcrumb-item active" aria-current="page">{{ initiaitve.name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ initiative.name }}</li>
 {% endblock breadcrumb %}
 
 <!-- Desktop -->
@@ -30,7 +30,7 @@
         </div>
         <div class="col">
             <span class="colinfo">
-                <i class="fa fa-envelope"></i> <a target="_blank" href="mailto:{{ initiative.contact_email }}">Email Us</a>
+                <i class="fa fa-envelope"></i> <a target="_blank" href="mailto:{{ initiative.contact_email }}">{% get_site_text 'contact_us' %}</a>
             </span>
         </div>
         <div class="col-2"></div>
@@ -41,7 +41,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title white-text">Standards Attestation History</h4>
+                    <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                     <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -56,7 +56,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">{% get_site_text 'close' %}</button>
                 </div>
 
             </div>
@@ -74,7 +74,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <img class="catalogue-image-mobile img-fluid" src="{% static "frontend/img/collective_five.svg" %}"
-                 alt="Build your quote image"/>
+                 alt="{% get_site_text 'build_your_quote' %}"/>
             <h1>{{ initiative.name }}</h1>
         </div>
         <div class="col-1"></div>

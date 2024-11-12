@@ -4,7 +4,7 @@
     <div class="footer-mobile">
         <div class="row">
             <div class="col">
-                <img class="footer-logo-mobile" src="{% static "frontend/img/footer_logo.png" %}" alt="Open Book Collective">
+                <img class="footer-logo-mobile" src="{% static "frontend/img/footer_logo.png" %}" alt="{% get_site_text 'open_book_collective' %}">
             </div>
         </div>
 
@@ -12,24 +12,24 @@
             <div class="col">
                 <h2>OBC</h2>
                 <ul class="footer-menu-mobile">
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'who_we_are' %}">Who We Are</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'why_support_oa' %}">Membership</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'governance' %}">Governance</a></li>
-                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/documents">Documents</a></li>
-                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/news">News</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'values' %}">{% get_site_text 'what_we_stand_for' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'who_we_are' %}">{% get_site_text 'who_we_are' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'why_support_oa' %}">{% get_site_text 'membership' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'governance' %}">{% get_site_text 'governance' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/documents">{% get_site_text 'documents' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="https://openbookcollective.pubpub.org/news">{% get_site_text 'news' %}</a></li>
                 </ul>
             </div>
 
             <div class="col">
-                <h2>Platform</h2>
+                <h2>{% get_site_text 'platform' %}</h2>
                 <ul class="footer-menu-mobile">
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'supporters' %}">Supporters</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'package_list' %}">Packages</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'initiative_list' %}">Initiatives</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url "all_books" %}">Catalogue</a></li>
-                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'what_we_do' %}">{% get_site_text 'how_it_works' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'supporters' %}">{% get_site_text 'supporters' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'package_list' %}">{% get_site_text 'packages' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'initiative_list' %}">{% get_site_text 'initiatives' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url "all_books" %}">{% get_site_text 'catalogue' %}</a></li>
+                    <li class="footer-menu-item-mobile"><a href="{% url 'fixed_page' 'funding_model' %}">{% get_site_text 'funding_and_fees' %}</a></li>
                 </ul>
             </div>
         </div>
@@ -37,16 +37,16 @@
             <div class="col">
                 <h2>Contact</h2>
                 <ul class="footer-menu-mobile">
-                    <li class="footer-menu-item-mobile"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">Twitter</a></li>
-                    <li class="footer-menu-item-mobile"><i class="fa-brands fa-mastodon"></i> <a href="https://mastodon.social/@openbookcollect">Mastodon</a></li>
-                    <li class="footer-menu-item-mobile"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">Email</a></li>
+                    <li class="footer-menu-item-mobile"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">{% get_site_text 'twitter' %}</a></li>
+                    <li class="footer-menu-item-mobile"><i class="fa-brands fa-mastodon"></i> <a href="https://mastodon.social/@openbookcollect">{% get_site_text 'mastodon' %}</a></li>
+                    <li class="footer-menu-item-mobile"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">{% get_site_text 'email_contact' %}</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="row rock-bottom-mobile">
-        <div class="col">Terms of use | Privacy policy | Accessibility | {{ request.site.base_copyright_notice|safe }}.
+        <div class="col">{{ request.site.base_copyright_notice|safe }}.
         </div>
     </div>
 
@@ -55,38 +55,38 @@
 <div class="container footer d-none d-md-block">
     <div class="row">
         <div class="col-1"></div>
-        <div class="col-1"><img class="footer-logo" src="{% static "frontend/img/footer_logo.png" %}" alt="Open Book Collective"></div>
+        <div class="col-1"><img class="footer-logo" src="{% static "frontend/img/footer_logo.png" %}" alt="{% get_site_text 'open_book_collective' %}"></div>
         <div class="col-2"></div>
         <div class="col-7">
             <div class="row">
                 <div class="col-4">
-                    <h2>OBC</h2>
+                    <h2>{% get_site_text 'open_book_collective_abbreviation' %}</h2>
                     <ul class="footer-menu">
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'values' %}">What We Stand For</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'who_we_are' %}">Who We Are</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'why_support_oa' %}">Membership</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'governance' %}">Governance</a></li>
-                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/documents">Documents</a></li>
-                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/news">News</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'values' %}">{% get_site_text 'what_we_stand_for' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'who_we_are' %}">{% get_site_text 'who_we_are' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'why_support_oa' %}">{% get_site_text 'membership' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'governance' %}">{% get_site_text 'governance' %}</a></li>
+                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/documents">{% get_site_text 'documents' %}</a></li>
+                        <li class="footer-menu-item"><a href="https://openbookcollective.pubpub.org/news">{% get_site_text 'news' %}</a></li>
                     </ul>
                 </div>
                 <div class="col-4">
-                    <h2><a href="{% url 'who_we_are' %}">Platform</a></h2>
+                    <h2><a href="{% url 'who_we_are' %}">{% get_site_text 'platform' %}</a></h2>
                     <ul class="footer-menu">
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'what_we_do' %}">How It Works</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'supporters' %}">Supporters</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'package_list' %}">Packages</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'initiative_list' %}">Initiatives</a></li>
-                        <li class="footer-menu-item"><a href="{% url "all_books" %}">Catalogue</a></li>
-                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'funding_model' %}">Funding and Fees</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'what_we_do' %}">{% get_site_text 'how_it_works' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'supporters' %}">{% get_site_text 'supporters' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'package_list' %}">{% get_site_text 'packages' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'initiative_list' %}">{% get_site_text 'initiatives' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url "all_books" %}">{% get_site_text 'catalogue' %}</a></li>
+                        <li class="footer-menu-item"><a href="{% url 'fixed_page' 'funding_model' %}">{% get_site_text 'funding_and_fees' %}</a></li>
                     </ul>
                 </div>
                 <div class="col-4">
                     <h2>Contact</h2>
                     <ul class="footer-menu">
-                        <li class="footer-menu-item"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">Twitter</a></li>
-                        <li class="footer-menu-item"><i class="fa-brands fa-mastodon"></i> <a href="https://mastodon.social/@openbookcollect">Mastodon</a></li>
-                        <li class="footer-menu-item"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">Email</a></li>
+                        <li class="footer-menu-item"><i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/OpenBookCollect">{% get_site_text 'twitter' %}</a></li>
+                        <li class="footer-menu-item"><i class="fa-brands fa-mastodon"></i> <a href="https://mastodon.social/@openbookcollect">{% get_site_text 'mastodon' %}</a></li>
+                        <li class="footer-menu-item"><i class="fa-solid fa-at"></i> <a href="mailto:info@openbookcollective.org">{% get_site_text 'email_contact' %}</a></li>
                     </ul>
                 </div>
             </div>
@@ -96,7 +96,7 @@
 
     <div class="row rock-bottom">
         <div class="col-2"></div>
-        <div class="col-10"><a href="{% url 'fixed_page' 'terms' %}">Terms of use</a> | <a href="{% url 'fixed_page' 'privacy' %}">Privacy policy</a> | <a href="{% url 'fixed_page' 'accessibility' %}">Accessibility</a> | {{ request.site.base_copyright_notice|safe }}
+        <div class="col-10"><a href="{% url 'fixed_page' 'terms' %}">{% get_site_text 'terms_of_use' %}</a> | <a href="{% url 'fixed_page' 'privacy' %}">{% get_site_text 'privacy_policy' %}</a> | <a href="{% url 'fixed_page' 'accessibility' %}">{% get_site_text 'accessibility' %}</a> | {{ request.site.base_copyright_notice|safe }}
         </div>
     </div>
 </div>

@@ -1,12 +1,12 @@
 {% extends "base/admin_base.html" %}
 {% load booleans %}
 
-{% block title %}Manage Standards{% endblock %}
-{% block page-title %}Manage Standards{% endblock %}
+{% block title %}{% get_site_text 'manage_standards' %}{% endblock %}
+{% block page-title %}{% get_site_text 'manage_standards' %}{% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Manage Standards</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'dashboard_index' %}">{% get_site_text 'dashboard' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'manage_standards' %}</li>
 {% endblock %}
 
 {% block dashboard_js %}
@@ -23,15 +23,15 @@
     <section class="content">
         <div class="container-fluid">
             <p class="lead">
-                Manage Standards for Attestation
+                {% get_site_text 'manage_standards_for_attestation' %}
             </p>
 
                 <table class="table-striped table" id="vocabs">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'edit' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                     <tr>
                         <td>{{ vocab.standard_name|safe }}</td>
                         <td><a href="{% url 'standard_edit' vocab.pk %}?return={{ request.path|urlencode }}" class="btn btn-success">Edit</a></td>
-                        <td><form method="POST" action="{% url 'standard_delete' vocab.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete"/></form></td>
+                        <td><form method="POST" action="{% url 'standard_delete' vocab.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete' %}"/></form></td>
 
                     </tr>
                     {% endfor %}
@@ -48,7 +48,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <p>
-                    <a class="btn btn-success" href="{% url 'standard_new' %}?return={{ request.path|urlencode }}">Add new standard</a>
+                    <a class="btn btn-success" href="{% url 'standard_new' %}?return={{ request.path|urlencode }}">{% get_site_text 'add_new_standard' %}</a>
                 </p>
             </form>
 

@@ -2,14 +2,14 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-List Documents
+{% get_site_text 'list_documents' %}
 {% endblock title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">Initiatives</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' package.initiative.pk %}">{{ package.initiative.name }} Packages</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_user_initiatives' %}">{% get_site_text 'initiatives' %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'initiative_packages' package.initiative.pk %}">{{ package.initiative.name }} {% get_site_text 'packages' %}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
-    <li class="breadcrumb-item active" aria-current="page">Media Files</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'media_files' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -18,16 +18,16 @@ List Documents
 
     <section class="content">
         <div class="container-fluid">
-            <h1>Media Files Affiliated with “{{ package.name }}” ({{ package.initiative.name }})</h1>
-            <p class="lead">Media Files are accessible only to libraries who have subscribed to one of your packages.</p>
+            <h1>{% get_site_text 'media_files_affiliated_with' %} “{{ package.name }}” ({{ package.initiative.name }})</h1>
+            <p class="lead">{% get_site_text 'media_files_accessible' %}</p>
             <div class="row">
                 <div class="col-md-4">
                     <p>
-                    <h4>Load New File</h4>
+                    <h4>{% get_site_text 'load_new_file' %}</h4>
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ new_file_form|crispy }}
-                        <button name="upload" class="btn btn-primary">Upload File</button>
+                        <button name="upload" class="btn btn-primary">{% get_site_text 'upload_file' %}</button>
                     </form>
                     </p>
                 </div>
@@ -37,19 +37,19 @@ List Documents
             <table class="table table-striped" id="initiatives">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>View</th>
-                        <th>Date Uploaded</th>
-                        <th>Delete</th>
+                        <th>{% get_site_text 'name' %}</th>
+                        <th>{% get_site_text 'view' %}</th>
+                        <th>{% get_site_text 'date_uploaded' %}</th>
+                        <th>{% get_site_text 'delete' %}</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for file in media_files %}
                     <tr>
                         <td>{{ file.name }}</td>
-                        <td><a href="{% url 'download_media_file' package.id package.initiative.id file.id %}">Download File</a></td>
+                        <td><a href="{% url 'download_media_file' package.id package.initiative.id file.id %}">{% get_site_text 'download_file' %}</a></td>
                         <td>{{ file.date_uploaded }}</td>
-                        <td><form method="POST">{% csrf_token %} <button class="btn btn-danger delete" name="delete" value="{{ file.pk }}">Delete File</button></form></td>
+                        <td><form method="POST">{% csrf_token %} <button class="btn btn-danger delete" name="delete" value="{{ file.pk }}">{% get_site_text 'delete_file' %}</button></form></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -68,33 +68,33 @@ List Documents
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Reverting will overwrite the current document details with the verison's.w</p>
+                        <p>{% get_site_text 'revert_warning' %}</p>
                         <table class="table">
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Download</th>
-                                <th>Revert</th>
+                                <th>{% get_site_text 'id' %}</th>
+                                <th>{% get_site_text 'name' %}</th>
+                                <th>{% get_site_text 'download_file' %}</th>
+                                <th>{% get_site_text 'revert' %}</th>
                             </tr>
                             {% for version in document.packagedocumenthistorical_set.all %}
                                 <tr>
                                     <td>#{{ version.pk }}</td>
                                     <td>{{ version.name }}</td>
-                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">Download</a></td>
+                                    <td><a class="btn btn-sm btn-link" href="{{ version.pdf_file.url }}">{% get_site_text 'download_file' %}</a></td>
                                     <td>
                                         <form method="POST" action="{% url 'revert_document_version' package.pk initiative.pk document.pk %}">
                                             {% csrf_token %}
-                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">Revert Document to this Version</button>
+                                            <button class="btn btn-sm btn-link" name="version_id" value="{{ version.pk }}">{% get_site_text 'revert' %}</button>
                                         </form>
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr><td colspan="4">No versions recorded for this document.</td></tr>
+                                <tr><td colspan="4">{% get_site_text 'no_versions' %}</td></tr>
                             {% endfor %}
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% get_site_text 'close' %}</button>
                     </div>
                 </div>
             </div>

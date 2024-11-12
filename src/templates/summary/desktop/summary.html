@@ -14,17 +14,17 @@
         </div>
 
         {% if request.site.enable_standards %}
-            <h3 class="text-left spacer-top-10">Standards</h3>
+            <h3 class="text-left spacer-top-10">{% get_site_text 'standards' %}</h3>
             {% get_site_text 'standards_info' %}
             <ul>
                 {% for standard in package.standards %}
                     <li><a target="_blank"
                            href="{{ standard.details_url }}">{{ standard.standard.standard_name }}</a></li>
                     {% empty %}
-                    <li>This package adheres to none of our standards.</li>
+                    <li>{% get_site_text 'no_standards' %}</li>
                 {% endfor %}
                 {% if package.attestationhistory_set.all %}
-                    <li><a href="#" data-toggle="modal" data-target="#history_modal">View attestation history</a>
+                    <li><a href="#" data-toggle="modal" data-target="#history_modal">{% get_site_text 'view_attestation_history' %}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -41,7 +41,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title white-text">Standards Attestation History</h4>
+                <h4 class="modal-title white-text">{% get_site_text 'standards_attestation_history' %}</h4>
                 <button type="button" class="close white-text" data-dismiss="modal">&times;</button>
             </div>
 
@@ -57,7 +57,8 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    {% get_site_text 'close' %}</button>
             </div>
 
         </div>

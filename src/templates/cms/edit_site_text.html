@@ -7,11 +7,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Edit Site Text: {{ site_text.key }}</h1>
+                    <h1>{% get_site_text 'edit_site_text' %} {{ site_text.key }}</h1>
                     <form method="POST">
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                        <button class="btn btn-success">Save</button>
+                        <button class="btn btn-success">{% get_site_text 'save' %}</button>
                     </form>
                 </div>
             </div>

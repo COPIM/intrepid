@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-News
+{% get_site_text 'news' %}
 {% endblock title %}
 
 <!-- desktop -->
@@ -12,14 +12,14 @@ News
         <div class="col pull-left">
             <h1>News</h1>
         </div>
-        <div class="col-3"><img src="{% static "frontend/img/home_publishers.svg" %}" alt="Open Book Collective"
+        <div class="col-3"><img src="{% static "frontend/img/home_publishers.svg" %}" alt="{% get_site_text 'open_book_collective' %}"
                                                   class="img-fluid img-right news-image"/></div>
     </div>
 
     <div class="row news-info-row">
         <div class="col-1"></div>
         <div class="col pull-left white-text">
-            <p class="subhead">Updates from the Open Book Collective.</p>
+            <p class="subhead">{% get_site_text 'updates_from_the_open_book_collective' %}</p>
         </div>
         <div class="col-3"></div>
     </div>
@@ -60,20 +60,20 @@ News
 {% block body-mobile %}
     <div class="row login-row-header-mobile">
         <div class="col-12 who-we-are-header-mobile">
-            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="News" class="img-fluid"/><br/>
-            <h1>{% trans "News" %}</h1>
+            <img src="{% static "frontend/img/home_publishers.svg" %}" alt="{% get_site_text 'news' %}" class="img-fluid"/><br/>
+            <h1>{% get_site_text 'news' %}</h1>
         </div>
 
     </div>
 
     <div class="row white-background blue-text">
         <div class="col">
-           <p>Updates from the Open Book Collective.</p>
+           <p>{% get_site_text 'updates_from_the_open_book_collective' %}</p>
         </div>
     </div>
 
      <div class="news-mobile">
-        <h1>News</h1>
+        <h1>{% get_site_text 'news' %}</h1>
         {% for news_item in news_items %}
             <div class="row news-cards">
                 <div class="col news-item">

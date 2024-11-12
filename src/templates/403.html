@@ -3,15 +3,15 @@
 {% block breadcrumb %}
 
     
-    <li class="breadcrumb-item active" aria-current="page">Permission Denied</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'permission_denied' %}</li>
 </ol>
 {% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1>Permission Denied</h1>
-        <p class="lead">{{ exception }} </p>
+        <h1>{% get_site_text 'permission_denied' %}</h1>
+        <p class="lead">{{ exception }}</p>
     </div>
 </div>
 {% endblock content %}

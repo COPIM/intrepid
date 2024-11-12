@@ -1,27 +1,27 @@
 {% extends "base/base.html" %}
 
 {% block title %}
-Permissions
+{% get_site_text 'permissions' %}
 {% endblock title %}
 
 {% block breadcrumb %}
 
     
-    <li class="breadcrumb-item" aria-current="page">Manager</li>
-    <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+    <li class="breadcrumb-item" aria-current="page">{% get_site_text 'manager' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% get_site_text 'permissions' %}</li>
 {% endblock breadcrumb %}
 
 {% block content %}
-<h1>Permission Management</h1>
-<p class="lead">Manage permissions across the system by granting groups access to views.</p>
+<h1>{% get_site_text 'permission_management' %}</h1>
+<p class="lead">{% get_site_text 'permission_management_help' %}</p>
 
 <form method="POST">
     {% csrf_token %}
-    <button name="save" class="btn btn-success float-end">Save</button>
+    <button name="save" class="btn btn-success float-end">{% get_site_text 'save' %}</button>
     <table class="table" id="groups">
         <thead>
         <tr>
-            <th>View Name</th>
+            <th>{% get_site_text 'view_name' %}</th>
             {% for group in groups %}
             <th>{{ group }}</th>
             {% endfor %}
@@ -38,6 +38,6 @@ Permissions
         {% endfor %}
         </tbody>
     </table>
-    <button name="save" class="btn btn-success float-end">Save</button>
+    <button name="save" class="btn btn-success float-end">{% get_site_text 'save' %}</button>
 </form>
 {% endblock content %}

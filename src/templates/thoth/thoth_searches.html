@@ -3,15 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Saved Searches
+    {% get_site_text 'saved_searches' %}
 {% endblock title %}
 
 {% block page-title %}
-    Saved Searches
+    {% get_site_text 'saved_searches' %}
 {% endblock page-title %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="#">Saved Searches</a></li>
+    <li class="breadcrumb-item"><a href="#">{% get_site_text 'saved_searches' %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -26,16 +26,16 @@
         <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col">
-                    <p>These are the searches that you have made previously and saved. You can here re-run these searches or sign up to email alerts.</p>
+                    <p>{% get_site_text 'saved_searches_description' %}</p>
                         {% csrf_token %}
                         <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Search name</th>
-                                        <th>Terms</th>
-                                        <th>Email updates</th>
-                                        <th>Run search</th>
-                                        <th>Delete</th>
+                                        <th>{% get_site_text 'search_name' %}</th>
+                                        <th>{% get_site_text 'terms' %}</th>
+                                        <th>{% get_site_text 'email_updates' %}</th>
+                                        <th>{% get_site_text 'run_search' %}</th>
+                                        <th>{% get_site_text 'delete' %}</th>
                                     </tr>
                                 </thead>
                             {% for search in searches %}
@@ -43,9 +43,9 @@
                                     <tr>
                                         <td style="width:33%">{{ search.display_name }}</td>
                                         <td>{% for item in search.thothsearchelement_set.all %}{% if forloop.first %}{% else %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}{{item}}{% endfor %}</td>
-                                        <td><form method="POST" action="{% url 'toggle_search_email' search.pk %}">{% csrf_token %} {% if not search.email_on_new %}<input type="submit" class="btn btn-warning" name="toggle_email" value="Subscribe for email updates"/>{% else %}<input type="submit" class="btn btn-warning" name="toggle_email" value="Unsubscribe from email updates"/>{% endif %}</form></td>
-                                        <td><form method="POST" action="{% url 'run_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-success" name="activate" value="Run this search"/></form></td>
-                                        <td><form method="POST" action="{% url 'delete_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="Delete this Search"/></form></td>
+                                        <td><form method="POST" action="{% url 'toggle_search_email' search.pk %}">{% csrf_token %} {% if not search.email_on_new %}<input type="submit" class="btn btn-warning" name="toggle_email" value="{% get_site_text 'subscribe_email_updates' %}"/>{% else %}<input type="submit" class="btn btn-warning" name="toggle_email" value="{% get_site_text 'unsubscribe_email_updates' %}"/>{% endif %}</form></td>
+                                        <td><form method="POST" action="{% url 'run_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-success" name="activate" value="{% get_site_text 'run_this_search' %}"/></form></td>
+                                        <td><form method="POST" action="{% url 'delete_search' search.pk %}">{% csrf_token %} <input type="submit" class="btn btn-danger delete" name="delete" value="{% get_site_text 'delete_this_search' %}"/></form></td>
                                     </tr>
                                 </tbody>
                             {% endfor %}
@@ -56,16 +56,16 @@
 
       <div class="row" style="margin-top: 50px;">
           <div class="col">
-              <h2>Thoth Feed</h2>
-              <p>These are the books matched by all of the above searches</p>
+              <h2>{% get_site_text 'thoth_feed' %}</h2>
+              <p>{% get_site_text 'thoth_feed_description' %}</p>
               <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Authors</th>
-                            <th>Book Name</th>
-                            <th>Publisher</th>
-                            <th>Date</th>
-                            <th>View</th>
+                            <th>{% get_site_text 'authors' %}</th>
+                            <th>{% get_site_text 'book_name' %}</th>
+                            <th>{% get_site_text 'publisher' %}</th>
+                            <th>{% get_site_text 'date' %}</th>
+                            <th>{% get_site_text 'view' %}</th>
                         </tr>
                     </thead>
                 {% for work in works %}
@@ -75,7 +75,7 @@
                             <td>{{ work.full_title }}</td>
                             <td>{{ work.publisher }}</td>
                             <td>{{ work.published_date }}</td>
-                            <td><a href="{% url 'book' work.pk %}">Catalogue record</a></td>
+                            <td><a href="{% url 'book' work.pk %}">{% get_site_text 'catalogue_record' %}</a></td>
                         </tr>
                     </tbody>
                 {% endfor %}
@@ -86,15 +86,15 @@
       {% if institutional_updates %}
        <div class="row" style="margin-top: 50px;">
           <div class="col">
-              <h2>Institutional Updates</h2>
-              <p>These are updates directed specifically at your institution (as set in <a href="{% url 'edit_profile' %}">your profile</a>).</p>
+              <h2>{% get_site_text 'institutional_updates' %}</h2>
+              <p>{% get_site_text 'institutional_updates_description' %} <a href="{% url 'edit_profile' %}">{% get_site_text 'your_profile' %}</a>.</p>
               <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Update</th>
-                            <th>Initiative</th>
-                            <th>Date</th>
-                            <th>View</th>
+                            <th>{% get_site_text 'update' %}</th>
+                            <th>{% get_site_text 'initiative' %}</th>
+                            <th>{% get_site_text 'date' %}</th>
+                            <th>{% get_site_text 'view' %}</th>
                         </tr>
                     </thead>
                 {% for page in institutional_updates %}
@@ -103,7 +103,7 @@
                             <td style="width:33%">{{ page.title }}</td>
                             <td>{{ page.initiative }}</td>
                             <td>{{ page.created|date:"M d, Y" }}</td>
-                            <td><a href="{% url 'news_item' page.pk %}">View update</a></td>
+                            <td><a href="{% url 'news_item' page.pk %}">{% get_site_text 'view_update' %}</a></td>
                         </tr>
                     </tbody>
                 {% endfor %}
