@@ -77,7 +77,7 @@
                         {% endfor %}
                         {% if not basket.meta_packages.all and not basket.packages.all %}
                             <tr>
-                                <td colspan="2">There are no offers in this quote.</td>
+                                <td colspan="2">{% get_site_text 'no_offers' %}</td>
                             </tr>
                         {% endif %}
                     </table>
@@ -120,7 +120,7 @@
                                         {{ v|currency_display:k }}<br/>
                                     {% endfor %}
                                 {% else %}
-                                    Complete form below to see price.
+                                    {% get_site_text 'complete_form' %}
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -174,14 +174,14 @@
                     {% get_site_text 'has_all_prices_text' prefetched %}
                     <form method="POST">
                         {% csrf_token %}
-                        <p><button name="complete" class="btn btn-primary btn-obc-magenta">Proceed</button></p>
+                        <p><button name="complete" class="btn btn-primary btn-obc-magenta">{% get_site_text 'proceed' prefetched %}</button></p>
                     </form>
                 {% endif %}
 
                 <div class="col no-pad">
                     <h3>{% get_site_text 'quotation_additional' prefetched %}</h3>
                     {% get_site_text 'quotation_add_text' prefetched %}
-                    <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                    <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'add' prefetched %}</a></p>
                 </div>
                 {% if basket.package_set %}
                 {% include "package/elements/basket_form.html" with prefetched=prefetched%}
