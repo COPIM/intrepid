@@ -214,10 +214,10 @@ class ManagePackageForm(forms.ModelForm):
             self.fields.pop("signup_contacts")
             self.fields.pop("access_contacts")
 
-    def save(
-        self, commit=True
-    ) -> tuple[
-        models.Package, models.BandingTypeEntry, models.BandingTypeCurrencyEntry
+    def save(self, commit=True) -> tuple[
+        models.Package,
+        models.BandingTypeEntry,
+        models.BandingTypeCurrencyEntry,
     ]:
         """
         Save the form
@@ -451,7 +451,9 @@ class CurrencyField(forms.Form):
     """
 
     currencies = forms.ModelChoiceField(
-        queryset=models.Country.objects.all(), empty_label=None, label="Country"
+        queryset=models.Country.objects.all(),
+        empty_label=None,
+        label="Country",
     )
 
 
@@ -567,17 +569,24 @@ class GeneratedForm(forms.Form):
     Form for generating forms
     """
 
+    TERM_CHOICES = {
+        "1": "1 Year",
+        "3": "3 Years",
+    }
+
     email_address = forms.EmailField(required=True)
+    term_length = forms.ChoiceField(choices=TERM_CHOICES.items())
 
     def __init__(self, *args, **kwargs):
         order = kwargs.pop("order", None)
         fields_required = kwargs.pop("fields_required", True)
         email = kwargs.pop("email_address", None)
+        term_length = kwargs.pop("term_length", 1)
         super(GeneratedForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(
-            Submit("submit", "Save", css_class="btn btn-primary btn-obc-blue")
+            Submit("save", "Save", css_class="btn btn-primary btn-obc-blue")
         )
 
         elements = order.data_to_collect
@@ -633,9 +642,12 @@ class GeneratedForm(forms.Form):
         )
         for answer in answers:
             if self.fields[str(answer.form_element.pk)]:
-                self.fields[str(answer.form_element.pk)].initial = answer.answer
+                self.fields[str(answer.form_element.pk)].initial = (
+                    answer.answer
+                )
 
         self.fields["email_address"].initial = email
+        self.fields["term_length"].initial = term_length
 
 
 class CustomDocumentForm(forms.ModelForm):

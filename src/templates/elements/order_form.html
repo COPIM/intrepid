@@ -23,11 +23,13 @@
         </ul>
         <div class="package-styled-text">
             {% get_site_text 'order_form_totals' %}
+            
+            {% get_site_text "about_term_length" %}
 
             <p>
-                {{ order_amount }}<br />
-                {{ platform_fee }}<br />
-                <strong>{{ total }}</strong>
+                {% get_site_text "order_amount" %} {{ order_amount }}<br />
+                {% get_site_text "platform_fee" %} {{ platform_fee }}<br />
+                <strong>{% get_site_text "total_term_length" %} {{ total }}</strong>
             </p>
 
             {% get_site_text 'order_form_footer' %}
@@ -35,3 +37,27 @@
     </div>
     <div class="col-1"></div>
 </div>
+
+<script type="text/javascript">
+     $(function() {
+          $('#id_term_length').unbind('change');
+          $('#id_term_length').bind('change', function() { submit_changed(); } );
+         
+          $('#submit-id-save').unbind('save');
+          $('#submit-id-save').bind('click', function() { submit_clean(); } );
+     });
+
+     function submit_changed() {
+        if (document.forms[0].action.endsWith("?changed=True") == false)
+         {
+             document.forms[0].action = document.forms[0].action + "?changed=True"
+         }
+
+        document.forms[0].submit()
+     }
+     
+     function submit_clean() {
+         document.forms[0].action = document.forms[0].action.replace("?changed=True", "")
+         document.forms[0].submit()
+     }
+</script>

@@ -45,7 +45,9 @@ def initiative_list(request) -> HttpResponse:
         for subject in package.subjects.all():
             subject_pks.append(subject.pk)
 
-    subjects = vocab_models.SubjectVocab.objects.filter(pk__in=set(subject_pks))
+    subjects = vocab_models.SubjectVocab.objects.filter(
+        pk__in=set(subject_pks)
+    )
     initiatives = initiative_models.Initiative.objects.filter(
         active=True,
     )
@@ -147,7 +149,9 @@ def package_info(request, package_id) -> HttpResponse:
         package_type = "package"
     except models.Package.DoesNotExist:
         try:
-            package = models.MetaPackage.objects.get(pk=package_id, active=True)
+            package = models.MetaPackage.objects.get(
+                pk=package_id, active=True
+            )
             package_type = "meta"
         except models.MetaPackage.DoesNotExist:
             raise Http404
@@ -1007,6 +1011,14 @@ def order_form(request, order_id) -> HttpResponse:
         identifier = request.session
 
     if order.converted_currency and order.converted_value:
+        if request.POST:
+            multiplier = request.POST.get("term_length", 1)
+        else:
+            multiplier = 1
+
+        order.converted_value = order.converted_value * int(multiplier)
+        order.platform_fee = order.platform_fee * int(multiplier)
+
         order_amount = "Offers: {} {}".format(
             order.converted_currency, order.converted_value
         )
@@ -1022,13 +1034,18 @@ def order_form(request, order_id) -> HttpResponse:
     else:
         costs, currency_totals = order.basket.cost(identifier, identifier_type)
         for k, v in currency_totals.items():
-            order_amount = "Offers: {}".format(utils.format_price(v, k))
-            platform_fee = "OBC Processing Fee: {}".format(
-                utils.format_price(order.platform_fee, k)
-            )
-            total = "Total: {}".format(
-                utils.format_price((v + order.platform_fee), k)
-            )
+            if request.POST:
+                multiplier = request.POST.get("term_length", 1)
+            else:
+                multiplier = 1
+
+            v = v * int(multiplier)
+            order.platform_fee = order.platform_fee * int(multiplier)
+
+            order_amount = utils.format_price(v, k)
+            platform_fee = utils.format_price(order.platform_fee, k)
+
+            total = utils.format_price((v + order.platform_fee), k)
 
     signups = order.packagesignup_set.all()
     form = forms.GeneratedForm(
@@ -1048,7 +1065,11 @@ def order_form(request, order_id) -> HttpResponse:
                 request.user.email if request.user.is_authenticated else ""
             ),
         )
-        if form.is_valid():
+
+        # check if it's a state change
+        is_changed = request.GET.get("changed", "")
+
+        if form.is_valid() and is_changed == "":
             order.save_order_form(form)
             order.status = "provisional"
             order.save()
@@ -1449,7 +1470,8 @@ def package_data(request, initiative_id, package_id) -> HttpResponse:
         # the user has submitted data
         if "add_new" in request.POST:
             form_element = get_object_or_404(
-                models.AggregateFormElement, pk=int(request.POST["form_fields"])
+                models.AggregateFormElement,
+                pk=int(request.POST["form_fields"]),
             )
 
             obj, created = models.PackageFormElement.objects.get_or_create(
@@ -1902,7 +1924,9 @@ def delete_package_banding_currency(
 
 
 @user_is_initiative_manager
-def manage_package_bandings(request, package_id, initiative_id) -> HttpResponse:
+def manage_package_bandings(
+    request, package_id, initiative_id
+) -> HttpResponse:
     """
     Manage the bandings for a package.
     :param request: the request
