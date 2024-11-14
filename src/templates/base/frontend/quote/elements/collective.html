@@ -16,8 +16,8 @@
                         </li>
                     {% endif %}
                     <li><i class="fa fa-building"></i> {{ package.initiative_list|length }} {% get_site_text 'initiatives' %}</li>
-                    <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</li>
-                    <li><i class="fa fa-edit"></i> {% get_site_text 'pricing' %} {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
+                    <li><i class="fa fa-calendar-alt"></i> {% get_site_text 'months_contract' %}</li>
+                    <li><i class="fa fa-edit"></i> {% get_site_text 'pricing' %} {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %} {% get_site_text 'per_year' %}</li>
                 </ul>
             </div>
         </div>

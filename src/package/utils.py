@@ -1137,7 +1137,7 @@ def generate_acceptance_doc(
 
     if order.converted_currency and order.converted_value:
         order_doc.add_paragraph(
-            "Offers: {} {}".format(
+            "Annual Subscription Cost: {} {}".format(
                 order.converted_currency, order.converted_value
             )
         )

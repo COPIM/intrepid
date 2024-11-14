@@ -569,9 +569,17 @@ class GeneratedForm(forms.Form):
     Form for generating forms
     """
 
+    from cms import models as cms_models
+
+    try:
+        months = cms_models.SiteText.objects.get(key="months")
+        months = months.body
+    except cms_models.SiteText.DoesNotExist:
+        months = "months"
+
     TERM_CHOICES = {
-        "1": "1 Year",
-        "3": "3 Years",
+        "1": "12 {}".format(months),
+        "3": "36 {}".format(months),
     }
 
     email_address = forms.EmailField(required=True)
@@ -581,7 +589,7 @@ class GeneratedForm(forms.Form):
         order = kwargs.pop("order", None)
         fields_required = kwargs.pop("fields_required", True)
         email = kwargs.pop("email_address", None)
-        term_length = kwargs.pop("term_length", 1)
+        term_length = kwargs.pop("term_length", 3)
         super(GeneratedForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"

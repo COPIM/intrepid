@@ -22,13 +22,14 @@
             {% endfor %}
         </ul>
         <div class="package-styled-text">
-            {% get_site_text 'order_form_totals' %}
+            {% get_site_text 'based_on_term' %}<br/>
             
             {% get_site_text "about_term_length" %}
 
             <p>
                 {% get_site_text "order_amount" %} {{ order_amount }}<br />
                 {% get_site_text "platform_fee" %} {{ platform_fee }}<br />
+                {% get_site_text "term_length" %} {% widthratio multiplier 1 12 %} {% get_site_text "months" %}<br />
                 <strong>{% get_site_text "total_term_length" %} {{ total }}</strong>
             </p>
 
