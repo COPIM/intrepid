@@ -44,7 +44,7 @@
                             <td colspan="1">{{ order.order_date }}</td>
                             <td colspan="1">{{ order.valid_period }}</td>
                             <td colspan="1">{{ order.initiative }}</td>
-                            <td colspan="2">{{ order.term }} {% get_site_text "years" %}</td>
+                            <td colspan="2">{% widthratio order.term 1 12 %} {% get_site_text "months" %}</td>
                         </tr>
                         <tr>
                             <th colspan="3">Documents</th>
@@ -91,7 +91,7 @@
                             <tr>
                                 <th>Package Name</th>
                                 <th>Package Initiative</th>
-                                <th>Cost over Term ({{ order.term }} {% get_site_text "years" %})</th>
+                                <th>Cost over Term ({% widthratio order.term 1 12 %} {% get_site_text "months" %})</th>
                                 <th>Payment Processor</th>
                                 <th>Invoice Status</th>
                                 <th>Remove</th>

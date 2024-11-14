@@ -33,7 +33,7 @@
                 {% get_site_text 'initiatives' %}{% endif %}</span>
         </div>
         <div class="col">
-            <span class="colinfo"><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}</span>
+            <span class="colinfo"><i class="fa fa-calendar-alt"></i> {% get_site_text 'months_contract' %}</span>
         </div>
         <div class="col">
             <span class="colinfo">
@@ -132,9 +132,9 @@
                         <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
                             <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                             initiatives{% endif %}</li>
-                        <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }}
-                            {% get_site_text 'month_contract' %}</li>
-                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+                        <li><i class="fa fa-calendar-alt"></i> 
+                            {% get_site_text 'months_contract' %}</li>
+                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }} {% get_site_text 'per_year' %}</li>
                         {% if package.meta_packages %}
                             <li>
                                 <i class="fa fa-box"> </i> {% get_site_text 'included_in' %}
@@ -261,8 +261,8 @@
                         <li><i class="fa fa-building"></i> {% if package_type == 'package' %}
                             <a href="{% url 'public_initiative' package.initiative.pk %}">{{ package.initiative.name }}</a>{% else %}{{ package.initiative_list|length }}
                             initiatives{% endif %}</li>
-                        <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} month contract</li>
-                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }}</li>
+                        <li><i class="fa fa-calendar-alt"></i> {% get_site_text "months_contract" %}</li>
+                        <li><i class="fa fa-edit"></i> Pricing {{ package.pricing_display }} {% get_site_text 'per_year' %}</li>
                         {% if package.meta_packages %}
                             <li>
                                 <i class="fa fa-box"> </i> Included in

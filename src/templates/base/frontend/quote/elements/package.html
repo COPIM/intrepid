@@ -17,9 +17,9 @@
                         <!--<li><i class="fa fa-check-circle"></i> Recommended
                         </li>-->
                     {% endif %}
-                    <li><i class="fa fa-calendar-alt"></i> {{ package.display_contract_length_months }} {% get_site_text 'month_contract' %}
+                    <li><i class="fa fa-calendar-alt"></i> {% get_site_text 'months_contract' %}
                     </li>
-                    <li><i class="fa fa-edit"></i> Pricing {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %}</li>
+                    <li><i class="fa fa-edit"></i> Pricing {% if package.pre_calc %}{{ package.pre_calc }}{% else %}{{ package.pricing_display }}{% endif %} {% get_site_text 'per_year' %}</li>
                     {% if package.meta_packages %}
                         <li>
                             <i class="fa fa-box"> </i> {% get_site_text 'included_in' %}

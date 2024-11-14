@@ -992,6 +992,7 @@ def order_form(request, order_id) -> HttpResponse:
     order_amount = ""
     platform_fee = ""
     total = ""
+    multiplier = 3
 
     if request.user.is_authenticated:
         order = get_object_or_404(
@@ -1012,9 +1013,9 @@ def order_form(request, order_id) -> HttpResponse:
 
     if order.converted_currency and order.converted_value:
         if request.POST:
-            multiplier = request.POST.get("term_length", 1)
+            multiplier = request.POST.get("term_length", 3)
         else:
-            multiplier = 1
+            multiplier = 3
 
         order.converted_value = order.converted_value * int(multiplier)
 
@@ -1037,9 +1038,9 @@ def order_form(request, order_id) -> HttpResponse:
         costs, currency_totals = order.basket.cost(identifier, identifier_type)
         for k, v in currency_totals.items():
             if request.POST:
-                multiplier = request.POST.get("term_length", 1)
+                multiplier = request.POST.get("term_length", 3)
             else:
-                multiplier = 1
+                multiplier = 3
 
             v = v * int(multiplier)
             platform_fee_calc = order.platform_fee * int(multiplier)
@@ -1102,6 +1103,7 @@ def order_form(request, order_id) -> HttpResponse:
         "order_amount": order_amount,
         "platform_fee": platform_fee,
         "total": total,
+        "multiplier": multiplier,
     }
     return render(
         request,
