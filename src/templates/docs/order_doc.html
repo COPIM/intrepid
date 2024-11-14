@@ -57,7 +57,7 @@
             <table class="table table-bordered">
                 <tr>
                     <th>OBC Offer Selection</th>
-                    <th>Amount (for {{ order.term }} years)</th>
+                    <th>Amount (for {% widthratio order.term 1 12 %} months)</th>
                 </tr>
 
                 {% for meta_package in order.basket.meta_packages.all %}
