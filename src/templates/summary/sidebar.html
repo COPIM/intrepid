@@ -27,7 +27,7 @@
                     <button class="btn btn-primary btn-obc-blue btn-package dropdown-toggle"
                             type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Add to Quote <span class="fa fa-plus"></span>
+                        {% get_site_text "add_to_quote" %} <span class="fa fa-plus"></span>
                     </button>
                     <div class="dropdown-menu package-dropdown" aria-labelledby="dropdownMenuButton">
                         {% if request.site.enable_meta_package_signup %}
