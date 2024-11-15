@@ -77,7 +77,7 @@
                         {% endfor %}
                         {% if not basket.meta_packages.all and not basket.packages.all %}
                             <tr>
-                                <td colspan="2">There are no offers in this quote.</td>
+                                <td colspan="2">{% get_site_text 'no_offers' %}</td>
                             </tr>
                         {% endif %}
                     </table>
@@ -104,7 +104,7 @@
                     {% endif %}
                     <tr class="total">
                         <td>
-                            <strong>{% get_site_text 'totals' prefetched %}</strong>
+                            <strong>{% get_site_text 'annual_sub_total' prefetched %}</strong>
                             {% if basket.conflicts %}
                                 <p class="in_conflict"><small>{% get_site_text 'totals_ignore_duplicates' %}</small>
                                 </p>{% endif %}
@@ -120,7 +120,7 @@
                                         {{ v|currency_display:k }}<br/>
                                     {% endfor %}
                                 {% else %}
-                                    Complete form below to see price.
+                                    {% get_site_text 'complete_form' %}
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -135,7 +135,7 @@
                     {% if site_percentage %}
                         <tr>
                             <td>
-                                <strong>{% get_site_text 'obc_percentage' prefetched %}</strong>
+                                <strong>{% get_site_text 'obc_percentage_annual' prefetched %}</strong>
                             </td>
                             <td colspan="4" class="text-right">
                                 {% for k,v in site_percentage.items %}
@@ -146,7 +146,7 @@
                     {% endif %}
                     <tr>
                         <td>
-                            <strong>{% get_site_text 'total' %}</strong>
+                            <strong>{% get_site_text 'annual_total' %}</strong>
                         </td>
                         <td class="text-right">
                             {% if converted_total %}
@@ -172,16 +172,17 @@
                 {% if has_all_prices and basket.package_set %}
                     <h3>{% get_site_text 'has_all_prices_head' prefetched %}</h3>
                     {% get_site_text 'has_all_prices_text' prefetched %}
+                    {% get_site_text 'about_term_length_next_page' prefetched %}
                     <form method="POST">
                         {% csrf_token %}
-                        <p><button name="complete" class="btn btn-primary btn-obc-magenta">Proceed</button></p>
+                        <p><button name="complete" class="btn btn-primary btn-obc-magenta">{% get_site_text 'proceed' prefetched %}</button></p>
                     </form>
                 {% endif %}
 
                 <div class="col no-pad">
                     <h3>{% get_site_text 'quotation_additional' prefetched %}</h3>
                     {% get_site_text 'quotation_add_text' prefetched %}
-                    <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">Add</a></p>
+                    <p><a href="{% url 'package_list' %}" class="btn btn-primary btn-obc-blue">{% get_site_text 'add' prefetched %}</a></p>
                 </div>
                 {% if basket.package_set %}
                 {% include "package/elements/basket_form.html" with prefetched=prefetched%}
