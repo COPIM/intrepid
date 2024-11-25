@@ -108,7 +108,12 @@ class WhoWeAreEntryForm(forms.ModelForm):
 
     class Meta:
         model = models.WhoWeAreProfileItem
-
+        fields = (
+            "display_name",
+            "affiliation_line",
+            "bio",
+            "police_mugshot",
+        )
         exclude = ("section", "order")
 
     def clean_police_mugshot(self):
@@ -160,6 +165,12 @@ class HomePageQuoteForm(forms.ModelForm):
 
     class Meta:
         model = models.HomePageQuote
+        fields = (
+            'pill_name',
+            'quotation',
+            'organization_attribution',
+            'organization_logo',
+        )
         exclude = ("order",)
 
     def clean_organization_logo(self):
