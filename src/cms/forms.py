@@ -77,10 +77,15 @@ class VersionForm(forms.ModelForm):
     """
     Form for creating and updating Version objects.
     """
-
     class Meta:
         model = models.Version
-        exclude = ("created", "created_by")
+        fields = (
+            'first_paragraph',
+            'pre_break_content',
+            'pull_quote',
+            'show_quote_icons',
+            'body',
+        )
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
