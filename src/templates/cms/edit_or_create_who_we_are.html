@@ -20,6 +20,9 @@
                     {% get_site_text 'create' %}{% endif %} {{ wwe.display_name }}</p>
                 <div class="row">
                     <div class="col-md-12">
+                        <p>
+                          {% include "cms/lang_warning.html" %}
+                        </p>
                         <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
                             {% bootstrap_form wwe_form %}
