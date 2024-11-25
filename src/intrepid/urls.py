@@ -121,6 +121,7 @@ urlpatterns = [
     path("books/", include("thoth.urls")),
     path("manage/vocabs/", include("vocab.urls")),
     path("nav/<str:page_name>", views.nav, name="nav"),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 if settings.DEBUG:

@@ -456,19 +456,4 @@ class SiteText(models.Model):
         :param context: the request context
         :return: the text, with an edit link if the user is staff
         """
-        request = context.get("request")
-
         return self.body
-
-        if not request.user or not request.user.is_staff:
-            return self.body
-        elif request.user and request.user.is_staff:
-            url = reverse(
-                "edit_site_text",
-                kwargs={"key": self.key},
-            )
-            body = (
-                '<a target="_blank" class="edit-button" href="{url}">'
-                "Edit Text</a><br />{body}".format(url=url, body=self.body)
-            )
-            return body

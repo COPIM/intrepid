@@ -38,6 +38,9 @@
                     <div class="col-md-12">
                         <p>{{ page_or_update }}: {% get_site_text 'manage_data' %}
                         </p>
+                        <p>
+                          {% include "cms/lang_warning.html" %}
+                        </p>
                         <ul>
                             <li>{% get_site_text 'save_page' %}</li>
                             <li>{% get_site_text 'save_page_make_current' %}</li>

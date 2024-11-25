@@ -29,6 +29,24 @@
       {% if user.is_authenticated %}
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
+        <li class="nav-header">
+        <form method="post" action="{% url 'set_language' %}">
+          {% csrf_token %}
+          <label for="language-select">Switch Language:</label><br />
+          <select id="language-select" name="language"
+                  onchange="this.form.submit()">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+              <option value="{{ lang_code }}"
+                      {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>
+                {{ lang_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+        </li>
+
           <li class="nav-header">{% get_site_text 'dashboard_caps' %}</li>
           <li class="nav-item">
             <a href="{% url 'dashboard_index' %}" class="nav-link" id="dashboard">
@@ -303,6 +321,8 @@
                 </a>
               </li>
 
+
+
              <li class="nav-item">
                 <a href="{% url 'list_backups' %}" class="nav-link" id="backups">
                   <i class="nav-icon fas fa-user-lock"></i>
@@ -312,6 +332,15 @@
               </li>
             </ul>
           </li>
+
+            <li class="nav-item">
+                <a href="{% url 'list_site_text' %}" class="nav-link" id="site-text">
+                  <i class="nav-icon fas fa-language"></i>
+                  <p>Site Texts</p>
+
+                </a>
+              </li>
+
           {% endif %}
         </ul>
       {% endif %}
