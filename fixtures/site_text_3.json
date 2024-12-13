@@ -3944,8 +3944,8 @@
         "pk": 462,
         "fields": {
             "key": "cost",
-            "body": "Cost",
-            "help_text": "Table heading for cost",
+            "body": "Annual Cost",
+            "help_text": "Table heading for annual cost",
             "rich_text": false
         }
     },
