@@ -137,12 +137,30 @@ class Command(BaseCommand):
             publisher_model.publisher_name = publisher.publisherName
             publisher_model.save()
 
-            # we can handle a max of 9999 works at any one time
-            # Thoth does support pagination, but currently has no way of
-            # precisely querying the expected number of records
-            works = client.works(
-                limit=9999, publishers='["{0}"]'.format(publisher.publisherId)
+            offset = 0
+            all_books = []
+            total_count = client.book_count(
+                publishers='["{0}"]'.format(publisher.publisherId),
             )
+            THOTH_PAGE_SIZE = 100
+
+            print(f"Total count for publisher: {total_count}")
+
+            while len(all_books) < total_count:
+                print("PAGE: 100 records")
+                books = client.books(
+                    limit=THOTH_PAGE_SIZE,
+                    publishers='["{0}"]'.format(publisher.publisherId),
+                    offset=offset,
+                )
+
+                if not books:
+                    break
+
+                all_books.extend(books)
+                offset += THOTH_PAGE_SIZE
+
+            works = all_books
 
             self.output(
                 "Syncing works for "
@@ -185,9 +203,30 @@ class Command(BaseCommand):
                 thoth_instance=thoth_sync["endpoint"],
             )[0]
 
-            works = client.works(
-                limit=9999, publishers='["{0}"]'.format(publisher.publisherId)
+            offset = 0
+            all_books = []
+            total_count = client.book_count(
+                publishers='["{0}"]'.format(publisher.publisherId),
             )
+            THOTH_PAGE_SIZE = 100
+
+            print(f"Total count for publisher: {total_count}")
+
+            while len(all_books) < total_count:
+                print("PAGE: 100 records")
+                books = client.books(
+                    limit=THOTH_PAGE_SIZE,
+                    publishers='["{0}"]'.format(publisher.publisherId),
+                    offset=offset,
+                )
+
+                if not books:
+                    break
+
+                all_books.extend(books)
+                offset += THOTH_PAGE_SIZE
+
+            works = all_books
 
             # now handle institutions and funding
             # as of Thoth v.0.6.0 funders are a sub-class of institution
@@ -498,7 +537,9 @@ class Command(BaseCommand):
             contribution_model.contribution_ordinal = (
                 contribution.contributionOrdinal
             )
-            contribution_model.contribution_type = contribution.contributionType
+            contribution_model.contribution_type = (
+                contribution.contributionType
+            )
             contributor_model.thoth_id = contribution.contributionId
 
             contribution_model.work = work_model
