@@ -1,0 +1,164 @@
+[
+  {
+    "model": "cms.sitetext",
+    "pk": 737,
+    "fields": {
+      "key": "no_offers",
+      "body": "There are no offers in this quote.",
+      "help_text": "Text for when a quote contains no offers.",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 738,
+    "fields": {
+      "key": "complete_text",
+      "body": "Complete form below to see price.",
+      "help_text": "Text to ask the user to complete a form to see a price",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 739,
+    "fields": {
+      "key": "proceed",
+      "body": "Proceed",
+      "help_text": "Button text to proceed with a quotation",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 740,
+    "fields": {
+      "key": "order_form_footer",
+      "body": "Once you have entered your details, you will be given the option to save a document with your quotation details. If you have any questions, please get in touch with us at: info@openbookcollective.org",
+      "help_text": "Info text on the bottom of the \"proceed\" page.",
+      "rich_text": false
+    },
+  {
+    "model": "cms.sitetext",
+    "pk": 741,
+    "fields": {
+      "key": "order_amount",
+      "body": "Offers for term length: ",
+      "help_text": "Text that precedes the offer amount",
+      "rich_text": false
+    },
+  {
+    "model": "cms.sitetext",
+    "pk": 742,
+    "fields": {
+      "key": "order_amount",
+      "body": "Offers for term length: ",
+      "help_text": "Text that precedes the offer amount",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 743,
+    "fields": {
+      "key": "platform_fee",
+      "body": "Platform fee for term length: ",
+      "help_text": "Text that precedes the platform fee",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 745,
+    "fields": {
+      "key": "total_term_length",
+      "body": "Total for term length: ",
+      "help_text": "Text that precedes the total fee",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 746,
+    "fields": {
+      "key": "about_term_length",
+      "body": "You can choose to support OBC initiatives for either 12 (1 year) or 36 months (3 years). For 36 months terms, annual prices are fixed at the Annual Cost displayed above. By default, we request payment for subscriptions on an annual basis, however if preferred we can alternatively issue a payment request for the full subscription amount.",
+      "help_text": "Text to explain the term lengths",
+      "rich_text": true
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 747,
+    "fields": {
+      "key": "months",
+      "body": "months",
+      "help_text": "Text to append after the term length",
+      "rich_text": true
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 748,
+    "fields": {
+      "key": "about_term_length_next_page",
+      "body": "You can choose to support OBC initiatives for either 12 (1 year) or 36 months (3 years). For 36 months terms, annual prices are fixed at the Annual Cost displayed above. By default, we request payment for subscriptions on an annual basis, however if preferred we can alternatively issue a payment request for the full subscription amount. You can set the term length on the next page.",
+      "help_text": "Text to explain the term lengths",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 749,
+    "fields": {
+      "key": "obc_percentage_annual",
+      "body": "Annual OBC Processing Fee",
+      "help_text": "Text to explain the fee length",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 750,
+    "fields": {
+      "key": "annual_sub_total",
+      "body": "Annual Sub Total",
+      "help_text": "Text to explain the annual sub-total",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 751,
+    "fields": {
+      "key": "annual_total",
+      "body": "Annual Total",
+      "help_text": "Text to explain the annual total",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 752,
+    "fields": {
+      "key": "based_on_term",
+      "body": "Based on the institution information details you entered, your quotation is as follows:",
+      "help_text": "Text to explain the the quotation",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 753,
+    "fields": {
+      "key": "month_contract",
+      "body": "12 or 36 months contract",
+      "help_text": "Text to explain the term lengths",
+      "rich_text": true
+    }
+  },
+  {"model": "cms.sitetext",
+    "pk": 754,
+    "fields": {
+      "key": "per_year",
+      "body": "per year",
+      "help_text": "Text that says 'per year'",
+      "rich_text": true
+    }
+  }
+]
