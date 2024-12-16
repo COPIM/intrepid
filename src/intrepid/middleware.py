@@ -106,6 +106,8 @@ def variables_middleware(get_response):
                 request.basket_count = 0
         except package_models.Basket.DoesNotExist:
             request.basket = None
+        except AttributeError:
+            request.basket_count = 0
 
         if hasattr(request, "user") and request.user.is_authenticated:
             # inject a document count into the request for the count on the
@@ -146,7 +148,9 @@ def variables_middleware(get_response):
             )
 
             # active baskets
-            request.active_baskets = request.user.basket_set.filter(active=True)
+            request.active_baskets = request.user.basket_set.filter(
+                active=True
+            )
 
             # saved searches
             request.saved_searches = thoth_models.ThothSearch.objects.filter(
