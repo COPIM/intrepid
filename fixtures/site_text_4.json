@@ -51,16 +51,6 @@
   },
   {
     "model": "cms.sitetext",
-    "pk": 742,
-    "fields": {
-      "key": "order_amount",
-      "body": "Offers for term length: ",
-      "help_text": "Text that precedes the offer amount",
-      "rich_text": false
-    }
-  },
-  {
-    "model": "cms.sitetext",
     "pk": 743,
     "fields": {
       "key": "platform_fee",
