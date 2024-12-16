@@ -1,0 +1,8 @@
+<small>
+    {% get_current_language as current_language %}
+    {% if current_language == 'en' %}
+        You are editing the site in English. Please ensure any new pages are made here first.
+    {% else %}
+        You are editing the site in {{ current_language|language_name }}. Note: All new pages and updates must first be created in English.
+    {% endif %}
+</small>
