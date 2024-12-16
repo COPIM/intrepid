@@ -1,3 +1,6 @@
+import csv
+from io import StringIO
+
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
@@ -20,7 +23,6 @@ from cms import models, forms, utils
 from intrepid import diff_match_patch as dmp_module
 from intrepid.security import user_is_initiative_manager
 from thoth import models as thoth_models
-
 
 
 @user_is_initiative_manager
@@ -257,7 +259,9 @@ def page_edit_or_create(
             "pre_break_content": (
                 current_version.pre_break_content if current_version else ""
             ),
-            "pull_quote": current_version.pull_quote if current_version else "",
+            "pull_quote": (
+                current_version.pull_quote if current_version else ""
+            ),
             "show_quote_icons": (
                 current_version.show_quote_icons if current_version else True
             ),
@@ -386,7 +390,9 @@ def featured_book_delete(request, initiative, fb_id) -> HttpResponse:
     """
     # put the initiative in here to constrain via security
     # (i.e. the decorator validates that the user can modify the initiative)
-    fb = get_object_or_404(models.FeaturedBook, initiative=initiative, pk=fb_id)
+    fb = get_object_or_404(
+        models.FeaturedBook, initiative=initiative, pk=fb_id
+    )
 
     fb.delete()
 
@@ -508,7 +514,12 @@ def view_current_version(
 
 @user_is_initiative_manager
 def diff_versions(
-    request, initiative, page_or_update, page_id, version_one_id, version_two_id
+    request,
+    initiative,
+    page_or_update,
+    page_id,
+    version_one_id,
+    version_two_id,
 ) -> HttpResponse:
     """
     View the diff between two versions of a page or update
@@ -1147,12 +1158,39 @@ def list_site_text(request):
 
     return render(
         request,
-        'cms/site_text_list.html',
+        "cms/site_text_list.html",
         {
-            'site_texts': site_texts,
-            'languages': languages,
+            "site_texts": site_texts,
+            "languages": languages,
         },
     )
+
+
+@staff_member_required
+def site_text_csv(request):
+    """
+    View to download a CSV of all site texts
+    """
+    site_texts = models.SiteText.objects.all()
+    languages = settings.LANGUAGES  # Dynamically get languages from settings
+
+    def data(site_texts_objects):
+        csvfile = StringIO()
+        csvwriter = csv.writer(csvfile)
+
+        csvwriter.writerow(["ID", "Key", "English", "German"])
+
+        for site_text in site_texts_objects:
+            english = site_text.body_en
+            german = site_text.body_de
+
+            csvwriter.writerow([site_text.pk, site_text.key, english, german])
+
+        yield csvfile.getvalue()
+
+    response = HttpResponse(data(site_texts), content_type="text/csv")
+    response["Content-Disposition"] = "attachment; filename=languages.csv"
+    return response
 
 
 @staff_member_required
@@ -1165,15 +1203,15 @@ def edit_site_text(request, key, lang_code):
 
     # Use `with override(lang_code)` to temporarily set the language
     with translation.override(lang_code):
-        if request.method == 'POST':
-            body = request.POST.get('body')
+        if request.method == "POST":
+            body = request.POST.get("body")
 
             # Save the updated site text
             site_text.body = body
             site_text.save()
 
             # Get the current date and time using Django's timezone
-            current_time = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+            current_time = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
 
             # Return an HTML success message with the timestamp
             return HttpResponse(
@@ -1183,9 +1221,9 @@ def edit_site_text(request, key, lang_code):
         # If GET request, render the full modal for editing
         return render(
             request,
-            'cms/htmx/site_text_modal.html',
+            "cms/htmx/site_text_modal.html",
             {
-                'site_text': site_text,
-                'lang_code': lang_code,
+                "site_text": site_text,
+                "lang_code": lang_code,
             },
         )

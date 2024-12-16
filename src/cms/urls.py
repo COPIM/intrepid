@@ -178,13 +178,18 @@ urlpatterns = [
         name="edit_site_text",
     ),
     path(
-        'site-texts/',
+        "site-texts/",
         views.list_site_text,
-        name='list_site_text',
+        name="list_site_text",
     ),
     path(
-        'site-texts/<str:key>/<str:lang_code>/',
+        "site-texts/<str:key>/<str:lang_code>/",
         views.edit_site_text,
-         name='edit_site_text',
+        name="edit_site_text",
+    ),
+    path(
+        "site-text-csv/",
+        views.site_text_csv,
+        name="site_text_csv",
     ),
 ]
