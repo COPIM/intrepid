@@ -35,7 +35,7 @@
     "fields": {
       "key": "order_form_footer",
       "body": "Once you have entered your details, you will be given the option to save a document with your quotation details. If you have any questions, please get in touch with us at: info@openbookcollective.org",
-      "help_text": "Info text on the bottom of the \"proceed\" page.",
+      "help_text": "Info text on the bottom of the 'proceed' page.",
       "rich_text": false
     },
   {
