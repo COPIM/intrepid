@@ -37,7 +37,8 @@
       "body": "Once you have entered your details, you will be given the option to save a document with your quotation details. If you have any questions, please get in touch with us at: info@openbookcollective.org",
       "help_text": "Info text on the bottom of the 'proceed' page.",
       "rich_text": false
-    },
+    }
+  },
   {
     "model": "cms.sitetext",
     "pk": 741,
@@ -46,7 +47,8 @@
       "body": "Offers for term length: ",
       "help_text": "Text that precedes the offer amount",
       "rich_text": false
-    },
+    }
+  },
   {
     "model": "cms.sitetext",
     "pk": 742,
