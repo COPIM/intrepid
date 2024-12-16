@@ -77,10 +77,15 @@ class VersionForm(forms.ModelForm):
     """
     Form for creating and updating Version objects.
     """
-
     class Meta:
         model = models.Version
-        exclude = ("created", "created_by")
+        fields = (
+            'first_paragraph',
+            'pre_break_content',
+            'pull_quote',
+            'show_quote_icons',
+            'body',
+        )
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -103,7 +108,12 @@ class WhoWeAreEntryForm(forms.ModelForm):
 
     class Meta:
         model = models.WhoWeAreProfileItem
-
+        fields = (
+            "display_name",
+            "affiliation_line",
+            "bio",
+            "police_mugshot",
+        )
         exclude = ("section", "order")
 
     def clean_police_mugshot(self):
@@ -155,6 +165,12 @@ class HomePageQuoteForm(forms.ModelForm):
 
     class Meta:
         model = models.HomePageQuote
+        fields = (
+            'pill_name',
+            'quotation',
+            'organization_attribution',
+            'organization_logo',
+        )
         exclude = ("order",)
 
     def clean_organization_logo(self):
