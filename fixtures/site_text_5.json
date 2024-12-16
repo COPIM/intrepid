@@ -1,0 +1,22 @@
+[
+  {
+    "model": "cms.sitetext",
+    "pk": 755,
+    "fields": {
+      "key": "term_length",
+      "body": "Term length:",
+      "help_text": "Text to display the term length",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 756,
+    "fields": {
+      "key": "dummy",
+      "body": "Dummy",
+      "help_text": "Dummy site CMS entry",
+      "rich_text": false
+    }
+  }
+]
