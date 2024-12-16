@@ -138,7 +138,7 @@
   {"model": "cms.sitetext",
     "pk": 753,
     "fields": {
-      "key": "month_contract",
+      "key": "months_contract",
       "body": "12 or 36 months contract",
       "help_text": "Text to explain the term lengths",
       "rich_text": true
