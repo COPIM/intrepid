@@ -1348,8 +1348,9 @@ def add_pre_calc_to_meta_objects(country_code, packages):
                 models.Country.DoesNotExist,
                 models.PreCalcMinMax.DoesNotExist,
             ):
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country=package.default_country,
-                    meta_package=package,
-                )
+                if hasattr(package, "default_country"):
+                    package.pre_calc = models.PreCalcMinMax.objects.get(
+                        country=package.default_country,
+                        meta_package=package,
+                    )
     return packages
