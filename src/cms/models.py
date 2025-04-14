@@ -446,6 +446,7 @@ class SiteText(models.Model):
     body = models.TextField()
     help_text = models.TextField()
     rich_text = models.BooleanField(default=False)
+    frontend = models.BooleanField(default=False)
 
     def __str__(self):
         return self.key

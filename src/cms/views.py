@@ -1178,13 +1178,13 @@ def site_text_csv(request):
         csvfile = StringIO()
         csvwriter = csv.writer(csvfile)
 
-        csvwriter.writerow(["ID", "Key", "English", "German"])
+        csvwriter.writerow(["ID", "Key", "Is Frontend?", "English", "German"])
 
         for site_text in site_texts_objects:
             english = site_text.body_en
             german = site_text.body_de
 
-            csvwriter.writerow([site_text.pk, site_text.key, english, german])
+            csvwriter.writerow([site_text.pk, site_text.key, site_test.frontend, english, german])
 
         yield csvfile.getvalue()
 
