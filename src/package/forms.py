@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Max
 from django.forms import widgets
 from django_summernote.widgets import SummernoteWidget
+from django.db.utils import ProgrammingError
 
 from accounts import models as accm
 from intrepid.models import PrivateImage
@@ -574,7 +575,7 @@ class GeneratedForm(forms.Form):
     try:
         months = cms_models.SiteText.objects.get(key="months")
         months = months.body
-    except cms_models.SiteText.DoesNotExist:
+    except (cms_models.SiteText.DoesNotExist, ProgrammingError):
         months = "months"
 
     TERM_CHOICES = {

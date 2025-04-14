@@ -13,6 +13,7 @@
           <th>Key</th>
           <th>Description</th>
           <th>Is Rich Text</th>
+          <th>IS Frontend?</th>
           <th>Edit</th>
         </tr>
         </thead>
@@ -23,6 +24,13 @@
             <td>{{ text.help_text }}</td>
             <td>
               {% if text.rich_text %}
+              <span class="fa fa-check-circle"> </span> Yes
+              {% else %}
+              <span class="fa fa-times-circle"> </span> No
+              {% endif %}
+            </td>
+            <td>
+              {% if text.frontend %}
               <span class="fa fa-check-circle"> </span> Yes
               {% else %}
               <span class="fa fa-times-circle"> </span> No
