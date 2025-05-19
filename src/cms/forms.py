@@ -1,5 +1,9 @@
 from django import forms
 from django_summernote.widgets import SummernoteWidget
+from django.conf import settings
+
+from modeltranslation.utils import get_translation_fields
+from django.utils.translation import get_language
 
 from cms import models, utils
 from thoth import models as thoth_models
@@ -77,6 +81,7 @@ class VersionForm(forms.ModelForm):
     """
     Form for creating and updating Version objects.
     """
+
     class Meta:
         model = models.Version
         fields = (
@@ -87,13 +92,28 @@ class VersionForm(forms.ModelForm):
             'body',
         )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self,
+        *args,
+        **kwargs,
+    ):
         self.user = kwargs.pop("user")
-        super(VersionForm, self).__init__(*args, **kwargs)
+        self.source_version = kwargs.pop("source_version", None)
+        super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
-        version = super(VersionForm, self).save(commit=False)
+        version = super().save(commit=False)
         version.created_by = self.user
+
+        if self.source_version:
+            current_lang = get_language()
+            for field in self.Meta.fields:
+                for lang_code in [lang[0] for lang in settings.LANGUAGES]:
+                    trans_field = f"{field}_{lang_code}"
+
+                    if lang_code != current_lang:
+                        value = getattr(self.source_version, trans_field, None)
+                        setattr(version, trans_field, value)
 
         if commit:
             version.save()

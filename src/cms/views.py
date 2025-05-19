@@ -3,6 +3,7 @@ from io import StringIO
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import (
     render,
@@ -133,20 +134,21 @@ def page_detail(request, initiative, page_or_update, page_id) -> HttpResponse:
     :param page_id: the page ID
     :return: HttpResponse object
     """
-    if page_or_update == "page":
-        page_or_update_object = get_object_or_404(
-            models.PageUpdate,
+    try:
+        page_or_update_object = models.PageUpdate.objects.get(
             pk=page_id,
-            is_update=False,
+            is_update=(page_or_update != "page"),
             initiative=initiative,
         )
-    else:
-        page_or_update_object = get_object_or_404(
-            models.PageUpdate,
-            pk=page_id,
-            is_update=True,
-            initiative=initiative,
-        )
+    except models.PageUpdate.DoesNotExist:
+        try:
+            page_or_update_object = models.PageUpdate.objects.get(
+                pk=page_id,
+                is_update=(page_or_update == "page"),
+                initiative=initiative,
+            )
+        except models.PageUpdate.DoesNotExist:
+            raise Http404("No matching page or update found.")
 
     if request.POST and "set_current" in request.POST:
         version = get_object_or_404(
@@ -222,20 +224,17 @@ def featured_book_create(request, initiative) -> HttpResponse:
 
 @user_is_initiative_manager
 def page_edit_or_create(
-    request, initiative, page_or_update, page_id=None
+    request,
+    initiative,
+    page_or_update,
+    page_id=None,
 ) -> HttpResponse:
     """
     View for editing or creating a page
-    :param request: the request object
-    :param initiative: the initiative object
-    :param page_or_update: either "page" or "update"
-    :param page_id: the page ID
-    :return: HttpResponse object
     """
 
-    # TODO: consider breaking this function up into smaller functions
-
     page, current_version = None, None
+
     if page_id:
         page = get_object_or_404(
             models.PageUpdate,
@@ -243,124 +242,122 @@ def page_edit_or_create(
             initiative=initiative,
         )
         current_version = page.current_version
-    page_form = forms.PageUpdateForm(
-        instance=page,
-        initiative=initiative,
-        user=request.user,
-        page_or_update=page_or_update,
-        ror="",
-    )
-    version_form = forms.VersionForm(
-        initial={
-            "body": current_version.body if current_version else "",
-            "first_paragraph": (
-                current_version.first_paragraph if current_version else ""
-            ),
-            "pre_break_content": (
-                current_version.pre_break_content if current_version else ""
-            ),
-            "pull_quote": (
-                current_version.pull_quote if current_version else ""
-            ),
-            "show_quote_icons": (
-                current_version.show_quote_icons if current_version else True
-            ),
-        },
-        user=request.user,
-    )
 
-    if request.POST:
-        if request.POST["inst_lookup"] == "":
-            # the user has blanked the lookup box
-            ror = ""
-        elif request.POST["institution_ROR"] == "":
-            # the user has left the lookup box as it was
-            try:
-                ror = page.target_institution.ror_id
-            except AttributeError:
-                ror = ""
-        else:
-            # a new ROR has been submitted
-            ror = request.POST["institution_ROR"]
+    with translation.override(request.LANGUAGE_CODE):
 
         page_form = forms.PageUpdateForm(
-            request.POST,
-            request.FILES,
             instance=page,
             initiative=initiative,
             user=request.user,
             page_or_update=page_or_update,
-            ror=ror,
+            ror="",
         )
+
         version_form = forms.VersionForm(
-            request.POST,
+            initial={
+                "body": current_version.body if current_version else "",
+                "first_paragraph": (
+                    current_version.first_paragraph if current_version else ""
+                ),
+                "pre_break_content": (
+                    current_version.pre_break_content if current_version else ""
+                ),
+                "pull_quote": (
+                    current_version.pull_quote if current_version else ""
+                ),
+                "show_quote_icons": (
+                    current_version.show_quote_icons if current_version else True
+                ),
+            },
             user=request.user,
+            source_version=current_version,  # ✅ important for copying other langs
         )
 
-        page_form_valid = page_form.is_valid()
-        version_form_valid = version_form.is_valid()
-
-        if page_form_valid and version_form_valid:
-            page = page_form.save()
-
-            if not current_version:
-                version = version_form.save()
-                page.current_version = version
-                page.other_versions.add(version)
-                page.save()
-
+        if request.POST:
+            if request.POST["inst_lookup"] == "":
+                ror = ""
+            elif request.POST["institution_ROR"] == "":
+                try:
+                    ror = page.target_institution.ror_id
+                except AttributeError:
+                    ror = ""
             else:
-                # now we have the structured version, we just always save a new
-                # version rather than attempting to detect changes
+                ror = request.POST["institution_ROR"]
+
+            page_form = forms.PageUpdateForm(
+                request.POST,
+                request.FILES,
+                instance=page,
+                initiative=initiative,
+                user=request.user,
+                page_or_update=page_or_update,
+                ror=ror,
+            )
+
+            version_form = forms.VersionForm(
+                request.POST,
+                user=request.user,
+                source_version=current_version,  # ✅ critical for copying
+            )
+
+            page_form_valid = page_form.is_valid()
+            version_form_valid = version_form.is_valid()
+
+            if page_form_valid and version_form_valid:
+                page = page_form.save()
+
                 version = version_form.save()
-                if "set_current" in request.POST:
+
+                if not current_version or "set_current" in request.POST:
                     page.current_version = version
+
                 page.other_versions.add(version)
                 page.save()
 
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                "Details of {} saved".format(page_or_update),
-            )
-            utils.send_cms_change_notification(
-                request,
-                initiative,
-                page_or_update,
-                page,
-            )
-            if (
-                page_or_update == "update"
-                and page.target_institution
-                and page.display
-                and not page.notification_sent
-            ):
-                # this update has just been created, send a notification to
-                # users with the target_institution
-                utils.send_target_institution_notification(
+                messages.add_message(
                     request,
+                    messages.SUCCESS,
+                    "Details of {} saved".format(page_or_update),
+                )
+
+                utils.send_cms_change_notification(
+                    request,
+                    initiative,
+                    page_or_update,
                     page,
                 )
-            return redirect(
-                reverse(
-                    "page_detail",
-                    kwargs={
-                        "initiative": initiative.pk,
-                        "page_or_update": page_or_update,
-                        "page_id": page.pk,
-                    },
+
+                if (
+                    page_or_update == "update"
+                    and page.target_institution
+                    and page.display
+                    and not page.notification_sent
+                ):
+                    utils.send_target_institution_notification(
+                        request,
+                        page,
+                    )
+
+                return redirect(
+                    reverse(
+                        "page_detail",
+                        kwargs={
+                            "initiative": initiative.pk,
+                            "page_or_update": page_or_update,
+                            "page_id": page.pk,
+                        },
+                    )
                 )
-            )
 
-    inst_name = ""
-    ror = ""
+        inst_name = ""
+        ror = ""
 
-    if page and page.target_institution:
-        try:
-            inst_name = page.target_institution.institution_name
-            ror = page.target_institution.ror_id
-        except AttributeError:
-            pass
+        if page and page.target_institution:
+            try:
+                inst_name = page.target_institution.institution_name
+                ror = page.target_institution.ror_id
+            except AttributeError:
+                pass
 
     template = "cms/edit_or_create.html"
     context = {
@@ -377,7 +374,6 @@ def page_edit_or_create(
         template,
         context,
     )
-
 
 @user_is_initiative_manager
 def featured_book_delete(request, initiative, fb_id) -> HttpResponse:
