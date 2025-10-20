@@ -3,8 +3,9 @@ from pprint import pprint
 
 from django.core.management.base import BaseCommand
 
-from package.models import Package, MetaPackage, PreCalcMinMax, Country
+from package.models import Package, MetaPackage, PreCalcMinMax, Country, Price
 from package.utils import get_price_for_package
+from package.currency import convert
 
 
 class Command(BaseCommand):
@@ -14,8 +15,15 @@ class Command(BaseCommand):
 
     help = "Pre-generates package prices"
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--convert-currencies",
+            action="store_true",
+            help="Enable currency conversion using default package prices when missing",
+        )
+
     def handle(self, *args, **options):
-        # get a full list of countries that have currencies
+        convert_currencies = options["convert_currencies"]
 
         package_list = {}
         meta_package_list = {}
@@ -51,36 +59,60 @@ class Command(BaseCommand):
 
         for mp in MetaPackage.objects.all():
             meta_package_list[mp] = {}
-            for package in mp.packages.all():
-                package_dict = package_list[package]
-                for country, values in package_dict.items():
-                    if meta_package_list[mp].get(country):
-                        meta_package_list[mp][country]['min'] = meta_package_list[mp][country]['min'] + values['min']
-                        meta_package_list[mp][country]['max'] = meta_package_list[mp][country]['max'] + values['max']
+            packages = list(mp.packages.all())
+
+            all_countries = set()
+            for package in packages:
+                all_countries.update(package_list.get(package, {}).keys())
+
+            for country in all_countries:
+                min_total = 0
+                max_total = 0
+                all_found = True
+
+                for package in packages:
+                    package_data = package_list.get(package, {}).get(country)
+
+                    if package_data:
+                        min_total += package_data["min"]
+                        max_total += package_data["max"]
+                    elif convert_currencies:
+                        fallback = self.get_converted_default_price(package, country.currency)
+                        if fallback:
+                            converted_min, converted_max = fallback
+                            min_total += converted_min
+                            max_total += converted_max
+                        else:
+                            all_found = False
+                            break
                     else:
-                        meta_package_list[mp][country] = {
-                            'min': values['min'],
-                            'max': values['max'],
-                        }
-        for package, country in package_list.items():
-            for c, values in country.items():
+                        all_found = False
+                        break
+
+                if all_found:
+                    meta_package_list[mp][country] = {
+                        "min": min_total,
+                        "max": max_total,
+                    }
+
+        for package, country_data in package_list.items():
+            for country, values in country_data.items():
                 PreCalcMinMax.objects.get_or_create(
-                    country=c,
+                    country=country,
                     package=package,
-                    min_amount=values['min'],
-                    max_amount=values['max'],
-                )
-        for package, country in meta_package_list.items():
-            for c, values in country.items():
-                PreCalcMinMax.objects.get_or_create(
-                    meta_package=package,
-                    country=c,
-                    min_amount=values['min'],
-                    max_amount=values['max'],
+                    min_amount=values["min"],
+                    max_amount=values["max"],
                 )
 
-        # Loop through catch all countries and delete local values in favour
-        # of the catch all pricing.
+        for meta_package, country_data in meta_package_list.items():
+            for country, values in country_data.items():
+                PreCalcMinMax.objects.get_or_create(
+                    meta_package=meta_package,
+                    country=country,
+                    min_amount=values["min"],
+                    max_amount=values["max"],
+                )
+
         for country in Country.objects.filter(catch_all=True):
             PreCalcMinMax.objects.filter(
                 country__currency=country.currency,
@@ -88,7 +120,30 @@ class Command(BaseCommand):
                 country=country,
             ).delete()
 
-        for precalc in PreCalcMinMax.objects.all().order_by('package', 'meta_package', 'country'):
+        for precalc in PreCalcMinMax.objects.all().order_by("package", "meta_package", "country"):
             print(
                 f"{precalc.get_package()} {precalc}"
             )
+
+    def get_converted_default_price(self, package, currency_code):
+        default_country = package.default_country
+        if not default_country:
+            return None
+
+        prices = Price.objects.filter(
+            banding__package=package,
+            country=default_country,
+        )
+
+        if not prices.exists():
+            return None
+
+        min_value = min(p.value for p in prices)
+        max_value = max(p.value for p in prices)
+
+        try:
+            converted_min = round(convert(default_country.currency, currency_code, min_value))
+            converted_max = round(convert(default_country.currency, currency_code, max_value))
+            return converted_min, converted_max
+        except Exception:
+            return None

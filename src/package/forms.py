@@ -11,6 +11,7 @@ from accounts import models as accm
 from intrepid.models import PrivateImage
 from package import models
 from vocab import models as vm
+from cms.models import SiteText
 
 
 class NewBasketForm(forms.ModelForm):
@@ -50,21 +51,18 @@ class FTEForm(forms.Form):
     Form for entering FTE and currency
     """
 
-    # TODO: need to abstract these strings to the database for multilingualism
     # TODO: break up this form into smaller functions
 
     currency = forms.ModelChoiceField(
         queryset=models.Country.objects.exclude(
             name__in=["EUROZONE", "Eurozone", "eurozone"]
         ),
-        help_text="Select your preferred currency. Note: a package may not "
-        "have a price set for your chosen currency.",
+        help_text="",  # Will be set in __init__
         label="",
     )
     fte = forms.IntegerField(
-        help_text="Please enter your institution's full time equivalent "
-        "student count.",
-        label="Institution FTE",
+        help_text="",  # Will be set in __init__
+        label="",  # Will be set in __init__
     )
 
     def __init__(self, *args, **kwargs):
@@ -73,6 +71,17 @@ class FTEForm(forms.Form):
         self.banding_types = kwargs.pop("banding_types")
 
         super(FTEForm, self).__init__(*args, **kwargs)
+
+        # Load translatable strings from database
+        self.fields["currency"].help_text = SiteText.objects.get(
+            key="select_currency_note"
+        ).body
+        self.fields["fte"].help_text = SiteText.objects.get(
+            key="fte_student_count_prompt"
+        ).body
+        self.fields["fte"].label = SiteText.objects.get(
+            key="institutions_fte"
+        ).body
 
         if self.user:
             self.fields["fte"].initial = self.user.profile.fte
@@ -85,8 +94,9 @@ class FTEForm(forms.Form):
         self.helper.layout = Layout(
             HTML('<h4 id="currency_section">Your Currency</h4>'),
             HTML(
-                "<p><small>After you enter your currency you will be asked "
-                "to supple information on bandings.</small></p>"
+                "<p><small>{}</small></p>".format(
+                    SiteText.objects.get(key="after_currency_bandings_info").body
+                )
             ),
             "currency",
         )
@@ -107,7 +117,9 @@ class FTEForm(forms.Form):
         else:
             self.helper.layout.append(
                 Layout(
-                    HTML("<h4>Your Institution Details</h4>"),
+                    HTML("<h4>{}</h4>".format(
+                        SiteText.objects.get(key="institution_details").body
+                    )),
                     "fte",
                 )
             )
@@ -570,21 +582,8 @@ class GeneratedForm(forms.Form):
     Form for generating forms
     """
 
-    from cms import models as cms_models
-
-    try:
-        months = cms_models.SiteText.objects.get(key="months")
-        months = months.body
-    except (cms_models.SiteText.DoesNotExist, ProgrammingError):
-        months = "months"
-
-    TERM_CHOICES = {
-        "1": "12 {}".format(months),
-        "3": "36 {}".format(months),
-    }
-
     email_address = forms.EmailField(required=True)
-    term_length = forms.ChoiceField(choices=TERM_CHOICES.items())
+    term_length = forms.ChoiceField(choices=[])  # Will be set in __init__
 
     def __init__(self, *args, **kwargs):
         order = kwargs.pop("order", None)
@@ -592,10 +591,46 @@ class GeneratedForm(forms.Form):
         email = kwargs.pop("email_address", None)
         term_length = kwargs.pop("term_length", 3)
         super(GeneratedForm, self).__init__(*args, **kwargs)
+
+        # Load translatable strings from database
+        try:
+            months_text = SiteText.objects.get(key="months").body
+        except SiteText.DoesNotExist:
+            months_text = "months"
+
+        # Set term length choices with translated text
+        TERM_CHOICES = {
+            "1": f"12 {months_text}",
+            "3": f"36 {months_text}",
+        }
+        self.fields["term_length"].choices = TERM_CHOICES.items()
+
+        # Set labels from SiteText
+        try:
+            self.fields["email_address"].label = SiteText.objects.get(
+                key="email_address"
+            ).body
+        except SiteText.DoesNotExist:
+            self.fields["email_address"].label = "Email address*"
+
+        try:
+            self.fields["term_length"].label = SiteText.objects.get(
+                key="term_length"
+            ).body
+        except SiteText.DoesNotExist:
+            self.fields["term_length"].label = "Term length*"
+
         self.helper = FormHelper()
         self.helper.form_method = "post"
+
+        # Load Save button text from SiteText
+        try:
+            save_text = SiteText.objects.get(key="save_button").body
+        except SiteText.DoesNotExist:
+            save_text = "Save"
+
         self.helper.add_input(
-            Submit("save", "Save", css_class="btn btn-primary btn-obc-blue")
+            Submit("save", save_text, css_class="btn btn-primary btn-obc-blue")
         )
 
         elements = order.data_to_collect
