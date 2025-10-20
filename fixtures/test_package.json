@@ -1,0 +1,308 @@
+[
+  {
+    "model": "package.country",
+    "pk": 999,
+    "fields": {
+      "name": "United Kingdom",
+      "code": "GB",
+      "currency": "GBP",
+      "catch_all": false
+    }
+  },
+  {
+    "model": "package.bandingtype",
+    "pk": 100,
+    "fields": {
+      "is_fte": true,
+      "name": "Institution Size (FTE)",
+      "description": "Classification based on full-time equivalent student count",
+      "active": true,
+      "vocabs": [100, 101, 102, 103]
+    }
+  },
+  {
+    "model": "package.bandingtype",
+    "pk": 101,
+    "fields": {
+      "is_fte": false,
+      "name": "Country Income Classification",
+      "description": "Pricing based on World Bank country income classifications",
+      "active": true,
+      "vocabs": [104, 105, 106]
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 100,
+    "fields": {
+      "text": "Small (0-5,000 FTE)",
+      "lower_limit": 0,
+      "upper_limit": 5000
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 101,
+    "fields": {
+      "text": "Medium (5,001-15,000 FTE)",
+      "lower_limit": 5001,
+      "upper_limit": 15000
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 102,
+    "fields": {
+      "text": "Large (15,001-30,000 FTE)",
+      "lower_limit": 15001,
+      "upper_limit": 30000
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 103,
+    "fields": {
+      "text": "Extra Large (30,001+ FTE)",
+      "lower_limit": 30001,
+      "upper_limit": null
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 104,
+    "fields": {
+      "text": "Low Income Countries",
+      "lower_limit": null,
+      "upper_limit": null
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 105,
+    "fields": {
+      "text": "Middle Income Countries",
+      "lower_limit": null,
+      "upper_limit": null
+    }
+  },
+  {
+    "model": "vocab.bandingvocab",
+    "pk": 106,
+    "fields": {
+      "text": "High Income Countries",
+      "lower_limit": null,
+      "upper_limit": null
+    }
+  },
+  {
+    "model": "package.basepackage",
+    "pk": 100,
+    "fields": {
+      "name": "Academic Journals Premium Bundle",
+      "description": "Complete access to our academic journals collection with unlimited concurrent users",
+      "active": true,
+      "banding_type": 100,
+      "pricing_display": "£2,500 - £12,000",
+      "display_contract_length_months": 12,
+      "image": null,
+      "recommended": false
+    }
+  },
+  {
+    "model": "package.package",
+    "pk": 100,
+    "fields": {
+      "basepackage_ptr": 100,
+      "initiative": 1,
+      "default_country": 999,
+      "meta_only": false
+    }
+  },
+  {
+    "model": "package.bandingtypeentry",
+    "pk": 100,
+    "fields": {
+      "package": 100,
+      "banding_type": 100,
+      "redirect_display": "",
+      "redirect": ""
+    }
+  },
+  {
+    "model": "package.bandingtypeentry",
+    "pk": 101,
+    "fields": {
+      "package": 100,
+      "banding_type": 101,
+      "redirect_display": "",
+      "redirect": ""
+    }
+  },
+  {
+    "model": "package.bandingtypecurrencyentry",
+    "pk": 100,
+    "fields": {
+      "package": 100,
+      "banding_type_entry": 100,
+      "country": 999,
+      "payment_processor": null
+    }
+  },
+  {
+    "model": "package.bandingtypecurrencyentry",
+    "pk": 101,
+    "fields": {
+      "package": 100,
+      "banding_type_entry": 101,
+      "country": 999,
+      "payment_processor": null
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 100,
+    "fields": {
+      "package": 100,
+      "banding_type": 100,
+      "vocab": 100,
+      "active": true,
+      "order": 1
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 101,
+    "fields": {
+      "package": 100,
+      "banding_type": 100,
+      "vocab": 101,
+      "active": true,
+      "order": 2
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 102,
+    "fields": {
+      "package": 100,
+      "banding_type": 100,
+      "vocab": 102,
+      "active": true,
+      "order": 3
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 103,
+    "fields": {
+      "package": 100,
+      "banding_type": 100,
+      "vocab": 103,
+      "active": true,
+      "order": 4
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 104,
+    "fields": {
+      "package": 100,
+      "banding_type": 101,
+      "vocab": 104,
+      "active": true,
+      "order": 1
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 105,
+    "fields": {
+      "package": 100,
+      "banding_type": 101,
+      "vocab": 105,
+      "active": true,
+      "order": 2
+    }
+  },
+  {
+    "model": "package.banding",
+    "pk": 106,
+    "fields": {
+      "package": 100,
+      "banding_type": 101,
+      "vocab": 106,
+      "active": true,
+      "order": 3
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 100,
+    "fields": {
+      "banding": 100,
+      "country": 999,
+      "value": 2500,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 101,
+    "fields": {
+      "banding": 101,
+      "country": 999,
+      "value": 5000,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 102,
+    "fields": {
+      "banding": 102,
+      "country": 999,
+      "value": 8500,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 103,
+    "fields": {
+      "banding": 103,
+      "country": 999,
+      "value": 12000,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 104,
+    "fields": {
+      "banding": 104,
+      "country": 999,
+      "value": 1500,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 105,
+    "fields": {
+      "banding": 105,
+      "country": 999,
+      "value": 3500,
+      "default_currency": ""
+    }
+  },
+  {
+    "model": "package.price",
+    "pk": 106,
+    "fields": {
+      "banding": 106,
+      "country": 999,
+      "value": 7500,
+      "default_currency": ""
+    }
+  }
+]
