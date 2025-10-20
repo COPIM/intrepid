@@ -1,0 +1,132 @@
+[
+  {
+    "model": "cms.sitetext",
+    "pk": 758,
+    "fields": {
+      "key": "after_currency_bandings_info",
+      "body": "After you enter your currency you will be asked to supple information on bandings",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 759,
+    "fields": {
+      "key": "select_currency_note",
+      "body": "Select your preferred currency. Note: a package may not have a price set for your chosen currency.",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 760,
+    "fields": {
+      "key": "institution_details",
+      "body": "Your institution Details",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 761,
+    "fields": {
+      "key": "institutions_fte",
+      "body": "Institutions FTE",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 762,
+    "fields": {
+      "key": "fte_student_count_prompt",
+      "body": "Please enter your institution's full time equivalent student count.",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 763,
+    "fields": {
+      "key": "jisc_banding",
+      "body": "Jisc Banding",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 764,
+    "fields": {
+      "key": "jisc_banding_info",
+      "body": "*UK institutions can find their Jisc band here. If you do not have a Jisc banding, please get in touch with us so we can provide you with a custom quotation.",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 765,
+    "fields": {
+      "key": "classification_by_size_income",
+      "body": "Classification by organisation size (FTE) & country income (based on World Bank classifications).",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 766,
+    "fields": {
+      "key": "org_size_country_classification_note",
+      "body": "*Organisation size is your full time equivalent student count. You can find the latest Country Classifications by income here.",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 767,
+    "fields": {
+      "key": "save_button",
+      "body": "Save ",
+      "help_text": "Save button on 'Contact details' page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 768,
+    "fields": {
+      "key": "email_address",
+      "body": "Email address*",
+      "help_text": "'Contact details' page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 770,
+    "fields": {
+      "key": "contact_name",
+      "body": "Contact name*",
+      "help_text": "'Contact details' page",
+      "rich_text": false
+    }
+  },
+  {
+    "model": "cms.sitetext",
+    "pk": 771,
+    "fields": {
+      "key": "included_within_offers",
+      "body": "Included within these offers:",
+      "help_text": "Quotation page",
+      "rich_text": false
+    }
+  }
+]

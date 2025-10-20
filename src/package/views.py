@@ -127,7 +127,7 @@ def collective_list(request) -> HttpResponse:
         "search_on": False,
         "collectives_only": True,
         "country_form": forms.CountryForm(
-            session_country_code=request.session["country"]
+            session_country_code=request.session.get("country")
         ),
     }
     return render(
