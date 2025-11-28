@@ -28,6 +28,7 @@ router.register(r"prices", views.PriceViewSet)
 router.register(r"standards", views.StandardViewSet)
 
 
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
@@ -35,4 +36,5 @@ urlpatterns = [
     path(
         "api-auth/", include("rest_framework.urls", namespace="rest_framework")
     ),
+    path("session/<str:session_id>/", views.BasketSessionAPIView.as_view(), name="basket_session"),
 ]
