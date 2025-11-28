@@ -5,6 +5,21 @@ from package import models as package_models
 from vocab import models as vocab_models
 
 
+class BasketSummarySerializer(serializers.Serializer):
+    # Internal Python name:
+    session_id = serializers.CharField()
+    basket = serializers.URLField()
+    items = serializers.IntegerField()
+
+    def to_representation(self, instance):
+        """
+        Rename `session_id` → `session-id` in the JSON output.
+        """
+        rep = super().to_representation(instance)
+        rep["session-id"] = rep.pop("session_id")
+        return rep
+
+
 class PackageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = package_models.Package
