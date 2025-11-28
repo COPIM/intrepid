@@ -9,6 +9,8 @@ obc_db.sqlite3
 dev_settings.py
 settings.py
 
+.venv
+
 # C extensions
 *.so
 
