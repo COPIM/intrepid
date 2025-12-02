@@ -8,7 +8,6 @@ import babel.numbers
 import magic
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from django.db import models
@@ -20,6 +19,7 @@ from django_bleach.models import BleachField
 
 from access import models as access_models
 from accounts import models as account_models
+from cms import models as cms_models
 from initiatives import models as im
 from package import utils
 from vocab import models as vm
@@ -1834,13 +1834,17 @@ class PreCalcMinMax(models.Model):
     max_amount = models.IntegerField()
 
     def __str__(self):
-        return "{0} to {1}".format(
+        # fetch the "to" translation field
+        to_translation = cms_models.SiteText.objects.get(key="to")
+
+        return "{0} {2} {1}".format(
             babel.numbers.format_currency(
                 self.min_amount, self.country.currency, locale="en_US"
             ),
             babel.numbers.format_currency(
                 self.max_amount, self.country.currency, locale="en_US"
             ),
+            to_translation
         )
 
     def get_package(self):

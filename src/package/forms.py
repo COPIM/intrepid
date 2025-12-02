@@ -91,8 +91,14 @@ class FTEForm(forms.Form):
         self.helper = FormHelper()
         layout = list()
         layout.append("currency")
+
+        # get the CMS text for "Your Currency"
+        your_currency = SiteText.objects.get(
+            key="your_currency"
+        ).body
+
         self.helper.layout = Layout(
-            HTML('<h4 id="currency_section">Your Currency</h4>'),
+            HTML('<h4 id="currency_section">' + your_currency + '</h4>'),
             HTML(
                 "<p><small>{}</small></p>".format(
                     SiteText.objects.get(key="after_currency_bandings_info").body
