@@ -1,0 +1,13 @@
+[
+  {
+    "model": "cms.sitetext",
+    "pk": 772,
+    "fields": {
+      "key": "your_currency",
+      "body": "Your Currency",
+      "frontend": true,
+      "help_text": "Basket page: 'Your currency'",
+      "rich_text": false
+    }
+  }
+]
