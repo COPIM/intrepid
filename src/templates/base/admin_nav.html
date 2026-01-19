@@ -111,7 +111,6 @@
             {% endfor %}
           {% endif %}
 
-          {% if request.initiatives.count > 0 %}
           <hr />
           <li class="nav-item">
               <p class="nav-link">
@@ -153,7 +152,6 @@
               </p>
             </a>
         </li>
-          {% endif %}
 
           {% if request.user.is_staff %}
               <hr />

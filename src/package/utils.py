@@ -1296,7 +1296,7 @@ def get_user_currency(identifier, identifier_type) -> "models.Country":
 
 
 def add_pre_calc_to_objects(country_code, packages):
-    country = models.Country.objects.get(code=country_code)
+    country = models.Country.objects.filter(code=country_code).first()
 
     for package in packages:
         try:
@@ -1326,7 +1326,7 @@ def add_pre_calc_to_objects(country_code, packages):
 
 
 def add_pre_calc_to_meta_objects(country_code, packages):
-    country = models.Country.objects.get(code=country_code)
+    country = models.Country.objects.filter(code=country_code).first()
 
     for package in packages:
         try:

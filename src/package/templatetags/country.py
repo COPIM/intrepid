@@ -7,9 +7,9 @@ from package import models
 def country_code_to_name(context):
     request = context.get("request")
     try:
-        country = models.Country.objects.get(
+        country = models.Country.objects.filter(
             code=request.session.get('country')
-        )
+        ).first()
         return country.name
     except models.Country.DoesNotExist:
         return request.session.get('country')
