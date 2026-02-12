@@ -790,6 +790,211 @@ def view_basket(request, basket_id) -> HttpResponse:
     )
 
 
+def fast_view_basket(request, basket_id) -> HttpResponse:
+    """
+    Optimized version of view_basket.
+    - Resolves user/country once up front
+    - Prefetches M2M relations on the basket
+    - Uses fast_ model methods and utility functions
+    - Passes prefetched SiteText to FastFTEForm
+    """
+    identifier = (
+        request.user if request.user.is_authenticated else request.session
+    )
+    identifier_type = "user" if request.user.is_authenticated else "session"
+
+    # --- OPTIMIZATION: resolve country once ---
+    if identifier_type == "user":
+        country = request.user.profile.default_currency
+    else:
+        country_pk = request.session.get("currency", None)
+        country = (
+            models.Country.objects.filter(pk=country_pk).first()
+            if country_pk
+            else None
+        )
+
+    # --- OPTIMIZATION: prefetch all CMS text objects once ---
+    final_prefetched = {o.key: o for o in cms_models.SiteText.objects.all()}
+
+    (
+        site_percentage,
+        currency_converted,
+        converted_total,
+        converted_currency,
+        currency_conversion_total,
+        site_percentage_value,
+    ) = (None, None, None, None, None, None)
+
+    # --- OPTIMIZATION: prefetch M2M relations ---
+    basket_qs = models.Basket.objects.prefetch_related(
+        "packages",
+        "packages__bandingtypeentry_set__banding_type",
+        "meta_packages",
+        "meta_packages__packages",
+    )
+
+    if request.user.is_authenticated:
+        basket = get_object_or_404(
+            basket_qs,
+            pk=basket_id,
+            account=request.user,
+            active=True,
+        )
+    else:
+        basket = get_object_or_404(
+            basket_qs,
+            pk=basket_id,
+            session_id=request.session.session_key,
+            active=True,
+        )
+
+    # --- OPTIMIZATION: fast_ method, pass pre-resolved country ---
+    banding_types = basket.fast_get_best_bandings_for_form(
+        identifier, identifier_type, country=country
+    )
+
+    # --- OPTIMIZATION: FastFTEForm with prefetched site_texts ---
+    fte_form = forms.FastFTEForm(
+        user_session=request.session,
+        user=request.user if request.user.is_authenticated else None,
+        banding_types=banding_types,
+        site_texts=final_prefetched,
+    )
+
+    message = utils.check_basket_for_disabled_signups(request, basket)
+
+    if request.POST:
+        fte_form = forms.FastFTEForm(
+            request.POST,
+            user_session=request.session,
+            user=request.user if request.user.is_authenticated else None,
+            banding_types=banding_types,
+            site_texts=final_prefetched,
+        )
+        if fte_form.is_valid():
+            fte_form.save()
+            url = "{}#form_start".format(
+                reverse(
+                    "fast_basket_detail",
+                    kwargs={"basket_id": basket_id},
+                )
+            )
+            return redirect(url)
+
+    # --- OPTIMIZATION: fast_cost, pass pre-resolved country ---
+    package_costs, currency_totals = basket.fast_cost(
+        identifier=identifier,
+        identifier_type=identifier_type,
+        country=country,
+    )
+
+    # --- OPTIMIZATION: fast_get_user_currency, no DB hit ---
+    user_currency = utils.fast_get_user_currency(
+        identifier, identifier_type, country=country
+    )
+
+    banding_list = []
+    for package in basket.packages.all():
+        for obj in package.bandingtypeentry_set.all().order_by(
+            "banding_type__name"
+        ):
+            banding_list.append(obj)
+
+    all_prices_found = True
+    for price in package_costs:
+        if not price["banding"] or price["cost"] == 0:
+            all_prices_found = False
+            break
+
+    if all_prices_found:
+        if len(currency_totals) > 1:
+            # --- OPTIMIZATION: fast_convert, pass pre-resolved country ---
+            (
+                site_percentage,
+                converted_total,
+                converted_currency,
+                currency_conversion_total,
+                site_percentage_value,
+            ) = utils.fast_convert_currency_totals(
+                request=request,
+                identifier_type=identifier_type,
+                identifier=identifier,
+                totals=currency_totals,
+                country=country,
+            )
+            currency_converted = True
+        else:
+            (
+                site_percentage,
+                site_percentage_value,
+            ) = utils.calculate_site_percentage(
+                request,
+                currency_totals,
+            )
+
+    # User clicks the proceed button
+    if "complete" in request.POST:
+        if (
+            not request.site.enable_signup
+            or not request.site.enable_meta_package_signup
+            or not request.site.enable_individual_package_signup
+        ):
+            if message:
+                messages.add_message(request, messages.ERROR, message)
+                return redirect(
+                    reverse(
+                        "fast_basket_detail",
+                        kwargs={"basket_id": basket.pk},
+                    )
+                )
+
+        order = models.Order.objects.create(
+            associated_user=(
+                request.user if request.user.is_authenticated else None
+            ),
+            session_id=request.session.session_key,
+            basket=basket,
+            valid_period="{0} to {1}".format(
+                timezone.now().year, timezone.now().year + 1
+            ),
+            order_date=timezone.now(),
+            converted_currency=converted_currency,
+            converted_value=currency_conversion_total,
+            platform_fee=site_percentage_value,
+        )
+        return redirect(
+            reverse(
+                "start_checkout",
+                kwargs={"order_id": order.pk},
+            )
+        )
+
+    template = "package/view_basket.html"
+    context = {
+        "basket": basket,
+        "fte_form": fte_form,
+        "package_costs": package_costs,
+        "currency_totals": currency_totals,
+        # --- OPTIMIZATION: fast_ version uses prefetched M2M ---
+        "conflicting_packages": basket.fast_list_of_conflicting_packages(),
+        "bandings": banding_list,
+        "has_all_prices": all_prices_found,
+        "message": message,
+        "site_percentage": site_percentage,
+        "currency_converted": currency_converted,
+        "converted_total": converted_total,
+        "converted_currency": converted_currency,
+        "user_currency": user_currency,
+        "prefetched": final_prefetched,
+    }
+    return render(
+        request,
+        template,
+        context,
+    )
+
+
 def manage_basket(
     request, package_id=None, meta_package_id=None
 ) -> HttpResponse:
