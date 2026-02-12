@@ -214,6 +214,180 @@ class FTEForm(forms.Form):
                     self.user_session[key] = value
 
 
+class FastFTEForm(forms.Form):
+    """
+    Optimized version of FTEForm.
+    Accepts prefetched site_texts dict and batch-fetches
+    AccountBandingChoices instead of per-type queries.
+    """
+
+    currency = forms.ModelChoiceField(
+        queryset=models.Country.objects.exclude(
+            name__in=["EUROZONE", "Eurozone", "eurozone"]
+        ),
+        help_text="",
+        label="",
+    )
+    fte = forms.IntegerField(
+        help_text="",
+        label="",
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user_session = kwargs.pop("user_session")
+        self.user = kwargs.pop("user")
+        self.banding_types = kwargs.pop("banding_types")
+        self.site_texts = kwargs.pop("site_texts", None)
+
+        super(FastFTEForm, self).__init__(*args, **kwargs)
+
+        def get_site_text(key):
+            if self.site_texts and key in self.site_texts:
+                return self.site_texts[key].body
+            return SiteText.objects.get(key=key).body
+
+        self.fields["currency"].help_text = get_site_text(
+            "select_currency_note"
+        )
+        self.fields["fte"].help_text = get_site_text(
+            "fte_student_count_prompt"
+        )
+        self.fields["fte"].label = get_site_text("institutions_fte")
+
+        if self.user:
+            self.fields["fte"].initial = self.user.profile.fte
+        else:
+            self.fields["fte"].initial = self.user_session.get("fte", 0)
+
+        self.helper = FormHelper()
+
+        your_currency = get_site_text("your_currency")
+
+        self.helper.layout = Layout(
+            HTML(
+                '<h4 id="currency_section">' + your_currency + "</h4>"
+            ),
+            HTML(
+                "<p><small>{}</small></p>".format(
+                    get_site_text("after_currency_bandings_info")
+                )
+            ),
+            "currency",
+        )
+
+        if self.user:
+            self.fields["currency"].initial = (
+                self.user.profile.default_currency
+                if self.user.profile.default_currency
+                else None
+            )
+        else:
+            self.fields["currency"].initial = self.user_session.get(
+                "currency", 0
+            )
+
+        if not self.fields["currency"].initial:
+            self.fields.pop("fte")
+        else:
+            self.helper.layout.append(
+                Layout(
+                    HTML(
+                        "<h4>{}</h4>".format(
+                            get_site_text("institution_details")
+                        )
+                    ),
+                    "fte",
+                )
+            )
+
+        if self.fields["currency"].initial:
+            # Batch-fetch all AccountBandingChoices at once
+            if self.user:
+                account_choices = {
+                    abc.banding_type_id: abc
+                    for abc in accm.AccountBandingChoices.objects.filter(
+                        account=self.user,
+                    ).select_related("banding_type_vocab")
+                }
+            else:
+                account_choices = {}
+
+            for banding_type in self.banding_types:
+                if banding_type.active:
+                    session_string = "banding_type_{}".format(
+                        banding_type.pk
+                    )
+                    choices = [["", "-----"]]
+                    for vocab in banding_type.vocabs.all():
+                        choices.append([vocab.pk, vocab.text])
+                    self.fields[session_string] = forms.ChoiceField(
+                        choices=choices,
+                        label=banding_type.name,
+                    )
+                    if self.user:
+                        account_banding_choice = account_choices.get(
+                            banding_type.pk
+                        )
+                        self.fields[session_string].initial = (
+                            account_banding_choice.banding_type_vocab.pk
+                            if account_banding_choice
+                            else None
+                        )
+                    else:
+                        self.fields[session_string].initial = (
+                            self.user_session.get(session_string, None)
+                        )
+
+                    self.fields[session_string].help_text = (
+                        banding_type.description
+                    )
+
+                    self.helper.layout.append(
+                        Layout(session_string),
+                    )
+                    if "currency" in self.changed_data:
+                        self.fields[session_string].required = False
+
+        if "currency" in self.changed_data and self.fields.get("fte"):
+            self.fields["fte"].required = False
+
+        self.helper.layout.append(
+            Submit(
+                "fte_form",
+                "Update",
+                css_class="btn btn-primary btn-obc-blue",
+            ),
+        )
+
+    def save(self) -> None:
+        for key, value in self.cleaned_data.items():
+            if self.user:
+                if key == "fte" and value:
+                    self.user.profile.fte = value
+                elif key == "currency" and value:
+                    self.user.profile.default_currency = value
+                elif value:
+                    banding_type_pk = key.replace("banding_type_", "")
+                    banding_type_vocab = vm.BandingVocab.objects.get(
+                        pk=value,
+                    )
+                    accm.AccountBandingChoices.objects.update_or_create(
+                        account=self.user,
+                        banding_type_id=banding_type_pk,
+                        defaults={
+                            "banding_type_vocab": banding_type_vocab,
+                        },
+                    )
+                self.user.profile.save()
+            else:
+                if key == "fte":
+                    self.user_session[key] = value
+                elif key == "currency":
+                    self.user_session[key] = value.pk
+                else:
+                    self.user_session[key] = value
+
+
 class ManagePackageForm(forms.ModelForm):
     """
     Form for managing packages
