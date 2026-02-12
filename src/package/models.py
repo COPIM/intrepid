@@ -1,4 +1,5 @@
 import datetime
+import functools
 import os
 import sys
 import uuid
@@ -69,6 +70,12 @@ class Country(models.Model):
     class Meta:
         verbose_name_plural = "Countries"
         ordering = ("name",)
+        indexes = [
+            models.Index(
+                fields=["currency", "catch_all"],
+                name="country_currency_catchall_idx",
+            ),
+        ]
 
     def __str__(self):
         return "{} ({})".format(self.name, self.currency)
@@ -186,6 +193,14 @@ class Banding(models.Model):
     )
     objects = BandingManager()
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["package", "banding_type"],
+                name="banding_pkg_type_idx",
+            ),
+        ]
+
     def name(self) -> str:
         """
         Returns the name of the banding
@@ -272,6 +287,14 @@ class Price(models.Model):
     )
     objects = PriceManager()
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["banding", "country"],
+                name="price_banding_country_idx",
+            ),
+        ]
+
     @staticmethod
     def collect() -> None:
         """
@@ -320,6 +343,14 @@ class BandingTypeCurrencyEntry(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["package", "banding_type_entry"],
+                name="btce_pkg_bte_idx",
+            ),
+        ]
+
     def __str__(self):
         return "{} ({}) in {}".format(
             self.country, self.banding_type_entry, self.package
@@ -356,6 +387,14 @@ class BandingTypeEntry(models.Model):
     redirect = models.URLField(
         blank=True, null=True, default="", verbose_name="Redirect URL"
     )
+
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=["package", "banding_type"],
+                name="bte_pkg_type_idx",
+            ),
+        ]
 
     def __str__(self):
         return "{} in {}".format(self.banding_type, self.package)
@@ -595,6 +634,60 @@ class Package(BasePackage):
                             pass
                         except AttributeError:
                             pass
+
+        return prices
+
+    @functools.cached_property
+    def fast_price_bandings(self) -> dict:
+        """
+        Optimized version of price_bandings.
+        Scopes queries to this package only and uses dict lookups
+        instead of triple-nested loops over global querysets.
+        """
+        banding_entries = (
+            self.bandingtypecurrencyentry_set.all()
+            .select_related("banding_type_entry__banding_type", "country")
+            .prefetch_related("banding_type_entry__banding_type__vocabs")
+        )
+
+        # Scope to THIS package only (not all bandings/prices globally)
+        package_bandings = Banding.objects.filter(
+            package=self
+        ).select_related("banding_type", "vocab")
+
+        # Build lookup: (banding_type_id, vocab_id) -> banding
+        banding_lookup = {}
+        for b in package_bandings:
+            banding_lookup[(b.banding_type_id, b.vocab_id)] = b
+
+        package_prices = Price.objects.filter(
+            banding__package=self
+        ).select_related("banding", "country")
+
+        # Build lookup: (banding_id, country_id) -> price
+        price_lookup = {}
+        for p in package_prices:
+            price_lookup[(p.banding_id, p.country_id)] = p
+
+        prices = {}
+        for banding_entry in banding_entries:
+            prices[banding_entry] = {}
+            bt = banding_entry.banding_type_entry.banding_type
+
+            for v_banding in bt.vocabs.all():
+                banding = banding_lookup.get((bt.id, v_banding.id))
+                if banding is None:
+                    continue
+
+                price = price_lookup.get(
+                    (banding.id, banding_entry.country_id)
+                )
+                if price is None:
+                    continue
+
+                if price.country not in prices[banding_entry]:
+                    prices[banding_entry][price.country] = []
+                prices[banding_entry][price.country].append(price)
 
         return prices
 
@@ -1035,6 +1128,235 @@ class Basket(models.Model):
                 for banding in package_bandings_return
                 if not banding.banding_type.is_fte
             ]
+        )
+
+    def fast_list_of_conflicting_packages(self) -> set[Package]:
+        """
+        Optimized version of list_of_conflicting_packages.
+        Uses prefetched M2M data and in-memory set operations
+        instead of nested DB queries.
+        """
+        basket_packages = set(self.packages.all())
+        basket_meta_packages = list(self.meta_packages.all())
+
+        # Build {meta_package: set(its packages)} once
+        mp_package_sets = {
+            mp: set(mp.packages.all()) for mp in basket_meta_packages
+        }
+
+        conflicting_packages = []
+
+        # Packages that appear both individually and in a meta_package
+        for package in basket_packages:
+            for mp_pkgs in mp_package_sets.values():
+                if package in mp_pkgs:
+                    conflicting_packages.append(package)
+                    break
+
+        # Packages shared between different meta_packages
+        mp_list = list(mp_package_sets.items())
+        for i, (mp, mp_pkgs) in enumerate(mp_list):
+            for j in range(i + 1, len(mp_list)):
+                omp, omp_pkgs = mp_list[j]
+                conflicting_packages.extend(mp_pkgs & omp_pkgs)
+
+        return set(conflicting_packages)
+
+    def fast_cost(
+        self, identifier, identifier_type="user", country=None
+    ) -> tuple[list, dict]:
+        """
+        Optimized version of cost.
+        Accepts pre-resolved country to avoid redundant user lookups.
+        Uses prefetched M2M relations.
+        Batch-prefetches all bandings and prices in 2 queries.
+        """
+        package_costs = []
+
+        if country is None:
+            if identifier_type == "user":
+                user = account_models.User.objects.get(username=identifier)
+                country = user.profile.default_currency
+            else:
+                country_pk = identifier.get("currency", None)
+                country = Country.objects.filter(pk=country_pk).first()
+
+        # Pre-fetch all AccountBandingChoices for the user once
+        account_banding_choices = None
+        if identifier_type == "user":
+            account_banding_choices = {
+                abc.banding_type_id: abc
+                for abc in account_models.AccountBandingChoices.objects.filter(
+                    account=identifier,
+                ).select_related("banding_type_vocab")
+            }
+
+        # --- Batch-prefetch all bandings and prices for all basket packages ---
+        all_pkg_ids = [p.pk for p in self.packages.all()]
+        for mp in self.meta_packages.all():
+            all_pkg_ids.extend(p.pk for p in mp.packages.all())
+
+        all_bandings = Banding.objects.filter(
+            package_id__in=all_pkg_ids
+        ).select_related("banding_type", "vocab")
+
+        all_prices = Price.objects.filter(
+            banding__package_id__in=all_pkg_ids
+        ).select_related("banding", "country")
+
+        # Build lookups: (package_id, banding_type_id) -> [bandings]
+        bandings_cache = {}
+        for b in all_bandings:
+            bandings_cache.setdefault(
+                (b.package_id, b.banding_type_id), []
+            ).append(b)
+
+        # Build lookups: (banding_id, country_id) -> price
+        price_cache = {}
+        for p in all_prices:
+            price_cache[(p.banding_id, p.country_id)] = p
+
+        for package in self.packages.all():
+            price, banding = utils.fast_get_price_for_package(
+                package=package,
+                identifier=identifier,
+                identifier_type=identifier_type,
+                country=country if country else None,
+                account_banding_choices=account_banding_choices,
+                bandings_cache=bandings_cache,
+                price_cache=price_cache,
+            )
+            package_costs.append(
+                {"package": package, "cost": price, "banding": banding}
+            )
+
+        for mp in self.meta_packages.all():
+            for package in mp.packages.all():
+                price, banding = utils.fast_get_price_for_package(
+                    package=package,
+                    identifier=identifier,
+                    identifier_type=identifier_type,
+                    country=country if country else None,
+                    account_banding_choices=account_banding_choices,
+                    bandings_cache=bandings_cache,
+                    price_cache=price_cache,
+                )
+                package_costs.append(
+                    {"package": package, "cost": price, "banding": banding}
+                )
+
+        currency_totals = dict()
+        completed_packages = []
+        for pc in package_costs:
+            if (pc.get("cost") and pc.get("banding")) and pc.get(
+                "package"
+            ) not in completed_packages:
+                if pc.get("cost").country:
+                    currency = pc.get("cost").country.currency
+                else:
+                    currency = pc.get("cost").default_currency
+
+                if currency_totals.get(currency):
+                    currency_totals[currency] = (
+                        currency_totals[currency] + pc.get("cost").value
+                    )
+                else:
+                    currency_totals[currency] = pc.get("cost").value
+
+                completed_packages.append(pc.get("package"))
+
+        return package_costs, currency_totals
+
+    def fast_get_best_bandings_for_form(
+        self, identifier, identifier_type="user", country=None
+    ) -> set:
+        """
+        Optimized version of get_best_bandings_for_form.
+        Accepts pre-resolved country and batch-fetches all prices
+        in 2 queries instead of N+1.
+        """
+        package_bandings_return = []
+
+        if country is None:
+            if identifier_type == "user":
+                user = account_models.User.objects.get(username=identifier)
+                currency = user.profile.default_currency
+            else:
+                currency_pk = identifier.get("currency")
+                currency = Country.objects.filter(pk=currency_pk).first()
+        else:
+            currency = country
+
+        if not currency:
+            return set()
+
+        # Collect ALL packages from basket (direct + meta_packages)
+        all_packages = list(self.packages.all())
+        for mp in self.meta_packages.all():
+            all_packages.extend(mp.packages.all())
+        all_package_ids = [p.pk for p in all_packages]
+
+        # Find catch-all country for currency
+        catch_all_matching_currency = Country.objects.filter(
+            currency=currency.currency, catch_all=True
+        ).first()
+
+        if catch_all_matching_currency:
+            suitable_prices = Price.objects.filter(
+                country__currency=catch_all_matching_currency.currency,
+                country__catch_all=True,
+            ).select_related("banding__banding_type")
+            package_bandings_return.extend(
+                price.banding for price in suitable_prices
+            )
+
+        # Batch fetch ALL bandings for all basket packages at once
+        bandings = Banding.objects.filter(
+            package_id__in=all_package_ids
+        ).select_related("banding_type")
+
+        # Batch fetch ALL prices for those bandings at once
+        all_prices = Price.objects.filter(
+            banding__in=bandings
+        ).select_related("banding__banding_type", "country")
+
+        # Build lookup: package_id -> list of prices
+        price_by_package = {}
+        for price in all_prices:
+            pkg_id = price.banding.package_id
+            price_by_package.setdefault(pkg_id, []).append(price)
+
+        default_countries = {
+            p.pk: p.default_country_id for p in all_packages
+        }
+
+        for package in all_packages:
+            pkg_prices = price_by_package.get(package.pk, [])
+
+            # First try: prices matching user currency
+            suitable = [
+                p for p in pkg_prices if p.country_id == currency.pk
+            ]
+            if suitable:
+                package_bandings_return.extend(
+                    p.banding for p in suitable
+                )
+            else:
+                # Fallback: default country
+                default_country_id = default_countries.get(package.pk)
+                suitable = [
+                    p for p in pkg_prices
+                    if p.country_id == default_country_id
+                ]
+                if suitable:
+                    package_bandings_return.extend(
+                        p.banding for p in suitable
+                    )
+
+        return set(
+            banding.banding_type
+            for banding in package_bandings_return
+            if not banding.banding_type.is_fte
         )
 
 

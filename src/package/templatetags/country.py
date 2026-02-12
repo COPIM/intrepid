@@ -10,6 +10,9 @@ def country_code_to_name(context):
         country = models.Country.objects.filter(
             code=request.session.get('country')
         ).first()
-        return country.name
+        if country:
+            return country.name
+        else:
+            return ''
     except models.Country.DoesNotExist:
         return request.session.get('country')

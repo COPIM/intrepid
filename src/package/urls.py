@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:package_id>/info/', views.package_info, name='package_info'),
     path('baskets/', views.view_baskets, name='basket_list'),
     path('baskets/<int:basket_id>/', views.view_basket, name='basket_detail'),
+    path('baskets/<int:basket_id>/fast/', views.fast_view_basket, name='fast_basket_detail'),
     path('baskets/<int:basket_id>/remove/<int:package_id>/',
          views.remove_from_basket,
          name='basket_remove_from_basket',

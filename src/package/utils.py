@@ -186,41 +186,63 @@ def get_price_for_package(
             return 0, None
 
 
-def fetch_price(banding, country, explanation) -> tuple[str, "models.Price"]:
+def fetch_price(
+    banding, country, explanation, price_cache=None,
+) -> tuple[str, "models.Price"]:
     """
     This function is used to fetch a price
     :param banding: the banding to fetch the price for
     :param country: the country to fetch the price for
     :param explanation: the explanation of the price calculation
+    :param price_cache: optional pre-fetched price lookup
     :return: a tuple of the explanation and the price
     """
     explanation += "Trying to fetch {} for {}.\n".format(banding, country)
-    price = models.Price.objects.get(
-        banding=banding,
-        country=country,
-    )
+    if price_cache is not None:
+        country_id = country.pk if country else None
+        price = price_cache.get((banding.pk, country_id))
+        if price is None:
+            raise models.Price.DoesNotExist
+    else:
+        price = models.Price.objects.get(
+            banding=banding,
+            country=country,
+        )
     return explanation, price
 
 
-def use_default_pricing(banding, explanation) -> tuple[str, "models.Price"]:
+def use_default_pricing(
+    banding, explanation, price_cache=None,
+) -> tuple[str, "models.Price"]:
     """
     This function is used to use the default pricing
     :param banding: the banding to use the default pricing for
     :param explanation: the explanation of the price calculation
+    :param price_cache: optional pre-fetched price lookup
     :return: a tuple of the explanation and the price
     """
     explanation += "Trying to fetch {} for {} (default).\n".format(
         banding, banding.package.default_country
     )
-    price = models.Price.objects.get(
-        banding=banding,
-        country=banding.package.default_country,
-    )
+    if price_cache is not None:
+        default_country_id = (
+            banding.package.default_country_id
+            if banding.package.default_country_id
+            else None
+        )
+        price = price_cache.get((banding.pk, default_country_id))
+        if price is None:
+            raise models.Price.DoesNotExist
+    else:
+        price = models.Price.objects.get(
+            banding=banding,
+            country=banding.package.default_country,
+        )
     return explanation, price
 
 
 def fallback_to_default(
-    banding, bandings, explanation, fte, package
+    banding, bandings, explanation, fte, package, use_list=False,
 ) -> tuple["models.Banding", str]:
     """
     This function is used to fall back to the default pricing
@@ -229,6 +251,7 @@ def fallback_to_default(
     :param explanation: the explanation of the price calculation
     :param fte: the FTE to fall back to the default pricing for
     :param package: the package to fall back to the default pricing for
+    :param use_list: if True, bandings is a Python list, filter in-memory
     :return: a tuple of the banding and the explanation
     """
     explanation += (
@@ -236,12 +259,17 @@ def fallback_to_default(
         "package because we couldn't find one in the user's "
         "preferred currency.\n"
     )
-    banding = bandings.filter(
-        Q(vocab__upper_limit=None) | Q(vocab__upper_limit__gte=fte),
-        package=package,
-        banding_type=package.banding_type,
-        vocab__lower_limit__lte=fte,
-    ).first()
+    if use_list:
+        banding = _filter_bandings_by_fte(
+            bandings, package.pk, package.banding_type_id, fte
+        )
+    else:
+        banding = bandings.filter(
+            Q(vocab__upper_limit=None) | Q(vocab__upper_limit__gte=fte),
+            package=package,
+            banding_type=package.banding_type,
+            vocab__lower_limit__lte=fte,
+        ).first()
     return banding, explanation
 
 
@@ -277,7 +305,7 @@ def get_user(
 
 
 def get_band_filter(
-    band_filter, country, explanation, package
+    band_filter, country, explanation, package, bandings_cache=None,
 ) -> tuple[
     "models.Banding", "models.QuerySet[models.Banding]", "models.Country", str
 ]:
@@ -287,6 +315,7 @@ def get_band_filter(
     :param country: the country
     :param explanation: the explanation of the price calculation
     :param package: the package
+    :param bandings_cache: optional pre-fetched bandings lookup
     :return: a tuple of the band filter, country and explanation
     """
     band_filter, explanation = test_country(
@@ -294,18 +323,21 @@ def get_band_filter(
     )
     if band_filter:
         bandings, explanation = handle_band_filter(
-            band_filter, explanation, package
+            band_filter, explanation, package,
+            bandings_cache=bandings_cache,
         )
     else:
         # If we get here, we need to check for a catch-all price
         band_filter, bandings, country, explanation = check_for_catch_all(
-            band_filter, country, explanation, package
+            band_filter, country, explanation, package,
+            bandings_cache=bandings_cache,
         )
     return band_filter, bandings, country, explanation
 
 
 def user_without_banding(
-    band_filter, banding, banding_choice, bandings, explanation, package
+    band_filter, banding, banding_choice, bandings, explanation, package,
+    use_list=False,
 ) -> tuple["models.Banding", str]:
     """
     This function is used to handle a user without a banding
@@ -315,14 +347,21 @@ def user_without_banding(
     :param bandings: the bandings
     :param explanation: the explanation of the price calculation
     :param package: the package
+    :param use_list: if True, bandings is a Python list, filter in-memory
     :return: a tuple of the banding and the explanation
     """
     if banding_choice:
-        banding = bandings.get(
-            banding_type=band_filter.banding_type,
-            package=package,
-            vocab=banding_choice,
-        )
+        if use_list:
+            banding = _find_banding_by_vocab(
+                bandings, band_filter.banding_type_id,
+                package.pk, banding_choice,
+            )
+        else:
+            banding = bandings.get(
+                banding_type=band_filter.banding_type,
+                package=package,
+                vocab=banding_choice,
+            )
     else:
         explanation += (
             "The user has not set their banding for this "
@@ -333,7 +372,7 @@ def user_without_banding(
 
 
 def check_default_currency_and_fte(
-    band_filter, bandings, explanation, fte, package
+    band_filter, bandings, explanation, fte, package, use_list=False,
 ) -> tuple["models.Banding", str]:
     """
     This function is used to check the default currency and FTE
@@ -342,23 +381,29 @@ def check_default_currency_and_fte(
     :param explanation: the explanation of the price calculation
     :param fte: the FTE
     :param package: the package
+    :param use_list: if True, bandings is a Python list, filter in-memory
     :return: a tuple of the banding and the explanation
     """
     explanation += (
         "We have found an FTE pricing in the customer's "
         "preferred currency.\n"
     )
-    banding = bandings.filter(
-        Q(vocab__upper_limit=None) | Q(vocab__upper_limit__gte=fte),
-        package=package,
-        banding_type=band_filter.banding_type,
-        vocab__lower_limit__lte=fte,
-    ).first()
+    if use_list:
+        banding = _filter_bandings_by_fte(
+            bandings, package.pk, band_filter.banding_type_id, fte
+        )
+    else:
+        banding = bandings.filter(
+            Q(vocab__upper_limit=None) | Q(vocab__upper_limit__gte=fte),
+            package=package,
+            banding_type=band_filter.banding_type,
+            vocab__lower_limit__lte=fte,
+        ).first()
     return banding, explanation
 
 
 def check_for_catch_all(
-    band_filter, country, explanation, package
+    band_filter, country, explanation, package, bandings_cache=None,
 ) -> tuple[
     "models.Banding", "models.QuerySet[models.Banding]", "models.Country", str
 ]:
@@ -368,6 +413,7 @@ def check_for_catch_all(
     :param country: the country
     :param explanation: the explanation of the price calculation
     :param package: the package
+    :param bandings_cache: optional pre-fetched bandings lookup
     :return: a tuple of the band filter, bandings, country and explanation
     """
     if not band_filter:
@@ -379,18 +425,29 @@ def check_for_catch_all(
 
         if band_filter:
             bandings, explanation = explain_catch_all_band_filter(
-                band_filter, explanation, package
+                band_filter, explanation, package,
+                bandings_cache=bandings_cache,
+            )
+        else:
+            if bandings_cache is not None:
+                bandings = bandings_cache.get(
+                    (package.pk, package.banding_type_id), []
+                )
+            else:
+                bandings = models.Banding.objects.filter(
+                    package=package,
+                    banding_type=package.banding_type,
+                )
+    else:
+        if bandings_cache is not None:
+            bandings = bandings_cache.get(
+                (package.pk, package.banding_type_id), []
             )
         else:
             bandings = models.Banding.objects.filter(
                 package=package,
                 banding_type=package.banding_type,
             )
-    else:
-        bandings = models.Banding.objects.filter(
-            package=package,
-            banding_type=package.banding_type,
-        )
     return band_filter, bandings, country, explanation
 
 
@@ -445,13 +502,14 @@ def find_user_in_database(
 
 
 def explain_catch_all_band_filter(
-    band_filter, explanation, package
+    band_filter, explanation, package, bandings_cache=None,
 ) -> tuple["models.Banding", str]:
     """
     This function is used to explain a catch-all band filter
     :param band_filter: the band filter
     :param explanation: the explanation of the price calculation
     :param package: the package
+    :param bandings_cache: optional pre-fetched bandings lookup
     :return: a tuple of the banding and the explanation
     """
     explanation += (
@@ -459,10 +517,15 @@ def explain_catch_all_band_filter(
         "can handle this: "
         "{}\n".format(band_filter)
     )
-    bandings = models.Banding.objects.filter(
-        package=package,
-        banding_type=band_filter.banding_type,
-    )
+    if bandings_cache is not None:
+        bandings = bandings_cache.get(
+            (package.pk, band_filter.banding_type_id), []
+        )
+    else:
+        bandings = models.Banding.objects.filter(
+            package=package,
+            banding_type=band_filter.banding_type,
+        )
     return bandings, explanation
 
 
@@ -493,23 +556,29 @@ def match_price_to_code(
 
 
 def handle_band_filter(
-    band_filter, explanation, package
+    band_filter, explanation, package, bandings_cache=None,
 ) -> tuple["models.Banding", str]:
     """
     This function is used to handle a band filter
     :param band_filter: the band filter
     :param explanation: the explanation of the price calculation
     :param package: the package
+    :param bandings_cache: optional pre-fetched bandings lookup
     :return: a tuple of the banding and the explanation
     """
     explanation += (
         "We found a band filter that can handle this: "
         "{}\n".format(band_filter)
     )
-    bandings = models.Banding.objects.filter(
-        package=package,
-        banding_type=band_filter.banding_type,
-    )
+    if bandings_cache is not None:
+        bandings = bandings_cache.get(
+            (package.pk, band_filter.banding_type_id), []
+        )
+    else:
+        bandings = models.Banding.objects.filter(
+            package=package,
+            banding_type=band_filter.banding_type,
+        )
     return bandings, explanation
 
 
@@ -1354,3 +1423,368 @@ def add_pre_calc_to_meta_objects(country_code, packages):
                         meta_package=package,
                     )
     return packages
+
+
+# ---------------------------------------------------------------------------
+# In-memory filtering helpers for pre-fetched banding lists.
+# ---------------------------------------------------------------------------
+
+
+def _filter_bandings_by_fte(bandings, package_id, banding_type_id, fte):
+    """Filter a pre-fetched bandings list by FTE range (mirrors queryset logic)."""
+    for b in bandings:
+        if b.package_id != package_id or b.banding_type_id != banding_type_id:
+            continue
+        if not b.vocab:
+            continue
+        if b.vocab.lower_limit is not None and b.vocab.lower_limit > fte:
+            continue
+        if (
+            b.vocab.upper_limit is not None
+            and b.vocab.upper_limit < fte
+        ):
+            continue
+        return b
+    return None
+
+
+def _find_banding_by_vocab(bandings, banding_type_id, package_id, vocab_pk):
+    """Find a single banding matching banding_type, package and vocab pk."""
+    for b in bandings:
+        if (
+            b.banding_type_id == banding_type_id
+            and b.package_id == package_id
+            and b.vocab_id == vocab_pk
+        ):
+            return b
+    raise models.Banding.DoesNotExist
+
+
+# ---------------------------------------------------------------------------
+# fast_ prefixed optimized versions of pricing / basket utility functions.
+# These eliminate redundant DB lookups by accepting pre-resolved values.
+# ---------------------------------------------------------------------------
+
+
+def fast_get_user_currency(
+    identifier, identifier_type, country=None
+) -> "models.Country":
+    """
+    Optimized version of get_user_currency.
+    Returns pre-resolved country when provided; falls back to DB lookup.
+    """
+    if country is not None:
+        return country
+    if identifier_type == "user":
+        user = account_models.User.objects.get(username=identifier)
+        return user.profile.default_currency
+    else:
+        country_pk = identifier.get("currency", None)
+        return models.Country.objects.filter(pk=country_pk).first()
+
+
+def fast_convert_currency_totals(
+    request, identifier_type, identifier, totals, country=None
+) -> (
+    tuple[None, dict, None, None, None]
+    | tuple[str, dict, str, Decimal, Decimal]
+):
+    """
+    Optimized version of convert_currency_totals.
+    Accepts pre-resolved country to avoid redundant user lookup.
+    """
+    if country is None:
+        if identifier_type == "user":
+            user = account_models.User.objects.get(username=identifier)
+            country = user.profile.default_currency
+        else:
+            country_pk = identifier.get("currency", None)
+            country = models.Country.objects.filter(pk=country_pk).first()
+
+    from package import currency as convert_currency
+
+    if country:
+        amounts = []
+        for currency, value in totals.items():
+            if currency == country.currency:
+                amounts.append(value)
+            else:
+                try:
+                    converted_currency = convert_currency.convert(
+                        currency_from=currency,
+                        currency_to=country.currency,
+                        value=value,
+                    )
+                    amounts.append(converted_currency)
+                except ValueError:
+                    country = models.Country.objects.get(
+                        currency=request.site.fallback_currency,
+                    )
+                    converted_currency = convert_currency.convert(
+                        currency_from=currency,
+                        currency_to=country.currency,
+                        value=value,
+                    )
+                    amounts.append(converted_currency)
+
+        currency_conversion_total = Decimal(round(sum(amounts), 2))
+        site_percentage, site_percentage_value = calculate_site_percentage(
+            request, {country.currency: currency_conversion_total}
+        )
+
+        return (
+            site_percentage,
+            {country.currency: currency_conversion_total},
+            country.currency,
+            currency_conversion_total,
+            site_percentage_value,
+        )
+    return None, {}, None, None, None
+
+
+def fast_find_user_in_database(
+    band_filter, explanation, identifier, package,
+    account_banding_choices=None,
+) -> tuple["models.Banding", str, Decimal]:
+    """
+    Optimized version of find_user_in_database.
+    Accepts pre-fetched account_banding_choices dict to avoid
+    per-package DB queries.
+    """
+    explanation += "We are looking up a user from the database\n"
+    fte = identifier.profile.fte
+
+    if account_banding_choices is not None:
+        bt_id = (
+            band_filter.banding_type_id if band_filter
+            else package.banding_type_id
+        )
+        banding_choice_obj = account_banding_choices.get(bt_id)
+        banding_choice = (
+            banding_choice_obj.banding_type_vocab.pk
+            if banding_choice_obj else None
+        )
+    else:
+        if band_filter:
+            banding_choice = account_models.AccountBandingChoices.objects.filter(
+                account=identifier,
+                banding_type=band_filter.banding_type,
+            ).first()
+        else:
+            banding_choice = account_models.AccountBandingChoices.objects.filter(
+                account=identifier,
+                banding_type=package.banding_type,
+            ).first()
+        if banding_choice:
+            banding_choice = banding_choice.banding_type_vocab.pk
+
+    return banding_choice, explanation, fte
+
+
+def fast_get_user(
+    band_filter,
+    banding_choice,
+    explanation,
+    fte,
+    identifier,
+    identifier_type,
+    package,
+    account_banding_choices=None,
+) -> tuple[str, str, Decimal]:
+    """
+    Optimized version of get_user.
+    Passes account_banding_choices through to avoid per-package queries.
+    """
+    if identifier_type == "user":
+        banding_choice, explanation, fte = fast_find_user_in_database(
+            band_filter, explanation, identifier, package,
+            account_banding_choices=account_banding_choices,
+        )
+    elif identifier_type == "session":
+        banding_choice, explanation, fte = find_user_from_session(
+            band_filter, explanation, identifier, package
+        )
+    return banding_choice, explanation, fte
+
+
+def fast_test_country(
+    band_filter, country, explanation, package
+) -> tuple["models.Banding", str]:
+    """
+    Optimized version of test_country.
+    Uses fast_price_bandings (cached_property, scoped queries).
+    """
+    if country:
+        explanation += (
+            "The user in question prefers the currency "
+            "{}\n".format(country)
+        )
+        country_prices = package.fast_price_bandings
+
+        for key, val in country_prices.items():
+            for inner_key, inner_val in val.items():
+                if inner_key == country:
+                    band_filter = key.banding_type_entry
+    return band_filter, explanation
+
+
+def fast_match_price_to_code(
+    band_filter, country, explanation, package
+) -> tuple["models.Banding", "models.Country", str]:
+    """
+    Optimized version of match_price_to_code.
+    Uses fast_price_bandings and fixes duplicate nested loop.
+    """
+    explanation += "Attempting to find a catch-all price for {}\n".format(
+        country
+    )
+    country_prices = package.fast_price_bandings
+    for key, val in country_prices.items():
+        for inner_key, inner_val in val.items():
+            if inner_key.catch_all:
+                if inner_key.currency == country.currency:
+                    explanation += "Using {}\n".format(inner_key)
+                    band_filter = key.banding_type_entry
+                    country = inner_key
+    return band_filter, country, explanation
+
+
+def fast_get_band_filter(
+    band_filter, country, explanation, package,
+    bandings_cache=None,
+) -> tuple[
+    "models.Banding", "models.QuerySet[models.Banding]", "models.Country", str
+]:
+    """
+    Optimized version of get_band_filter.
+    Uses fast_ variants that use fast_price_bandings.
+    """
+    band_filter, explanation = fast_test_country(
+        band_filter, country, explanation, package
+    )
+    if band_filter:
+        bandings, explanation = handle_band_filter(
+            band_filter, explanation, package,
+            bandings_cache=bandings_cache,
+        )
+    else:
+        # Check for a catch-all price
+        if not band_filter:
+            if country:
+                band_filter, country, explanation = fast_match_price_to_code(
+                    band_filter, country, explanation, package
+                )
+            if band_filter:
+                bandings, explanation = explain_catch_all_band_filter(
+                    band_filter, explanation, package,
+                    bandings_cache=bandings_cache,
+                )
+            else:
+                if bandings_cache is not None:
+                    bandings = bandings_cache.get(
+                        (package.pk, package.banding_type_id), []
+                    )
+                else:
+                    bandings = models.Banding.objects.filter(
+                        package=package,
+                        banding_type=package.banding_type,
+                    )
+        else:
+            if bandings_cache is not None:
+                bandings = bandings_cache.get(
+                    (package.pk, package.banding_type_id), []
+                )
+            else:
+                bandings = models.Banding.objects.filter(
+                    package=package,
+                    banding_type=package.banding_type,
+                )
+    return band_filter, bandings, country, explanation
+
+
+def fast_get_price_for_package(
+    package, identifier, identifier_type, country=None,
+    account_banding_choices=None,
+    bandings_cache=None, price_cache=None,
+) -> tuple[int, None] | tuple["models.Price", "models.Banding"]:
+    """
+    Optimized version of get_price_for_package.
+    Uses fast_price_bandings (cached_property, scoped to package).
+    Accepts pre-fetched account_banding_choices dict.
+    Accepts pre-fetched bandings_cache and price_cache dicts.
+    Does not support explain mode (use original for debugging).
+    """
+    band_filter = None
+    use_list = bandings_cache is not None
+
+    band_filter, bandings, country, _ = fast_get_band_filter(
+        band_filter, country, "", package,
+        bandings_cache=bandings_cache,
+    )
+
+    banding, banding_choice = None, None
+    fte = None
+
+    banding_choice, _, fte = fast_get_user(
+        band_filter,
+        banding_choice,
+        "",
+        fte,
+        identifier,
+        identifier_type,
+        package,
+        account_banding_choices=account_banding_choices,
+    )
+
+    if not fte:
+        return 0, None
+
+    if band_filter and band_filter.banding_type.is_fte:
+        banding, _ = check_default_currency_and_fte(
+            band_filter, bandings, "", fte, package,
+            use_list=use_list,
+        )
+    elif band_filter and not band_filter.banding_type.is_fte:
+        try:
+            banding, _ = user_without_banding(
+                band_filter, banding, banding_choice, bandings, "", package,
+                use_list=use_list,
+            )
+        except (ValueError, models.Banding.DoesNotExist):
+            return 0, None
+    elif package.banding_type.is_fte:
+        banding, _ = fallback_to_default(
+            banding, bandings, "", fte, package,
+            use_list=use_list,
+        )
+    elif banding_choice:
+        try:
+            if use_list:
+                banding = _find_banding_by_vocab(
+                    bandings, package.banding_type_id,
+                    package.pk, banding_choice,
+                )
+            else:
+                banding = bandings.get(
+                    banding_type=package.banding_type,
+                    package=package,
+                    vocab=banding_choice,
+                )
+        except (ValueError, models.Banding.DoesNotExist):
+            return 0, None
+
+    if banding:
+        try:
+            _, price = fetch_price(
+                banding, country, "", price_cache=price_cache,
+            )
+        except models.Price.DoesNotExist:
+            try:
+                _, price = use_default_pricing(
+                    banding, "", price_cache=price_cache,
+                )
+            except models.Price.DoesNotExist:
+                return 0, None
+        return price, banding
+    else:
+        return 0, None
