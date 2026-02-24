@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import QuerySet
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.cache import cache_page
@@ -173,7 +173,9 @@ def driver(request) -> HttpResponse:
 
         elif "import" in request.POST:
             test = False
-            print("Running import. Please check back here in 15 minutes or so.")
+            print(
+                "Running import. Please check back here in 15 minutes or so."
+            )
             thoth_result = "Background import process has been started..."
 
             thoth_driver = sync_thoth.Command()
@@ -242,6 +244,12 @@ def all_books(request) -> HttpResponse:
     :param request: the request object
     :return: the response
     """
+
+    # redirect to https://catalogue.openbookcollective.org/books
+    return HttpResponsePermanentRedirect(
+        "https://catalogue.openbookcollective.org/books"
+    )
+
     # determine if there's a search
     search_term = request.GET.get("search")
 
