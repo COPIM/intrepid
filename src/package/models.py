@@ -725,18 +725,24 @@ class Package(BasePackage):
             if price.value > high:
                 high = price.value
 
+        from_text = cms_models.SiteText.objects.get(key="from").body
+        to_text = cms_models.SiteText.objects.get(key="to").body
+        in_text = cms_models.SiteText.objects.get(key="in").body
+        around_text = cms_models.SiteText.objects.get(key="around").body
+
         return (
-            "From {0} to {1} (in {2})".format(
+            "{0} {1} {2} ({3} {4})".format(
+                from_text,
                 babel.numbers.format_currency(
                     low, self.default_country.currency, locale="en_US"
                 ),
-                babel.numbers.format_currency(
-                    high, self.default_country.currency, locale="en_US"
-                ),
+                to_text,
+                in_text,
                 self.default_country.currency,
             )
             if low != high
-            else "Around {0}".format(
+            else "{0} {1}".format(
+                around_text,
                 babel.numbers.format_currency(
                     high, self.default_country.currency, locale="en_US"
                 )

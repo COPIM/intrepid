@@ -192,13 +192,13 @@
                 <div class="col-12 spacer-top-20">
                     <div class="card contact-us-card">
                         <div class="card-body">
-                            <h3 class="card-title text-center">Want to discuss your quote?</h3>
+                            <h3 class="card-title text-center">{% get_site_text 'discuss_quote' prefetched %}</h3>
                             <div class="text-center">
                                 <img class="img-fluid text-center"
                                      src="{% static "frontend/img/quote_lightbulb.png" %}" alt="Contact us image">
                             </div>
                             <div class="text-center spacer-top-20">
-                                <button class="contact-us-button">Contact Us</button>
+                                <button class="contact-us-button">{% get_site_text 'contact_us' prefetched %}</button>
                             </div>
                         </div>
                     </div>

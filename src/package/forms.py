@@ -176,7 +176,7 @@ class FTEForm(forms.Form):
         self.helper.layout.append(
             Submit(
                 "fte_form",
-                "Update",
+                SiteText.objects.get(key="update").body,
                 css_class="btn btn-primary btn-obc-blue",
             ),
         )
@@ -354,7 +354,7 @@ class FastFTEForm(forms.Form):
         self.helper.layout.append(
             Submit(
                 "fte_form",
-                "Update",
+                SiteText.objects.get(key="update").body,
                 css_class="btn btn-primary btn-obc-blue",
             ),
         )

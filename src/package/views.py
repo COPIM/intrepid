@@ -1072,7 +1072,9 @@ def manage_basket(
             messages.add_message(
                 request,
                 messages.WARNING,
-                "The package you selected has already been added to this quote.",
+                cms_models.SiteText.objects.get(
+                    key="package_already_in_quote"
+                ).body,
             )
             return redirect(
                 reverse(
@@ -1088,7 +1090,9 @@ def manage_basket(
         messages.add_message(
             request,
             messages.SUCCESS,
-            "{} added to basket.".format(
+            cms_models.SiteText.objects.get(
+                key="package_added_to_basket"
+            ).body.format(
                 package.name if package else meta_package.name,
             ),
         )

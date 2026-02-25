@@ -54,7 +54,7 @@
                                             <small>{% conflict_statement cost.package basket %}</small>{% endif %}
                                         <br/>
                                         <i class="fa fa-calendar-alt">&nbsp; </i>{{ cost.package.display_contract_length_months }}
-                                        Months
+                                        {% get_site_text 'months' %}
                                          {% for document in cost.package.packagedocument_set.all %}
                                             {% if document.pdf_file %}<a href="{{ document.pdf_file.url }}"><img class="fluid-image"
                                                                                        src="{% static "frontend/img/contract.png" %}" alt="{% get_site_text 'contract' %}"></a>
