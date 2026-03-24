@@ -2172,7 +2172,7 @@ class PreCalcMinMax(models.Model):
             babel.numbers.format_currency(
                 self.max_amount, self.country.currency, locale="en_US"
             ),
-            to_translation
+            to_translation.body
         )
 
     def get_package(self):

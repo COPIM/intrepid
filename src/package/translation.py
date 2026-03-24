@@ -10,3 +10,12 @@ class BandingTypeTranslation(TranslationOptions):
     )
 
 translator.register(models.BandingType, BandingTypeTranslation)
+
+
+class BasePackageTranslation(TranslationOptions):
+    fields = (
+        'name',
+        'description',
+    )
+
+translator.register(models.BasePackage, BasePackageTranslation)
