@@ -118,7 +118,7 @@ class BandingVocab(models.Model):
                 self.lower_limit, text if self.text else ""
             )
         else:
-            return self.text
+            return self.text or ""
 
     @property
     def is_fte(self) -> bool:
