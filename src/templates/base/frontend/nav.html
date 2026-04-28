@@ -1,4 +1,5 @@
-{% load static %}
+{% load static i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
 <div class="row">
     <div class="col-3">
         <a class="navbar-logo d-none d-md-block" href="{% url "site_index" %}"><img class="img-fluid"
@@ -9,6 +10,10 @@
         <nav class="navbar-inverse nav-upper d-none d-md-block">
             <div class="container-fluid">
                 <ul class="flex-md-row nav navbar-upper">
+                    <li class="lang-switcher">
+                        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="en" class="lang-btn{% if CURRENT_LANGUAGE == 'en' %} lang-btn--active{% endif %}">EN</button></form>
+                        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="de" class="lang-btn{% if CURRENT_LANGUAGE == 'de' %} lang-btn--active{% endif %}">DE</button></form>
+                    </li>
                     {% if request.basket %}<li><a href="{% url 'basket_detail' request.basket.pk %}"><i class="fa fa-shopping-basket" style="color:black"></i><sup>{{ request.basket_count }}</sup></a></li>{% endif %}
                     <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
                     </li>
@@ -129,6 +134,13 @@
             <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
         </li>
         {% endif %}
+
+        <hr/>
+
+        <li class="nav-item lang-switcher" style="padding-left: 1rem;">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="en" class="lang-btn lang-btn--mobile{% if CURRENT_LANGUAGE == 'en' %} lang-btn--active{% endif %}">EN</button></form>
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="de" class="lang-btn lang-btn--mobile{% if CURRENT_LANGUAGE == 'de' %} lang-btn--active{% endif %}">DE</button></form>
+        </li>
 
         <hr/>
     </ul>
