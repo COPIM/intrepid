@@ -21,7 +21,7 @@ No GitHub issues exist yet; commits will not carry a footer reference until one 
 
 ---
 
-## Original specification (as supplied by the client)
+## Original specification
 
 This is reproduced here verbatim so that every technical decision below can be traced back to a stated need. Each numbered section in this document begins with an **"In plain language"** paragraph that describes which part of this specification it satisfies and how.
 
