@@ -9,12 +9,73 @@ Two complementary layers protect every view:
   ``user_can`` helper and ``requires_doc_type`` decorator defined here.
 """
 
+import functools
+
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
+
+from portal.models import Document, DocumentTypePermission
+
+OBC_TEAM_GROUP = "OBC Team"
+
 
 def is_obc_staff(user):
-    """Return whether ``user`` is treated as full-access OBC staff."""
-    raise NotImplementedError
+    """Return whether ``user`` is treated as full-access OBC staff.
+
+    Superusers and Django staff have blanket access (matching the existing
+    ``intrepid.security`` convention); members of the seeded "OBC Team" group
+    are also OBC staff.
+    """
+    if not user.is_authenticated:
+        return False
+    return (
+        user.is_superuser
+        or user.is_staff
+        or user.groups.filter(name=OBC_TEAM_GROUP).exists()
+    )
 
 
 def user_can(user, action, doc_type):
-    """Return whether ``user`` may perform ``action`` on ``doc_type``."""
-    raise NotImplementedError
+    """Return whether ``user`` may perform ``action`` on ``doc_type``.
+
+    ``action`` is ``"read"`` or ``"write"`` (write covers upload/edit/delete).
+    OBC staff may do anything; everyone else is checked against the per-type,
+    per-group ``DocumentTypePermission`` rows for the groups they belong to.
+    """
+    if is_obc_staff(user):
+        return True
+    if not user.is_authenticated:
+        return False
+    qs = DocumentTypePermission.objects.filter(
+        document_type=doc_type,
+        group__in=user.groups.all(),
+    )
+    if action == "read":
+        return qs.filter(can_read=True).exists()
+    return qs.filter(can_write=True).exists()
+
+
+def requires_doc_type(action):
+    """Decorate a document detail/edit/delete view with a Layer B check.
+
+    The view must take a ``doc_id`` keyword argument; the document's type is
+    resolved and ``user_can(request.user, action, doc_type)`` must pass.
+    """
+
+    def decorator(view):
+        @functools.wraps(view)
+        @login_required
+        def wrapper(request, *args, **kwargs):
+            document = get_object_or_404(Document, pk=kwargs.get("doc_id"))
+            if not user_can(request.user, action, document.document_type):
+                raise PermissionDenied(
+                    "You do not have permission to {0} this document.".format(
+                        action
+                    )
+                )
+            return view(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
