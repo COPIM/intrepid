@@ -18,6 +18,11 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('intrepid', '0002_delete_emailtemplate'),
+        # insert_sites() reads the Site model via apps.get_model('sites', ...),
+        # so the sites app must be migrated first. Without this dependency a
+        # fresh database build (e.g. the test database) can order this migration
+        # before sites and fail with "No installed app with label 'sites'".
+        ('sites', '0001_initial'),
     ]
 
     operations = [
