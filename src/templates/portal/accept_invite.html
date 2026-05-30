@@ -1,0 +1,15 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_title %}Accept your invitation{% endblock %}
+{% block portal_content %}
+{% if already_accepted %}
+    <div class="alert alert-warning">
+        This invitation has already been accepted. If this was you, please
+        <a href="{% url 'portal:index' %}">log in</a> instead.
+    </div>
+{% else %}
+    <p>Welcome{% if contact.initiative %} to {{ contact.initiative.name }}{% endif %}.
+    Choose a password to activate your account.</p>
+    {% crispy form %}
+{% endif %}
+{% endblock %}

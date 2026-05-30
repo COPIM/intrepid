@@ -1,0 +1,53 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_title %}{{ initiative.name }} — contacts{% endblock %}
+{% block portal_content %}
+<table class="table">
+    <thead><tr><th>Name</th><th>Job title</th><th>Email</th><th>Notifications</th><th></th></tr></thead>
+    <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+                <td>{{ contact.job_title }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.get_notification_frequency_display }}</td>
+                <td>
+                    <form method="post" class="form-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="contact_id" value="{{ contact.pk }}">
+                        <input name="first_name" value="{{ contact.first_name }}" class="form-control form-control-sm mr-1">
+                        <input name="last_name" value="{{ contact.last_name }}" class="form-control form-control-sm mr-1">
+                        <input name="job_title" value="{{ contact.job_title }}" class="form-control form-control-sm mr-1">
+                        <input name="email" value="{{ contact.email }}" class="form-control form-control-sm mr-1">
+                        <input type="hidden" name="position" value="{{ contact.position }}">
+                        <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
+                        <button class="btn btn-sm btn-secondary">Save</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Add a contact</h2>
+<form method="post" id="add-contact-form">
+    {% crispy form %}
+</form>
+
+<script>
+(function () {
+    var existing = {{ contacts.count }};
+    var form = document.getElementById('add-contact-form');
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            if (existing >= 5) {
+                if (!window.confirm('This provider already has ' + existing +
+                        ' contacts. Most providers need five or fewer — add another anyway?')) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}OBC document dashboard{% endblock %}
+{% block portal_content %}
+<p>
+    <a href="{% url 'portal:obc_bulk_import' %}" class="btn btn-secondary">Bulk import</a>
+    <a href="{% url 'portal:obc_contact_changes' %}" class="btn btn-secondary">Contact changes</a>
+</p>
+
+<h2>Providers</h2>
+<ul>
+    {% for initiative in initiatives %}
+        <li><a href="{% url 'portal:obc_initiative_detail' initiative.pk %}">{{ initiative.name }}</a></li>
+    {% empty %}
+        <li>No providers yet.</li>
+    {% endfor %}
+</ul>
+
+<h2>Recent uploads</h2>
+<table class="table">
+    <thead><tr><th>Document</th><th>Provider</th><th>Type</th><th>Uploaded</th></tr></thead>
+    <tbody>
+        {% for document in recent_documents %}
+            <tr>
+                <td><a href="{% url 'portal:download_document' document.pk %}">{{ document.display_name }}</a></td>
+                <td>{{ document.initiative.name }}</td>
+                <td>{{ document.document_type }}</td>
+                <td>{{ document.uploaded_at|date:'Y-m-d H:i' }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4">No documents uploaded yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

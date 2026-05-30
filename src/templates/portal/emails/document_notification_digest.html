@@ -1,0 +1,14 @@
+<p>Hello{% if recipient %} {{ recipient.first_name }}{% endif %},</p>
+
+<p>The following new documents have been added to your Open Book Collective
+portal:</p>
+
+<ul>
+    {% for document in documents %}
+        <li><strong>{{ document.display_name }}</strong>
+            &mdash; {{ document.initiative.name }}
+            ({{ document.document_type }}{% if document.reporting_month %}, {{ document.reporting_month|date:'F Y' }}{% endif %})</li>
+    {% endfor %}
+</ul>
+
+<p>Log in to the portal to view or download them.</p>

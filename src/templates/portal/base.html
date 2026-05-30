@@ -1,0 +1,15 @@
+{% extends "base/frontend/base.html" %}
+{% block title %}Document portal{% endblock title %}
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">{% block portal_title %}Document portal{% endblock %}</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block portal_content %}{% endblock %}
+    </div>
+</div>
+{% endblock body %}

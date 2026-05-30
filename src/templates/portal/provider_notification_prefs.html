@@ -1,0 +1,23 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}{{ initiative.name }} — notification preferences{% endblock %}
+{% block portal_content %}
+<p>Each contact chooses their own notification cadence.</p>
+<form method="post">
+    {% csrf_token %}
+    {% for contact in contacts %}
+        <fieldset class="mb-3">
+            <legend class="h6">{{ contact.first_name }} {{ contact.last_name }} ({{ contact.email }})</legend>
+            {% for value, label in choices %}
+                <label class="mr-3">
+                    <input type="radio" name="frequency_{{ contact.pk }}" value="{{ value }}"
+                           {% if contact.notification_frequency == value %}checked{% endif %}>
+                    {{ label }}
+                </label>
+            {% endfor %}
+        </fieldset>
+    {% empty %}
+        <p>No contacts yet.</p>
+    {% endfor %}
+    <button class="btn btn-primary">Save preferences</button>
+</form>
+{% endblock %}

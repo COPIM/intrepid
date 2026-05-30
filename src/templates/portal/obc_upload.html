@@ -1,0 +1,45 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}Upload — {{ initiative.name }}{% endblock %}
+{% block portal_content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+    <div class="form-group">
+        <label for="id_document_type">Document type</label>
+        <select name="document_type" id="id_document_type" class="form-control">
+            {% for type in form.fields.document_type.queryset %}
+                <option value="{{ type.pk }}" data-requires="{{ type.requires_reporting_month|yesno:'1,0' }}">{{ type.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group" id="reporting_month_group">
+        <label for="id_reporting_month">Reporting month</label>
+        <input type="month" name="reporting_month" id="id_reporting_month" class="form-control"
+               value="{{ form.reporting_month.value|default_if_none:'' }}">
+        {% if form.reporting_month.errors %}<div class="text-danger">{{ form.reporting_month.errors }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_file">Files (you can select several)</label>
+        <input type="file" name="file" id="id_file" multiple class="form-control-file">
+        {% if form.file.errors %}<div class="text-danger">{{ form.file.errors }}</div>{% endif %}
+    </div>
+
+    <button class="btn btn-primary" type="submit">Upload</button>
+</form>
+
+<script>
+(function () {
+    var select = document.getElementById('id_document_type');
+    var group = document.getElementById('reporting_month_group');
+    function toggle() {
+        var option = select.options[select.selectedIndex];
+        group.style.display = (option && option.dataset.requires === '1') ? 'block' : 'none';
+    }
+    select.addEventListener('change', toggle);
+    toggle();
+})();
+</script>
+{% endblock %}

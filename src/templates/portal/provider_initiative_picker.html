@@ -1,0 +1,11 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}Choose a provider{% endblock %}
+{% block portal_content %}
+<ul>
+    {% for initiative in initiatives %}
+        <li><a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">{{ initiative.name }}</a></li>
+    {% empty %}
+        <li>You are not linked to any provider yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

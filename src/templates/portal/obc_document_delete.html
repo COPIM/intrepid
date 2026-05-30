@@ -1,0 +1,11 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}Delete document{% endblock %}
+{% block portal_content %}
+<p>Are you sure you want to delete <strong>{{ document.display_name }}</strong>?
+Any pending notifications for it will be cancelled.</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a class="btn btn-secondary" href="{% url 'portal:obc_initiative_detail' document.initiative_id %}">Cancel</a>
+</form>
+{% endblock %}

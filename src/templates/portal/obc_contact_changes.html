@@ -1,0 +1,34 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}Provider contact changes{% endblock %}
+{% block portal_content %}
+<form method="get" class="form-inline mb-3">
+    <select name="initiative" class="form-control mr-2">
+        <option value="">All providers</option>
+        {% for initiative in initiatives %}
+            <option value="{{ initiative.pk }}">{{ initiative.name }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-secondary">Filter</button>
+</form>
+
+<table class="table">
+    <thead><tr><th>When</th><th>Provider</th><th>Contact</th><th>Changed by</th><th>Changes</th></tr></thead>
+    <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.created_at|date:'Y-m-d H:i' }}</td>
+                <td>{{ log.initiative.name }}</td>
+                <td>{{ log.provider_contact }}</td>
+                <td>{% if log.actor %}{{ log.actor }}{% else %}&mdash;{% endif %}</td>
+                <td>
+                    {% for field, change in log.field_changes.items %}
+                        <div>{{ field }}: &ldquo;{{ change.from }}&rdquo; &rarr; &ldquo;{{ change.to }}&rdquo;</div>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">No contact changes recorded.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

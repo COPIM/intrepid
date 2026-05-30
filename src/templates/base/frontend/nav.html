@@ -15,7 +15,7 @@
                         <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="de" class="lang-btn{% if CURRENT_LANGUAGE == 'de' %} lang-btn--active{% endif %}">DE</button></form>
                     </li>
                     {% if request.basket %}<li><a href="{% url 'basket_detail' request.basket.pk %}"><i class="fa fa-shopping-basket" style="color:black"></i><sup>{{ request.basket_count }}</sup></a></li>{% endif %}
-                    <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
+                    <li><a href="{% url 'portal:index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
                     </li>
                     {% if request.site.enable_your_quotes_link %}
                     <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
@@ -125,7 +125,7 @@
         <hr/>
 
         <li class="nav-item">
-            <a class="nav-link nav-small" href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
+            <a class="nav-link nav-small" href="{% url 'portal:index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
         </li>
 
         <hr/>

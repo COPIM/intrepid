@@ -56,6 +56,40 @@ def user_can(user, action, doc_type):
     return qs.filter(can_write=True).exists()
 
 
+def has_doc_type_access(user):
+    """Whether ``user`` has any per-document-type read permission."""
+    if not user.is_authenticated:
+        return False
+    return DocumentTypePermission.objects.filter(
+        group__in=user.groups.all(), can_read=True
+    ).exists()
+
+
+def readable_document_types(user):
+    """Return the document types ``user`` may read (all, for OBC staff)."""
+    from portal.models import DocumentType
+
+    if is_obc_staff(user):
+        return DocumentType.objects.all()
+    return DocumentType.objects.filter(
+        permissions__group__in=user.groups.all(),
+        permissions__can_read=True,
+    ).distinct()
+
+
+def obc_area_required(view):
+    """Allow OBC staff or any user holding a document-type read permission."""
+
+    @functools.wraps(view)
+    @login_required
+    def wrapper(request, *args, **kwargs):
+        if is_obc_staff(request.user) or has_doc_type_access(request.user):
+            return view(request, *args, **kwargs)
+        raise PermissionDenied("You do not have access to the OBC area.")
+
+    return wrapper
+
+
 def requires_doc_type(action):
     """Decorate a document detail/edit/delete view with a Layer B check.
 

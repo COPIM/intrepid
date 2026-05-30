@@ -242,6 +242,26 @@ class ProviderContact(models.Model):
                 actor=getattr(self, "_actor", None),
                 field_changes=changes,
             )
+            self._notify_obc_of_change(changes)
+
+    def _notify_obc_of_change(self, changes):
+        """Email the OBC team that this contact's details changed."""
+        from mail.models import EmailTemplate
+
+        try:
+            template = EmailTemplate.objects.get(
+                name="contact_change_notification"
+            )
+        except EmailTemplate.DoesNotExist:
+            return
+        template.send(
+            to=settings.FROM_EMAIL,
+            context={
+                "contact": self,
+                "initiative": self.initiative,
+                "changes": changes,
+            },
+        )
 
 
 class ContactChangeLog(models.Model):
