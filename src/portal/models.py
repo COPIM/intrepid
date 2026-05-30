@@ -45,6 +45,18 @@ CONTACT_TRACKED_FIELDS = (
     "notification_frequency",
 )
 
+BULK_ROW_STATUS_CHOICES = (
+    ("ok", "OK"),
+    ("skipped", "Skipped — please review"),
+    ("error", "Error"),
+    ("duplicate", "Duplicate"),
+)
+
+
+def portal_bulk_zip_upload_path(instance, filename):
+    """Storage path for an uploaded bulk-import ZIP."""
+    return os.path.join("bulk_import_zips", "{0}.zip".format(uuid.uuid4()))
+
 
 def portal_documents_upload_path(instance, filename):
     """
@@ -290,3 +302,67 @@ class NotificationQueue(models.Model):
 
     def __str__(self):
         return "Notify {0} re {1}".format(self.recipient, self.document)
+
+
+class BulkImportJob(models.Model):
+    """A staged bulk import: an uploaded ZIP awaiting OBC confirmation."""
+
+    zip_file = models.FileField(
+        upload_to=portal_bulk_zip_upload_path,
+        storage=upload_storage,
+    )
+    original_filename = models.CharField(max_length=255, blank=True)
+    uploaded_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    created_at = models.DateTimeField(default=timezone.now)
+    notify_on_commit = models.BooleanField(default=False)
+    committed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        return "Bulk import {0} ({1})".format(
+            self.pk, self.original_filename
+        )
+
+
+class BulkImportRow(models.Model):
+    """A single staged file within a :class:`BulkImportJob`."""
+
+    job = models.ForeignKey(
+        BulkImportJob,
+        on_delete=models.CASCADE,
+        related_name="rows",
+    )
+    archive_path = models.CharField(max_length=500)
+    original_filename = models.CharField(max_length=255)
+    short_code = models.CharField(max_length=10, blank=True)
+    initiative = models.ForeignKey(
+        "initiatives.Initiative",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    document_type = models.ForeignKey(
+        DocumentType,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    reporting_month = models.DateField(null=True, blank=True)
+    status = models.CharField(
+        max_length=20, choices=BULK_ROW_STATUS_CHOICES, default="ok"
+    )
+    message = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        ordering = ("status", "archive_path")
+
+    def __str__(self):
+        return "{0} ({1})".format(self.archive_path, self.status)
