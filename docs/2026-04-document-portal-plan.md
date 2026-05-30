@@ -624,7 +624,7 @@ A single initial migration (`0001_initial.py`) creates all six models. A second 
 - Two `DocumentType` rows ("Remittance advice" with `requires_reporting_month=True, default=True`; "Agreement contract" with `requires_reporting_month=False`).
 - The `OBC Team` and `Provider Members` `auth.Group` rows.
 - `EmailTemplate` rows looked up by `name` (`document_notification_immediate`, `document_notification_digest`, `contact_change_notification`, `provider_invite`), using the HTML files in `templates/portal/emails/` as the initial `subject`/`body`. (`EmailTemplate` has no slug field — `name` is the key.)
-- `fluid_permissions.ViewGroup` rows whose `view_name` matches each new view (e.g. `portal.obc_dashboard`), so the existing permission UI at `/accounts/manage_fluid_permissions/` (`src/accounts/views.py:179`) immediately surfaces the new views.
+- *(Deferred.)* The portal gates the OBC area with its own `obc_area_required`/`obc_staff_required` decorators plus per-type `DocumentTypePermission`, rather than `fluid_permissions.ViewGroup` per-view gating. Seeding `ViewGroup` rows would surface the portal views in `/accounts/manage_fluid_permissions/` but, because the portal views do not use `user_in_authorised_group`, those rows would not actually restrict access — so they are intentionally **not** seeded, to avoid misleading, non-functional configuration. Layering `fluid_permissions` on top is a small, self-contained follow-up if per-view gating is later wanted.
 
 The migration uses `apps.get_model(...)` for `DocumentType`/`Group`/`EmailTemplate`/`ViewGroup` (the historical-model pattern), reading the seed email bodies with Django's template loader so the HTML files remain the single source of truth.
 
@@ -635,16 +635,16 @@ The migration uses `apps.get_model(...)` for `DocumentType`/`Group`/`EmailTempla
 **In plain language.** This is essentially a "scope of works" inventory: the complete list of files the engineer will touch to deliver everything above. Almost all of the work is *new* files (in the new `portal/` area), with only three existing files needing small additions. This is a useful sanity check on the size of the change — the new portal is a self-contained body of work, not a sprawling rewrite of the existing site.
 
 **Created**
-- `src/portal/__init__.py`, `apps.py`, `models.py`, `admin.py`, `forms.py`, `views.py`, `urls.py`, `translation.py`, `bulk_import.py`, `notifications.py`, `permissions.py`
-- `src/portal/tests/__init__.py` + `test_models.py`, `test_permissions.py`, `test_bulk_import.py`, `test_notifications.py`, `test_forms.py`, `test_views.py`, `test_invitation.py`
+- `src/portal/__init__.py`, `apps.py`, `models.py`, `admin.py`, `forms.py`, `views.py`, `urls.py`, `translation.py`, `bulk_import.py`, `notifications.py`, `permissions.py`, `signals.py`
+- `src/portal/tests/__init__.py` + `test_models.py`, `test_permissions.py`, `test_bulk_import.py`, `test_notifications.py`, `test_forms.py`, `test_views.py`, `test_invitation.py` (+ `_helpers.py`)
 - `src/portal/management/__init__.py`, `management/commands/__init__.py`, `management/commands/send_document_notifications.py`
-- `src/portal/migrations/0001_initial.py`, `0002_seed.py`
+- `src/portal/migrations/0001_initial.py`, `0002_bulkimportjob_bulkimportrow.py`, `0003_*` (modeltranslation fields), `0004_seed.py`
 - `src/templates/portal/*` (per §7)
 
 **Modified**
 - `src/intrepid/settings.py` — add `portal` to `INSTALLED_APPS`; add `DOC_NOTIFICATION_DELAY`, `DOC_DIGEST_*` constants
 - `src/intrepid/urls.py` — add `path("portal/", include("portal.urls"))`; change the existing `path("dashboard/", …)` to `path("staff/", …)` (URL restructure, client clarification 1)
-- `src/templates/base/frontend/nav.html` and `src/templates/base/admin_nav.html` — re-point the top-right "Dashboard" link from `dashboard_index` to the new portal index
+- `src/templates/base/frontend/nav.html` — re-point the top-right "Dashboard" link from `dashboard_index` to the new portal index. (The old dashboard's own sidebar in `src/templates/base/admin_nav.html` is intentionally left pointing at `dashboard_index`: it is the navigation *inside* the old dashboard, now at `/staff/`, and must keep working there.)
 - `src/install/management/commands/install_cron.py` — add the `send_document_notifications` job dict (`time: 15`); no dispatcher change is needed (the existing `time`-based path already schedules `minute.every(...)`)
 
 ---
