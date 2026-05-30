@@ -14,6 +14,7 @@ from django.utils import timezone
 from initiatives.models import Initiative
 from mail.models import EmailTemplate
 from portal import notifications
+from portal.tests._helpers import clear_seed_data
 from portal.models import (
     Document,
     DocumentType,
@@ -25,6 +26,7 @@ from portal.models import (
 class NotificationTestBase(TestCase):
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         cls.initiative = Initiative.objects.create(
             name="Punctum", short_code="PUNC"
         )

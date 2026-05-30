@@ -7,6 +7,13 @@
         This invitation has already been accepted. If this was you, please
         <a href="{% url 'portal:index' %}">log in</a> instead.
     </div>
+{% elif existing_account %}
+    <div class="alert alert-info">
+        An account already exists for this email address. Please
+        <a href="{% url 'portal:index' %}">sign in</a> with that account to
+        accept this invitation &mdash; we will never reset an existing
+        account's password from this page.
+    </div>
 {% else %}
     <p>Welcome{% if contact.initiative %} to {{ contact.initiative.name }}{% endif %}.
     Choose a password to activate your account.</p>

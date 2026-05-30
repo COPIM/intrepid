@@ -8,11 +8,13 @@ from django.utils import timezone
 from initiatives.models import Initiative
 from intrepid.models import SiteSetup
 from portal.models import ProviderContact
+from portal.tests._helpers import clear_seed_data
 
 
 class InvitationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         SiteSetup.objects.create(site_name="Test OBC")
         cls.initiative = Initiative.objects.create(
             name="Punctum", short_code="PUNC"
@@ -62,6 +64,31 @@ class InvitationTests(TestCase):
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["already_accepted"])
+
+    def test_existing_account_email_is_not_password_reset(self):
+        """An unauthenticated invitee must not reset a pre-existing account."""
+        existing = User.objects.create_user(
+            username="grace@example.com",
+            email="grace@example.com",
+            password="the-real-owners-password",
+        )
+        response = self.client.post(
+            self._url(),
+            {
+                "first_name": "Grace",
+                "last_name": "Hopper",
+                "password1": "attacker-chosen-password",
+                "password2": "attacker-chosen-password",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["existing_account"])
+        existing.refresh_from_db()
+        self.assertTrue(
+            existing.check_password("the-real-owners-password")
+        )
+        self.contact.refresh_from_db()
+        self.assertIsNone(self.contact.accepted_at)
 
     def test_reaccepting_does_not_create_second_user(self):
         self.contact.accepted_at = timezone.now()

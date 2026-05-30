@@ -7,6 +7,7 @@ from django.test import RequestFactory, TestCase
 
 from initiatives.models import Initiative
 from portal import permissions
+from portal.tests._helpers import clear_seed_data
 from portal.models import (
     Document,
     DocumentType,
@@ -17,6 +18,7 @@ from portal.models import (
 class PermissionTestBase(TestCase):
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         cls.initiative = Initiative.objects.create(
             name="Punctum", short_code="PUNC"
         )

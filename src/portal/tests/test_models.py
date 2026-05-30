@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from initiatives.models import Initiative
+from portal.tests._helpers import clear_seed_data
 from portal.models import (
     ContactChangeLog,
     Document,
@@ -20,6 +21,7 @@ from portal.models import (
 class PortalModelTestBase(TestCase):
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         cls.initiative = Initiative.objects.create(
             name="Punctum Books", short_code="PUNC"
         )

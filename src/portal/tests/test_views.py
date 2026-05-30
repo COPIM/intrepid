@@ -14,6 +14,7 @@ from django.urls import reverse
 from initiatives.models import Initiative
 from intrepid.models import SiteSetup
 from package.models import upload_storage
+from portal.tests._helpers import clear_seed_data
 from portal.models import (
     ContactChangeLog,
     Document,
@@ -45,6 +46,7 @@ class StorageRedirectMixin:
 class ViewTestBase(StorageRedirectMixin, TestCase):
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         SiteSetup.objects.create(site_name="Test OBC")
         cls.initiative = Initiative.objects.create(
             name="Punctum", short_code="PUNC"

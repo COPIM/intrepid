@@ -419,6 +419,25 @@ def bulk_download(request):
     return _stream_zip(documents)
 
 
+def _link_contact_to_user(
+    contact, user, first_name=None, last_name=None, job_title=None
+):
+    """Attach an accepted contact to a user and grant Provider access."""
+    contact.initiative.users.add(user)
+    group, _ = Group.objects.get_or_create(name=PROVIDER_MEMBERS_GROUP)
+    user.groups.add(group)
+    contact.user = user
+    if first_name:
+        contact.first_name = first_name
+    if last_name:
+        contact.last_name = last_name
+    if job_title:
+        contact.job_title = job_title
+    contact.accepted_at = timezone.now()
+    contact._actor = user
+    contact.save()
+
+
 def accept_invite(request, token):
     contact = get_object_or_404(ProviderContact, invite_token=token)
     if contact.accepted_at:
@@ -428,37 +447,49 @@ def accept_invite(request, token):
             {"already_accepted": True, "contact": contact},
         )
 
+    # Security: this endpoint is unauthenticated, so it must never set a
+    # password on a pre-existing account. If an account already exists for the
+    # invited email, the person must sign in as that account to accept.
+    existing_user = User.objects.filter(email=contact.email).first()
+    if existing_user is not None:
+        if (
+            request.user.is_authenticated
+            and request.user.pk == existing_user.pk
+        ):
+            _link_contact_to_user(contact, existing_user)
+            messages.success(request, "Invitation accepted.")
+            return redirect(
+                "portal:provider_initiative_documents",
+                initiative_id=contact.initiative_id,
+            )
+        return render(
+            request,
+            "portal/accept_invite.html",
+            {
+                "existing_account": True,
+                "already_accepted": False,
+                "contact": contact,
+            },
+        )
+
     if request.method == "POST":
         form = AcceptInviteForm(request.POST)
         if form.is_valid():
-            user = User.objects.filter(email=contact.email).first()
-            if user is None:
-                user = User.objects.create_user(
-                    username=contact.email,
-                    email=contact.email,
-                    password=form.cleaned_data["password1"],
-                )
-            else:
-                user.set_password(form.cleaned_data["password1"])
+            user = User.objects.create_user(
+                username=contact.email,
+                email=contact.email,
+                password=form.cleaned_data["password1"],
+            )
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.save()
-
-            contact.initiative.users.add(user)
-            group, _ = Group.objects.get_or_create(
-                name=PROVIDER_MEMBERS_GROUP
+            _link_contact_to_user(
+                contact,
+                user,
+                first_name=form.cleaned_data["first_name"],
+                last_name=form.cleaned_data["last_name"],
+                job_title=form.cleaned_data["job_title"],
             )
-            user.groups.add(group)
-
-            contact.user = user
-            contact.first_name = form.cleaned_data["first_name"]
-            contact.last_name = form.cleaned_data["last_name"]
-            if form.cleaned_data["job_title"]:
-                contact.job_title = form.cleaned_data["job_title"]
-            contact.accepted_at = timezone.now()
-            contact._actor = user
-            contact.save()
-
             login(
                 request,
                 user,

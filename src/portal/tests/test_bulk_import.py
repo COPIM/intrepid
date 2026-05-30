@@ -12,6 +12,7 @@ from django.test import TestCase
 from initiatives.models import Initiative
 from package.models import upload_storage
 from portal import bulk_import
+from portal.tests._helpers import clear_seed_data
 from portal.models import (
     Document,
     DocumentType,
@@ -33,6 +34,7 @@ def make_zip(entries):
 class BulkImportSeedMixin:
     @classmethod
     def setUpTestData(cls):
+        clear_seed_data()
         cls.punctum = Initiative.objects.create(
             name="Punctum Books", short_code="PUNC"
         )
