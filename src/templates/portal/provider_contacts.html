@@ -23,6 +23,14 @@
                         <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
                         <button class="btn btn-sm btn-secondary">Save</button>
                     </form>
+                    {% if is_obc %}
+                        <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-primary">
+                                {% if contact.accepted_at %}Re-send invite{% elif contact.invited_at %}Re-send invite{% else %}Send invitation{% endif %}
+                            </button>
+                        </form>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

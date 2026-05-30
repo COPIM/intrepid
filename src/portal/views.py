@@ -18,10 +18,14 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import FileResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.dateparse import parse_date
+from django.views.decorators.http import require_POST
 
 from initiatives.models import Initiative
 from intrepid.security import user_is_initiative_manager
+from mail.models import EmailTemplate
 from portal import bulk_import, notifications
 from portal.forms import (
     AcceptInviteForm,
@@ -42,6 +46,7 @@ from portal.permissions import (
     has_doc_type_access,
     is_obc_staff,
     obc_area_required,
+    obc_staff_required,
     readable_document_types,
     requires_doc_type,
     user_can,
@@ -66,11 +71,11 @@ def _filter_documents(queryset, params):
                 reporting_month__month=int(parts[1]),
             )
 
-    uploaded_after = params.get("uploaded_after")
+    uploaded_after = parse_date(params.get("uploaded_after") or "")
     if uploaded_after:
         queryset = queryset.filter(uploaded_at__date__gte=uploaded_after)
 
-    uploaded_before = params.get("uploaded_before")
+    uploaded_before = parse_date(params.get("uploaded_before") or "")
     if uploaded_before:
         queryset = queryset.filter(uploaded_at__date__lte=uploaded_before)
 
@@ -208,7 +213,7 @@ def obc_upload(request, initiative_id):
     )
 
 
-@obc_area_required
+@obc_staff_required
 def obc_bulk_import(request):
     if request.method == "POST":
         form = BulkImportZipForm(request.POST, request.FILES)
@@ -230,7 +235,7 @@ def obc_bulk_import(request):
     return render(request, "portal/obc_bulk_import.html", {"form": form})
 
 
-@obc_area_required
+@obc_staff_required
 def obc_bulk_commit(request, job_id):
     job = get_object_or_404(BulkImportJob, pk=job_id)
     if request.method == "POST":
@@ -364,7 +369,35 @@ def provider_manage_contacts(request, initiative_id):
             "initiative": initiative,
             "contacts": initiative.provider_contacts.all(),
             "form": form,
+            "is_obc": is_obc_staff(request.user),
         },
+    )
+
+
+@obc_staff_required
+@require_POST
+def send_invite(request, contact_id):
+    """OBC action: email a contact their one-time invitation link."""
+    contact = get_object_or_404(ProviderContact, pk=contact_id)
+    url = request.build_absolute_uri(
+        reverse(
+            "portal:accept_invite",
+            kwargs={"token": contact.invite_token},
+        )
+    )
+    try:
+        template = EmailTemplate.objects.get(name="provider_invite")
+        template.send(to=contact.email, context={"contact": contact, "url": url})
+    except EmailTemplate.DoesNotExist:
+        pass
+    contact.invited_at = timezone.now()
+    contact.save()
+    messages.success(
+        request, "Invitation sent to {0}.".format(contact.email)
+    )
+    return redirect(
+        "portal:provider_manage_contacts",
+        initiative_id=contact.initiative_id,
     )
 
 
@@ -407,6 +440,7 @@ def download_document(request, doc_id):
 
 
 @login_required
+@require_POST
 def bulk_download(request):
     ids = request.POST.getlist("document_ids")
     documents = [

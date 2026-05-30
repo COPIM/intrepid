@@ -60,6 +60,11 @@ urlpatterns = [
         views.provider_notification_prefs,
         name="provider_notification_prefs",
     ),
+    path(
+        "obc/contact/<int:contact_id>/invite/",
+        views.send_invite,
+        name="send_invite",
+    ),
     # Shared
     path(
         "document/<int:doc_id>/download/",

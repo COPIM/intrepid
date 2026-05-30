@@ -284,6 +284,81 @@ class ContactManagementTests(ViewTestBase):
         )
 
 
+class BulkImportPermissionTests(ViewTestBase):
+    def test_readonly_doc_type_user_cannot_bulk_import(self):
+        from portal.models import DocumentTypePermission
+
+        readers = Group.objects.create(name="Readers")
+        DocumentTypePermission.objects.create(
+            document_type=self.contract,
+            group=readers,
+            can_read=True,
+            can_write=False,
+        )
+        reader = User.objects.create_user("reader", password="pw")
+        reader.groups.add(readers)
+
+        self.client.force_login(reader)
+        response = self.client.get(reverse("portal:obc_bulk_import"))
+        self.assertEqual(response.status_code, 403)
+
+
+class DateFilterRobustnessTests(ViewTestBase):
+    def test_garbage_date_filter_does_not_500(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"uploaded_after": "not-a-date"},
+        )
+        self.assertEqual(response.status_code, 200)
+
+
+class SendInviteTests(ViewTestBase):
+    def _contact(self):
+        return ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+
+    @patch("mail.models.EmailTemplate._send_email", return_value=1)
+    def test_obc_can_send_invitation(self, mock_send):
+        from mail.models import EmailTemplate
+
+        EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="You are invited",
+            body="Accept here: {{ url }}",
+        )
+        contact = self._contact()
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            reverse(
+                "portal:send_invite", kwargs={"contact_id": contact.pk}
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+        contact.refresh_from_db()
+        self.assertIsNotNone(contact.invited_at)
+        recipients = [call.kwargs["to"] for call in mock_send.call_args_list]
+        self.assertTrue(any("ada@example.com" in to for to in recipients))
+
+    def test_provider_cannot_send_invitation(self):
+        contact = self._contact()
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            reverse(
+                "portal:send_invite", kwargs={"contact_id": contact.pk}
+            )
+        )
+        self.assertEqual(response.status_code, 403)
+
+
 class BulkDownloadTests(ViewTestBase):
     def test_bulk_download_streams_zip(self):
         self.client.force_login(self.staff)

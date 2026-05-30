@@ -90,6 +90,24 @@ def obc_area_required(view):
     return wrapper
 
 
+def obc_staff_required(view):
+    """Restrict a view to full-access OBC staff only.
+
+    Used for actions that inherently span every Provider and document type
+    (bulk import, sending invitations), where a read-only per-type permission
+    is not sufficient.
+    """
+
+    @functools.wraps(view)
+    @login_required
+    def wrapper(request, *args, **kwargs):
+        if is_obc_staff(request.user):
+            return view(request, *args, **kwargs)
+        raise PermissionDenied("This action is restricted to OBC staff.")
+
+    return wrapper
+
+
 def requires_doc_type(action):
     """Decorate a document detail/edit/delete view with a Layer B check.
 

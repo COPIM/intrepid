@@ -11,6 +11,7 @@ import zipfile
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 from portal.models import Document, DocumentType, ProviderContact
@@ -166,4 +167,9 @@ class AcceptInviteForm(forms.Form):
         password2 = cleaned.get("password2")
         if password1 and password2 and password1 != password2:
             self.add_error("password2", "The two passwords do not match.")
+        if password1:
+            try:
+                validate_password(password1)
+            except ValidationError as error:
+                self.add_error("password1", error)
         return cleaned

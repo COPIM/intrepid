@@ -134,6 +134,18 @@ class AcceptInviteFormTests(FormTestBase):
         self.assertFalse(form.is_valid())
         self.assertIn("password2", form.errors)
 
+    def test_weak_password_rejected(self):
+        form = forms.AcceptInviteForm(
+            data={
+                "first_name": "Ada",
+                "last_name": "Lovelace",
+                "password1": "1",
+                "password2": "1",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("password1", form.errors)
+
     def test_matching_passwords_valid(self):
         form = forms.AcceptInviteForm(
             data={

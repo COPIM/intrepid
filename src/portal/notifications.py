@@ -139,7 +139,12 @@ def send_pending_notifications():
         sent_at__isnull=True,
         cancelled_at__isnull=True,
         eligible_at__lte=now,
-    ).select_related("recipient", "document")
+    ).select_related(
+        "recipient",
+        "document",
+        "document__initiative",
+        "document__document_type",
+    )
 
     groups = {}
     for row in pending:
