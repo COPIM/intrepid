@@ -1,31 +1,32 @@
 {% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_bulk_import' %}"><i class="fa-solid fa-arrow-left"></i> Start over</a>{% endblock %}
 {% block portal_title %}Bulk import preview{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">Check the mapping below before importing. Rows marked <strong>Skipped</strong> or <strong>Error</strong> will not be imported.</p>{% endblock %}
 {% block portal_content %}
-<p>Review the mapping below. Rows marked <strong>Skipped</strong> or <strong>Error</strong>
-will not be imported &mdash; fix the ZIP and re-upload if needed.</p>
+<div class="portal-card">
+    <table class="table">
+        <thead><tr><th>File</th><th>Provider</th><th>Reporting month</th><th>Type</th><th>Status</th><th>Note</th></tr></thead>
+        <tbody>
+            {% for row in rows %}
+                <tr class="{% if row.status != 'ok' %}table-warning{% endif %}">
+                    <td>{{ row.archive_path }}</td>
+                    <td>{% if row.initiative %}{{ row.initiative.name }}{% else %}&mdash;{% endif %}</td>
+                    <td>{% if row.reporting_month %}{{ row.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
+                    <td>{% if row.document_type %}{{ row.document_type }}{% else %}&mdash;{% endif %}</td>
+                    <td>{{ row.get_status_display }}</td>
+                    <td>{{ row.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-<table class="table">
-    <thead><tr><th>File</th><th>Provider</th><th>Reporting month</th><th>Type</th><th>Status</th><th>Note</th></tr></thead>
-    <tbody>
-        {% for row in rows %}
-            <tr class="{% if row.status != 'ok' %}table-warning{% endif %}">
-                <td>{{ row.archive_path }}</td>
-                <td>{% if row.initiative %}{{ row.initiative.name }}{% else %}&mdash;{% endif %}</td>
-                <td>{% if row.reporting_month %}{{ row.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
-                <td>{% if row.document_type %}{{ row.document_type }}{% else %}&mdash;{% endif %}</td>
-                <td>{{ row.get_status_display }}</td>
-                <td>{{ row.message }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-{% if not job.committed_at %}
-    <form method="post" action="{% url 'portal:obc_bulk_commit' job.pk %}">
-        {% csrf_token %}
-        <button class="btn btn-primary">Confirm and import the OK rows</button>
-    </form>
-{% else %}
-    <p class="text-success">This import has already been committed.</p>
-{% endif %}
+    {% if not job.committed_at %}
+        <form method="post" action="{% url 'portal:obc_bulk_commit' job.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-obc-blue">Confirm and import the OK rows</button>
+        </form>
+    {% else %}
+        <p class="text-success mb-0">This import has already been committed.</p>
+    {% endif %}
+</div>
 {% endblock %}

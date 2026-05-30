@@ -1,34 +1,65 @@
 {% extends "portal/base.html" %}
 {% block portal_title %}OBC document dashboard{% endblock %}
 {% block portal_content %}
-<p>
-    <a href="{% url 'portal:obc_bulk_import' %}" class="btn btn-secondary">Bulk import</a>
-    <a href="{% url 'portal:obc_contact_changes' %}" class="btn btn-secondary">Contact changes</a>
+<p class="portal-lead">
+    Upload and manage documents for each Provider, import historical archives in
+    bulk, and review the changes Providers make to their own contact details.
 </p>
 
-<h2>Providers</h2>
-<ul>
-    {% for initiative in initiatives %}
-        <li><a href="{% url 'portal:obc_initiative_detail' initiative.pk %}">{{ initiative.name }}</a></li>
-    {% empty %}
-        <li>No providers yet.</li>
-    {% endfor %}
-</ul>
+<div class="portal-tiles">
+    <a class="portal-tile" href="#providers">
+        <div class="tile-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="tile-title">Provider documents</div>
+        <p class="tile-desc">Open a Provider to view, upload and download their
+        documents.</p>
+    </a>
+    <a class="portal-tile" href="{% url 'portal:obc_bulk_import' %}">
+        <div class="tile-icon"><i class="fa-solid fa-file-zipper"></i></div>
+        <div class="tile-title">Bulk import</div>
+        <p class="tile-desc">Upload a ZIP of historical documents, organised by
+        Provider and month, and import them all at once.</p>
+    </a>
+    <a class="portal-tile" href="{% url 'portal:obc_contact_changes' %}">
+        <div class="tile-icon"><i class="fa-solid fa-user-pen"></i></div>
+        <div class="tile-title">Contact changes</div>
+        <p class="tile-desc">Review the changes Providers have made to their
+        contact details, with a full history.</p>
+    </a>
+</div>
 
-<h2>Recent uploads</h2>
-<table class="table">
-    <thead><tr><th>Document</th><th>Provider</th><th>Type</th><th>Uploaded</th></tr></thead>
-    <tbody>
-        {% for document in recent_documents %}
-            <tr>
-                <td><a href="{% url 'portal:download_document' document.pk %}">{{ document.display_name }}</a></td>
-                <td>{{ document.initiative.name }}</td>
-                <td>{{ document.document_type }}</td>
-                <td>{{ document.uploaded_at|date:'Y-m-d H:i' }}</td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="4">No documents uploaded yet.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+<h3 class="portal-section-title" id="providers">Providers</h3>
+<p class="portal-section-hint">Select a Provider to view, upload and manage their documents.</p>
+<div class="list-group mb-2">
+    {% for initiative in initiatives %}
+        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+           href="{% url 'portal:obc_initiative_detail' initiative.pk %}">
+            <span>{{ initiative.name }}</span>
+            <span class="badge badge-pill" style="background:#EBF3F9;color:#151462;font-weight:600;">
+                {{ initiative.document_count }} document{{ initiative.document_count|pluralize }}
+            </span>
+        </a>
+    {% empty %}
+        <div class="text-muted">No Providers yet.</div>
+    {% endfor %}
+</div>
+
+<h3 class="portal-section-title">Recent uploads</h3>
+<p class="portal-section-hint">The latest documents added across all Providers.</p>
+<div class="portal-card">
+    <table class="table mb-0">
+        <thead><tr><th>Document</th><th>Provider</th><th>Type</th><th>Uploaded</th></tr></thead>
+        <tbody>
+            {% for document in recent_documents %}
+                <tr>
+                    <td><a href="{% url 'portal:download_document' document.pk %}">{{ document.display_name }}</a></td>
+                    <td>{{ document.initiative.name }}</td>
+                    <td>{{ document.document_type }}</td>
+                    <td>{{ document.uploaded_at|date:'Y-m-d H:i' }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="text-muted">No documents uploaded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

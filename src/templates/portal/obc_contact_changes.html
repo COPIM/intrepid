@@ -1,34 +1,39 @@
 {% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>{% endblock %}
 {% block portal_title %}Provider contact changes{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">Whenever a Provider edits one of their contacts, the change is recorded here (and emailed to the OBC team).</p>{% endblock %}
 {% block portal_content %}
-<form method="get" class="form-inline mb-3">
-    <select name="initiative" class="form-control mr-2">
-        <option value="">All providers</option>
-        {% for initiative in initiatives %}
-            <option value="{{ initiative.pk }}">{{ initiative.name }}</option>
-        {% endfor %}
-    </select>
-    <button class="btn btn-secondary">Filter</button>
-</form>
+<div class="portal-card">
+    <form method="get" class="form-inline mb-3">
+        <label class="small text-muted mr-2">Provider</label>
+        <select name="initiative" class="form-control mr-2">
+            <option value="">All providers</option>
+            {% for initiative in initiatives %}
+                <option value="{{ initiative.pk }}">{{ initiative.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-obc-outline">Filter</button>
+    </form>
 
-<table class="table">
-    <thead><tr><th>When</th><th>Provider</th><th>Contact</th><th>Changed by</th><th>Changes</th></tr></thead>
-    <tbody>
-        {% for log in logs %}
-            <tr>
-                <td>{{ log.created_at|date:'Y-m-d H:i' }}</td>
-                <td>{{ log.initiative.name }}</td>
-                <td>{{ log.provider_contact }}</td>
-                <td>{% if log.actor %}{{ log.actor }}{% else %}&mdash;{% endif %}</td>
-                <td>
-                    {% for field, change in log.field_changes.items %}
-                        <div>{{ field }}: &ldquo;{{ change.from }}&rdquo; &rarr; &ldquo;{{ change.to }}&rdquo;</div>
-                    {% endfor %}
-                </td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="5">No contact changes recorded.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table class="table mb-0">
+        <thead><tr><th>When</th><th>Provider</th><th>Contact</th><th>Changed by</th><th>Changes</th></tr></thead>
+        <tbody>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.created_at|date:'Y-m-d H:i' }}</td>
+                    <td>{{ log.initiative.name }}</td>
+                    <td>{{ log.provider_contact }}</td>
+                    <td>{% if log.actor %}{{ log.actor }}{% else %}&mdash;{% endif %}</td>
+                    <td>
+                        {% for field, change in log.field_changes.items %}
+                            <div><span class="text-muted">{{ field }}:</span> &ldquo;{{ change.from }}&rdquo; &rarr; &ldquo;{{ change.to }}&rdquo;</div>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-muted">No contact changes recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -1,23 +1,31 @@
 {% extends "portal/base.html" %}
-{% block portal_title %}{{ initiative.name }} — notification preferences{% endblock %}
+{% block portal_nav %}
+    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">Documents</a>
+    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">Contacts</a>
+    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}" class="active">Notifications</a>
+{% endblock %}
+{% block portal_title %}Notification preferences &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">Each contact chooses how often they hear about new documents. Everyone is independent &mdash; one person can get every document immediately while another gets a weekly digest or nothing at all.</p>{% endblock %}
 {% block portal_content %}
-<p>Each contact chooses their own notification cadence.</p>
-<form method="post">
-    {% csrf_token %}
-    {% for contact in contacts %}
-        <fieldset class="mb-3">
-            <legend class="h6">{{ contact.first_name }} {{ contact.last_name }} ({{ contact.email }})</legend>
-            {% for value, label in choices %}
-                <label class="mr-3">
-                    <input type="radio" name="frequency_{{ contact.pk }}" value="{{ value }}"
-                           {% if contact.notification_frequency == value %}checked{% endif %}>
-                    {{ label }}
-                </label>
-            {% endfor %}
-        </fieldset>
-    {% empty %}
-        <p>No contacts yet.</p>
-    {% endfor %}
-    <button class="btn btn-primary">Save preferences</button>
-</form>
+<div class="portal-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for contact in contacts %}
+            <fieldset class="mb-4 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                <legend class="h6 mb-2">{{ contact.first_name }} {{ contact.last_name }}
+                    <span class="text-muted">({{ contact.email }})</span></legend>
+                {% for value, label in choices %}
+                    <label class="mr-3">
+                        <input type="radio" name="frequency_{{ contact.pk }}" value="{{ value }}"
+                               {% if contact.notification_frequency == value %}checked{% endif %}>
+                        {{ label }}
+                    </label>
+                {% endfor %}
+            </fieldset>
+        {% empty %}
+            <p class="text-muted">No contacts yet. Add contacts first.</p>
+        {% endfor %}
+        {% if contacts %}<button class="btn btn-obc-blue">Save preferences</button>{% endif %}
+    </form>
+</div>
 {% endblock %}

@@ -1,6 +1,9 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
+{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' document.initiative_id %}"><i class="fa-solid fa-arrow-left"></i> Back to documents</a>{% endblock %}
 {% block portal_title %}Edit document{% endblock %}
 {% block portal_content %}
-{% crispy form %}
+<div class="portal-card" style="max-width:640px;">
+    {% crispy form %}
+</div>
 {% endblock %}

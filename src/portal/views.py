@@ -15,7 +15,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.http import FileResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -140,13 +140,19 @@ def obc_dashboard(request):
     recent_documents = (
         Document.objects.filter(document_type__in=types)
         .select_related("initiative", "document_type")
-        .order_by("-uploaded_at")[:25]
+        .order_by("-uploaded_at")[:10]
     )
+    initiatives = Initiative.objects.annotate(
+        document_count=Count(
+            "documents",
+            filter=Q(documents__document_type__in=types),
+        )
+    ).order_by("name")
     return render(
         request,
         "portal/obc_dashboard.html",
         {
-            "initiatives": Initiative.objects.all().order_by("name"),
+            "initiatives": initiatives,
             "recent_documents": recent_documents,
         },
     )

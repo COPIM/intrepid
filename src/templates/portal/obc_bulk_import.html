@@ -1,9 +1,17 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>{% endblock %}
 {% block portal_title %}Bulk import documents{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">Import a back-catalogue of documents in one go.</p>{% endblock %}
 {% block portal_content %}
-<p>Upload a ZIP whose folders are named <code>&lt;short_code&gt;/YYYY-MM/</code>, with the
-documents inside each month folder. The filenames themselves can be anything. Nothing is
-saved until you review and confirm the preview.</p>
-{% crispy form %}
+<div class="portal-card">
+    <p>Upload a ZIP file whose folders are named
+    <code>&lt;short_code&gt;/YYYY-MM/</code> &mdash; for example
+    <code>PUNC/2024-03/</code> &mdash; with the documents inside each month
+    folder. <strong>The filenames themselves can be anything.</strong></p>
+    <p>Nothing is saved until you review the preview and confirm. Anything that
+    can't be matched (an unknown short code, a bad date, an unexpected file type)
+    is listed for you to fix &mdash; it is never imported silently.</p>
+    {% crispy form %}
+</div>
 {% endblock %}

@@ -1,34 +1,39 @@
 {% extends "portal/base.html" %}
-{% block portal_title %}Upload — {{ initiative.name }}{% endblock %}
+{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' initiative.pk %}"><i class="fa-solid fa-arrow-left"></i> {{ initiative.name }}</a>{% endblock %}
+{% block portal_title %}Upload documents{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">Uploading for <strong>{{ initiative.name }}</strong>. You can select several files at once.</p>{% endblock %}
 {% block portal_content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+<div class="portal-card" style="max-width:640px;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
 
-    <div class="form-group">
-        <label for="id_document_type">Document type</label>
-        <select name="document_type" id="id_document_type" class="form-control">
-            {% for type in form.fields.document_type.queryset %}
-                <option value="{{ type.pk }}" data-requires="{{ type.requires_reporting_month|yesno:'1,0' }}">{{ type.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="id_document_type">Document type</label>
+            <select name="document_type" id="id_document_type" class="form-control">
+                {% for type in form.fields.document_type.queryset %}
+                    <option value="{{ type.pk }}" data-requires="{{ type.requires_reporting_month|yesno:'1,0' }}">{{ type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="form-group" id="reporting_month_group">
-        <label for="id_reporting_month">Reporting month</label>
-        <input type="month" name="reporting_month" id="id_reporting_month" class="form-control"
-               value="{{ form.reporting_month.value|default_if_none:'' }}">
-        {% if form.reporting_month.errors %}<div class="text-danger">{{ form.reporting_month.errors }}</div>{% endif %}
-    </div>
+        <div class="form-group" id="reporting_month_group">
+            <label for="id_reporting_month">Reporting month</label>
+            <input type="month" name="reporting_month" id="id_reporting_month" class="form-control"
+                   value="{{ form.reporting_month.value|default_if_none:'' }}">
+            <small class="form-text text-muted">Required for document types such as Remittance advice.</small>
+            {% if form.reporting_month.errors %}<div class="text-danger">{{ form.reporting_month.errors }}</div>{% endif %}
+        </div>
 
-    <div class="form-group">
-        <label for="id_file">Files (you can select several)</label>
-        <input type="file" name="file" id="id_file" multiple class="form-control-file">
-        {% if form.file.errors %}<div class="text-danger">{{ form.file.errors }}</div>{% endif %}
-    </div>
+        <div class="form-group">
+            <label for="id_file">Files</label>
+            <input type="file" name="file" id="id_file" multiple class="form-control-file">
+            {% if form.file.errors %}<div class="text-danger">{{ form.file.errors }}</div>{% endif %}
+        </div>
 
-    <button class="btn btn-primary" type="submit">Upload</button>
-</form>
+        <button class="btn btn-obc-blue" type="submit"><i class="fa-solid fa-upload"></i> Upload</button>
+    </form>
+</div>
 
 <script>
 (function () {
