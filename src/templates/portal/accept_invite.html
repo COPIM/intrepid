@@ -15,8 +15,6 @@
         {% get_site_text 'portal_invite_existing_post' %}
     </div>
 {% elif confirm_only %}
-    {# A matching account is already signed in; require an explicit click so an
-       email scanner that opens the link cannot auto-consume the invitation. #}
     <p>{% get_site_text 'portal_invite_welcome' %}{% if contact.initiative %} ({{ contact.initiative.name }}){% endif %}.
     {% get_site_text 'portal_invite_confirm_hint' %}</p>
     <div class="portal-card" style="max-width:520px;">
@@ -28,8 +26,6 @@
         </form>
     </div>
 {% else %}
-    {# New account or detail-less invite account: collect a profile + password.
-       This is a POST form, so just opening the link never activates anything. #}
     <p>{% get_site_text 'portal_invite_welcome' %}{% if contact.initiative %} ({{ contact.initiative.name }}){% endif %}.
     {% get_site_text 'portal_invite_setup_hint' %}</p>
     <div class="portal-card" style="max-width:560px;">
