@@ -359,6 +359,45 @@ class SendInviteTests(ViewTestBase):
         self.assertEqual(response.status_code, 403)
 
 
+class InitiativeUserManagementTests(ViewTestBase):
+    def _url(self):
+        return reverse(
+            "portal:obc_initiative_users",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def test_obc_can_add_user_to_initiative(self):
+        newcomer = User.objects.create_user(
+            "newcomer", email="newcomer@example.com", password="pw"
+        )
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"email": "newcomer@example.com"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(newcomer, self.initiative.users.all())
+
+    def test_obc_can_remove_user_from_initiative(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_user": str(self.provider.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn(self.provider, self.initiative.users.all())
+
+    def test_unknown_email_is_rejected(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"email": "nobody@example.com"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.initiative.users.count(), 1)  # unchanged
+
+    def test_provider_cannot_manage_users(self):
+        self.client.force_login(self.provider)
+        self.assertEqual(self.client.get(self._url()).status_code, 403)
+
+
 class BulkDownloadTests(ViewTestBase):
     def test_bulk_download_streams_zip(self):
         self.client.force_login(self.staff)

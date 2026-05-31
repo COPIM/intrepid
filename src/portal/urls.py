@@ -18,6 +18,11 @@ urlpatterns = [
         views.obc_upload,
         name="obc_upload",
     ),
+    path(
+        "obc/initiative/<int:initiative_id>/users/",
+        views.obc_manage_initiative_users,
+        name="obc_initiative_users",
+    ),
     path("obc/bulk-import/", views.obc_bulk_import, name="obc_bulk_import"),
     path(
         "obc/bulk-import/<int:job_id>/commit/",

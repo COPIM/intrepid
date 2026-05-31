@@ -1,0 +1,37 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' initiative.pk %}"><i class="fa-solid fa-arrow-left"></i> Back to documents</a>{% endblock %}
+{% block portal_title %}Provider access &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">These user accounts can sign in and see the Provider side of the portal for <strong>{{ initiative.name }}</strong> &mdash; their documents, contacts and notification settings.</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <h3 class="portal-section-title mt-0">Current users</h3>
+    <table class="table mb-0">
+        <thead><tr><th>Name</th><th>Username</th><th>Email</th><th></th></tr></thead>
+        <tbody>
+            {% for member in members %}
+                <tr>
+                    <td>{{ member.get_full_name|default:'&mdash;' }}</td>
+                    <td>{{ member.username }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="remove_user" value="{{ member.pk }}">
+                            <button class="btn btn-sm btn-link text-danger p-0">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="text-muted">No users have access to this Provider yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3 class="portal-section-title">Add a user</h3>
+<p class="portal-section-hint">Enter the email address of an existing OBC account to give them access to this Provider. To onboard someone who doesn't have an account yet, invite them from the Provider's contacts instead.</p>
+<div class="portal-card" style="max-width:560px;">
+    {% crispy form %}
+</div>
+{% endblock %}

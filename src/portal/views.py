@@ -32,6 +32,7 @@ from portal.forms import (
     BulkImportZipForm,
     DocumentEditForm,
     DocumentUploadForm,
+    InitiativeUserForm,
     ProviderContactForm,
 )
 from portal.models import (
@@ -376,6 +377,49 @@ def provider_manage_contacts(request, initiative_id):
             "contacts": initiative.provider_contacts.all(),
             "form": form,
             "is_obc": is_obc_staff(request.user),
+        },
+    )
+
+
+@obc_staff_required
+def obc_manage_initiative_users(request, initiative_id):
+    """OBC action: control which user accounts can see a Provider's portal."""
+    initiative = get_object_or_404(Initiative, pk=initiative_id)
+    form = InitiativeUserForm()
+    if request.method == "POST":
+        if request.POST.get("remove_user"):
+            user = get_object_or_404(User, pk=request.POST["remove_user"])
+            initiative.users.remove(user)
+            messages.success(
+                request,
+                "Removed {0} from {1}.".format(
+                    user.email or user.username, initiative.name
+                ),
+            )
+            return redirect(
+                "portal:obc_initiative_users", initiative_id=initiative.pk
+            )
+        form = InitiativeUserForm(request.POST)
+        if form.is_valid():
+            initiative.users.add(form.user)
+            messages.success(
+                request,
+                "Added {0} to {1}.".format(
+                    form.user.email or form.user.username, initiative.name
+                ),
+            )
+            return redirect(
+                "portal:obc_initiative_users", initiative_id=initiative.pk
+            )
+    return render(
+        request,
+        "portal/obc_initiative_users.html",
+        {
+            "initiative": initiative,
+            "form": form,
+            "members": initiative.users.all().order_by(
+                "last_name", "username"
+            ),
         },
     )
 

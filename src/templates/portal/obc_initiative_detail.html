@@ -3,7 +3,10 @@
 {% block portal_title %}{{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">Documents held for this Provider. Filter the list below, or upload new documents.</p>{% endblock %}
 {% block portal_content %}
-<p><a class="btn btn-obc-blue" href="{% url 'portal:obc_upload' initiative.pk %}"><i class="fa-solid fa-upload"></i> Upload documents</a></p>
+<p>
+    <a class="btn btn-obc-blue" href="{% url 'portal:obc_upload' initiative.pk %}"><i class="fa-solid fa-upload"></i> Upload documents</a>
+    <a class="btn btn-obc-outline" href="{% url 'portal:obc_initiative_users' initiative.pk %}"><i class="fa-solid fa-users"></i> Manage users</a>
+</p>
 
 <div class="portal-card">
     <form method="get" class="form-row mb-3">

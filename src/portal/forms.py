@@ -11,6 +11,7 @@ import zipfile
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
+from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
@@ -143,6 +144,28 @@ class NotificationPreferencesForm(forms.ModelForm):
         model = ProviderContact
         fields = ["notification_frequency"]
         widgets = {"notification_frequency": forms.RadioSelect}
+
+
+class InitiativeUserForm(forms.Form):
+    """Add an existing user account to a Provider by email address."""
+
+    email = forms.EmailField(label="User's email address")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = None
+        self.helper = FormHelper()
+        self.helper.add_input(Submit("submit", "Add user"))
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        self.user = User.objects.filter(email__iexact=email).first()
+        if self.user is None:
+            raise ValidationError(
+                "No user account exists with that email address. Invite them "
+                "from the Provider's contacts instead."
+            )
+        return email
 
 
 class AcceptInviteForm(forms.Form):
