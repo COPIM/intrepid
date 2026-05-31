@@ -46,7 +46,7 @@
     </div>
 
     <div class="row rock-bottom-mobile">
-        <div class="col">{{ request.site.base_copyright_notice|safe }}.
+        <div class="col">{{ request.site.base_copyright_notice|safe }}.{% if request.user.is_authenticated %} | Currently logged in as {{ request.user.get_username }}{% endif %}
         </div>
     </div>
 
@@ -96,7 +96,7 @@
 
     <div class="row rock-bottom">
         <div class="col-2"></div>
-        <div class="col-10"><a href="{% url 'fixed_page' 'terms' %}">{% get_site_text 'terms_of_use' %}</a> | <a href="{% url 'fixed_page' 'privacy' %}">{% get_site_text 'privacy_policy' %}</a> | <a href="{% url 'fixed_page' 'accessibility' %}">{% get_site_text 'accessibility' %}</a> | {{ request.site.base_copyright_notice|safe }}
+        <div class="col-10"><a href="{% url 'fixed_page' 'terms' %}">{% get_site_text 'terms_of_use' %}</a> | <a href="{% url 'fixed_page' 'privacy' %}">{% get_site_text 'privacy_policy' %}</a> | <a href="{% url 'fixed_page' 'accessibility' %}">{% get_site_text 'accessibility' %}</a> | {{ request.site.base_copyright_notice|safe }}{% if request.user.is_authenticated %} | Currently logged in as {{ request.user.get_username }}{% endif %}
         </div>
     </div>
 </div>
