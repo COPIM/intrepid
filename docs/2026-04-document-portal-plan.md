@@ -428,6 +428,8 @@ portal/
     provider_initiative_documents.html  # filter + table + bulk-download form
     provider_contacts.html
     provider_notification_prefs.html
+    obc_contact_changes.html            # OBC view of the provider contact-change log (§9)
+    obc_initiative_users.html           # OBC screen to manage which users can access a Provider
     accept_invite.html
     emails/
         document_notification_immediate.html
@@ -620,13 +622,13 @@ Important note: tests around exact wording (email subject text, button labels) a
 
 These run automatically when the new code is deployed. OBC doesn't need to do anything manual to "switch the portal on".
 
-A single initial migration (`0001_initial.py`) creates all six models. A second data migration (`0002_seed.py`) populates (all steps idempotent via `get_or_create`, so re-running is safe):
+The initial migration (`0001_initial.py`) creates the six core models; `0002` adds the bulk-import staging models and `0003` the modeltranslation fields. The seed data migration (`0004_seed.py`) then populates (all steps idempotent via `get_or_create`, so re-running is safe):
 - Two `DocumentType` rows ("Remittance advice" with `requires_reporting_month=True, default=True`; "Agreement contract" with `requires_reporting_month=False`).
 - The `OBC Team` and `Provider Members` `auth.Group` rows.
 - `EmailTemplate` rows looked up by `name` (`document_notification_immediate`, `document_notification_digest`, `contact_change_notification`, `provider_invite`), using the HTML files in `templates/portal/emails/` as the initial `subject`/`body`. (`EmailTemplate` has no slug field — `name` is the key.)
 - *(Deferred.)* The portal gates the OBC area with its own `obc_area_required`/`obc_staff_required` decorators plus per-type `DocumentTypePermission`, rather than `fluid_permissions.ViewGroup` per-view gating. Seeding `ViewGroup` rows would surface the portal views in `/accounts/manage_fluid_permissions/` but, because the portal views do not use `user_in_authorised_group`, those rows would not actually restrict access — so they are intentionally **not** seeded, to avoid misleading, non-functional configuration. Layering `fluid_permissions` on top is a small, self-contained follow-up if per-view gating is later wanted.
 
-The migration uses `apps.get_model(...)` for `DocumentType`/`Group`/`EmailTemplate`/`ViewGroup` (the historical-model pattern), reading the seed email bodies with Django's template loader so the HTML files remain the single source of truth.
+The seed migration uses `apps.get_model(...)` for `DocumentType`/`Group`/`EmailTemplate` (the historical-model pattern), reading the seed email bodies with Django's template loader so the HTML files remain the single source of truth. Three further data migrations (`0005`–`0007`) seed the portal's translatable UI strings, form labels, and notification-frequency labels into the existing `cms.SiteText` system (so the whole portal can be translated alongside the rest of the site).
 
 ---
 
