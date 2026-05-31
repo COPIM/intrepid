@@ -21,6 +21,10 @@
                     <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
                     </li>
                     {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> {% get_site_text 'logout' prefetched %}</a>
+                    </li>
+                    {% endif %}
 
                 </ul>
             </div>
@@ -133,9 +137,15 @@
         <li class="nav-item">
             <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
         </li>
+        <hr/>
         {% endif %}
 
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link nav-small" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> {% get_site_text 'logout' prefetched %}</a>
+        </li>
         <hr/>
+        {% endif %}
 
         <li class="nav-item lang-switcher" style="padding-left: 1rem;">
             <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="en" class="lang-btn lang-btn--mobile{% if CURRENT_LANGUAGE == 'en' %} lang-btn--active{% endif %}">EN</button></form>
