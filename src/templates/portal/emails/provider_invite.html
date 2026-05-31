@@ -1,10 +1,17 @@
-<p>Hello {{ contact.first_name }},</p>
+<p>Hello{% if contact.first_name %} {{ contact.first_name }}{% endif %},</p>
 
 <p>You have been invited to access the Open Book Collective document portal for
 {{ contact.initiative.name }}.</p>
 
-<p>Click the link below to choose a password and activate your account:</p>
+<p>Click the button below to confirm your email address and set up your account:</p>
 
-<p><a href="{{ url }}">{{ url }}</a></p>
+<p>
+    <a href="{{ url }}" style="display:inline-block;background:#151462;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;">Confirm email</a>
+</p>
 
-<p>This link is unique to you and can only be used once.</p>
+<p>If the button doesn't work, copy and paste this link into your browser:<br>
+<a href="{{ url }}">{{ url }}</a></p>
+
+<p>This link is unique to you and can only be used once. Nothing is activated
+until you confirm on the next page, so it is safe even if your email provider
+previews the link.</p>

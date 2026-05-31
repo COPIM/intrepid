@@ -439,3 +439,59 @@ class BulkDownloadTests(ViewTestBase):
         )
         self.assertEqual(len(archive.namelist()), 1)
         self.assertEqual(archive.read(archive.namelist()[0]), b"hello")
+
+
+class StaffManagementTests(ViewTestBase):
+    def _url(self):
+        return reverse("portal:obc_manage_staff")
+
+    def test_obc_can_add_user_as_staff(self):
+        newcomer = User.objects.create_user(
+            "newstaff", email="newstaff@example.com", password="pw"
+        )
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"email": "newstaff@example.com"}
+        )
+        self.assertEqual(response.status_code, 302)
+        newcomer.refresh_from_db()
+        self.assertTrue(newcomer.is_staff)
+        self.assertIn(newcomer, self.obc_group.user_set.all())
+
+    def test_obc_can_remove_staff(self):
+        target = User.objects.create_user(
+            "removeme", email="removeme@example.com", password="pw"
+        )
+        target.is_staff = True
+        target.save()
+        target.groups.add(self.obc_group)
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_user": str(target.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        target.refresh_from_db()
+        self.assertFalse(target.is_staff)
+        self.assertNotIn(target, self.obc_group.user_set.all())
+
+    def test_provider_denied_staff_screen(self):
+        self.client.force_login(self.provider)
+        self.assertEqual(self.client.get(self._url()).status_code, 403)
+
+    def test_outsider_denied_staff_screen(self):
+        self.client.force_login(self.outsider)
+        self.assertEqual(self.client.get(self._url()).status_code, 403)
+
+    def test_unknown_email_is_rejected(self):
+        self.client.force_login(self.staff)
+        before = list(
+            User.objects.filter(is_staff=True).values_list("pk", flat=True)
+        )
+        response = self.client.post(
+            self._url(), {"email": "nobody@example.com"}
+        )
+        self.assertEqual(response.status_code, 200)
+        after = list(
+            User.objects.filter(is_staff=True).values_list("pk", flat=True)
+        )
+        self.assertEqual(before, after)

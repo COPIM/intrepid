@@ -226,6 +226,52 @@ class InitiativeUserForm(forms.Form):
         return email
 
 
+class InviteByEmailForm(forms.Form):
+    """Invite a new person by email address alone."""
+
+    email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].label = site_text(
+            "portal_form_invite_email", "Email address"
+        )
+        self.helper = FormHelper()
+        self.helper.add_input(
+            Submit(
+                "submit",
+                site_text("portal_form_invite_btn", "Invite by email"),
+            )
+        )
+
+
+class StaffUserForm(forms.Form):
+    """Grant an existing user account OBC staff (backend) access by email."""
+
+    email = forms.EmailField(label="User's email address")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = None
+        self.fields["email"].label = site_text(
+            "portal_form_staff_email", "User's email address"
+        )
+        self.helper = FormHelper()
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_add_staff", "Make staff"))
+        )
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        self.user = User.objects.filter(email__iexact=email).first()
+        if self.user is None:
+            raise ValidationError(
+                "No user account exists with that email address. They need an "
+                "account first — invite them from a Provider's contacts."
+            )
+        return email
+
+
 class AcceptInviteForm(forms.Form):
     first_name = forms.CharField(max_length=150)
     last_name = forms.CharField(max_length=150)

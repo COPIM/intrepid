@@ -19,6 +19,11 @@
         <div class="tile-title">{% get_site_text 'portal_tile_contacts_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_contacts_desc' %}</p>
     </a>
+    <a class="portal-tile" href="{% url 'portal:obc_manage_staff' %}">
+        <div class="tile-icon"><i class="fa-solid fa-user-shield"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_staff_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_staff_desc' %}</p>
+    </a>
 </div>
 
 <h3 class="portal-section-title" id="providers">{% get_site_text 'portal_providers_heading' %}</h3>

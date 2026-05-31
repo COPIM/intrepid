@@ -33,7 +33,9 @@ from portal.forms import (
     DocumentEditForm,
     DocumentUploadForm,
     InitiativeUserForm,
+    InviteByEmailForm,
     ProviderContactForm,
+    StaffUserForm,
 )
 from portal.models import (
     NOTIFICATION_FREQUENCY_CHOICES,
@@ -44,6 +46,7 @@ from portal.models import (
     ProviderContact,
 )
 from portal.permissions import (
+    OBC_TEAM_GROUP,
     has_doc_type_access,
     is_obc_staff,
     obc_area_required,
@@ -189,6 +192,7 @@ def obc_initiative_detail(request, initiative_id):
             "documents": documents,
             "document_types": types,
             "filters": request.GET,
+            "is_obc": True,
         },
     )
 
@@ -354,6 +358,7 @@ def provider_initiative_documents(request, initiative_id):
             "documents": documents,
             "document_types": DocumentType.objects.all(),
             "filters": request.GET,
+            "is_obc": is_obc_staff(request.user),
         },
     )
 
@@ -394,6 +399,7 @@ def provider_manage_contacts(request, initiative_id):
             "initiative": initiative,
             "contacts": initiative.provider_contacts.all(),
             "form": form,
+            "invite_form": InviteByEmailForm(),
             "is_obc": is_obc_staff(request.user),
         },
     )
@@ -445,13 +451,22 @@ def obc_manage_initiative_users(request, initiative_id):
 @obc_staff_required
 @require_POST
 def send_invite(request, contact_id):
-    """OBC action: email a contact their one-time invitation link."""
+    """OBC action: (re-)send a contact their one-time invitation link."""
     contact = get_object_or_404(ProviderContact, pk=contact_id)
+    _send_invitation(request, contact)
+    messages.success(
+        request, "Invitation sent to {0}.".format(contact.email)
+    )
+    return redirect(
+        "portal:provider_manage_contacts",
+        initiative_id=contact.initiative_id,
+    )
+
+
+def _send_invitation(request, contact):
+    """Email a contact their one-time invitation link and record the time."""
     url = request.build_absolute_uri(
-        reverse(
-            "portal:accept_invite",
-            kwargs={"token": contact.invite_token},
-        )
+        reverse("portal:accept_invite", kwargs={"token": contact.invite_token})
     )
     try:
         template = EmailTemplate.objects.get(name="provider_invite")
@@ -460,12 +475,45 @@ def send_invite(request, contact_id):
         pass
     contact.invited_at = timezone.now()
     contact.save()
-    messages.success(
-        request, "Invitation sent to {0}.".format(contact.email)
-    )
+
+
+@user_is_initiative_manager
+@require_POST
+def invite_by_email(request, initiative_id):
+    """Invite someone by email alone.
+
+    Creates a contact (with no details yet) and, unless an account already
+    exists for that email, a detail-less user account, then sends the
+    invitation. The invitee fills in their name and password when they land.
+    """
+    initiative = get_object_or_404(Initiative, pk=initiative_id)
+    form = InviteByEmailForm(request.POST)
+    if form.is_valid():
+        email = form.cleaned_data["email"]
+        last = initiative.provider_contacts.order_by("-position").first()
+        contact = ProviderContact.objects.create(
+            initiative=initiative,
+            email=email,
+            first_name="",
+            last_name="",
+            position=(last.position + 1) if last else 1,
+        )
+        existing = (
+            User.objects.filter(email__iexact=email).first()
+            or User.objects.filter(username__iexact=email).first()
+        )
+        if existing is None:
+            user = User.objects.create_user(username=email, email=email)
+            user.set_unusable_password()
+            user.save()
+            contact.user = user
+            contact.save()
+        _send_invitation(request, contact)
+        messages.success(request, "Invitation sent to {0}.".format(email))
+    else:
+        messages.error(request, "Please enter a valid email address.")
     return redirect(
-        "portal:provider_manage_contacts",
-        initiative_id=contact.initiative_id,
+        "portal:provider_manage_contacts", initiative_id=initiative.pk
     )
 
 
@@ -491,6 +539,7 @@ def provider_notification_prefs(request, initiative_id):
             "initiative": initiative,
             "contacts": contacts,
             "choices": NOTIFICATION_FREQUENCY_CHOICES,
+            "is_obc": is_obc_staff(request.user),
         },
     )
 
@@ -550,43 +599,56 @@ def accept_invite(request, token):
             {"already_accepted": True, "contact": contact},
         )
 
-    # Security: this endpoint is unauthenticated, so it must never set a
-    # password on a pre-existing account. If an account already exists for the
-    # invited email (by email OR username — the portal creates accounts with
-    # username == email), the person must sign in as that account to accept.
     existing_user = (
-        User.objects.filter(email=contact.email).first()
-        or User.objects.filter(username=contact.email).first()
+        User.objects.filter(email__iexact=contact.email).first()
+        or User.objects.filter(username__iexact=contact.email).first()
     )
-    if existing_user is not None:
+    # A detail-less invite account (created by invite-by-email) has no usable
+    # password yet, so the invitee may set one. Any OTHER existing account is a
+    # real account whose password must never be reset from this endpoint.
+    is_invite_account = (
+        contact.user_id is not None
+        and not contact.user.has_usable_password()
+    )
+
+    if existing_user is not None and not is_invite_account:
         if (
             request.user.is_authenticated
             and request.user.pk == existing_user.pk
         ):
-            _link_contact_to_user(contact, existing_user)
-            messages.success(request, "Invitation accepted.")
-            return redirect(
-                "portal:provider_initiative_documents",
-                initiative_id=contact.initiative_id,
+            # Logged in as the matching account. Require an explicit POST so an
+            # email-scanner that GETs the link cannot auto-consume the invite.
+            if request.method == "POST":
+                _link_contact_to_user(contact, existing_user)
+                messages.success(request, "Invitation accepted.")
+                return redirect(
+                    "portal:provider_initiative_documents",
+                    initiative_id=contact.initiative_id,
+                )
+            return render(
+                request,
+                "portal/accept_invite.html",
+                {"confirm_only": True, "contact": contact},
             )
         return render(
             request,
             "portal/accept_invite.html",
-            {
-                "existing_account": True,
-                "already_accepted": False,
-                "contact": contact,
-            },
+            {"existing_account": True, "contact": contact},
         )
 
+    # New signup or detail-less invite account: collect a profile + password.
+    # GET only ever renders the form; the account is created/activated on POST,
+    # so an auto-clicked link never consumes the invitation.
     if request.method == "POST":
         form = AcceptInviteForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(
-                username=contact.email,
-                email=contact.email,
-                password=form.cleaned_data["password1"],
-            )
+            if is_invite_account:
+                user = contact.user
+            else:
+                user = User.objects.create_user(
+                    username=contact.email, email=contact.email
+                )
+            user.set_password(form.cleaned_data["password1"])
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.save()
@@ -617,5 +679,58 @@ def accept_invite(request, token):
     return render(
         request,
         "portal/accept_invite.html",
-        {"form": form, "contact": contact, "already_accepted": False},
+        {"form": form, "contact": contact},
+    )
+
+
+@obc_staff_required
+def obc_manage_staff(request):
+    """OBC action: control which user accounts can access the OBC backend."""
+    obc_group, _ = Group.objects.get_or_create(name=OBC_TEAM_GROUP)
+    form = StaffUserForm()
+    if request.method == "POST":
+        if request.POST.get("remove_user"):
+            user = get_object_or_404(User, pk=request.POST["remove_user"])
+            if user == request.user:
+                messages.warning(
+                    request,
+                    "You cannot remove your own staff access.",
+                )
+            elif user.is_superuser:
+                messages.warning(
+                    request,
+                    "You cannot remove staff access from a superuser.",
+                )
+            else:
+                user.is_staff = False
+                user.save()
+                user.groups.remove(obc_group)
+                messages.success(
+                    request,
+                    "Removed staff access from {0}.".format(
+                        user.email or user.username
+                    ),
+                )
+            return redirect("portal:obc_manage_staff")
+        form = StaffUserForm(request.POST)
+        if form.is_valid():
+            form.user.is_staff = True
+            form.user.save()
+            form.user.groups.add(obc_group)
+            messages.success(
+                request,
+                "Made {0} a member of staff.".format(
+                    form.user.email or form.user.username
+                ),
+            )
+            return redirect("portal:obc_manage_staff")
+    return render(
+        request,
+        "portal/obc_manage_staff.html",
+        {
+            "form": form,
+            "members": User.objects.filter(is_staff=True).order_by(
+                "last_name", "username"
+            ),
+        },
     )

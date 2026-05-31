@@ -1,9 +1,5 @@
 {% extends "portal/base.html" %}
-{% block portal_nav %}
-    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="active">{% get_site_text 'portal_nav_documents' %}</a>
-    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">{% get_site_text 'portal_nav_contacts' %}</a>
-    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">{% get_site_text 'portal_th_notifications' %}</a>
-{% endblock %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='documents' %}{% endblock %}
 {% block portal_title %}{{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_provider_docs_subhint' %}</p>{% endblock %}
 {% block portal_content %}

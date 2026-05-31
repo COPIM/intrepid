@@ -36,7 +36,67 @@ class InvitationTests(TestCase):
     def test_get_shows_acceptance_form(self):
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.context["already_accepted"])
+        self.assertIn("form", response.context)
+
+    def test_get_does_not_consume_invite(self):
+        """Opening the link (GET) must never accept — only an explicit POST."""
+        before = User.objects.count()
+        self.client.get(self._url())
+        self.contact.refresh_from_db()
+        self.assertIsNone(self.contact.accepted_at)
+        self.assertEqual(User.objects.count(), before)
+
+    def test_invite_by_email_creates_contact_and_detailless_account(self):
+        staff = User.objects.create_user(
+            "staffer", password="pw", is_staff=True
+        )
+        self.client.force_login(staff)
+        response = self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "newperson@example.com"},
+        )
+        self.assertEqual(response.status_code, 302)
+        contact = ProviderContact.objects.get(email="newperson@example.com")
+        self.assertIsNotNone(contact.invited_at)
+        self.assertIsNotNone(contact.user)
+        self.assertFalse(contact.user.has_usable_password())
+
+    def test_invite_by_email_account_can_be_activated(self):
+        staff = User.objects.create_user(
+            "staffer2", password="pw", is_staff=True
+        )
+        self.client.force_login(staff)
+        self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "fresh@example.com"},
+        )
+        self.client.logout()
+        contact = ProviderContact.objects.get(email="fresh@example.com")
+        response = self.client.post(
+            reverse(
+                "portal:accept_invite",
+                kwargs={"token": contact.invite_token},
+            ),
+            {
+                "first_name": "Fresh",
+                "last_name": "Face",
+                "password1": "set-up-pass-99",
+                "password2": "set-up-pass-99",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        contact.refresh_from_db()
+        self.assertIsNotNone(contact.accepted_at)
+        self.assertEqual(contact.first_name, "Fresh")
+        contact.user.refresh_from_db()
+        self.assertTrue(contact.user.check_password("set-up-pass-99"))
+        self.assertIn(contact.user, self.initiative.users.all())
 
     def test_accepting_creates_user_and_links_initiative(self):
         response = self.client.post(

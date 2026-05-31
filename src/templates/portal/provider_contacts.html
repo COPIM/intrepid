@@ -1,10 +1,6 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
-{% block portal_nav %}
-    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">{% get_site_text 'portal_nav_documents' %}</a>
-    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}" class="active">{% get_site_text 'portal_nav_contacts' %}</a>
-    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">{% get_site_text 'portal_th_notifications' %}</a>
-{% endblock %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='contacts' %}{% endblock %}
 {% block portal_title %}{% get_site_text 'portal_contacts_heading' %} &mdash; {{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_contacts_subhint' %}</p>{% endblock %}
 {% block portal_content %}
@@ -19,22 +15,14 @@
         </tr></thead>
         <tbody>
             {% for contact in contacts %}
-                <tr>
+                {# Read-only view of the contact #}
+                <tr class="contact-readonly" data-contact-row="{{ contact.pk }}">
                     <td>{{ contact.first_name }} {{ contact.last_name }}</td>
                     <td>{{ contact.job_title }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{% with freq_key='portal_freq_'|add:contact.notification_frequency %}{% get_site_text freq_key %}{% endwith %}</td>
                     <td>
-                        <form method="post" class="form-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="contact_id" value="{{ contact.pk }}">
-                            <input name="first_name" value="{{ contact.first_name }}" class="form-control form-control-sm mr-1" style="width:7rem;">
-                            <input name="last_name" value="{{ contact.last_name }}" class="form-control form-control-sm mr-1" style="width:7rem;">
-                            <input name="job_title" value="{{ contact.job_title }}" class="form-control form-control-sm mr-1" style="width:8rem;">
-                            <input name="email" value="{{ contact.email }}" class="form-control form-control-sm mr-1" style="width:11rem;">
-                            <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
-                            <button class="btn btn-sm btn-obc-outline">{% get_site_text 'portal_save' %}</button>
-                        </form>
+                        <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
                         {% if is_obc %}
                             <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
                                 {% csrf_token %}
@@ -43,6 +31,36 @@
                                 </button>
                             </form>
                         {% endif %}
+                    </td>
+                </tr>
+                {# Inline edit form for the contact, hidden until "Edit" is clicked #}
+                <tr class="contact-edit-row" data-contact-edit-row="{{ contact.pk }}" style="display:none;">
+                    <td colspan="5">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="contact_id" value="{{ contact.pk }}">
+                            <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="contact-first-name-{{ contact.pk }}">{% get_site_text 'portal_th_name' %}</label>
+                                    <input id="contact-first-name-{{ contact.pk }}" name="first_name" value="{{ contact.first_name }}" placeholder="{% get_site_text 'portal_contacts_first_name' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-last-name-{{ contact.pk }}">{% get_site_text 'portal_contacts_last_name' %}</label>
+                                    <input id="contact-last-name-{{ contact.pk }}" name="last_name" value="{{ contact.last_name }}" placeholder="{% get_site_text 'portal_contacts_last_name' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-job-title-{{ contact.pk }}">{% get_site_text 'portal_th_job_title' %}</label>
+                                    <input id="contact-job-title-{{ contact.pk }}" name="job_title" value="{{ contact.job_title }}" placeholder="{% get_site_text 'portal_th_job_title' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-email-{{ contact.pk }}">{% get_site_text 'portal_th_email' %}</label>
+                                    <input id="contact-email-{{ contact.pk }}" name="email" type="email" value="{{ contact.email }}" placeholder="{% get_site_text 'portal_th_email' %}" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-obc-blue">{% get_site_text 'portal_save' %}</button>
+                            <button type="button" class="btn btn-sm btn-obc-outline contact-cancel-btn" data-contact-cancel="{{ contact.pk }}">{% get_site_text 'portal_cancel' %}</button>
+                        </form>
                     </td>
                 </tr>
             {% empty %}
@@ -54,13 +72,63 @@
 
 <h3 class="portal-section-title">{% get_site_text 'portal_contacts_add_heading' %}</h3>
 <div class="portal-card" style="max-width:640px;">
-    <form method="post" id="add-contact-form">
-        {% crispy form %}
+    <button type="button" class="btn btn-obc-blue" id="add-contact-toggle">{% get_site_text 'portal_contacts_add_button' %}</button>
+    <div id="add-contact-wrapper" style="display:none;margin-top:1rem;">
+        <form method="post" id="add-contact-form">
+            {% crispy form %}
+        </form>
+        <button type="button" class="btn btn-sm btn-obc-outline" id="add-contact-cancel">{% get_site_text 'portal_cancel' %}</button>
+    </div>
+</div>
+
+<h3 class="portal-section-title">{% get_site_text 'portal_invite_email_heading' %}</h3>
+<p class="portal-section-hint">{% get_site_text 'portal_invite_email_hint' %}</p>
+<div class="portal-card" style="max-width:640px;">
+    <form method="post" action="{% url 'portal:invite_by_email' initiative.pk %}">
+        {% crispy invite_form %}
     </form>
 </div>
 
 <script>
 (function () {
+    // Per-row toggling between the read-only view and the inline edit form.
+    function setRow(pk, editing) {
+        var readonly = document.querySelector('[data-contact-row="' + pk + '"]');
+        var editRow = document.querySelector('[data-contact-edit-row="' + pk + '"]');
+        if (readonly) { readonly.style.display = editing ? 'none' : ''; }
+        if (editRow) { editRow.style.display = editing ? '' : 'none'; }
+    }
+
+    document.querySelectorAll('.contact-edit-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            setRow(btn.getAttribute('data-contact-edit'), true);
+        });
+    });
+
+    document.querySelectorAll('.contact-cancel-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            setRow(btn.getAttribute('data-contact-cancel'), false);
+        });
+    });
+
+    // Show/hide the "Add a contact" form behind a button.
+    var addToggle = document.getElementById('add-contact-toggle');
+    var addWrapper = document.getElementById('add-contact-wrapper');
+    var addCancel = document.getElementById('add-contact-cancel');
+    if (addToggle && addWrapper) {
+        addToggle.addEventListener('click', function () {
+            addWrapper.style.display = '';
+            addToggle.style.display = 'none';
+        });
+    }
+    if (addCancel && addWrapper && addToggle) {
+        addCancel.addEventListener('click', function () {
+            addWrapper.style.display = 'none';
+            addToggle.style.display = '';
+        });
+    }
+
+    // Warn when adding a 6th contact via the add form.
     var existing = {{ contacts.count }};
     var form = document.getElementById('add-contact-form');
     if (form) {

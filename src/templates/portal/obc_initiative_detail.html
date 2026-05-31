@@ -1,5 +1,5 @@
 {% extends "portal/base.html" %}
-{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_all_providers' %}</a>{% endblock %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='documents' %}{% endblock %}
 {% block portal_title %}{{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_detail_hint' %}</p>{% endblock %}
 {% block portal_content %}

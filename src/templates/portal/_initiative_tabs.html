@@ -1,0 +1,9 @@
+{# Shared per-initiative sub-navigation. Expects: initiative, is_obc, active. #}
+{% if is_obc %}
+    <a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_all_providers' %}</a>
+    <a href="{% url 'portal:obc_initiative_detail' initiative.pk %}" class="{% if active == 'documents' %}active{% endif %}">{% get_site_text 'portal_nav_documents' %}</a>
+{% else %}
+    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="{% if active == 'documents' %}active{% endif %}">{% get_site_text 'portal_nav_documents' %}</a>
+{% endif %}
+<a href="{% url 'portal:provider_manage_contacts' initiative.pk %}" class="{% if active == 'contacts' %}active{% endif %}">{% get_site_text 'portal_nav_contacts' %}</a>
+<a href="{% url 'portal:provider_notification_prefs' initiative.pk %}" class="{% if active == 'notifications' %}active{% endif %}">{% get_site_text 'portal_th_notifications' %}</a>

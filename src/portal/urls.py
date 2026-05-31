@@ -23,6 +23,7 @@ urlpatterns = [
         views.obc_manage_initiative_users,
         name="obc_initiative_users",
     ),
+    path("obc/staff/", views.obc_manage_staff, name="obc_manage_staff"),
     path("obc/bulk-import/", views.obc_bulk_import, name="obc_bulk_import"),
     path(
         "obc/bulk-import/<int:job_id>/commit/",
@@ -59,6 +60,11 @@ urlpatterns = [
         "provider/initiative/<int:initiative_id>/contacts/",
         views.provider_manage_contacts,
         name="provider_manage_contacts",
+    ),
+    path(
+        "provider/initiative/<int:initiative_id>/invite-by-email/",
+        views.invite_by_email,
+        name="invite_by_email",
     ),
     path(
         "provider/initiative/<int:initiative_id>/notifications/",
