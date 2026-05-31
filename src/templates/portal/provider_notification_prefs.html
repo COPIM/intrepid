@@ -1,11 +1,11 @@
 {% extends "portal/base.html" %}
 {% block portal_nav %}
-    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">Documents</a>
-    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">Contacts</a>
-    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}" class="active">Notifications</a>
+    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">{% get_site_text 'portal_nav_documents' %}</a>
+    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">{% get_site_text 'portal_nav_contacts' %}</a>
+    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}" class="active">{% get_site_text 'portal_th_notifications' %}</a>
 {% endblock %}
-{% block portal_title %}Notification preferences &mdash; {{ initiative.name }}{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">Each contact chooses how often they hear about new documents. Everyone is independent &mdash; one person can get every document immediately while another gets a weekly digest or nothing at all.</p>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_notif_heading' %} &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_notif_subhint' %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
     <form method="post">
@@ -23,9 +23,9 @@
                 {% endfor %}
             </fieldset>
         {% empty %}
-            <p class="text-muted">No contacts yet. Add contacts first.</p>
+            <p class="text-muted">{% get_site_text 'portal_notif_no_contacts' %}</p>
         {% endfor %}
-        {% if contacts %}<button class="btn btn-obc-blue">Save preferences</button>{% endif %}
+        {% if contacts %}<button class="btn btn-obc-blue">{% get_site_text 'portal_btn_save_prefs' %}</button>{% endif %}
     </form>
 </div>
 {% endblock %}

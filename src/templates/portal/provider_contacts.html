@@ -1,16 +1,22 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
 {% block portal_nav %}
-    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">Documents</a>
-    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}" class="active">Contacts</a>
-    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">Notifications</a>
+    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}">{% get_site_text 'portal_nav_documents' %}</a>
+    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}" class="active">{% get_site_text 'portal_nav_contacts' %}</a>
+    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">{% get_site_text 'portal_th_notifications' %}</a>
 {% endblock %}
-{% block portal_title %}Contacts &mdash; {{ initiative.name }}{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">The people at your organisation who manage documents and notifications. Any change is recorded and sent to the OBC team.</p>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_contacts_heading' %} &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_contacts_subhint' %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
     <table class="table">
-        <thead><tr><th>Name</th><th>Job title</th><th>Email</th><th>Notifications</th><th></th></tr></thead>
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_name' %}</th>
+            <th>{% get_site_text 'portal_th_job_title' %}</th>
+            <th>{% get_site_text 'portal_th_email' %}</th>
+            <th>{% get_site_text 'portal_th_notifications' %}</th>
+            <th></th>
+        </tr></thead>
         <tbody>
             {% for contact in contacts %}
                 <tr>
@@ -28,26 +34,26 @@
                             <input name="email" value="{{ contact.email }}" class="form-control form-control-sm mr-1" style="width:11rem;">
                             <input type="hidden" name="position" value="{{ contact.position }}">
                             <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
-                            <button class="btn btn-sm btn-obc-outline">Save</button>
+                            <button class="btn btn-sm btn-obc-outline">{% get_site_text 'portal_save' %}</button>
                         </form>
                         {% if is_obc %}
                             <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
                                 {% csrf_token %}
                                 <button class="btn btn-sm btn-link p-0 ml-1">
-                                    {% if contact.invited_at or contact.accepted_at %}Re-send invite{% else %}Send invitation{% endif %}
+                                    {% if contact.invited_at or contact.accepted_at %}{% get_site_text 'portal_resend_invite' %}{% else %}{% get_site_text 'portal_send_invitation' %}{% endif %}
                                 </button>
                             </form>
                         {% endif %}
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="5" class="text-muted">No contacts yet.</td></tr>
+                <tr><td colspan="5" class="text-muted">{% get_site_text 'portal_contacts_empty' %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 
-<h3 class="portal-section-title">Add a contact</h3>
+<h3 class="portal-section-title">{% get_site_text 'portal_contacts_add_heading' %}</h3>
 <div class="portal-card" style="max-width:640px;">
     <form method="post" id="add-contact-form">
         {% crispy form %}
@@ -61,8 +67,7 @@
     if (form) {
         form.addEventListener('submit', function (event) {
             if (existing >= 5) {
-                if (!window.confirm('This provider already has ' + existing +
-                        ' contacts. Most providers need five or fewer — add another anyway?')) {
+                if (!window.confirm("{% get_site_text 'portal_contacts_softwarn' %}")) {
                     event.preventDefault();
                 }
             }

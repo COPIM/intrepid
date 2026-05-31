@@ -117,9 +117,9 @@
 <div class="portal">
     <header class="portal-masthead">
         <div>
-            <div class="portal-eyebrow">Open Book Collective</div>
+            <div class="portal-eyebrow">{% get_site_text 'portal_eyebrow' %}</div>
             <h1 class="h3 mb-0">
-                <a href="{% url 'portal:index' %}" class="portal-home">Document portal</a>
+                <a href="{% url 'portal:index' %}" class="portal-home">{% get_site_text 'portal_brand_name' %}</a>
             </h1>
         </div>
         <nav class="portal-nav">{% block portal_nav %}{% endblock %}</nav>
@@ -141,9 +141,8 @@
 
 {% block body-mobile %}
 <div class="portal-mobile-note">
-    <h1 class="h5">Document portal</h1>
-    <p>The document portal is designed for a larger screen. Please open it on a
-    desktop or tablet to upload, manage and download documents.</p>
-    <a class="btn btn-obc-blue" href="{% url 'portal:index' %}">Continue anyway</a>
+    <h1 class="h5">{% get_site_text 'portal_brand_name' %}</h1>
+    <p>{% get_site_text 'portal_mobile_note' %}</p>
+    <a class="btn btn-obc-blue" href="{% url 'portal:index' %}">{% get_site_text 'portal_mobile_continue' %}</a>
 </div>
 {% endblock body-mobile %}

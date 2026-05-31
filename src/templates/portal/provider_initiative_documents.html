@@ -1,38 +1,45 @@
 {% extends "portal/base.html" %}
 {% block portal_nav %}
-    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="active">Documents</a>
-    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">Contacts</a>
-    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">Notifications</a>
+    <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="active">{% get_site_text 'portal_nav_documents' %}</a>
+    <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}">{% get_site_text 'portal_nav_contacts' %}</a>
+    <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}">{% get_site_text 'portal_th_notifications' %}</a>
 {% endblock %}
 {% block portal_title %}{{ initiative.name }}{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">Documents the Open Book Collective has shared with you. Download them individually, or tick several and download a ZIP.</p>{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_provider_docs_subhint' %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
     <form method="get" class="form-row mb-3">
         <div class="col-md">
-            <label class="small text-muted mb-1">Type</label>
+            <label class="small text-muted mb-1">{% get_site_text 'portal_th_type' %}</label>
             <select name="document_type" class="form-control">
-                <option value="">All types</option>
+                <option value="">{% get_site_text 'portal_all_types' %}</option>
                 {% for type in document_types %}
                     <option value="{{ type.pk }}" {% if filters.document_type == type.pk|stringformat:'s' %}selected{% endif %}>{{ type.name }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="col-md">
-            <label class="small text-muted mb-1">Reporting month</label>
+            <label class="small text-muted mb-1">{% get_site_text 'portal_th_reporting_month' %}</label>
             <input type="month" name="reporting_month" value="{{ filters.reporting_month }}" class="form-control">
         </div>
         <div class="col-md">
-            <label class="small text-muted mb-1">Search name</label>
-            <input type="text" name="q" placeholder="Search" value="{{ filters.q }}" class="form-control">
+            <label class="small text-muted mb-1">{% get_site_text 'portal_search_name' %}</label>
+            <input type="text" name="q" value="{{ filters.q }}" class="form-control">
         </div>
-        <div class="col-md-auto align-self-end"><button class="btn btn-obc-outline">Filter</button></div>
+        <div class="col-md-auto align-self-end"><button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button></div>
     </form>
 
     <form method="post" action="{% url 'portal:bulk_download' %}">
         {% csrf_token %}
         <table class="table">
-            <thead><tr><th></th><th>Name</th><th>Type</th><th>Reporting month</th><th>Uploaded</th><th></th></tr></thead>
+            <thead><tr>
+                <th></th>
+                <th>{% get_site_text 'portal_th_name' %}</th>
+                <th>{% get_site_text 'portal_th_type' %}</th>
+                <th>{% get_site_text 'portal_th_reporting_month' %}</th>
+                <th>{% get_site_text 'portal_th_uploaded' %}</th>
+                <th></th>
+            </tr></thead>
             <tbody>
                 {% for document in documents %}
                     <tr>
@@ -41,14 +48,14 @@
                         <td>{{ document.document_type }}</td>
                         <td>{% if document.reporting_month %}{{ document.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
                         <td>{{ document.uploaded_at|date:'Y-m-d H:i' }}</td>
-                        <td><a href="{% url 'portal:download_document' document.pk %}">Download</a></td>
+                        <td><a href="{% url 'portal:download_document' document.pk %}">{% get_site_text 'portal_download' %}</a></td>
                     </tr>
                 {% empty %}
-                    <tr><td colspan="6" class="text-muted">No documents available yet.</td></tr>
+                    <tr><td colspan="6" class="text-muted">{% get_site_text 'portal_provider_docs_empty' %}</td></tr>
                 {% endfor %}
             </tbody>
         </table>
-        <button class="btn btn-obc-outline btn-sm"><i class="fa-solid fa-download"></i> Download selected</button>
+        <button class="btn btn-obc-outline btn-sm"><i class="fa-solid fa-download"></i> {% get_site_text 'portal_download_selected' %}</button>
     </form>
 </div>
 {% endblock %}

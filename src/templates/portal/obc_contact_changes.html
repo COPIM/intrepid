@@ -1,22 +1,28 @@
 {% extends "portal/base.html" %}
-{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>{% endblock %}
-{% block portal_title %}Provider contact changes{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">Whenever a Provider edits one of their contacts, the change is recorded here (and emailed to the OBC team).</p>{% endblock %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_dashboard' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_contact_changes_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_contact_changes_subhint' %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
     <form method="get" class="form-inline mb-3">
-        <label class="small text-muted mr-2">Provider</label>
+        <label class="small text-muted mr-2">{% get_site_text 'portal_th_provider' %}</label>
         <select name="initiative" class="form-control mr-2">
-            <option value="">All providers</option>
+            <option value="">{% get_site_text 'portal_all_providers' %}</option>
             {% for initiative in initiatives %}
                 <option value="{{ initiative.pk }}">{{ initiative.name }}</option>
             {% endfor %}
         </select>
-        <button class="btn btn-obc-outline">Filter</button>
+        <button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button>
     </form>
 
     <table class="table mb-0">
-        <thead><tr><th>When</th><th>Provider</th><th>Contact</th><th>Changed by</th><th>Changes</th></tr></thead>
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_when' %}</th>
+            <th>{% get_site_text 'portal_th_provider' %}</th>
+            <th>{% get_site_text 'portal_th_contact' %}</th>
+            <th>{% get_site_text 'portal_th_changed_by' %}</th>
+            <th>{% get_site_text 'portal_th_changes' %}</th>
+        </tr></thead>
         <tbody>
             {% for log in logs %}
                 <tr>
@@ -31,7 +37,7 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="5" class="text-muted">No contact changes recorded yet.</td></tr>
+                <tr><td colspan="5" class="text-muted">{% get_site_text 'portal_contact_changes_empty' %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

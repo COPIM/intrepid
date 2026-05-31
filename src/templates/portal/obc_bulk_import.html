@@ -1,17 +1,12 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
-{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>{% endblock %}
-{% block portal_title %}Bulk import documents{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">Import a back-catalogue of documents in one go.</p>{% endblock %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_dashboard' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_bulk_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_bulk_subhint' %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
-    <p>Upload a ZIP file whose folders are named
-    <code>&lt;short_code&gt;/YYYY-MM/</code> &mdash; for example
-    <code>PUNC/2024-03/</code> &mdash; with the documents inside each month
-    folder. <strong>The filenames themselves can be anything.</strong></p>
-    <p>Nothing is saved until you review the preview and confirm. Anything that
-    can't be matched (an unknown short code, a bad date, an unexpected file type)
-    is listed for you to fix &mdash; it is never imported silently.</p>
+    <p>{% get_site_text 'portal_bulk_body1' %}</p>
+    <p>{% get_site_text 'portal_bulk_body2' %}</p>
     {% crispy form %}
 </div>
 {% endblock %}
