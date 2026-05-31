@@ -109,6 +109,64 @@
         background-color: transparent; border: 1px solid #151462; color: #151462 !important;
     }
     .btn-obc-outline:hover { background-color: #151462; color: #fff !important; }
+
+    /* Responsive: make the portal fully usable on mobile.
+       This style block only loads on portal pages, so these rules are
+       scoped to the portal and do not affect the rest of the site. */
+    @media (max-width: 767.98px) {
+        /* The parent base hides .container-main below md; show it for the portal. */
+        .container-main { display: block !important; }
+
+        .portal {
+            padding: 1.25rem 0 2.5rem;
+        }
+
+        /* Masthead: let the nav drop below the title, full width. */
+        .portal-masthead {
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        .portal-masthead > div { width: 100%; }
+        .portal-nav {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .portal-nav a {
+            margin-left: 0;
+            margin-right: 1rem;
+            margin-top: .5rem;
+        }
+
+        /* Tables: scroll horizontally so wide columns don't overflow. */
+        .portal .table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Tiles: allow narrower cards so a single column fits small phones. */
+        .portal-tiles {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        /* Filter rows: stack inputs full width. */
+        .portal .form-row > [class*="col"] {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .portal .form-row .form-control,
+        .portal .form-row .custom-select {
+            width: 100%;
+        }
+
+        /* Display heading: shrink so it doesn't overflow. */
+        .portal .portal-display {
+            font-size: 1.3rem !important;
+        }
+    }
 </style>
 {% endblock css %}
 
@@ -139,10 +197,4 @@
 </div>
 {% endblock body %}
 
-{% block body-mobile %}
-<div class="portal-mobile-note">
-    <h1 class="h5">{% get_site_text 'portal_brand_name' %}</h1>
-    <p>{% get_site_text 'portal_mobile_note' %}</p>
-    <a class="btn btn-obc-blue" href="{% url 'portal:index' %}">{% get_site_text 'portal_mobile_continue' %}</a>
-</div>
-{% endblock body-mobile %}
+{% block body-mobile %}{% endblock body-mobile %}
