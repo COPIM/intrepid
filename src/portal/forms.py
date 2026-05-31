@@ -20,6 +20,20 @@ from portal.models import Document, DocumentType, ProviderContact
 MONTH_INPUT_FORMATS = ["%Y-%m-%d", "%Y-%m"]
 
 
+def site_text(key, default):
+    """Return the translated SiteText for ``key``, falling back to ``default``.
+
+    Lets portal form labels and buttons be translated through the site's
+    existing ``cms.SiteText`` system without 500ing if a key is missing.
+    """
+    from cms.models import SiteText
+
+    try:
+        return SiteText.objects.get(key=key).body or default
+    except SiteText.DoesNotExist:
+        return default
+
+
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
@@ -96,8 +110,20 @@ class DocumentEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["display_name"].label = site_text(
+            "portal_form_display_name", "Display name"
+        )
+        self.fields["document_type"].label = site_text(
+            "portal_form_document_type", "Document type"
+        )
+        self.fields["reporting_month"].label = site_text(
+            "portal_form_reporting_month", "Reporting month"
+        )
+        self.fields["notes"].label = site_text("portal_form_notes", "Notes")
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Save changes"))
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_save_changes", "Save changes"))
+        )
 
 
 class BulkImportZipForm(forms.Form):
@@ -110,8 +136,20 @@ class BulkImportZipForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["zip_file"].label = site_text(
+            "portal_form_zip_archive", "ZIP archive"
+        )
+        self.fields["notify_on_commit"].label = site_text(
+            "portal_form_notify_commit",
+            "Send notifications for these documents",
+        )
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Upload and preview"))
+        self.helper.add_input(
+            Submit(
+                "submit",
+                site_text("portal_form_upload_preview", "Upload and preview"),
+            )
+        )
 
     def clean_zip_file(self):
         uploaded = self.cleaned_data["zip_file"]
@@ -135,8 +173,23 @@ class ProviderContactForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        labels = {
+            "first_name": ("portal_form_first_name", "First name"),
+            "last_name": ("portal_form_last_name", "Surname"),
+            "job_title": ("portal_form_job_title", "Job title"),
+            "email": ("portal_form_email", "Email address"),
+            "position": ("portal_form_position", "Position"),
+            "notification_frequency": (
+                "portal_form_notification_frequency",
+                "Notification frequency",
+            ),
+        }
+        for field, (key, default) in labels.items():
+            self.fields[field].label = site_text(key, default)
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Save contact"))
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_save_contact", "Save contact"))
+        )
 
 
 class NotificationPreferencesForm(forms.ModelForm):
@@ -154,8 +207,13 @@ class InitiativeUserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
+        self.fields["email"].label = site_text(
+            "portal_form_user_email", "User's email address"
+        )
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Add user"))
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_add_user", "Add user"))
+        )
 
     def clean_email(self):
         email = self.cleaned_data["email"]
@@ -181,8 +239,25 @@ class AcceptInviteForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["first_name"].label = site_text(
+            "portal_form_first_name", "First name"
+        )
+        self.fields["last_name"].label = site_text(
+            "portal_form_last_name", "Surname"
+        )
+        self.fields["job_title"].label = site_text(
+            "portal_form_job_title", "Job title"
+        )
+        self.fields["password1"].label = site_text(
+            "portal_form_choose_password", "Choose a password"
+        )
+        self.fields["password2"].label = site_text(
+            "portal_form_confirm_password", "Confirm password"
+        )
         self.helper = FormHelper()
-        self.helper.add_input(Submit("submit", "Activate my account"))
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_activate", "Activate my account"))
+        )
 
     def clean(self):
         cleaned = super().clean()
