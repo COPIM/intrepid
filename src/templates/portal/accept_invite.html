@@ -11,7 +11,7 @@
 {% elif existing_account %}
     <div class="alert alert-info">
         {% get_site_text 'portal_invite_existing_pre' %}
-        <a href="{% url 'portal:index' %}">{% get_site_text 'portal_invite_signin' %}</a>
+        <a href="{% url 'two_factor:login' %}?next={{ request.path|urlencode }}">{% get_site_text 'portal_invite_signin' %}</a>
         {% get_site_text 'portal_invite_existing_post' %}
     </div>
 {% else %}

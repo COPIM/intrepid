@@ -75,6 +75,18 @@ class NotificationQueueAdmin(admin.ModelAdmin):
     )
     list_filter = ("frequency", "sent_at")
     raw_id_fields = ("document", "recipient")
+    # Read-only debugging aid — the queue is managed by the app, not by hand.
+    readonly_fields = (
+        "document",
+        "recipient",
+        "eligible_at",
+        "frequency",
+        "sent_at",
+        "cancelled_at",
+    )
+
+    def has_add_permission(self, request):
+        return False
 
 
 admin_list = [

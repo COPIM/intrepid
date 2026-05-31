@@ -18,7 +18,7 @@
                     <label class="mr-3">
                         <input type="radio" name="frequency_{{ contact.pk }}" value="{{ value }}"
                                {% if contact.notification_frequency == value %}checked{% endif %}>
-                        {{ label }}
+                        {% with freq_key='portal_freq_'|add:value %}{% get_site_text freq_key %}{% endwith %}
                     </label>
                 {% endfor %}
             </fieldset>

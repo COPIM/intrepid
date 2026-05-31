@@ -162,12 +162,13 @@ class BulkImportZipForm(forms.Form):
 class ProviderContactForm(forms.ModelForm):
     class Meta:
         model = ProviderContact
+        # ``position`` is intentionally omitted — it is auto-numbered when a
+        # contact is added (see provider_manage_contacts).
         fields = [
             "first_name",
             "last_name",
             "job_title",
             "email",
-            "position",
             "notification_frequency",
         ]
 
@@ -178,7 +179,6 @@ class ProviderContactForm(forms.ModelForm):
             "last_name": ("portal_form_last_name", "Surname"),
             "job_title": ("portal_form_job_title", "Job title"),
             "email": ("portal_form_email", "Email address"),
-            "position": ("portal_form_position", "Position"),
             "notification_frequency": (
                 "portal_form_notification_frequency",
                 "Notification frequency",

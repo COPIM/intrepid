@@ -90,6 +90,30 @@ class InvitationTests(TestCase):
         self.contact.refresh_from_db()
         self.assertIsNone(self.contact.accepted_at)
 
+    def test_username_collision_routes_to_existing_account(self):
+        """A user whose username == the invited email (different email) must
+        route to the existing-account path, not crash on create_user."""
+        User.objects.create_user(
+            username="grace@example.com",
+            email="someone-else@example.com",
+            password="their-own-password",
+        )
+        before = User.objects.count()
+        response = self.client.post(
+            self._url(),
+            {
+                "first_name": "Grace",
+                "last_name": "Hopper",
+                "password1": "a-good-password-1",
+                "password2": "a-good-password-1",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["existing_account"])
+        self.assertEqual(User.objects.count(), before)
+        self.contact.refresh_from_db()
+        self.assertIsNone(self.contact.accepted_at)
+
     def test_reaccepting_does_not_create_second_user(self):
         self.contact.accepted_at = timezone.now()
         self.contact.save()

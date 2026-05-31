@@ -7,8 +7,8 @@ governed by the permission checks in ``portal.permissions`` (Layer B, OBC) and
 """
 
 import os
+import tempfile
 import zipfile
-from io import BytesIO
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Q
-from django.http import FileResponse, StreamingHttpResponse
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -99,27 +99,39 @@ def _user_can_read_document(user, document):
 
 
 def _stream_zip(documents, filename="documents.zip"):
-    buffer = BytesIO()
-    with zipfile.ZipFile(buffer, "w") as archive:
-        used = set()
-        for document in documents:
-            arcname = document.original_filename or os.path.basename(
-                document.file.name
-            )
-            # Avoid clobbering identically-named files within the archive.
-            candidate, counter = arcname, 1
-            while candidate in used:
-                stem, ext = os.path.splitext(arcname)
-                candidate = "{0} ({1}){2}".format(stem, counter, ext)
-                counter += 1
-            used.add(candidate)
-            archive.write(document.file.path, arcname=candidate)
-    buffer.seek(0)
-    response = StreamingHttpResponse(buffer, content_type="application/zip")
-    response["Content-Disposition"] = 'attachment; filename="{0}"'.format(
-        filename
-    )
-    return response
+    # Build the archive on disk (not in memory) and stream it back, so the
+    # response is memory-bounded even for archives in the 100s-MB range.
+    # Mirrors the temp-file + FileResponse + unlink idiom used by
+    # package.order_management.download_order_document.
+    tmp = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
+    try:
+        with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as archive:
+            used = set()
+            for document in documents:
+                arcname = document.original_filename or os.path.basename(
+                    document.file.name
+                )
+                # Avoid clobbering identically-named files in the archive.
+                candidate, counter = arcname, 1
+                while candidate in used:
+                    stem, ext = os.path.splitext(arcname)
+                    candidate = "{0} ({1}){2}".format(stem, counter, ext)
+                    counter += 1
+                used.add(candidate)
+                archive.write(document.file.path, arcname=candidate)
+        tmp.close()
+        response = FileResponse(
+            open(tmp.name, "rb"), content_type="application/zip"
+        )
+        response["Content-Disposition"] = 'attachment; filename="{0}"'.format(
+            filename
+        )
+        response["Content-Length"] = os.path.getsize(tmp.name)
+        return response
+    finally:
+        # The open handle held by FileResponse keeps the file readable while
+        # it streams; unlinking now means it is cleaned up afterwards.
+        os.unlink(tmp.name)
 
 
 @login_required
@@ -361,6 +373,12 @@ def provider_manage_contacts(request, initiative_id):
         if form.is_valid():
             contact = form.save(commit=False)
             contact.initiative = initiative
+            if not contact_id:
+                # Position is auto-numbered for new contacts (next free slot).
+                last = initiative.provider_contacts.order_by(
+                    "-position"
+                ).first()
+                contact.position = (last.position + 1) if last else 1
             contact._actor = request.user
             contact.save()
             messages.success(request, "Contact saved.")
@@ -486,6 +504,7 @@ def download_document(request, doc_id):
     response["Content-Disposition"] = 'attachment; filename="{0}"'.format(
         document.original_filename or os.path.basename(document.file.name)
     )
+    response["Content-Length"] = document.file.size
     return response
 
 
@@ -533,8 +552,12 @@ def accept_invite(request, token):
 
     # Security: this endpoint is unauthenticated, so it must never set a
     # password on a pre-existing account. If an account already exists for the
-    # invited email, the person must sign in as that account to accept.
-    existing_user = User.objects.filter(email=contact.email).first()
+    # invited email (by email OR username — the portal creates accounts with
+    # username == email), the person must sign in as that account to accept.
+    existing_user = (
+        User.objects.filter(email=contact.email).first()
+        or User.objects.filter(username=contact.email).first()
+    )
     if existing_user is not None:
         if (
             request.user.is_authenticated

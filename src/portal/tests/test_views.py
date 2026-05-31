@@ -283,6 +283,30 @@ class ContactManagementTests(ViewTestBase):
             any(settings.FROM_EMAIL in to for to in recipients)
         )
 
+    def test_new_contacts_are_position_auto_numbered(self):
+        self.client.force_login(self.provider)
+        url = reverse(
+            "portal:provider_manage_contacts",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        for n in range(2):
+            self.client.post(
+                url,
+                {
+                    "first_name": "Person{0}".format(n),
+                    "last_name": "X",
+                    "job_title": "",
+                    "email": "person{0}@example.com".format(n),
+                    "notification_frequency": "immediate",
+                },
+            )
+        positions = list(
+            ProviderContact.objects.filter(
+                initiative=self.initiative
+            ).values_list("position", flat=True).order_by("position")
+        )
+        self.assertEqual(positions, [1, 2])
+
 
 class BulkImportPermissionTests(ViewTestBase):
     def test_readonly_doc_type_user_cannot_bulk_import(self):
@@ -400,6 +424,9 @@ class InitiativeUserManagementTests(ViewTestBase):
 
 class BulkDownloadTests(ViewTestBase):
     def test_bulk_download_streams_zip(self):
+        import io
+        import zipfile
+
         self.client.force_login(self.staff)
         response = self.client.post(
             reverse("portal:bulk_download"),
@@ -407,3 +434,8 @@ class BulkDownloadTests(ViewTestBase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/zip")
+        archive = zipfile.ZipFile(
+            io.BytesIO(b"".join(response.streaming_content))
+        )
+        self.assertEqual(len(archive.namelist()), 1)
+        self.assertEqual(archive.read(archive.namelist()[0]), b"hello")
