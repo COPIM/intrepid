@@ -386,3 +386,27 @@ class BulkImportRow(models.Model):
 
     def __str__(self):
         return "{0} ({1})".format(self.archive_path, self.status)
+
+
+class InitiativeAlias(models.Model):
+    """An alternative name for a Provider (Initiative), admin-editable.
+
+    Bulk import matches a document's provider (taken from the filename) against
+    the Initiative's name OR any of its aliases, so e.g. "OBP" can resolve to
+    "Open Book Publishers".
+    """
+
+    initiative = models.ForeignKey(
+        "initiatives.Initiative",
+        on_delete=models.CASCADE,
+        related_name="aliases",
+    )
+    alias = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ("alias",)
+        unique_together = ("initiative", "alias")
+        verbose_name_plural = "Initiative aliases"
+
+    def __str__(self):
+        return self.alias

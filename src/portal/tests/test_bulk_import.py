@@ -1,4 +1,9 @@
-"""Tests for the bulk-import ZIP parser and commit pipeline."""
+"""Tests for the bulk-import ZIP parser and commit pipeline.
+
+The real convention is a single ``YYYY-MM`` reporting-month folder containing
+one file per Provider, named ``<date> ... - <Provider>.<ext>``. The Provider is
+matched against an Initiative's name or one of its aliases.
+"""
 
 import io
 import shutil
@@ -16,9 +21,15 @@ from portal.tests._helpers import clear_seed_data
 from portal.models import (
     Document,
     DocumentType,
+    InitiativeAlias,
     NotificationQueue,
     ProviderContact,
 )
+
+
+def report_path(provider, month="2026-04"):
+    """Build a conforming archive path for a provider's monthly report."""
+    return "{0}/{0} OBC Accounts Report - {1}.pdf".format(month, provider)
 
 
 def make_zip(entries):
@@ -35,12 +46,10 @@ class BulkImportSeedMixin:
     @classmethod
     def setUpTestData(cls):
         clear_seed_data()
-        cls.punctum = Initiative.objects.create(
-            name="Punctum Books", short_code="PUNC"
-        )
-        cls.open_initiative = Initiative.objects.create(
-            name="Open Initiative", short_code="OPEN"
-        )
+        cls.african_minds = Initiative.objects.create(name="African Minds")
+        cls.obp = Initiative.objects.create(name="Open Book Publishers")
+        InitiativeAlias.objects.create(initiative=cls.obp, alias="OBP")
+        cls.lse = Initiative.objects.create(name="LSE Press")
         cls.remittance = DocumentType.objects.create(
             name="Remittance advice",
             slug="remittance",
@@ -51,71 +60,90 @@ class BulkImportSeedMixin:
 
 
 class ParseZipTests(BulkImportSeedMixin, TestCase):
-    def test_valid_entry_resolves_initiative_month_and_type(self):
-        zip_file = make_zip({"PUNC/2024-03/whatever name.pdf": b"data"})
+    def test_valid_entry_resolves_provider_month_and_type(self):
+        zip_file = make_zip({report_path("African Minds"): b"data"})
         rows = bulk_import.parse_zip(zip_file)
         self.assertEqual(len(rows), 1)
         row = rows[0]
         self.assertEqual(row.status, "ok")
-        self.assertEqual(row.initiative, self.punctum)
-        self.assertEqual(row.reporting_month, date(2024, 3, 1))
+        self.assertEqual(row.initiative, self.african_minds)
+        self.assertEqual(row.reporting_month, date(2026, 4, 1))
         self.assertEqual(row.document_type, self.remittance)
-        self.assertEqual(row.original_filename, "whatever name.pdf")
+        self.assertEqual(
+            row.original_filename,
+            "2026-04 OBC Accounts Report - African Minds.pdf",
+        )
 
-    def test_short_code_and_extension_are_case_insensitive(self):
-        zip_file = make_zip({"punc/2024-03/STATEMENT.PDF": b"data"})
+    def test_alias_matches_provider(self):
+        zip_file = make_zip({report_path("OBP"): b"data"})
         rows = bulk_import.parse_zip(zip_file)
-        self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].status, "ok")
-        self.assertEqual(rows[0].initiative, self.punctum)
+        self.assertEqual(rows[0].initiative, self.obp)
 
-    def test_unknown_short_code_is_skipped(self):
-        zip_file = make_zip({"ZZZZ/2024-03/file.pdf": b"data"})
+    def test_provider_and_extension_are_case_insensitive(self):
+        zip_file = make_zip(
+            {"2026-04/2026-04 OBC Accounts Report - oBp.PDF": b"data"}
+        )
         rows = bulk_import.parse_zip(zip_file)
-        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].status, "ok")
+        self.assertEqual(rows[0].initiative, self.obp)
+
+    def test_unknown_provider_is_skipped(self):
+        zip_file = make_zip({report_path("Nonexistent Press"): b"data"})
+        rows = bulk_import.parse_zip(zip_file)
+        self.assertEqual(rows[0].status, "skipped")
+        self.assertIsNone(rows[0].initiative)
+        self.assertIn("Nonexistent Press", rows[0].message)
+
+    def test_non_conforming_filename_is_deferred(self):
+        # The "OLD VERSION ..." file is in the month folder and names a real
+        # provider, but its name does not start with the date, so it must be
+        # deferred to the user rather than auto-imported.
+        path = (
+            "2026-04/OLD VERSION 2026-04 OBC Accounts Report - LSE Press.pdf"
+        )
+        rows = bulk_import.parse_zip(make_zip({path: b"data"}))
         self.assertEqual(rows[0].status, "skipped")
         self.assertIsNone(rows[0].initiative)
 
     def test_bad_date_is_error(self):
-        zip_file = make_zip({"PUNC/2024-13/file.pdf": b"data"})
-        rows = bulk_import.parse_zip(zip_file)
-        self.assertEqual(len(rows), 1)
+        path = "2026-13/2026-13 OBC Accounts Report - African Minds.pdf"
+        rows = bulk_import.parse_zip(make_zip({path: b"data"}))
         self.assertEqual(rows[0].status, "error")
 
-    def test_unrecognised_path_is_skipped(self):
-        zip_file = make_zip({"loose-file.pdf": b"data"})
-        rows = bulk_import.parse_zip(zip_file)
-        self.assertEqual(len(rows), 1)
+    def test_file_outside_month_folder_is_skipped(self):
+        rows = bulk_import.parse_zip(make_zip({"loose-file.pdf": b"data"}))
         self.assertEqual(rows[0].status, "skipped")
 
-    def test_multiple_initiatives_in_one_zip(self):
+    def test_multiple_providers_in_one_zip(self):
         zip_file = make_zip(
             {
-                "PUNC/2024-03/a.pdf": b"a",
-                "OPEN/2024-03/b.pdf": b"b",
+                report_path("African Minds"): b"a",
+                report_path("OBP"): b"b",
             }
         )
         rows = bulk_import.parse_zip(zip_file)
         by_initiative = {row.initiative: row for row in rows}
-        self.assertIn(self.punctum, by_initiative)
-        self.assertIn(self.open_initiative, by_initiative)
+        self.assertIn(self.african_minds, by_initiative)
+        self.assertIn(self.obp, by_initiative)
 
     def test_duplicate_is_flagged(self):
         Document.objects.create(
-            initiative=self.punctum,
+            initiative=self.african_minds,
             document_type=self.remittance,
-            reporting_month=date(2024, 3, 1),
-            original_filename="dup.pdf",
+            reporting_month=date(2026, 4, 1),
+            original_filename="2026-04 OBC Accounts Report - African Minds.pdf",
         )
-        zip_file = make_zip({"PUNC/2024-03/dup.pdf": b"data"})
-        rows = bulk_import.parse_zip(zip_file)
+        rows = bulk_import.parse_zip(
+            make_zip({report_path("African Minds"): b"data"})
+        )
         self.assertEqual(rows[0].status, "duplicate")
 
     def test_system_junk_is_ignored(self):
         zip_file = make_zip(
             {
-                "PUNC/2024-03/real.pdf": b"data",
-                "__MACOSX/PUNC/2024-03/._real.pdf": b"junk",
+                report_path("African Minds"): b"data",
+                "__MACOSX/2026-04/._x.pdf": b"junk",
                 ".DS_Store": b"junk",
             }
         )
@@ -145,14 +173,11 @@ class CommitTests(BulkImportSeedMixin, TestCase):
         upload = SimpleUploadedFile(
             "archive.zip", zip_bytes, content_type="application/zip"
         )
-        return bulk_import.stage_job(
-            upload, notify_on_commit=notify_on_commit
-        )
+        return bulk_import.stage_job(upload, notify_on_commit=notify_on_commit)
 
     def test_commit_creates_documents_and_no_notifications_when_silent(self):
-        # A contact exists, but a silent historical import must not notify.
         ProviderContact.objects.create(
-            initiative=self.punctum,
+            initiative=self.african_minds,
             first_name="Ada",
             last_name="Lovelace",
             email="ada@example.com",
@@ -160,8 +185,8 @@ class CommitTests(BulkImportSeedMixin, TestCase):
         )
         job = self._stage(
             {
-                "PUNC/2024-03/a.pdf": b"a",
-                "PUNC/2024-04/b.pdf": b"b",
+                report_path("African Minds", "2026-03"): b"a",
+                report_path("African Minds", "2026-04"): b"b",
             },
             notify_on_commit=False,
         )
@@ -176,7 +201,7 @@ class CommitTests(BulkImportSeedMixin, TestCase):
 
     def test_commit_enqueues_when_notify_requested(self):
         ProviderContact.objects.create(
-            initiative=self.punctum,
+            initiative=self.african_minds,
             first_name="Ada",
             last_name="Lovelace",
             email="ada@example.com",
@@ -184,8 +209,8 @@ class CommitTests(BulkImportSeedMixin, TestCase):
         )
         job = self._stage(
             {
-                "PUNC/2024-03/a.pdf": b"a",
-                "PUNC/2024-04/b.pdf": b"b",
+                report_path("African Minds", "2026-03"): b"a",
+                report_path("African Minds", "2026-04"): b"b",
             },
             notify_on_commit=True,
         )
@@ -197,8 +222,8 @@ class CommitTests(BulkImportSeedMixin, TestCase):
     def test_commit_skips_non_ok_rows(self):
         job = self._stage(
             {
-                "PUNC/2024-03/a.pdf": b"a",
-                "ZZZZ/2024-03/b.pdf": b"b",  # unknown short code -> skipped
+                report_path("African Minds"): b"a",
+                report_path("Nonexistent Press"): b"b",  # unknown -> skipped
             }
         )
 
@@ -208,7 +233,10 @@ class CommitTests(BulkImportSeedMixin, TestCase):
         self.assertEqual(Document.objects.count(), 1)
 
     def test_commit_preserves_original_filename(self):
-        job = self._stage({"PUNC/2024-03/March Statement.pdf": b"a"})
+        job = self._stage({report_path("African Minds"): b"a"})
         bulk_import.commit_job(job)
         document = Document.objects.get()
-        self.assertEqual(document.original_filename, "March Statement.pdf")
+        self.assertEqual(
+            document.original_filename,
+            "2026-04 OBC Accounts Report - African Minds.pdf",
+        )

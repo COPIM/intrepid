@@ -19,6 +19,7 @@ from portal.models import (
     ContactChangeLog,
     Document,
     DocumentType,
+    InitiativeAlias,
     NotificationQueue,
     ProviderContact,
 )
@@ -184,8 +185,12 @@ class BulkImportViewTests(ViewTestBase):
 
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, "w") as archive:
-            archive.writestr("PUNC/2024-03/a.pdf", b"a")
-            archive.writestr("PUNC/2024-04/b.pdf", b"b")
+            archive.writestr(
+                "2024-03/2024-03 OBC Accounts Report - Punctum.pdf", b"a"
+            )
+            archive.writestr(
+                "2024-04/2024-04 OBC Accounts Report - Punctum.pdf", b"b"
+            )
         return SimpleUploadedFile(
             "archive.zip", buffer.getvalue(), content_type="application/zip"
         )
@@ -420,6 +425,49 @@ class InitiativeUserManagementTests(ViewTestBase):
     def test_provider_cannot_manage_users(self):
         self.client.force_login(self.provider)
         self.assertEqual(self.client.get(self._url()).status_code, 403)
+
+    def test_obc_can_add_alias_to_initiative(self):
+        self.client.force_login(self.staff)
+        response = self.client.post(self._url(), {"alias": "OBP"})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            InitiativeAlias.objects.filter(
+                initiative=self.initiative, alias="OBP"
+            ).exists()
+        )
+
+    def test_adding_duplicate_alias_does_not_error(self):
+        InitiativeAlias.objects.create(initiative=self.initiative, alias="OBP")
+        self.client.force_login(self.staff)
+        response = self.client.post(self._url(), {"alias": "OBP"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            InitiativeAlias.objects.filter(
+                initiative=self.initiative, alias="OBP"
+            ).count(),
+            1,
+        )
+
+    def test_obc_can_remove_alias_from_initiative(self):
+        alias = InitiativeAlias.objects.create(
+            initiative=self.initiative, alias="OBP"
+        )
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_alias": str(alias.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            InitiativeAlias.objects.filter(pk=alias.pk).exists()
+        )
+
+    def test_provider_cannot_add_alias(self):
+        self.client.force_login(self.provider)
+        response = self.client.post(self._url(), {"alias": "OBP"})
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(
+            InitiativeAlias.objects.filter(initiative=self.initiative).exists()
+        )
 
 
 class BulkDownloadTests(ViewTestBase):

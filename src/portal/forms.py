@@ -226,6 +226,22 @@ class InitiativeUserForm(forms.Form):
         return email
 
 
+class InitiativeAliasForm(forms.Form):
+    """Add an alternative name (alias) for a Provider."""
+
+    alias = forms.CharField(max_length=255)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["alias"].label = site_text(
+            "portal_form_alias", "Alias (alternative name)"
+        )
+        self.helper = FormHelper()
+        self.helper.add_input(
+            Submit("submit", site_text("portal_form_add_alias", "Add alias"))
+        )
+
+
 class InviteByEmailForm(forms.Form):
     """Invite a new person by email address alone."""
 

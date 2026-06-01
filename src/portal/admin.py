@@ -89,6 +89,13 @@ class NotificationQueueAdmin(admin.ModelAdmin):
         return False
 
 
+class InitiativeAliasAdmin(admin.ModelAdmin):
+    list_display = ("alias", "initiative")
+    list_filter = ("initiative",)
+    search_fields = ("alias", "initiative__name")
+    raw_id_fields = ("initiative",)
+
+
 admin_list = [
     (models.DocumentType, DocumentTypeAdmin),
     (models.Document, DocumentAdmin),
@@ -96,6 +103,7 @@ admin_list = [
     (models.ContactChangeLog, ContactChangeLogAdmin),
     (models.DocumentTypePermission, DocumentTypePermissionAdmin),
     (models.NotificationQueue, NotificationQueueAdmin),
+    (models.InitiativeAlias, InitiativeAliasAdmin),
 ]
 
 [admin.site.register(*registration) for registration in admin_list]

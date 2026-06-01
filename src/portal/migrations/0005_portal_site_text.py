@@ -120,16 +120,20 @@ PORTAL_SITE_TEXT = {
         "Import a back-catalogue of documents in one go.", "Bulk import hint."
     ),
     "portal_bulk_body1": (
-        "Upload a ZIP file whose folders are named "
-        "<code>&lt;short_code&gt;/YYYY-MM/</code> — for example "
-        "<code>PUNC/2024-03/</code> — with the documents inside each month "
-        "folder. <strong>The filenames themselves can be anything.</strong>",
+        "Upload a ZIP file containing one folder per reporting month, named "
+        "<code>YYYY-MM</code> — for example <code>2026-04/</code>. Inside each "
+        "month folder, put one file per Provider, named so the Provider's name "
+        "comes last after a dash, e.g. "
+        "<code>2026-04 OBC Accounts Report - Open Book Publishers.pdf</code>. "
+        "The Provider is matched on its name <strong>or any alias</strong> you "
+        "have added (so <code>OBP</code> resolves to Open Book Publishers).",
         "Bulk import explanation, paragraph 1 (contains HTML).",
     ),
     "portal_bulk_body2": (
         "Nothing is saved until you review the preview and confirm. Anything "
-        "that can't be matched (an unknown short code, a bad date, an "
-        "unexpected file type) is listed for you to fix — it is never imported "
+        "that can't be matched — an unknown Provider name (add the Provider, or "
+        "an alias, first), a bad date, or a file that doesn't follow the naming "
+        "convention — is listed for you to review, and is never imported "
         "silently.",
         "Bulk import explanation, paragraph 2.",
     ),
