@@ -10,7 +10,7 @@ The end state:
 - New `portal` Django app exposing a portal at `/portal/` for both audiences (one UI, permission-gated visibility).
 - Per-document-type, per-user fluid permissions for OBC team granularity.
 - Provider Members are scoped to their own Initiative(s) by `Initiative.users`.
-- Manual single + multi + bulk-folder upload (with `<short_code>/YYYY-MM/*.pdf` ZIP convention auto-mapping to Initiative + reporting month).
+- Manual single + multi + bulk-folder upload (with `YYYY-MM/<date> ... - <Provider>.pdf` ZIP convention auto-mapping to Initiative — by name or admin-editable alias — + reporting month).
 - Provider notifications: immediate (delayed 2h), daily digest, weekly digest, monthly digest — implemented via a DB queue drained by a 15-minute cron job. If a document is deleted, its notifications should be, also.
 - Provider self-service contact management with an OBC change-notification email + persistent audit log.
 - An invitation flow that reuses the existing `Contact.access_code` UUID pattern to onboard Provider Members.
@@ -29,7 +29,7 @@ No GitHub issues exist yet; commits will not carry a footer reference until one 
 During review the client raised five questions. The answers are folded into the relevant sections below; they are summarised here so the decision trail is in one place.
 
 1. **Can the redundant top-right "Dashboard" link become the login/entry point for the new backend, and does OBC still need a separate way into the old areas?** Yes. We re-point that link at the new portal (`/portal/`). We move the *old* configuration dashboard from `/dashboard/` to `/staff/` and stop linking to it from the navigation, so it remains fully functional but is only reached by visiting `/staff/` directly. OBC keeps full access to both; everyday users see one clean entry point. (See §1 and §15.)
-2. **How precise must the bulk-upload ZIP naming be — the four-letter code only, or the whole filename?** Only the *folder structure* must match; the filenames inside can be anything. The parser regex is `^<short_code>/YYYY-MM/.+\.(pdf|docx?|xlsx?|csv)$` (case-insensitive), so `PUNC/2024-03/whatever-the-original-name-was.pdf` works. The `short_code` folder must match an existing `Initiative.short_code` (looked up case-insensitively; 1–4 alphanumeric characters) and the month folder must be a real `YYYY-MM` date. Anything unrecognised appears in the dry-run preview under "Skipped — please review" rather than being silently dropped. (See §5.)
+2. **How precise must the bulk-upload ZIP naming be?** Confirmed against the real sample archive (`2026-04.zip`): files are laid out as one `YYYY-MM` month folder containing one file per Provider, with the Provider's full name as the last ` - `-separated part of the filename — e.g. `2026-04/2026-04 OBC Accounts Report - Open Book Publishers.pdf`. The Provider name is matched case-insensitively against an `Initiative`'s name **or any admin-added alias** (so an "OBP" alias resolves to *Open Book Publishers*), and the month folder must be a real `YYYY-MM` date. A filename that doesn't follow the `<date> ... - <Provider>` convention (e.g. `OLD VERSION 2026-04 ...`) or names an unknown Provider appears in the dry-run preview under "Skipped — please review" rather than being silently dropped. (See §5.)
 3. **Six document types are listed now — can we add more later?** Yes, fully. `DocumentType` is its own admin-editable model (§2); the data migration only seeds two starter rows ("Remittance advice", "Agreement contract"). OBC can add any number more from the admin, each with its own name, description, `requires_reporting_month` flag, `default` flag and display order. Read/write access to each new type is then assignable per team member via `DocumentTypePermission`. (See §2 and §3.)
 4. **What does "up to 5 contacts (soft)" mean?** "Soft" is a friendly warning, not a hard cap. The data model places no limit on `ProviderContact` rows per Initiative; the contact form simply shows a JavaScript warning when a Provider adds a sixth contact, but still saves it. A Provider that genuinely needs 7 or 12 contacts can add them with no engineering change. (See §2 and §6.)
 5. **Is the notification frequency per-user, or one global setting per Provider?** Per-user. `notification_frequency` lives on each `ProviderContact` row (§2), and the preferences screen shows one choice (immediate / daily / weekly / monthly / off) per contact (§4, §6). Three people at the same Provider can each pick a different cadence without affecting the others.
@@ -108,7 +108,7 @@ A quick reference so a non-technical reader can verify, at a glance, that every 
 | Filters: type, name, date of upload, reporting month | §4 (shared QuerySet builder); §6 forms                                                                                                                                                                                                                                                                 |
 | Reporting month greyed out unless type requires it | §2 `DocumentType.requires_reporting_month`; §6 form (JS-gated)                                                                                                                                                                                                                                         |
 | Upload individual files OR multiple files/folders | §4 (`obc_upload` multi-file) and §5 (bulk import)                                                                                                                                                                                                                                                      |
-| Bulk upload of historic remittance advice from month-folder structure | §5 Bulk import pipeline (`<short_code>/YYYY-MM/*.pdf` ZIP)                                                                                                                                                                                                                                             |
+| Bulk upload of historic remittance advice from month-folder structure | §5 Bulk import pipeline (`YYYY-MM/<date> ... - <Provider>.pdf` ZIP, matched by name/alias)                                                                                                                                                                                                          |
 | Invite Provider Members to set up accounts | §10 Invitation flow                                                                                                                                                                                                                                                                                    |
 | Multiple accounts per Provider | §2 `ProviderContact` (many-per-Initiative)                                                                                                                                                                                                                                                             |
 | Per-contact details: first name, surname, job title, email, provider(s) | §2 `ProviderContact`                                                                                                                                                                                                                                                                                   |
@@ -271,6 +271,16 @@ DB-queue drained by cron.
 
 `Meta.indexes = [("eligible_at", "sent_at"), ("document",)]`.
 
+### `InitiativeAlias`
+An admin-editable list of alternative names for a Provider, used so bulk import can resolve a file to the right `Initiative` even when the filename uses a short form. For example, *Open Book Publishers* can carry an "OBP" alias so a file named `... - OBP.pdf` still matches. Aliases are managed by OBC staff from the "Manage users" screen for each Provider (and from the Django admin); the bulk importer matches a filename's Provider against `Initiative.name` first, then any alias.
+
+| Field | Type | Notes |
+|---|---|---|
+| `initiative` | FK → `initiatives.Initiative`, on_delete=CASCADE, related_name="aliases" | The Provider this name refers to |
+| `alias` | CharField(255) | An alternative name, matched case-insensitively on import |
+
+`Meta.ordering = ("alias",)`, `unique_together = ("initiative", "alias")`.
+
 ---
 
 ## 3. Permissions
@@ -364,24 +374,27 @@ All under `/portal/`, namespace `portal`. URL list (in execution order in `src/p
 
 ## 5. Bulk import pipeline (`portal/bulk_import.py`)
 
-**In plain language.** This directly answers the spec's "Request/advice appreciated" question about historical remittance advice already sitting in monthly folders. The proposal is:
+**In plain language.** This directly answers the spec's "Request/advice appreciated" question about historical remittance advice already sitting in monthly folders. The convention here was confirmed against the real OBC sample archive (`2026-04.zip`), which laid the files out by month with the Provider's *full name* in each filename — not by short code. The proposal therefore is:
 
-1. Each Provider already has a four-letter "short code" in the OBC system (e.g. *PUNC* for Punctum Books). This is something the OBC team already manages.
-2. OBC zips up the historical archive so the *folders inside the ZIP* are named like `PUNC/2024-03/` and `OPEN/2024-03/` etc., with the actual PDFs sitting inside those month folders. **Only the folder names matter (client clarification 2)** — the individual filenames inside can be anything at all. `PUNC/2024-03/whatever-the-original-name-was.pdf` is matched purely on its `PUNC` (Provider) and `2024-03` (reporting month) folders; the leaf filename is preserved as-is for display and download.
-3. OBC uploads the ZIP through the new "Bulk import" screen. **Nothing is saved yet.** The system shows OBC a preview table — "I found 47 files; here's which Provider and which reporting month I'd assign each one to". OBC can scan it, spot any mistakes (typos in folder names, files in wrong months), and either fix the ZIP and try again, or click Confirm to commit.
+1. OBC zips up the archive as one folder per reporting month, named like `2026-04/`, with one file per Provider inside it. Each file is named so the Provider's name is the last ` - `-separated part — e.g. `2026-04/2026-04 OBC Accounts Report - Open Book Publishers.pdf`. The leaf filename is preserved as-is for display and download.
+2. The Provider is identified by the name in the filename, matched (case-insensitively) against an `Initiative`'s name **or any of its aliases**. Aliases are an admin-editable list of alternative names for a Provider, so a file that says *OBP* still resolves to *Open Book Publishers* once an "OBP" alias has been added. (Aliases are managed from each Provider's "Manage users" screen and the Django admin; the model is `portal.InitiativeAlias`, defined in §2.)
+3. OBC uploads the ZIP through the new "Bulk import" screen. **Nothing is saved yet.** The system shows OBC a preview table — "I found 47 files; here's which Provider and which reporting month I'd assign each one to". OBC can scan it, spot any mistakes, and either fix the ZIP and try again, or click Confirm to commit.
 4. On Confirm, every file gets stored against the right Provider with the right reporting month — automatically.
 
-Two safety features: (a) any file we don't recognise (wrong folder shape, unknown short code, malformed date) is *listed* but never silently committed — OBC always sees it; (b) historical bulk imports default to *not* sending notifications, since these are old records, not new alerts. OBC can tick a box if they really do want notifications to fire.
+Two safety features: (a) any file we don't recognise (not inside a `YYYY-MM` month folder, a filename that doesn't follow the `<date> ... - <Provider>` convention, an unknown Provider name, or a malformed date) is *listed* but never silently committed — OBC always sees it; (b) historical bulk imports default to *not* sending notifications, since these are old records, not new alerts. OBC can tick a box if they really do want notifications to fire.
+
+A real example from the sample archive: `OLD VERSION 2026-04 OBC Accounts Report - LSE Press.pdf` names a real Provider but does not start with the report date, so it does not follow the convention. Rather than guess, the importer defers it to OBC under "Skipped — please review" for a human decision.
 
 Two-step UX so OBC reviews mappings before files persist.
 
-**Step 1 — upload & dry-run.** OBC uploads a ZIP. Server extracts to a temp directory, walks paths matching `^(?P<short_code>[A-Za-z0-9]{1,4})/(?P<year>\d{4})-(?P<month>\d{2})/.+\.(pdf|docx?|xlsx?|csv)$`, compiled case-insensitively (so the short-code folder may be upper- or lower-case and the extension may be `.PDF` or `.pdf`). For each match:
-- Look up `Initiative.objects.get(short_code__iexact=short_code)` — case-insensitive, so the field already existing at `src/initiatives/models.py:67` matches regardless of folder casing.
+**Step 1 — upload & dry-run.** OBC uploads a ZIP. Server walks each entry, matching its path against `^(?P<year>\d{4})-(?P<month>\d{2})/(?P<basename>.+)\.(?:pdf|docx?|xlsx?|csv)$` (case-insensitive, so the extension may be `.PDF` or `.pdf`). For each file inside a month folder:
 - Validate `year`/`month` form a real calendar date (e.g. `2024-13` is rejected as a bad date).
+- Parse the Provider from the basename: it must start with the date and end with ` - <Provider>` (`^\d{4}-\d{2}.*\s-\s(?P<provider>.+)$`). A basename that doesn't match is deferred for review.
+- Resolve the Provider to an `Initiative` by `name__iexact`, falling back to `InitiativeAlias.alias__iexact`. An unmatched name is skipped with "Add the Provider, or an alias, first".
 - Default `document_type` = the seeded "Remittance advice" type (`requires_reporting_month=True`).
 - Build a `BulkImportRow` (in-memory dataclass; persisted as `BulkImportJob` + `BulkImportRow` rows for resume/preview).
 
-Dry-run renders a table: Filename → Initiative → Reporting month → Document type → Status (OK / unknown short_code / bad date / duplicate). Unrecognised paths are listed under "Skipped — please review".
+Dry-run renders a table: Filename → Initiative → Reporting month → Document type → Status (OK / skipped — review / bad date / duplicate). Unrecognised paths are listed under "Skipped — please review".
 
 **Step 2 — commit.** OBC clicks Confirm; the server creates `Document` rows from staged `BulkImportRow`s, copies files into the portal's private document storage (`upload_storage`), and enqueues notifications via the same path as a single upload.
 
@@ -591,8 +604,10 @@ Tests live in a `src/portal/tests/` **package** (one module per area: `test_mode
 - `download_document` returns 403 when user lacks both Layer A and Layer B access.
 
 **Bulk import**
-- `parse_zip(<sample.zip>)` with valid `<short_code>/YYYY-MM/file.pdf` yields the expected `(initiative, reporting_month, type)` tuples.
-- Unknown short_code → row marked `skipped`.
+- `parse_zip(<sample.zip>)` with a valid `YYYY-MM/<date> ... - <Provider>.pdf` file yields the expected `(initiative, reporting_month, type)` tuple.
+- A Provider name matching only an `InitiativeAlias` still resolves to its `Initiative`.
+- Unknown Provider name → row marked `skipped`.
+- A filename not following the `<date> ... - <Provider>` convention (e.g. `OLD VERSION ...`) → row marked `skipped` (deferred to the user).
 - Bad date → row marked `error`.
 - Commit creates the right number of `Document` rows and queues no notifications when `notify_on_commit=False`.
 
@@ -664,7 +679,7 @@ End-to-end checks before declaring done:
 5. **Browser walkthrough** (Django dev server on `https://localhost`, self-signed cert):
    - Sign in as superuser → upload a single PDF for an Initiative → confirm it appears in the OBC list.
    - Upload a multi-file batch → confirm all rows created.
-   - ZIP a fixture matching `<short_code>/YYYY-MM/*.pdf` for two Initiatives → bulk-import dry-run preview shows correct mapping → commit → both `Document` rows appear.
+   - ZIP a fixture matching `YYYY-MM/<date> ... - <Provider>.pdf` for two Initiatives (one matched by name, one by alias) → bulk-import dry-run preview shows correct mapping → commit → both `Document` rows appear.
    - Create a `ProviderContact`, send invitation, accept the invitation as a fresh user, log in, view the documents list scoped to that Initiative, change frequency to "daily", edit name → confirm OBC inbox receives `contact_change_notification`.
    - Manually `update NotificationQueue set eligible_at = '2020-01-01'` then run `uv run ./manage.py send_document_notifications` → confirm rows marked sent and (mock) email rendered.
    - Bulk-download three documents from the provider view → confirm streamed ZIP contains the three files at their `original_filename`.
