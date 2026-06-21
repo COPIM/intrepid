@@ -9,6 +9,7 @@ governed by the permission checks in ``portal.permissions`` (Layer B, OBC) and
 import os
 import tempfile
 import zipfile
+import logging
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -61,6 +62,8 @@ from portal.permissions import (
 PROVIDER_MEMBERS_GROUP = "Provider Members"
 VALID_FREQUENCIES = {choice[0] for choice in NOTIFICATION_FREQUENCY_CHOICES}
 
+logger = logging.getLogger(__name__)
+
 
 def _filter_documents(queryset, params):
     """Apply the shared filter set used by both OBC and Provider lists."""
@@ -88,8 +91,7 @@ def _filter_documents(queryset, params):
     search = params.get("q")
     if search:
         queryset = queryset.filter(
-            Q(display_name__icontains=search)
-            | Q(original_filename__icontains=search)
+            Q(display_name__icontains=search) | Q(original_filename__icontains=search)
         )
     return queryset
 
@@ -125,12 +127,8 @@ def _stream_zip(documents, filename="documents.zip"):
                 used.add(candidate)
                 archive.write(document.file.path, arcname=candidate)
         tmp.close()
-        response = FileResponse(
-            open(tmp.name, "rb"), content_type="application/zip"
-        )
-        response["Content-Disposition"] = 'attachment; filename="{0}"'.format(
-            filename
-        )
+        response = FileResponse(open(tmp.name, "rb"), content_type="application/zip")
+        response["Content-Disposition"] = 'attachment; filename="{0}"'.format(filename)
         response["Content-Length"] = os.path.getsize(tmp.name)
         return response
     finally:
@@ -207,9 +205,7 @@ def obc_upload(request, initiative_id):
         if form.is_valid():
             doc_type = form.cleaned_data["document_type"]
             if not user_can(request.user, "write", doc_type):
-                raise PermissionDenied(
-                    "You may not upload this document type."
-                )
+                raise PermissionDenied("You may not upload this document type.")
             reporting_month = form.cleaned_data["reporting_month"]
             created = 0
             for upload in form.cleaned_data["file"]:
@@ -223,12 +219,8 @@ def obc_upload(request, initiative_id):
                 document.file.save(upload.name, upload, save=False)
                 document.save()
                 created += 1
-            messages.success(
-                request, "Uploaded {0} document(s).".format(created)
-            )
-            return redirect(
-                "portal:obc_initiative_detail", initiative_id=initiative.pk
-            )
+            messages.success(request, "Uploaded {0} document(s).".format(created))
+            return redirect("portal:obc_initiative_detail", initiative_id=initiative.pk)
     else:
         form = DocumentUploadForm()
     return render(
@@ -265,9 +257,7 @@ def obc_bulk_commit(request, job_id):
     job = get_object_or_404(BulkImportJob, pk=job_id)
     if request.method == "POST":
         created = bulk_import.commit_job(job)
-        messages.success(
-            request, "Imported {0} document(s).".format(created)
-        )
+        messages.success(request, "Imported {0} document(s).".format(created))
         return redirect("portal:obc_dashboard")
     return render(
         request,
@@ -305,12 +295,8 @@ def obc_document_delete(request, doc_id):
         notifications.cancel_for_document(document)
         document.delete()
         messages.success(request, "Document deleted.")
-        return redirect(
-            "portal:obc_initiative_detail", initiative_id=initiative_id
-        )
-    return render(
-        request, "portal/obc_document_delete.html", {"document": document}
-    )
+        return redirect("portal:obc_initiative_detail", initiative_id=initiative_id)
+    return render(request, "portal/obc_document_delete.html", {"document": document})
 
 
 @obc_area_required
@@ -347,9 +333,7 @@ def provider_initiative_picker(request):
 def provider_initiative_documents(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     documents = _filter_documents(
-        Document.objects.filter(initiative=initiative).select_related(
-            "document_type"
-        ),
+        Document.objects.filter(initiative=initiative).select_related("document_type"),
         request.GET,
     )
     return render(
@@ -382,9 +366,7 @@ def provider_manage_contacts(request, initiative_id):
             contact.initiative = initiative
             if not contact_id:
                 # Position is auto-numbered for new contacts (next free slot).
-                last = initiative.provider_contacts.order_by(
-                    "-position"
-                ).first()
+                last = initiative.provider_contacts.order_by("-position").first()
                 contact.position = (last.position + 1) if last else 1
             contact._actor = request.user
             contact.save()
@@ -423,17 +405,13 @@ def obc_manage_initiative_users(request, initiative_id):
                     user.email or user.username, initiative.name
                 ),
             )
-            return redirect(
-                "portal:obc_initiative_users", initiative_id=initiative.pk
-            )
+            return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
         if request.POST.get("remove_alias"):
             InitiativeAlias.objects.filter(
                 pk=request.POST["remove_alias"], initiative=initiative
             ).delete()
             messages.success(request, "Alias removed.")
-            return redirect(
-                "portal:obc_initiative_users", initiative_id=initiative.pk
-            )
+            return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
         if "alias" in request.POST:
             alias_form = InitiativeAliasForm(request.POST)
             if alias_form.is_valid():
@@ -471,9 +449,7 @@ def obc_manage_initiative_users(request, initiative_id):
             "initiative": initiative,
             "form": form,
             "alias_form": alias_form,
-            "members": initiative.users.all().order_by(
-                "last_name", "username"
-            ),
+            "members": initiative.users.all().order_by("last_name", "username"),
             "aliases": initiative.aliases.all(),
         },
     )
@@ -485,9 +461,7 @@ def send_invite(request, contact_id):
     """OBC action: (re-)send a contact their one-time invitation link."""
     contact = get_object_or_404(ProviderContact, pk=contact_id)
     _send_invitation(request, contact)
-    messages.success(
-        request, "Invitation sent to {0}.".format(contact.email)
-    )
+    messages.success(request, "Invitation sent to {0}.".format(contact.email))
     return redirect(
         "portal:provider_manage_contacts",
         initiative_id=contact.initiative_id,
@@ -503,7 +477,7 @@ def _send_invitation(request, contact):
         template = EmailTemplate.objects.get(name="provider_invite")
         template.send(to=contact.email, context={"contact": contact, "url": url})
     except EmailTemplate.DoesNotExist:
-        pass
+        logger.error("Missing provider_invite email template.")
     contact.invited_at = timezone.now()
     contact.save()
 
@@ -543,9 +517,7 @@ def invite_by_email(request, initiative_id):
         messages.success(request, "Invitation sent to {0}.".format(email))
     else:
         messages.error(request, "Please enter a valid email address.")
-    return redirect(
-        "portal:provider_manage_contacts", initiative_id=initiative.pk
-    )
+    return redirect("portal:provider_manage_contacts", initiative_id=initiative.pk)
 
 
 @user_is_initiative_manager
@@ -638,15 +610,11 @@ def accept_invite(request, token):
     # password yet, so the invitee may set one. Any OTHER existing account is a
     # real account whose password must never be reset from this endpoint.
     is_invite_account = (
-        contact.user_id is not None
-        and not contact.user.has_usable_password()
+        contact.user_id is not None and not contact.user.has_usable_password()
     )
 
     if existing_user is not None and not is_invite_account:
-        if (
-            request.user.is_authenticated
-            and request.user.pk == existing_user.pk
-        ):
+        if request.user.is_authenticated and request.user.pk == existing_user.pk:
             # Logged in as the matching account. Require an explicit POST so an
             # email-scanner that GETs the link cannot auto-consume the invite.
             if request.method == "POST":
