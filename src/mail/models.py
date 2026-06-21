@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 import requests
 from django.conf import settings
@@ -6,6 +7,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template import Template, Context
 from django.utils.html import strip_tags
+
+logger = logging.getLogger(__name__)
 
 MESSAGE_STATUS = [
     ("no_information", "No Information"),
@@ -103,9 +106,8 @@ class EmailTemplate(models.Model):
         if type(to) not in [list, tuple]:
             to = [to]
 
-        if settings.DEBUG:
-            print(f"Sending email with subject {subject} to {to}.")
-            print(html)
+        logger.debug("Sending email with subject %r to %s.", subject, to)
+        logger.debug("Email body: %s", html)
 
         if not settings.USE_MAILGUN:
             msg = EmailMultiAlternatives(
@@ -113,7 +115,11 @@ class EmailTemplate(models.Model):
             )
             msg.attach_alternative(html, "text/html")
 
-            return msg.send()
+            sent = msg.send()
+            logger.info(
+                "Sent email via Django backend to %s (sent=%s).", to, sent
+            )
+            return sent
         else:
             mailgun_attachments = []
             for attachment in attachments:
@@ -121,6 +127,11 @@ class EmailTemplate(models.Model):
                     ("attachment", open(attachment, "rb"))
                 )
 
+            logger.debug(
+                "Posting email to Mailgun (%s) to %s.",
+                settings.MAILGUN_SERVER_NAME,
+                to,
+            )
             response = requests.post(
                 settings.MAILGUN_SERVER_NAME + "/messages",
                 auth=("api", settings.MAILGUN_ACCESS_KEY),
@@ -135,13 +146,25 @@ class EmailTemplate(models.Model):
                 },
             )
 
+            logger.debug(
+                "Mailgun HTTP status %s for email to %s.",
+                response.status_code,
+                to,
+            )
+
             try:
                 json_response = response.json()
             except requests.exceptions.JSONDecodeError:
+                logger.error(
+                    "Mailgun returned a non-JSON response (status %s) for "
+                    "email to %s: %s",
+                    response.status_code,
+                    to,
+                    response.text,
+                )
                 return ""
 
-            if settings.DEBUG:
-                print(json_response)
+            logger.debug("Mailgun response for email to %s: %s", to, json_response)
 
             try:
                 EmailTemplate._create_email_log(
@@ -152,8 +175,21 @@ class EmailTemplate(models.Model):
                     from_email=settings.FROM_EMAIL,
                 )
 
+                logger.info(
+                    "Mailgun accepted email to %s (id=%s).",
+                    to,
+                    json_response["id"],
+                )
                 return json_response
             except KeyError:
+                logger.error(
+                    "Mailgun did NOT accept the email to %s — no message id in "
+                    "response. This commonly means the recipient is not an "
+                    "authorised recipient on a Mailgun sandbox domain, or the "
+                    "domain/API key is wrong. Full response: %s",
+                    to,
+                    json_response,
+                )
                 return ""
 
     def send(
