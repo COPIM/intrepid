@@ -79,7 +79,6 @@ class NotificationQueueAdmin(admin.ModelAdmin):
     readonly_fields = (
         "document",
         "recipient",
-        "eligible_at",
         "frequency",
         "sent_at",
         "cancelled_at",
