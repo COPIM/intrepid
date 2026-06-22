@@ -23,12 +23,18 @@
                     <td>{% with freq_key='portal_freq_'|add:contact.notification_frequency %}{% get_site_text freq_key %}{% endwith %}</td>
                     <td>
                         <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
-                        {% if is_obc %}
+                        {% if is_obc and not contact.accepted_at %}
                             <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
                                 {% csrf_token %}
                                 <button class="btn btn-sm btn-link p-0 ml-1">
-                                    {% if contact.invited_at or contact.accepted_at %}{% get_site_text 'portal_resend_invite' %}{% else %}{% get_site_text 'portal_send_invitation' %}{% endif %}
+                                    {% if contact.invited_at %}{% get_site_text 'portal_resend_invite' %}{% else %}{% get_site_text 'portal_send_invitation' %}{% endif %}
                                 </button>
+                            </form>
+                        {% endif %}
+                        {% if contact.user_id != request.user.pk %}
+                            <form method="post" action="{% url 'portal:delete_contact' initiative.pk contact.pk %}" class="d-inline contact-delete-form">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-link text-danger p-0 ml-1">{% get_site_text 'portal_delete' %}</button>
                             </form>
                         {% endif %}
                     </td>
@@ -127,6 +133,15 @@
             addToggle.style.display = '';
         });
     }
+
+    // Confirm before deleting a contact.
+    document.querySelectorAll('.contact-delete-form').forEach(function (f) {
+        f.addEventListener('submit', function (event) {
+            if (!window.confirm("{% get_site_text 'portal_contacts_delete_confirm' %}")) {
+                event.preventDefault();
+            }
+        });
+    });
 
     // Warn when adding a 6th contact via the add form.
     var existing = {{ contacts.count }};

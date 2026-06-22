@@ -387,6 +387,120 @@ class SendInviteTests(ViewTestBase):
         )
         self.assertEqual(response.status_code, 403)
 
+    @patch("portal.views._send_invitation")
+    def test_invite_not_sent_to_contact_with_active_account(self, mock_send):
+        from django.utils import timezone
+
+        # An accepted contact already has a working account; re-sending an
+        # invitation to them must be refused.
+        user = User.objects.create_user("ada", password="realpw")
+        contact = self._contact()
+        contact.user = user
+        contact.accepted_at = timezone.now()
+        contact.save()
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            reverse("portal:send_invite", kwargs={"contact_id": contact.pk})
+        )
+        self.assertEqual(response.status_code, 302)
+        mock_send.assert_not_called()
+
+
+class DeleteContactTests(ViewTestBase):
+    def _contact(self, **kwargs):
+        defaults = dict(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+        defaults.update(kwargs)
+        return ProviderContact.objects.create(**defaults)
+
+    def _url(self, contact):
+        return reverse(
+            "portal:delete_contact",
+            kwargs={
+                "initiative_id": self.initiative.pk,
+                "contact_id": contact.pk,
+            },
+        )
+
+    def test_manager_can_delete_another_contact(self):
+        contact = self._contact()
+        self.client.force_login(self.provider)
+        response = self.client.post(self._url(contact))
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            ProviderContact.objects.filter(pk=contact.pk).exists()
+        )
+
+    def test_cannot_delete_own_contact(self):
+        contact = self._contact(user=self.provider)
+        self.client.force_login(self.provider)
+        response = self.client.post(self._url(contact))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            ProviderContact.objects.filter(pk=contact.pk).exists()
+        )
+
+    def test_non_manager_cannot_delete(self):
+        contact = self._contact()
+        self.client.force_login(self.outsider)
+        response = self.client.post(self._url(contact))
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(
+            ProviderContact.objects.filter(pk=contact.pk).exists()
+        )
+
+
+class ResendInviteVisibilityTests(ViewTestBase):
+    """The invite action on the contacts page reflects acceptance state."""
+
+    def _obc_manager(self):
+        # is_staff satisfies both the initiative-manager gate on the contacts
+        # page and the OBC-staff check that renders the invite controls.
+        return User.objects.create_user("obcmgr", password="pw", is_staff=True)
+
+    def _contacts_url(self):
+        return reverse(
+            "portal:provider_manage_contacts",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def _contact(self, **kwargs):
+        defaults = dict(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+        defaults.update(kwargs)
+        return ProviderContact.objects.create(**defaults)
+
+    def _invite_action(self, contact):
+        return reverse("portal:send_invite", kwargs={"contact_id": contact.pk})
+
+    def test_invite_action_offered_for_pending_contact(self):
+        from django.utils import timezone
+
+        contact = self._contact(invited_at=timezone.now())
+        self.client.force_login(self._obc_manager())
+        response = self.client.get(self._contacts_url())
+        self.assertContains(response, self._invite_action(contact))
+
+    def test_invite_action_hidden_once_contact_has_accepted(self):
+        from django.utils import timezone
+
+        contact = self._contact(
+            invited_at=timezone.now(), accepted_at=timezone.now()
+        )
+        self.client.force_login(self._obc_manager())
+        response = self.client.get(self._contacts_url())
+        self.assertNotContains(response, self._invite_action(contact))
+
 
 class InitiativeUserManagementTests(ViewTestBase):
     def _url(self):

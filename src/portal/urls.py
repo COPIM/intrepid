@@ -67,6 +67,12 @@ urlpatterns = [
         name="invite_by_email",
     ),
     path(
+        "provider/initiative/<int:initiative_id>/contact/"
+        "<int:contact_id>/delete/",
+        views.delete_contact,
+        name="delete_contact",
+    ),
+    path(
         "provider/initiative/<int:initiative_id>/notifications/",
         views.provider_notification_prefs,
         name="provider_notification_prefs",

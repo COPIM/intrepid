@@ -460,11 +460,49 @@ def obc_manage_initiative_users(request, initiative_id):
 def send_invite(request, contact_id):
     """OBC action: (re-)send a contact their one-time invitation link."""
     contact = get_object_or_404(ProviderContact, pk=contact_id)
-    _send_invitation(request, contact)
-    messages.success(request, "Invitation sent to {0}.".format(contact.email))
+    # Don't (re-)invite a contact who already has a working account: either
+    # they have accepted, or their linked user can already sign in.
+    already_active = contact.accepted_at is not None or (
+        contact.user is not None and contact.user.has_usable_password()
+    )
+    if already_active:
+        messages.error(
+            request,
+            "{0} already has an account and cannot be re-invited.".format(
+                contact.email
+            ),
+        )
+    else:
+        _send_invitation(request, contact)
+        messages.success(
+            request, "Invitation sent to {0}.".format(contact.email)
+        )
     return redirect(
         "portal:provider_manage_contacts",
         initiative_id=contact.initiative_id,
+    )
+
+
+@user_is_initiative_manager
+@require_POST
+def delete_contact(request, initiative_id, contact_id):
+    """Delete a notifications contact.
+
+    Anyone who manages the Provider may remove a contact, except their own
+    linked contact (removing it would be self-defeating). This only affects
+    notifications; portal login access is managed separately on Manage Users.
+    """
+    initiative = get_object_or_404(Initiative, pk=initiative_id)
+    contact = get_object_or_404(
+        ProviderContact, pk=contact_id, initiative=initiative
+    )
+    if contact.user_id == request.user.id:
+        messages.error(request, "You cannot delete your own contact.")
+    else:
+        contact.delete()
+        messages.success(request, "Contact removed.")
+    return redirect(
+        "portal:provider_manage_contacts", initiative_id=initiative.pk
     )
 
 
