@@ -77,6 +77,7 @@
 </div>
 
 <h3 class="portal-section-title">{% get_site_text 'portal_contacts_add_heading' %}</h3>
+<p class="portal-section-hint">{% get_site_text 'portal_contacts_notify_only_note' %}</p>
 <div class="portal-card" style="max-width:640px;">
     <button type="button" class="btn btn-obc-blue" id="add-contact-toggle">{% get_site_text 'portal_contacts_add_button' %}</button>
     <div id="add-contact-wrapper" style="display:none;margin-top:1rem;">
@@ -85,14 +86,6 @@
         </form>
         <button type="button" class="btn btn-sm btn-obc-outline" id="add-contact-cancel">{% get_site_text 'portal_cancel' %}</button>
     </div>
-</div>
-
-<h3 class="portal-section-title">{% get_site_text 'portal_invite_email_heading' %}</h3>
-<p class="portal-section-hint">{% get_site_text 'portal_invite_email_hint' %}</p>
-<div class="portal-card" style="max-width:640px;">
-    <form method="post" action="{% url 'portal:invite_by_email' initiative.pk %}">
-        {% crispy invite_form %}
-    </form>
 </div>
 
 <script>

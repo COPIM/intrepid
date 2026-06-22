@@ -36,37 +36,22 @@
 
 <h3 class="portal-section-title">{% get_site_text 'portal_users_add_heading' %}</h3>
 <p class="portal-section-hint">{% get_site_text 'portal_users_add_hint' %}</p>
-<div class="portal-card" style="max-width:560px;">
-    {% crispy form %}
-</div>
-
-<h3 class="portal-section-title">{% get_site_text 'portal_aliases_heading' %}</h3>
-<p class="portal-section-hint">{% get_site_text 'portal_aliases_hint' %}</p>
-<div class="portal-card">
-    <table class="table mb-0">
-        <thead><tr>
-            <th>{% get_site_text 'portal_th_alias' %}</th>
-            <th></th>
-        </tr></thead>
-        <tbody>
-            {% for alias in aliases %}
-                <tr>
-                    <td>{{ alias.alias }}</td>
-                    <td>
-                        <form method="post" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="remove_alias" value="{{ alias.pk }}">
-                            <button class="btn btn-sm btn-link text-danger p-0">{% get_site_text 'portal_remove' %}</button>
-                        </form>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="2" class="text-muted">{% get_site_text 'portal_aliases_empty' %}</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div class="portal-card" style="max-width:560px;">
-    {% crispy alias_form %}
+<div class="row">
+    <div class="col-md-6 mb-3 d-flex">
+        <div class="portal-card w-100">
+            <h4 class="portal-section-title mt-0">{% get_site_text 'portal_users_add_existing_heading' %}</h4>
+            <p class="portal-section-hint">{% get_site_text 'portal_users_add_existing_desc' %}</p>
+            {% crispy form %}
+        </div>
+    </div>
+    <div class="col-md-6 mb-3 d-flex">
+        <div class="portal-card w-100">
+            <h4 class="portal-section-title mt-0">{% get_site_text 'portal_users_invite_heading' %}</h4>
+            <p class="portal-section-hint">{% get_site_text 'portal_users_invite_desc' %}</p>
+            <form method="post" action="{% url 'portal:invite_by_email' initiative.pk %}">
+                {% crispy invite_form %}
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

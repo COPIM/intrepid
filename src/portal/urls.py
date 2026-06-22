@@ -23,6 +23,11 @@ urlpatterns = [
         views.obc_manage_initiative_users,
         name="obc_initiative_users",
     ),
+    path(
+        "obc/initiative/<int:initiative_id>/aliases/",
+        views.obc_manage_aliases,
+        name="obc_initiative_aliases",
+    ),
     path("obc/staff/", views.obc_manage_staff, name="obc_manage_staff"),
     path("obc/bulk-import/", views.obc_bulk_import, name="obc_bulk_import"),
     path(

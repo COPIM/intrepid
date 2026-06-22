@@ -540,6 +540,37 @@ class InitiativeUserManagementTests(ViewTestBase):
         self.client.force_login(self.provider)
         self.assertEqual(self.client.get(self._url()).status_code, 403)
 
+    def test_invite_by_email_form_is_on_manage_users_page(self):
+        self.client.force_login(self.staff)
+        invite_action = reverse(
+            "portal:invite_by_email",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        self.assertContains(self.client.get(self._url()), invite_action)
+
+    def test_provider_cannot_invite_by_email(self):
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "someone@example.com"},
+        )
+        self.assertEqual(response.status_code, 403)
+
+
+class InitiativeAliasManagementTests(ViewTestBase):
+    def _url(self):
+        return reverse(
+            "portal:obc_initiative_aliases",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def test_obc_can_view_aliases_page(self):
+        self.client.force_login(self.staff)
+        self.assertEqual(self.client.get(self._url()).status_code, 200)
+
     def test_obc_can_add_alias_to_initiative(self):
         self.client.force_login(self.staff)
         response = self.client.post(self._url(), {"alias": "OBP"})
@@ -575,13 +606,32 @@ class InitiativeUserManagementTests(ViewTestBase):
             InitiativeAlias.objects.filter(pk=alias.pk).exists()
         )
 
-    def test_provider_cannot_add_alias(self):
+    def test_provider_cannot_access_aliases(self):
         self.client.force_login(self.provider)
+        self.assertEqual(self.client.get(self._url()).status_code, 403)
         response = self.client.post(self._url(), {"alias": "OBP"})
         self.assertEqual(response.status_code, 403)
         self.assertFalse(
             InitiativeAlias.objects.filter(initiative=self.initiative).exists()
         )
+
+    def test_aliases_tab_visible_to_obc_not_to_provider(self):
+        alias_url = self._url()
+        # OBC staff (is_staff) see the Aliases tab in the provider sub-nav.
+        obc = User.objects.create_user("obcmgr2", password="pw", is_staff=True)
+        self.client.force_login(obc)
+        contacts_url = reverse(
+            "portal:provider_manage_contacts",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        self.assertContains(self.client.get(contacts_url), alias_url)
+        # A provider member never sees the Aliases tab.
+        self.client.force_login(self.provider)
+        docs_url = reverse(
+            "portal:provider_initiative_documents",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        self.assertNotContains(self.client.get(docs_url), alias_url)
 
 
 class BulkDownloadTests(ViewTestBase):

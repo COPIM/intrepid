@@ -1,6 +1,7 @@
 {# Shared per-initiative sub-navigation. Expects: initiative, is_obc, active. #}
 {% if is_obc %}
     <a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_all_providers' %}</a>
+    <a href="{% url 'portal:obc_initiative_aliases' initiative.pk %}" class="{% if active == 'aliases' %}active{% endif %}">{% get_site_text 'portal_nav_aliases' %}</a>
     <a href="{% url 'portal:obc_initiative_detail' initiative.pk %}" class="{% if active == 'documents' %}active{% endif %}">{% get_site_text 'portal_nav_documents' %}</a>
 {% else %}
     <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="{% if active == 'documents' %}active{% endif %}">{% get_site_text 'portal_nav_documents' %}</a>

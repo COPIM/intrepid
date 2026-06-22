@@ -383,7 +383,6 @@ def provider_manage_contacts(request, initiative_id):
             "initiative": initiative,
             "contacts": initiative.provider_contacts.all(),
             "form": form,
-            "invite_form": InviteByEmailForm(),
             "is_obc": is_obc_staff(request.user),
         },
     )
@@ -394,7 +393,6 @@ def obc_manage_initiative_users(request, initiative_id):
     """OBC action: control which user accounts can see a Provider's portal."""
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     form = InitiativeUserForm()
-    alias_form = InitiativeAliasForm()
     if request.method == "POST":
         if request.POST.get("remove_user"):
             user = get_object_or_404(User, pk=request.POST["remove_user"])
@@ -406,51 +404,73 @@ def obc_manage_initiative_users(request, initiative_id):
                 ),
             )
             return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
-        if request.POST.get("remove_alias"):
-            InitiativeAlias.objects.filter(
-                pk=request.POST["remove_alias"], initiative=initiative
-            ).delete()
-            messages.success(request, "Alias removed.")
-            return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
-        if "alias" in request.POST:
-            alias_form = InitiativeAliasForm(request.POST)
-            if alias_form.is_valid():
-                InitiativeAlias.objects.get_or_create(
-                    initiative=initiative,
-                    alias=alias_form.cleaned_data["alias"].strip(),
-                )
-                messages.success(
-                    request,
-                    "Added alias '{0}' for {1}.".format(
-                        alias_form.cleaned_data["alias"].strip(),
-                        initiative.name,
-                    ),
-                )
-                return redirect(
-                    "portal:obc_initiative_users", initiative_id=initiative.pk
-                )
-        else:
-            form = InitiativeUserForm(request.POST)
-            if form.is_valid():
-                initiative.users.add(form.user)
-                messages.success(
-                    request,
-                    "Added {0} to {1}.".format(
-                        form.user.email or form.user.username, initiative.name
-                    ),
-                )
-                return redirect(
-                    "portal:obc_initiative_users", initiative_id=initiative.pk
-                )
+        form = InitiativeUserForm(request.POST)
+        if form.is_valid():
+            initiative.users.add(form.user)
+            messages.success(
+                request,
+                "Added {0} to {1}.".format(
+                    form.user.email or form.user.username, initiative.name
+                ),
+            )
+            return redirect(
+                "portal:obc_initiative_users", initiative_id=initiative.pk
+            )
     return render(
         request,
         "portal/obc_initiative_users.html",
         {
             "initiative": initiative,
             "form": form,
-            "alias_form": alias_form,
+            "invite_form": InviteByEmailForm(),
             "members": initiative.users.all().order_by("last_name", "username"),
+            "is_obc": True,
+        },
+    )
+
+
+@obc_staff_required
+def obc_manage_aliases(request, initiative_id):
+    """OBC action: manage a Provider's alternative names (aliases).
+
+    Aliases let bulk import match a Provider by alternate names. They are an
+    OBC-only concern, surfaced as a dedicated tab in the Provider sub-nav.
+    """
+    initiative = get_object_or_404(Initiative, pk=initiative_id)
+    alias_form = InitiativeAliasForm()
+    if request.method == "POST":
+        if request.POST.get("remove_alias"):
+            InitiativeAlias.objects.filter(
+                pk=request.POST["remove_alias"], initiative=initiative
+            ).delete()
+            messages.success(request, "Alias removed.")
+            return redirect(
+                "portal:obc_initiative_aliases", initiative_id=initiative.pk
+            )
+        alias_form = InitiativeAliasForm(request.POST)
+        if alias_form.is_valid():
+            InitiativeAlias.objects.get_or_create(
+                initiative=initiative,
+                alias=alias_form.cleaned_data["alias"].strip(),
+            )
+            messages.success(
+                request,
+                "Added alias '{0}' for {1}.".format(
+                    alias_form.cleaned_data["alias"].strip(),
+                    initiative.name,
+                ),
+            )
+            return redirect(
+                "portal:obc_initiative_aliases", initiative_id=initiative.pk
+            )
+    return render(
+        request,
+        "portal/obc_aliases.html",
+        {
+            "initiative": initiative,
+            "alias_form": alias_form,
             "aliases": initiative.aliases.all(),
+            "is_obc": True,
         },
     )
 
@@ -520,10 +540,10 @@ def _send_invitation(request, contact):
     contact.save()
 
 
-@user_is_initiative_manager
+@obc_staff_required
 @require_POST
 def invite_by_email(request, initiative_id):
-    """Invite someone by email alone.
+    """Invite someone by email alone (grants portal login — creates a User).
 
     Creates a contact (with no details yet) and, unless an account already
     exists for that email, a detail-less user account, then sends the
@@ -555,7 +575,7 @@ def invite_by_email(request, initiative_id):
         messages.success(request, "Invitation sent to {0}.".format(email))
     else:
         messages.error(request, "Please enter a valid email address.")
-    return redirect("portal:provider_manage_contacts", initiative_id=initiative.pk)
+    return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
 
 
 @user_is_initiative_manager
