@@ -25,7 +25,7 @@
         <p class="tile-desc">{% get_site_text 'portal_tile_staff_desc' %}</p>
     </a>
     {% if request.user.is_staff %}
-    <a class="portal-tile" href="/staff/">
+    <a class="portal-tile" href="{% url 'dashboard_index' %}">
         <div class="tile-icon"><i class="fa-solid fa-sliders"></i></div>
         <div class="tile-title">{% get_site_text 'portal_tile_admin_dashboard_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_admin_dashboard_desc' %}</p>
