@@ -23,7 +23,7 @@
                     <td>{% if row.recipient.user %}{{ row.recipient.user.get_full_name|default:row.recipient.user.username }}{% endif %}</td>
                     <td><a href="{% url 'portal:download_document' row.document.pk %}">{{ row.document.display_name }}</a></td>
                     <td>{{ row.document.initiative.name }}</td>
-                    <td>{{ row.frequency }}</td>
+                    <td>{% with freq_key='portal_freq_'|add:row.frequency %}{% get_site_text freq_key %}{% endwith %}</td>
                     <td data-order="{{ row.status_date_epoch }}">{{ row.status_date|date:'Y-m-d H:i' }}</td>
                     <td data-order="{{ row.status_order }}">
                         {% if row.status_key == 'pending' %}{% get_site_text 'portal_status_pending' %}{% endif %}

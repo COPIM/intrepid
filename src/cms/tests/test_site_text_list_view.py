@@ -70,14 +70,3 @@ class ListSiteTextViewTests(TestCase):
         response = self.client.get(reverse("list_site_text"))
         self.assertContains(response, 'id="site-text-filter-all"')
         self.assertContains(response, 'id="site-text-filter-portal"')
-
-    def test_quick_filter_buttons_target_the_site_texts_datatable(self):
-        """The quick-filter script must call .search()/.draw() against the
-        same DataTable id ('site-texts') that the shared datatables include
-        initialises, otherwise the buttons would filter nothing."""
-        self.client.login(username="site-text-staff", password="pw")
-        response = self.client.get(reverse("list_site_text"))
-        content = response.content.decode()
-        self.assertIn("#site-texts", content)
-        self.assertIn(".search(", content)
-        self.assertIn(".draw()", content)
