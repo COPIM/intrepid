@@ -151,6 +151,50 @@ class ParseZipTests(BulkImportSeedMixin, TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].status, "ok")
 
+    def test_leading_underscore_conforming_file_resolves(self):
+        # Some ZIPs contain a leading underscore before the date, e.g. from
+        # export tooling that sorts underscored files first. It must parse
+        # identically to the underscore-less equivalent.
+        path = "2026-04/_2026-04 OBC Accounts Report - African Minds.pdf"
+        rows = bulk_import.parse_zip(make_zip({path: b"data"}))
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertEqual(row.status, "ok")
+        self.assertEqual(row.initiative, self.african_minds)
+        self.assertEqual(row.reporting_month, date(2026, 4, 1))
+        self.assertEqual(
+            row.original_filename,
+            "_2026-04 OBC Accounts Report - African Minds.pdf",
+        )
+
+    def test_leading_underscore_non_conforming_filename_is_deferred(self):
+        # A leading underscore does not excuse the rest of the naming
+        # convention -- an underscore-prefixed "OLD VERSION ..." file must
+        # still be deferred for manual review, not auto-imported.
+        path = (
+            "2026-04/_OLD VERSION 2026-04 OBC Accounts Report - "
+            "LSE Press.pdf"
+        )
+        rows = bulk_import.parse_zip(make_zip({path: b"data"}))
+        self.assertEqual(rows[0].status, "skipped")
+        self.assertIsNone(rows[0].initiative)
+
+    def test_apple_double_file_in_month_folder_is_ignored(self):
+        # macOS AppleDouble resource forks (basename starting "._") must
+        # never be treated as a conforming report, even though they sit
+        # right next to a real one in the month folder and even though a
+        # bare leading underscore is now tolerated.
+        zip_file = make_zip(
+            {
+                report_path("African Minds"): b"data",
+                "2026-04/._2026-04 OBC Accounts Report - OBP.pdf": b"junk",
+            }
+        )
+        rows = bulk_import.parse_zip(zip_file)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].status, "ok")
+        self.assertEqual(rows[0].initiative, self.african_minds)
+
 
 class CommitTests(BulkImportSeedMixin, TestCase):
     def setUp(self):

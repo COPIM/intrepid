@@ -43,8 +43,11 @@ MONTH_DIR_RE = re.compile(
     r"(?P<basename>.+)\.(?:pdf|docx?|xlsx?|csv)$",
     re.IGNORECASE,
 )
-# A conforming report filename starts with the date and ends with " - <Provider>".
-REPORT_NAME_RE = re.compile(r"^\d{4}-\d{2}.*\s-\s(?P<provider>.+)$")
+# A conforming report filename starts with the date (optionally preceded by
+# one or more underscores) and ends with " - <Provider>". Basenames starting
+# with "." (including macOS AppleDouble "._" resource forks) are filtered out
+# in ``_classify`` before this regex ever runs.
+REPORT_NAME_RE = re.compile(r"^_*\d{4}-\d{2}.*\s-\s(?P<provider>.+)$")
 
 
 @dataclasses.dataclass
