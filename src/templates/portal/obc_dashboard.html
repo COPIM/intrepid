@@ -9,16 +9,19 @@
         <div class="tile-title">{% get_site_text 'portal_tile_documents_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_documents_desc' %}</p>
     </a>
+    {% if can_manage_portal %}
     <a class="portal-tile" href="{% url 'portal:obc_bulk_import' %}">
         <div class="tile-icon"><i class="fa-solid fa-file-zipper"></i></div>
         <div class="tile-title">{% get_site_text 'portal_tile_bulk_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_bulk_desc' %}</p>
     </a>
+    {% endif %}
     <a class="portal-tile" href="{% url 'portal:obc_contact_changes' %}">
         <div class="tile-icon"><i class="fa-solid fa-user-pen"></i></div>
         <div class="tile-title">{% get_site_text 'portal_tile_contacts_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_contacts_desc' %}</p>
     </a>
+    {% if can_manage_portal %}
     <a class="portal-tile" href="{% url 'portal:obc_manage_staff' %}">
         <div class="tile-icon"><i class="fa-solid fa-user-shield"></i></div>
         <div class="tile-title">{% get_site_text 'portal_tile_staff_title' %}</div>
@@ -34,6 +37,7 @@
         <div class="tile-title">{% get_site_text 'portal_tile_email_tpls_title' %}</div>
         <p class="tile-desc">{% get_site_text 'portal_tile_email_tpls_desc' %}</p>
     </a>
+    {% endif %}
     {% if request.user.is_staff %}
     <a class="portal-tile" href="{% url 'dashboard_index' %}">
         <div class="tile-icon"><i class="fa-solid fa-sliders"></i></div>

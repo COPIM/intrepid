@@ -190,6 +190,7 @@ def obc_dashboard(request):
         {
             "initiatives": initiatives,
             "recent_documents": recent_documents,
+            "can_manage_portal": is_obc_staff(request.user),
         },
     )
 

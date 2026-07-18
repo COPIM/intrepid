@@ -114,6 +114,52 @@ class ProviderScopingTests(ViewTestBase):
         self.assertEqual(response.status_code, 200)
 
 
+class DashboardTileGatingTests(ViewTestBase):
+    """Read-only OBC-area users must not see tiles for staff-only actions."""
+
+    STAFF_ONLY_URL_NAMES = [
+        "portal:obc_bulk_import",
+        "portal:obc_manage_staff",
+        "portal:obc_emails",
+        "portal:obc_email_templates",
+    ]
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        from portal.models import DocumentTypePermission
+
+        cls.reader_group = Group.objects.create(name="Readers")
+        cls.reader = User.objects.create_user("reader", password="pw")
+        cls.reader.groups.add(cls.reader_group)
+        DocumentTypePermission.objects.create(
+            document_type=cls.remittance,
+            group=cls.reader_group,
+            can_read=True,
+            can_write=False,
+        )
+
+    def test_readonly_user_sees_dashboard_without_staff_tiles(self):
+        self.client.force_login(self.reader)
+        response = self.client.get(reverse("portal:obc_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        for name in self.STAFF_ONLY_URL_NAMES:
+            self.assertNotIn(reverse(name), content)
+        # But provider/document content is still present.
+        self.assertIn(reverse("portal:obc_initiative_detail", args=[
+            self.initiative.pk
+        ]), content)
+
+    def test_staff_user_sees_all_staff_tiles(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        for name in self.STAFF_ONLY_URL_NAMES:
+            self.assertIn(reverse(name), content)
+
+
 class DownloadTests(ViewTestBase):
     def _download(self, user):
         self.client.force_login(user)
