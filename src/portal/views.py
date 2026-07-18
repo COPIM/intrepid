@@ -399,15 +399,24 @@ def obc_email_resend(request, queue_id):
     row = get_object_or_404(NotificationQueue, pk=queue_id)
     if row.sent_at is not None:
         try:
-            notifications.resend_row(row)
+            result = notifications.resend_row(row)
         except EmailTemplate.DoesNotExist:
             messages.error(
                 request, "The email template is missing; nothing was sent."
             )
         else:
-            row.sent_at = timezone.now()
-            row.save(update_fields=["sent_at"])
-            messages.success(request, "Email re-sent.")
+            # The send path can return a falsey value without raising: ""
+            # when Mailgun rejects the message, 0 from the Django backend.
+            # Only treat a confirmed truthy result as a successful re-send.
+            if result:
+                row.sent_at = timezone.now()
+                row.save(update_fields=["sent_at"])
+                messages.success(request, "Email re-sent.")
+            else:
+                messages.error(
+                    request,
+                    "The email could not be sent; please try again.",
+                )
     else:
         messages.error(
             request, "Only an email that has already been sent can be re-sent."

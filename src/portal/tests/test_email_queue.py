@@ -6,6 +6,7 @@ has already been sent. Providers and Contacts must never reach it.
 """
 
 from datetime import timedelta
+from unittest import mock
 
 from django.contrib.auth.models import Group, User
 from django.core import mail as django_mail
@@ -221,6 +222,56 @@ class ResendActionTests(EmailQueueTestBase):
         self.assertEqual(len(django_mail.outbox), 1)
         row.refresh_from_db()
         self.assertIsNotNone(row.sent_at)
+        self.assertGreater(row.sent_at, old_sent)
+
+    def test_resend_empty_string_result_leaves_sent_at_unchanged(self):
+        # Mailgun rejection returns "" from the send path without raising.
+        document = self._document("Rejected by Mailgun")
+        row = self._row_for(document)
+        old_sent = timezone.now() - timedelta(days=2)
+        NotificationQueue.objects.filter(pk=row.pk).update(sent_at=old_sent)
+
+        self.client.force_login(self.staff)
+        with mock.patch.object(notifications, "resend_row", return_value=""):
+            self.client.post(
+                reverse("portal:obc_email_resend", kwargs={"queue_id": row.pk})
+            )
+
+        row.refresh_from_db()
+        # sent_at must not advance when submission was not confirmed.
+        self.assertEqual(row.sent_at, old_sent)
+
+    def test_resend_zero_result_leaves_sent_at_unchanged(self):
+        # The Django backend returns 0 (int) when nothing was sent.
+        document = self._document("Django backend rejected")
+        row = self._row_for(document)
+        old_sent = timezone.now() - timedelta(days=2)
+        NotificationQueue.objects.filter(pk=row.pk).update(sent_at=old_sent)
+
+        self.client.force_login(self.staff)
+        with mock.patch.object(notifications, "resend_row", return_value=0):
+            self.client.post(
+                reverse("portal:obc_email_resend", kwargs={"queue_id": row.pk})
+            )
+
+        row.refresh_from_db()
+        self.assertEqual(row.sent_at, old_sent)
+
+    def test_resend_truthy_result_refreshes_sent_at(self):
+        document = self._document("Accepted")
+        row = self._row_for(document)
+        old_sent = timezone.now() - timedelta(days=2)
+        NotificationQueue.objects.filter(pk=row.pk).update(sent_at=old_sent)
+
+        self.client.force_login(self.staff)
+        with mock.patch.object(
+            notifications, "resend_row", return_value={"id": "ok"}
+        ):
+            self.client.post(
+                reverse("portal:obc_email_resend", kwargs={"queue_id": row.pk})
+            )
+
+        row.refresh_from_db()
         self.assertGreater(row.sent_at, old_sent)
 
     def test_resend_pending_row_makes_no_change(self):
