@@ -653,6 +653,97 @@ class BulkDownloadTests(ViewTestBase):
         self.assertEqual(archive.read(archive.namelist()[0]), b"hello")
 
 
+class DocumentsTableUXTests(ViewTestBase):
+    """Structural coverage for the clear-filter link, the Provider table's
+    DataTables wiring and its select-all checkbox (items 4c/4d/4e)."""
+
+    def test_provider_documents_page_has_clear_filter_link(self):
+        self.client.force_login(self.provider)
+        url = reverse(
+            "portal:provider_initiative_documents",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        response = self.client.get(url, {"q": "something"})
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="clear-filters"', content)
+        self.assertIn('href="{0}"'.format(url), content)
+
+    def test_obc_documents_page_has_clear_filter_link(self):
+        self.client.force_login(self.staff)
+        url = reverse(
+            "portal:obc_initiative_detail",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        response = self.client.get(url, {"q": "something"})
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="clear-filters"', content)
+        self.assertIn('href="{0}"'.format(url), content)
+
+    def test_provider_documents_table_has_id_for_datatables_init(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="documents-table"', content)
+
+    def test_provider_documents_page_loads_jquery_and_datatables(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode().lower()
+        self.assertIn("jquery", content)
+        self.assertIn("datatables", content)
+
+    def test_provider_documents_table_checkbox_and_action_columns_not_orderable(
+        self,
+    ):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertIn("orderable", content)
+        self.assertIn("false", content)
+
+    def test_provider_documents_page_has_select_all_checkbox(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertIn('id="select-all-documents"', content)
+
+    def test_obc_documents_page_has_no_select_all_checkbox(self):
+        # Per the brief, only the Provider table gets the DataTables /
+        # select-all treatment; the OBC table is left as a plain list.
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertNotIn('id="select-all-documents"', content)
+
+
 class StaffManagementTests(ViewTestBase):
     def _url(self):
         return reverse("portal:obc_manage_staff")

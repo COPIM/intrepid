@@ -27,7 +27,10 @@
             <label class="small text-muted mb-1">{% get_site_text 'portal_search_name' %}</label>
             <input type="text" name="q" value="{{ filters.q }}" class="form-control">
         </div>
-        <div class="col-md-auto align-self-end"><button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button></div>
+        <div class="col-md-auto align-self-end">
+            <button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button>
+            <a id="clear-filters" class="btn btn-obc-outline" href="{% url 'portal:obc_initiative_detail' initiative.pk %}">{% get_site_text 'portal_clear_filter' %}</a>
+        </div>
     </form>
 
     <form method="post" action="{% url 'portal:bulk_download' %}">
