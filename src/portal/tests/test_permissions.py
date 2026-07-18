@@ -215,6 +215,79 @@ class InitiativeAccessDecoratorTests(PermissionTestBase):
             )
 
 
+class ObcTeamManagementConsistencyTests(PermissionTestBase):
+    """An OBC Team group member with is_staff=False is full-access management."""
+
+    def test_can_manage_initiative_true_for_obc_group_member(self):
+        # obc_member is in the "OBC Team" group but is not is_staff.
+        self.assertFalse(self.obc_member.is_staff)
+        self.assertTrue(
+            permissions.can_manage_initiative(self.obc_member, self.initiative)
+        )
+
+    def test_can_manage_initiative_false_for_plain_user(self):
+        self.assertFalse(
+            permissions.can_manage_initiative(self.plain, self.initiative)
+        )
+
+
+class InitiativeManagerDecoratorTests(PermissionTestBase):
+    """``initiative_manager_required`` admits managers/OBC staff only."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.manager = User.objects.create_user("mgr2", password="pw")
+        cls.initiative.users.add(cls.manager)
+        cls.contact_user = User.objects.create_user("ccon", password="pw")
+        ProviderContact.objects.create(
+            initiative=cls.initiative,
+            first_name="C",
+            last_name="C",
+            email="cc@example.com",
+            user=cls.contact_user,
+        )
+
+    def setUp(self):
+        self.factory = RequestFactory()
+
+        @permissions.initiative_manager_required
+        def view(request, initiative_id):
+            return HttpResponse("ok")
+
+        self.view = view
+
+    def _request(self, user):
+        request = self.factory.get("/")
+        request.user = user
+        return request
+
+    def test_manager_allowed(self):
+        response = self.view(
+            self._request(self.manager), initiative_id=self.initiative.pk
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_obc_group_member_allowed(self):
+        response = self.view(
+            self._request(self.obc_member), initiative_id=self.initiative.pk
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_contact_denied(self):
+        with self.assertRaises(PermissionDenied):
+            self.view(
+                self._request(self.contact_user),
+                initiative_id=self.initiative.pk,
+            )
+
+    def test_outsider_denied(self):
+        with self.assertRaises(PermissionDenied):
+            self.view(
+                self._request(self.plain), initiative_id=self.initiative.pk
+            )
+
+
 class RequiresDocTypeDecoratorTests(PermissionTestBase):
     def setUp(self):
         self.factory = RequestFactory()

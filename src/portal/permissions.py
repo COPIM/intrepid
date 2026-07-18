@@ -126,12 +126,14 @@ def linked_contact(user, initiative):
 def can_manage_initiative(user, initiative):
     """Whether ``user`` is a Provider manager (or OBC staff) for ``initiative``.
 
-    This is the existing Layer A rule: OBC staff / superusers, or membership of
-    ``initiative.users``.
+    OBC staff (superusers, Django staff, or "OBC Team" group members) have
+    blanket management access; otherwise the user must belong to
+    ``initiative.users``. This keeps the Admin role (OBC staff) consistent with
+    :func:`is_obc_staff` across every management gate.
     """
     if not user.is_authenticated:
         return False
-    if user.is_staff or user.is_superuser:
+    if is_obc_staff(user):
         return True
     if initiative is not None and initiative.users.filter(pk=user.pk).exists():
         return True
@@ -174,6 +176,44 @@ def initiative_access_required(view):
                 kwargs["initiative_id"] = initiative.pk
 
         if can_access_initiative(request.user, initiative):
+            return view(request, *args, **kwargs)
+
+        raise PermissionDenied(
+            "You do not have permission to view this page."
+        )
+
+    return wrapper
+
+
+def initiative_manager_required(view):
+    """Allow only Provider managers (or OBC staff) to reach the view.
+
+    The portal-specific counterpart to
+    ``intrepid.security.user_is_initiative_manager``: it mirrors that
+    decorator's ``initiative`` / ``initiative_id`` kwarg handling but gates on
+    :func:`can_manage_initiative`, so "OBC Team" group members (who are OBC
+    staff but not necessarily ``is_staff``) are admitted consistently.
+    """
+    from initiatives.models import Initiative
+
+    @functools.wraps(view)
+    @login_required
+    def wrapper(request, *args, **kwargs):
+        initiative_id = kwargs.get("initiative", None)
+        id_suffix = False
+        if not initiative_id:
+            initiative_id = kwargs.get("initiative_id", None)
+            id_suffix = True
+
+        initiative = None
+        if initiative_id:
+            initiative = get_object_or_404(Initiative, pk=initiative_id)
+            if not id_suffix:
+                kwargs["initiative"] = initiative
+            else:
+                kwargs["initiative_id"] = initiative.pk
+
+        if can_manage_initiative(request.user, initiative):
             return view(request, *args, **kwargs)
 
         raise PermissionDenied(

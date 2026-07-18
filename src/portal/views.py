@@ -26,7 +26,6 @@ from django.utils.dateparse import parse_date
 from django.views.decorators.http import require_POST
 
 from initiatives.models import Initiative
-from intrepid.security import user_is_initiative_manager
 from mail.models import EmailTemplate
 from portal import bulk_import, notifications
 from portal.forms import (
@@ -56,6 +55,7 @@ from portal.permissions import (
     can_manage_initiative,
     has_doc_type_access,
     initiative_access_required,
+    initiative_manager_required,
     is_obc_staff,
     linked_contact,
     obc_area_required,
@@ -692,7 +692,7 @@ def send_invite(request, contact_id):
     )
 
 
-@user_is_initiative_manager
+@initiative_manager_required
 @require_POST
 def delete_contact(request, initiative_id, contact_id):
     """Delete a notifications contact.

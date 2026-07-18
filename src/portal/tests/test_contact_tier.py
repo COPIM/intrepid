@@ -9,7 +9,7 @@ may not manage the initiative, add contacts, or reach other initiatives.
 import shutil
 import tempfile
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.urls import reverse
 
@@ -101,6 +101,56 @@ class ContactTierTestBase(StorageRedirectMixin, TestCase):
         )
         self.other_document.file.save(
             "DocB.pdf", ContentFile(b"secret"), save=True
+        )
+
+
+class ObcTeamManagerAccessTests(ContactTierTestBase):
+    """An OBC Team group member (is_staff=False) has full management access."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.obc_group = Group.objects.create(name="OBC Team")
+        cls.obc_user = User.objects.create_user("obcteam", password="pw")
+        cls.obc_user.groups.add(cls.obc_group)
+
+    def test_obc_team_user_can_delete_contact(self):
+        self.assertFalse(self.obc_user.is_staff)
+        self.client.force_login(self.obc_user)
+        response = self.client.post(
+            reverse(
+                "portal:delete_contact",
+                kwargs={
+                    "initiative_id": self.initiative.pk,
+                    "contact_id": self.other_contact.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            ProviderContact.objects.filter(pk=self.other_contact.pk).exists()
+        )
+
+    def test_obc_team_user_can_create_contact(self):
+        self.client.force_login(self.obc_user)
+        response = self.client.post(
+            reverse(
+                "portal:provider_manage_contacts",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {
+                "first_name": "New",
+                "last_name": "Person",
+                "job_title": "",
+                "email": "new@example.com",
+                "notification_frequency": "immediate",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            ProviderContact.objects.filter(
+                initiative=self.initiative, email="new@example.com"
+            ).exists()
         )
 
 
