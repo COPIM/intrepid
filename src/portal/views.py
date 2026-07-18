@@ -454,7 +454,11 @@ def obc_email_template_edit(request, template_id, lang_code):
     if lang_code not in valid_codes:
         raise Http404("Unknown language.")
 
-    template = get_object_or_404(EmailTemplate, pk=template_id)
+    template = get_object_or_404(
+        EmailTemplate,
+        pk=template_id,
+        name__in=PORTAL_EMAIL_TEMPLATE_NAMES,
+    )
     language_name = dict(settings.LANGUAGES).get(lang_code, lang_code)
 
     with translation.override(lang_code):

@@ -185,6 +185,26 @@ class EmailTemplateEditTests(TestCase):
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 404)
 
+    def test_non_portal_template_not_editable(self):
+        # A template that is not one of the four portal templates must not be
+        # reachable through this interface, even by a staff member crafting the
+        # URL with its primary key.
+        self.client.force_login(self.staff)
+        url = reverse(
+            "portal:obc_email_template_edit",
+            kwargs={"template_id": self.other.pk, "lang_code": "en"},
+        )
+        get_resp = self.client.get(url)
+        self.assertEqual(get_resp.status_code, 404)
+
+        post_resp = self.client.post(
+            url, {"subject": "Hacked", "body": "<p>hacked</p>"}
+        )
+        self.assertEqual(post_resp.status_code, 404)
+        # The non-portal template is left untouched.
+        self.other.refresh_from_db()
+        self.assertEqual(self.other.subject_en, "Other")
+
 
 class SeededTemplateRenderAfterMigrationTests(TestCase):
     """The data migration must keep the seeded send path working.
