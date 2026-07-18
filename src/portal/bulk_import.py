@@ -207,7 +207,7 @@ def commit_job(job):
                 uploaded_by=job.uploaded_by,
             )
             if not job.notify_on_commit:
-                document._bulk_import_silent = True
+                document._suppress_notifications = True
             document.file.save(
                 row.original_filename, ContentFile(data), save=False
             )

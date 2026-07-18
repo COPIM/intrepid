@@ -109,7 +109,7 @@ class SignalTests(NotificationTestBase):
             document_type=self.doc_type,
             display_name="Silent",
         )
-        document._bulk_import_silent = True
+        document._suppress_notifications = True
         document.save()
         self.assertEqual(
             NotificationQueue.objects.filter(document=document).count(), 0
