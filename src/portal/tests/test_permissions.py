@@ -12,6 +12,7 @@ from portal.models import (
     Document,
     DocumentType,
     DocumentTypePermission,
+    ProviderContact,
 )
 
 
@@ -94,6 +95,124 @@ class UserCanTests(PermissionTestBase):
         self.assertFalse(
             permissions.user_can(self.plain, "read", self.remittance)
         )
+
+
+class ContactTierHelperTests(PermissionTestBase):
+    """Unit tests for the three-tier access helpers."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.other_initiative = Initiative.objects.create(
+            name="Open", short_code="OPEN"
+        )
+        # A manager: member of initiative.users.
+        cls.manager = User.objects.create_user("mgr", password="pw")
+        cls.initiative.users.add(cls.manager)
+        # A contact: linked ProviderContact but NOT in initiative.users.
+        cls.contact_user = User.objects.create_user("contact", password="pw")
+        cls.contact = ProviderContact.objects.create(
+            initiative=cls.initiative,
+            first_name="Con",
+            last_name="Tact",
+            email="contact@example.com",
+            user=cls.contact_user,
+        )
+
+    def test_linked_contact_returns_row_for_linked_user(self):
+        self.assertEqual(
+            permissions.linked_contact(self.contact_user, self.initiative),
+            self.contact,
+        )
+
+    def test_linked_contact_none_for_other_initiative(self):
+        self.assertIsNone(
+            permissions.linked_contact(self.contact_user, self.other_initiative)
+        )
+
+    def test_linked_contact_none_for_manager(self):
+        self.assertIsNone(
+            permissions.linked_contact(self.manager, self.initiative)
+        )
+
+    def test_can_manage_initiative_true_for_member(self):
+        self.assertTrue(
+            permissions.can_manage_initiative(self.manager, self.initiative)
+        )
+
+    def test_can_manage_initiative_true_for_staff(self):
+        self.assertTrue(
+            permissions.can_manage_initiative(self.staff, self.initiative)
+        )
+
+    def test_can_manage_initiative_false_for_contact(self):
+        self.assertFalse(
+            permissions.can_manage_initiative(self.contact_user, self.initiative)
+        )
+
+    def test_can_access_initiative_true_for_contact(self):
+        self.assertTrue(
+            permissions.can_access_initiative(self.contact_user, self.initiative)
+        )
+
+    def test_can_access_initiative_true_for_manager(self):
+        self.assertTrue(
+            permissions.can_access_initiative(self.manager, self.initiative)
+        )
+
+    def test_can_access_initiative_false_for_contact_other_initiative(self):
+        self.assertFalse(
+            permissions.can_access_initiative(
+                self.contact_user, self.other_initiative
+            )
+        )
+
+    def test_can_access_initiative_false_for_outsider(self):
+        self.assertFalse(
+            permissions.can_access_initiative(self.plain, self.initiative)
+        )
+
+
+class InitiativeAccessDecoratorTests(PermissionTestBase):
+    """The decorator admits managers and contacts, rejects outsiders."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.contact_user = User.objects.create_user("dcon", password="pw")
+        ProviderContact.objects.create(
+            initiative=cls.initiative,
+            first_name="D",
+            last_name="C",
+            email="dc@example.com",
+            user=cls.contact_user,
+        )
+
+    def setUp(self):
+        self.factory = RequestFactory()
+
+        @permissions.initiative_access_required
+        def view(request, initiative_id):
+            return HttpResponse("ok")
+
+        self.view = view
+
+    def _request(self, user):
+        request = self.factory.get("/")
+        request.user = user
+        return request
+
+    def test_contact_is_allowed(self):
+        response = self.view(
+            self._request(self.contact_user), initiative_id=self.initiative.pk
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_outsider_is_denied(self):
+        with self.assertRaises(PermissionDenied):
+            self.view(
+                self._request(self.plain), initiative_id=self.initiative.pk
+            )
 
 
 class RequiresDocTypeDecoratorTests(PermissionTestBase):
