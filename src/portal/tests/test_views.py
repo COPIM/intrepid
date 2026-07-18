@@ -307,6 +307,39 @@ class DocumentDeleteTests(ViewTestBase):
         )
 
 
+class DocumentEditTests(ViewTestBase):
+    def test_edit_form_does_not_render_notes_field(self):
+        """The document edit form should not include a notes field."""
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_document_edit",
+                kwargs={"doc_id": self.document.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        # Check that the form in the response doesn't have a notes field
+        self.assertNotIn("notes", response.context["form"].fields)
+
+    def test_edit_saves_document_without_notes(self):
+        """Submitting the edit form updates the document without notes."""
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            reverse(
+                "portal:obc_document_edit",
+                kwargs={"doc_id": self.document.pk},
+            ),
+            {
+                "display_name": "Updated Name",
+                "document_type": str(self.contract.pk),
+                "reporting_month": "",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.document.refresh_from_db()
+        self.assertEqual(self.document.display_name, "Updated Name")
+
+
 class ContactManagementTests(ViewTestBase):
     @patch("mail.models.EmailTemplate._send_email", return_value=1)
     def test_editing_contact_logs_change_and_emails_obc(self, mock_send):

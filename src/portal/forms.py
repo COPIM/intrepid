@@ -110,7 +110,7 @@ class DocumentEditForm(forms.ModelForm):
 
     class Meta:
         model = Document
-        fields = ["display_name", "document_type", "reporting_month", "notes"]
+        fields = ["display_name", "document_type", "reporting_month"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -123,7 +123,6 @@ class DocumentEditForm(forms.ModelForm):
         self.fields["reporting_month"].label = site_text(
             "portal_form_reporting_month", "Reporting month"
         )
-        self.fields["notes"].label = site_text("portal_form_notes", "Notes")
         self.helper = FormHelper()
         self.helper.add_input(
             Submit("submit", site_text("portal_form_save_changes", "Save changes"))

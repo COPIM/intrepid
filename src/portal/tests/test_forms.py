@@ -107,6 +107,33 @@ class DocumentEditFormTests(FormTestBase):
         self.assertFalse(form.is_valid())
         self.assertIn("reporting_month", form.errors)
 
+    def test_form_does_not_contain_notes_field(self):
+        """The edit form should not have a notes field."""
+        form = forms.DocumentEditForm()
+        self.assertNotIn("notes", form.fields)
+
+    def test_form_saves_without_notes_field(self):
+        """The form should save other fields when notes is not present."""
+        from portal.models import Document
+        doc = Document.objects.create(
+            initiative=self.initiative,
+            document_type=self.contract,
+            display_name="Original Name",
+        )
+        doc.file.save("test.pdf", SimpleUploadedFile("test.pdf", b"test"))
+
+        form = forms.DocumentEditForm(
+            data={
+                "display_name": "Updated Name",
+                "document_type": str(self.contract.pk),
+                "reporting_month": "",
+            },
+            instance=doc,
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        saved_doc = form.save()
+        self.assertEqual(saved_doc.display_name, "Updated Name")
+
 
 class BulkImportZipFormTests(FormTestBase):
     def _zip_upload(self):
