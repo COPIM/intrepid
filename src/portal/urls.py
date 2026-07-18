@@ -50,6 +50,17 @@ urlpatterns = [
         views.obc_contact_changes,
         name="obc_contact_changes",
     ),
+    path("obc/emails/", views.obc_emails, name="obc_emails"),
+    path(
+        "obc/emails/<int:queue_id>/cancel/",
+        views.obc_email_cancel,
+        name="obc_email_cancel",
+    ),
+    path(
+        "obc/emails/<int:queue_id>/resend/",
+        views.obc_email_resend,
+        name="obc_email_resend",
+    ),
     # Provider members
     path(
         "provider/",

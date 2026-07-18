@@ -46,6 +46,7 @@ from portal.models import (
     Document,
     DocumentType,
     InitiativeAlias,
+    NotificationQueue,
     ProviderContact,
 )
 from portal.permissions import (
@@ -332,6 +333,83 @@ def obc_contact_changes(request):
         "portal/obc_contact_changes.html",
         {"logs": logs, "initiatives": Initiative.objects.all()},
     )
+
+
+@obc_staff_required
+def obc_emails(request):
+    """List every notification email — pending, sent and cancelled.
+
+    OBC staff can cancel a still-pending email (keeping its document) or
+    re-send one that has already gone out. Rows are decorated with numeric
+    sort keys (status group, then the relevant timestamp) so the DataTable can
+    default to "unsent first, newest-first" deterministically.
+    """
+    rows = list(
+        NotificationQueue.objects.select_related(
+            "recipient",
+            "recipient__user",
+            "document",
+            "document__initiative",
+        )
+    )
+    for row in rows:
+        if row.cancelled_at is not None:
+            row.status_order = 2
+            row.status_key = "cancelled"
+            row.status_date = row.cancelled_at
+        elif row.sent_at is not None:
+            row.status_order = 1
+            row.status_key = "sent"
+            row.status_date = row.sent_at
+        else:
+            row.status_order = 0
+            row.status_key = "pending"
+            row.status_date = row.eligible_at
+        # Epoch seconds give the DataTable a stable numeric date sort key.
+        row.status_date_epoch = int(row.status_date.timestamp())
+    # Match the DataTable default (status ascending, then date descending) so a
+    # no-JS page and the initial JS render agree.
+    rows.sort(key=lambda r: (r.status_order, -r.status_date_epoch))
+    return render(request, "portal/obc_emails.html", {"rows": rows})
+
+
+@obc_staff_required
+@require_POST
+def obc_email_cancel(request, queue_id):
+    """Cancel a still-pending notification row (the document is untouched)."""
+    row = get_object_or_404(NotificationQueue, pk=queue_id)
+    if row.sent_at is None and row.cancelled_at is None:
+        row.cancelled_at = timezone.now()
+        row.save(update_fields=["cancelled_at"])
+        messages.success(request, "Email cancelled.")
+    else:
+        messages.error(
+            request, "Only a pending email can be cancelled."
+        )
+    return redirect("portal:obc_emails")
+
+
+@obc_staff_required
+@require_POST
+def obc_email_resend(request, queue_id):
+    """Re-send an already-sent notification email immediately."""
+    row = get_object_or_404(NotificationQueue, pk=queue_id)
+    if row.sent_at is not None:
+        try:
+            notifications.resend_row(row)
+        except EmailTemplate.DoesNotExist:
+            messages.error(
+                request, "The email template is missing; nothing was sent."
+            )
+        else:
+            row.sent_at = timezone.now()
+            row.save(update_fields=["sent_at"])
+            messages.success(request, "Email re-sent.")
+    else:
+        messages.error(
+            request, "Only an email that has already been sent can be re-sent."
+        )
+    return redirect("portal:obc_emails")
 
 
 @login_required

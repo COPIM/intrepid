@@ -1,0 +1,76 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}{% get_site_text 'portal_emails_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_emails_hint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <table id="emails-table" class="table">
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_recipient' %}</th>
+            <th>{% get_site_text 'portal_th_contact_name' %}</th>
+            <th>{% get_site_text 'portal_th_user' %}</th>
+            <th>{% get_site_text 'portal_th_document' %}</th>
+            <th>{% get_site_text 'portal_th_provider' %}</th>
+            <th>{% get_site_text 'portal_th_frequency' %}</th>
+            <th>{% get_site_text 'portal_th_date' %}</th>
+            <th>{% get_site_text 'portal_th_status' %}</th>
+            <th>{% get_site_text 'portal_th_actions' %}</th>
+        </tr></thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row.recipient.email }}</td>
+                    <td>{{ row.recipient }}</td>
+                    <td>{% if row.recipient.user %}{{ row.recipient.user.get_full_name|default:row.recipient.user.username }}{% endif %}</td>
+                    <td><a href="{% url 'portal:download_document' row.document.pk %}">{{ row.document.display_name }}</a></td>
+                    <td>{{ row.document.initiative.name }}</td>
+                    <td>{{ row.frequency }}</td>
+                    <td data-order="{{ row.status_date_epoch }}">{{ row.status_date|date:'Y-m-d H:i' }}</td>
+                    <td data-order="{{ row.status_order }}">
+                        {% if row.status_key == 'pending' %}{% get_site_text 'portal_status_pending' %}{% endif %}
+                        {% if row.status_key == 'sent' %}{% get_site_text 'portal_status_sent' %}{% endif %}
+                        {% if row.status_key == 'cancelled' %}{% get_site_text 'portal_status_cancelled' %}{% endif %}
+                    </td>
+                    <td>
+                        {% if row.status_key == 'pending' %}
+                            <form method="post" action="{% url 'portal:obc_email_cancel' row.pk %}" onsubmit="return confirm('{% get_site_text 'portal_email_cancel_confirm' %}');">
+                                {% csrf_token %}
+                                <button class="btn btn-obc-outline btn-sm">{% get_site_text 'portal_email_cancel' %}</button>
+                            </form>
+                        {% elif row.status_key == 'sent' %}
+                            <form method="post" action="{% url 'portal:obc_email_resend' row.pk %}" onsubmit="return confirm('{% get_site_text 'portal_email_resend_confirm' %}');">
+                                {% csrf_token %}
+                                <button class="btn btn-obc-outline btn-sm">{% get_site_text 'portal_email_resend' %}</button>
+                            </form>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="9" class="text-muted">{% get_site_text 'portal_emails_empty' %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js %}
+<link crossorigin="anonymous" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#emails-table').DataTable({
+        paging: true,
+        info: true,
+        searching: true,
+        // Unsent (status 0) first, then newest-first within each group.
+        order: [[7, 'asc'], [6, 'desc']],
+        columnDefs: [
+            {targets: [8], orderable: false}
+        ]
+    });
+});
+</script>
+{% endblock %}

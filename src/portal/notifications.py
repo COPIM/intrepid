@@ -160,6 +160,17 @@ def _send_group(recipient, frequency, documents):
     )
 
 
+def resend_row(row):
+    """Immediately re-send the email for a single queue ``row``.
+
+    A thin public wrapper over :func:`_send_group` so the email-queue view can
+    re-send one already-sent notification without reaching into the private
+    rendering helper. Reuses the same template selection and attachment
+    behaviour as the cron drain (a single-document group).
+    """
+    return _send_group(row.recipient, row.frequency, [row.document])
+
+
 def send_pending_notifications():
     """Drain due notification rows, grouping digests. Returns emails sent.
 
