@@ -836,6 +836,41 @@ class DocumentsTableUXTests(ViewTestBase):
         self.assertNotIn('id="select-all-documents"', content)
 
 
+class DocumentsTableEmptyStateTests(ViewTestBase):
+    """DataTables 1.10 cannot initialise over a tbody containing a single
+    colspan row, which is what the {% empty %} branch renders. The page
+    must render the empty-state message but skip the DataTable() init call
+    when there are zero documents, and still perform the init when there is
+    at least one."""
+
+    def test_no_datatable_init_when_no_documents_match(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"q": "no-such-document-name"},
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertNotIn(".DataTable(", content)
+        self.assertIn('id="documents-table"', content)
+        self.assertIn('colspan="6"', content)
+
+    def test_datatable_init_present_when_documents_exist(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn(".DataTable(", content)
+
+
 class StaffManagementTests(ViewTestBase):
     def _url(self):
         return reverse("portal:obc_manage_staff")

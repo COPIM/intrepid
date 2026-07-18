@@ -264,6 +264,37 @@ class ResendActionTests(EmailQueueTestBase):
         self.assertEqual(len(django_mail.outbox), 0)
 
 
+class EmptyStateTests(EmailQueueTestBase):
+    """DataTables 1.10 cannot initialise over a tbody containing a single
+    colspan row, which is what the {% empty %} branch renders. The page
+    must render the empty-state message but skip the DataTable() init call
+    when there are zero rows, and still perform the init when there is at
+    least one."""
+
+    def test_no_datatable_init_when_no_rows(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["rows"]), 0)
+        content = response.content.decode()
+        self.assertNotIn(".DataTable(", content)
+        self.assertIn('id="emails-table"', content)
+        self.assertIn('colspan="9"', content)
+
+    def test_datatable_init_present_when_rows_exist(self):
+        self._contact()
+        self._document("Some doc")
+
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(len(response.context["rows"]), 0)
+        content = response.content.decode()
+        self.assertIn(".DataTable(", content)
+
+
 class OrderingTests(EmailQueueTestBase):
     def setUp(self):
         super().setUp()

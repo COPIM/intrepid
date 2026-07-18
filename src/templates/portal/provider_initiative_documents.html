@@ -66,6 +66,7 @@
 <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    {% if documents %}
     $('#documents-table').DataTable({
         paging: false,
         info: false,
@@ -74,6 +75,7 @@ $(document).ready(function() {
             {targets: [0, 5], orderable: false}
         ]
     });
+    {% endif %}
 
     $('#select-all-documents').on('change', function() {
         $('#documents-table tbody input[type="checkbox"][name="document_ids"]').prop('checked', this.checked);
