@@ -80,9 +80,13 @@ class DocumentUploadForm(forms.Form):
     )
     reporting_month = _reporting_month_field()
     file = MultipleFileField()
+    send_notification = forms.BooleanField(required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["send_notification"].label = site_text(
+            "portal_form_send_notification", "Send notification"
+        )
         self.helper = FormHelper()
         self.helper.add_input(Submit("submit", "Upload"))
 
@@ -130,7 +134,7 @@ class BulkImportZipForm(forms.Form):
     zip_file = forms.FileField(label="ZIP archive")
     notify_on_commit = forms.BooleanField(
         required=False,
-        initial=False,
+        initial=True,
         label="Send notifications for these documents",
     )
 

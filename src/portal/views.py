@@ -207,6 +207,7 @@ def obc_upload(request, initiative_id):
             if not user_can(request.user, "write", doc_type):
                 raise PermissionDenied("You may not upload this document type.")
             reporting_month = form.cleaned_data["reporting_month"]
+            send_notification = form.cleaned_data["send_notification"]
             created = 0
             for upload in form.cleaned_data["file"]:
                 document = Document(
@@ -216,6 +217,8 @@ def obc_upload(request, initiative_id):
                     uploaded_by=request.user,
                     original_filename=upload.name,
                 )
+                if not send_notification:
+                    document._suppress_notifications = True
                 document.file.save(upload.name, upload, save=False)
                 document.save()
                 created += 1

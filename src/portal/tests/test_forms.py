@@ -81,6 +81,18 @@ class DocumentUploadFormTests(FormTestBase):
         )
         self.assertTrue(form.is_valid(), form.errors)
 
+    def test_send_notification_defaults_true(self):
+        form = forms.DocumentUploadForm()
+        self.assertTrue(form.fields["send_notification"].initial)
+
+    def test_send_notification_can_be_unticked(self):
+        form = forms.DocumentUploadForm(
+            data={"document_type": str(self.contract.pk)},
+            files=self._files(1),
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        self.assertFalse(form.cleaned_data["send_notification"])
+
 
 class DocumentEditFormTests(FormTestBase):
     def test_requires_reporting_month_for_remittance(self):
@@ -119,6 +131,10 @@ class BulkImportZipFormTests(FormTestBase):
             files={"zip_file": self._zip_upload()},
         )
         self.assertTrue(form.is_valid(), form.errors)
+
+    def test_notify_on_commit_defaults_true(self):
+        form = forms.BulkImportZipForm()
+        self.assertTrue(form.fields["notify_on_commit"].initial)
 
 
 class AcceptInviteFormTests(FormTestBase):

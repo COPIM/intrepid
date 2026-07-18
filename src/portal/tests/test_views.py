@@ -177,6 +177,65 @@ class UploadTests(ViewTestBase):
         self.assertEqual(response.status_code, 200)  # re-rendered with errors
         self.assertEqual(Document.objects.count(), before)
 
+    def test_upload_with_notification_ticked_enqueues_immediate_rows(self):
+        ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+        self.client.force_login(self.staff)
+        url = reverse(
+            "portal:obc_upload",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        response = self.client.post(
+            url,
+            {
+                "document_type": str(self.contract.pk),
+                "send_notification": "on",
+                "file": [SimpleUploadedFile("notify-on.pdf", b"1")],
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        document = Document.objects.get(
+            initiative=self.initiative, original_filename="notify-on.pdf"
+        )
+        row = NotificationQueue.objects.get(document=document)
+        self.assertEqual(
+            row.eligible_at,
+            document.uploaded_at + settings.DOC_NOTIFICATION_DELAY,
+        )
+
+    def test_upload_with_notification_unticked_enqueues_nothing(self):
+        ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+        self.client.force_login(self.staff)
+        url = reverse(
+            "portal:obc_upload",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+        response = self.client.post(
+            url,
+            {
+                "document_type": str(self.contract.pk),
+                "file": [SimpleUploadedFile("notify-off.pdf", b"1")],
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        document = Document.objects.get(
+            initiative=self.initiative, original_filename="notify-off.pdf"
+        )
+        self.assertEqual(
+            NotificationQueue.objects.filter(document=document).count(), 0
+        )
+
 
 class BulkImportViewTests(ViewTestBase):
     def _zip_upload(self):
