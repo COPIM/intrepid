@@ -214,7 +214,11 @@ def send_pending_notifications():
                     NotificationQueue.objects.select_for_update(
                         skip_locked=True
                     )
-                    .select_related("document")
+                    .select_related(
+                        "document",
+                        "document__initiative",
+                        "document__document_type",
+                    )
                     .filter(
                         id__in=[row.id for row in rows],
                         sent_at__isnull=True,
