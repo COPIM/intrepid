@@ -426,6 +426,51 @@ class ContactManagementTests(ViewTestBase):
             any(settings.FROM_EMAIL in to for to in recipients)
         )
 
+    def test_delete_confirm_text_is_escaped_for_js_context(self):
+        from cms.models import SiteText
+
+        site_text = SiteText.objects.get(key="portal_contacts_delete_confirm")
+        site_text.body = "Delete this contact? It's permanent."
+        site_text.save()
+
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_manage_contacts",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+
+        content = response.content.decode()
+        self.assertIn(
+            "Delete this contact? It\\u0027s permanent.", content
+        )
+        self.assertNotIn(
+            "window.confirm(\"Delete this contact? It's permanent.\")",
+            content,
+        )
+
+    def test_softwarn_text_is_escaped_for_js_context(self):
+        from cms.models import SiteText
+
+        site_text = SiteText.objects.get(key="portal_contacts_softwarn")
+        site_text.body = "You're near the limit."
+        site_text.save()
+
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_manage_contacts",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+
+        content = response.content.decode()
+        self.assertIn("You\\u0027re near the limit.", content)
+        self.assertNotIn(
+            "window.confirm(\"You're near the limit.\")", content
+        )
+
     def test_new_contacts_are_position_auto_numbered(self):
         self.client.force_login(self.provider)
         url = reverse(

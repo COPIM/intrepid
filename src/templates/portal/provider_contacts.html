@@ -94,6 +94,8 @@
 </div>
 {% endif %}
 
+{% get_site_text 'portal_contacts_delete_confirm' as contacts_delete_confirm_text %}
+{% get_site_text 'portal_contacts_softwarn' as contacts_softwarn_text %}
 <script>
 (function () {
     // Per-row toggling between the read-only view and the inline edit form.
@@ -136,7 +138,7 @@
     // Confirm before deleting a contact.
     document.querySelectorAll('.contact-delete-form').forEach(function (f) {
         f.addEventListener('submit', function (event) {
-            if (!window.confirm("{% get_site_text 'portal_contacts_delete_confirm' %}")) {
+            if (!window.confirm("{{ contacts_delete_confirm_text|escapejs }}")) {
                 event.preventDefault();
             }
         });
@@ -148,7 +150,7 @@
     if (form) {
         form.addEventListener('submit', function (event) {
             if (existing >= 5) {
-                if (!window.confirm("{% get_site_text 'portal_contacts_softwarn' %}")) {
+                if (!window.confirm("{{ contacts_softwarn_text|escapejs }}")) {
                     event.preventDefault();
                 }
             }

@@ -2,6 +2,8 @@
 {% block portal_title %}{% get_site_text 'portal_emails_title' %}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_emails_hint' %}</p>{% endblock %}
 {% block portal_content %}
+{% get_site_text 'portal_email_cancel_confirm' as cancel_confirm_text %}
+{% get_site_text 'portal_email_resend_confirm' as resend_confirm_text %}
 <div class="portal-card">
     <table id="emails-table" class="table">
         <thead><tr>
@@ -32,12 +34,12 @@
                     </td>
                     <td>
                         {% if row.status_key == 'pending' %}
-                            <form method="post" action="{% url 'portal:obc_email_cancel' row.pk %}" onsubmit="return confirm('{% get_site_text 'portal_email_cancel_confirm' %}');">
+                            <form method="post" action="{% url 'portal:obc_email_cancel' row.pk %}" onsubmit="return confirm('{{ cancel_confirm_text|escapejs }}');">
                                 {% csrf_token %}
                                 <button class="btn btn-obc-outline btn-sm">{% get_site_text 'portal_email_cancel' %}</button>
                             </form>
                         {% elif row.status_key == 'sent' %}
-                            <form method="post" action="{% url 'portal:obc_email_resend' row.pk %}" onsubmit="return confirm('{% get_site_text 'portal_email_resend_confirm' %}');">
+                            <form method="post" action="{% url 'portal:obc_email_resend' row.pk %}" onsubmit="return confirm('{{ resend_confirm_text|escapejs }}');">
                                 {% csrf_token %}
                                 <button class="btn btn-obc-outline btn-sm">{% get_site_text 'portal_email_resend' %}</button>
                             </form>

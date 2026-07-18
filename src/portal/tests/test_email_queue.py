@@ -14,6 +14,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
+from cms.models import SiteText
 from initiatives.models import Initiative
 from intrepid.models import SiteSetup
 from mail.models import EmailTemplate
@@ -368,3 +369,43 @@ class OrderingTests(EmailQueueTestBase):
         )
         sent_row = next(r for r in rows if r.document_id == sent_doc.pk)
         self.assertLess(pending_row.status_order, sent_row.status_order)
+
+
+class JavaScriptConfirmEscapingTests(EmailQueueTestBase):
+    """The cancel/resend confirm() strings come from editable SiteText rows.
+    If an editor's text contains an apostrophe it must not break out of the
+    single-quoted inline JS string."""
+
+    def setUp(self):
+        super().setUp()
+        self._contact()
+
+    def test_cancel_confirm_text_is_escaped_for_js_context(self):
+        site_text = SiteText.objects.get(key="portal_email_cancel_confirm")
+        site_text.body = "Cancel this? It's permanent."
+        site_text.save()
+        self._document("Pending doc")
+
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        content = response.content.decode()
+        self.assertIn("Cancel this? It\\u0027s permanent.", content)
+        self.assertNotIn("confirm('Cancel this? It's permanent.')", content)
+
+    def test_resend_confirm_text_is_escaped_for_js_context(self):
+        site_text = SiteText.objects.get(key="portal_email_resend_confirm")
+        site_text.body = "Resend it? It's final."
+        site_text.save()
+        document = self._document("Sent doc")
+        row = self._row_for(document)
+        NotificationQueue.objects.filter(pk=row.pk).update(
+            sent_at=timezone.now()
+        )
+
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        content = response.content.decode()
+        self.assertIn("Resend it? It\\u0027s final.", content)
+        self.assertNotIn("confirm('Resend it? It's final.')", content)
