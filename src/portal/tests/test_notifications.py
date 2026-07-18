@@ -207,6 +207,41 @@ class DrainTests(NotificationTestBase):
         )
         self.assertEqual(notifications.send_pending_notifications(), 0)
 
+    def test_one_group_send_failure_does_not_abort_the_drain(self):
+        """A send failure for one recipient's group (e.g. an attachment file
+
+        vanishing between the existence check and the actual open) must not
+        stop other due groups from being sent in the same drain. The failed
+        group's rows must be left unsent so a later drain retries them.
+        """
+        good_contact = self._contact("daily", first="Good")
+        bad_contact = self._contact("daily", first="Bad")
+        self._document("Shared upload")
+        self._set_due(NotificationQueue.objects.filter(recipient=good_contact))
+        self._set_due(NotificationQueue.objects.filter(recipient=bad_contact))
+
+        def fake_send_email(
+            to, subject=None, html=None, from_email=None, bcc=None,
+            attachments=None,
+        ):
+            if bad_contact.email in to:
+                raise OSError("attachment file vanished mid-send")
+            return 1
+
+        with patch(
+            "mail.models.EmailTemplate._send_email",
+            side_effect=fake_send_email,
+        ):
+            emails = notifications.send_pending_notifications()
+
+        self.assertEqual(emails, 1)
+        self.assertIsNotNone(
+            NotificationQueue.objects.get(recipient=good_contact).sent_at
+        )
+        self.assertIsNone(
+            NotificationQueue.objects.get(recipient=bad_contact).sent_at
+        )
+
 
 class CommandTests(NotificationTestBase):
     @patch("mail.models.EmailTemplate._send_email", return_value=1)

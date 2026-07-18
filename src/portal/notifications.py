@@ -198,4 +198,17 @@ def send_pending_notifications():
         except EmailTemplate.DoesNotExist:
             # Template not seeded yet — leave the rows for a later run.
             continue
+        except Exception:
+            # Any other failure (e.g. an attachment file vanishing between
+            # the existence check and the actual open) must not abort the
+            # whole drain. sent_at is only set inside the atomic block
+            # above, so this group's rows are still pending and will be
+            # retried on the next cron run.
+            logger.exception(
+                "Failed to send notification group for recipient %s "
+                "(frequency=%s); rows left pending for retry.",
+                recipient.pk,
+                frequency,
+            )
+            continue
     return emails_sent
