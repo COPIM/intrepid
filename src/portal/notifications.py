@@ -7,6 +7,8 @@ into a single email. Deleting a document removes its pending rows (the queue FK
 cascades); ``cancel_for_document`` provides an explicit cancellation path.
 """
 
+import logging
+import os
 from datetime import timedelta
 
 from django.conf import settings
@@ -15,6 +17,8 @@ from django.utils import timezone
 
 from mail.models import EmailTemplate
 from portal.models import NotificationQueue, ProviderContact
+
+logger = logging.getLogger(__name__)
 
 
 def _next_daily(reference):
@@ -105,7 +109,34 @@ def cancel_for_document(document):
     ).update(cancelled_at=timezone.now())
 
 
+def _document_attachments(documents):
+    """Return the on-disk file paths for ``documents`` that actually exist.
+
+    A document with no file, or whose file has gone missing from disk, is
+    skipped rather than raised — a single broken attachment must not stop the
+    notification email (or the cron drain) from going out.
+    """
+    paths = []
+    for document in documents:
+        try:
+            path = document.file.path
+        except ValueError:
+            # No file associated with this document's FileField.
+            continue
+        if os.path.exists(path):
+            paths.append(path)
+        else:
+            logger.warning(
+                "Document %s file missing on disk (%s); sending "
+                "notification without this attachment.",
+                document.pk,
+                path,
+            )
+    return paths
+
+
 def _send_group(recipient, frequency, documents):
+    attachments = _document_attachments(documents)
     if frequency == "immediate":
         template = EmailTemplate.objects.get(
             name="document_notification_immediate"
@@ -124,7 +155,9 @@ def _send_group(recipient, frequency, documents):
             "documents": documents,
             "frequency": frequency,
         }
-    return template.send(to=recipient.email, context=context)
+    return template.send(
+        to=recipient.email, context=context, attachments=attachments
+    )
 
 
 def send_pending_notifications():

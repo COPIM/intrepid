@@ -114,6 +114,8 @@ class EmailTemplate(models.Model):
                 subject, strip_tags(html), from_email, to
             )
             msg.attach_alternative(html, "text/html")
+            for attachment in attachments:
+                msg.attach_file(attachment)
 
             sent = msg.send()
             logger.info(
@@ -122,29 +124,34 @@ class EmailTemplate(models.Model):
             return sent
         else:
             mailgun_attachments = []
+            opened_files = []
             for attachment in attachments:
-                mailgun_attachments.append(
-                    ("attachment", open(attachment, "rb"))
-                )
+                file_handle = open(attachment, "rb")
+                opened_files.append(file_handle)
+                mailgun_attachments.append(("attachment", file_handle))
 
             logger.debug(
                 "Posting email to Mailgun (%s) to %s.",
                 settings.MAILGUN_SERVER_NAME,
                 to,
             )
-            response = requests.post(
-                settings.MAILGUN_SERVER_NAME + "/messages",
-                auth=("api", settings.MAILGUN_ACCESS_KEY),
-                files=mailgun_attachments,
-                data={
-                    "from": settings.FROM_EMAIL,
-                    "to": to,
-                    "subject": subject,
-                    "html": html,
-                    "bcc": bcc,
-                    "h:Reply-To": "info@openbookcollective.org",
-                },
-            )
+            try:
+                response = requests.post(
+                    settings.MAILGUN_SERVER_NAME + "/messages",
+                    auth=("api", settings.MAILGUN_ACCESS_KEY),
+                    files=mailgun_attachments,
+                    data={
+                        "from": settings.FROM_EMAIL,
+                        "to": to,
+                        "subject": subject,
+                        "html": html,
+                        "bcc": bcc,
+                        "h:Reply-To": "info@openbookcollective.org",
+                    },
+                )
+            finally:
+                for file_handle in opened_files:
+                    file_handle.close()
 
             logger.debug(
                 "Mailgun HTTP status %s for email to %s.",
