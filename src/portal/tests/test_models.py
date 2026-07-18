@@ -22,6 +22,9 @@ from portal.models import (
 _contract_other_migration = importlib.import_module(
     "portal.migrations.0012_rename_contract_add_other"
 )
+_refresh_name_de_migration = importlib.import_module(
+    "portal.migrations.0019_refresh_stale_contract_name_de"
+)
 
 
 class DocumentTypeSeedMigrationTests(TestCase):
@@ -110,6 +113,91 @@ class ContractOtherMigrationReverseTests(TestCase):
         self.assertEqual(
             DocumentType.objects.filter(slug="other").count(), 1
         )
+
+
+class RefreshStaleNameDeMigrationTests(TestCase):
+    """0019 refreshes ``name_de`` for the renamed Contract DocumentType, but
+    only when it is blank or still holds the pre-rename English label --
+    a deliberately-set German translation must survive untouched.
+
+    Calls the migration's forward/reverse RunPython callables directly
+    (against the real ``apps`` registry) following the same pattern as
+    ``ContractOtherMigrationReverseTests`` above.
+    """
+
+    def setUp(self):
+        clear_seed_data()
+        self.initiative = Initiative.objects.create(
+            name="Stale Label Press", short_code="SLP"
+        )
+
+    def _forward(self):
+        _refresh_name_de_migration.refresh_stale_name_de(django_apps, None)
+
+    def _reverse(self):
+        _refresh_name_de_migration.noop_reverse(django_apps, None)
+
+    def test_blank_name_de_is_set_to_contract(self):
+        contract = DocumentType.objects.create(
+            name="Contract",
+            slug="agreement-contract",
+            requires_reporting_month=False,
+            ordering=2,
+            name_de="",
+        )
+
+        self._forward()
+
+        contract.refresh_from_db()
+        self.assertEqual(contract.name_de, "Contract")
+
+    def test_old_agreement_contract_name_de_is_refreshed(self):
+        contract = DocumentType.objects.create(
+            name="Contract",
+            slug="agreement-contract",
+            requires_reporting_month=False,
+            ordering=2,
+            name_de="Agreement contract",
+        )
+
+        self._forward()
+
+        contract.refresh_from_db()
+        self.assertEqual(contract.name_de, "Contract")
+
+    def test_deliberate_german_translation_is_not_overwritten(self):
+        contract = DocumentType.objects.create(
+            name="Contract",
+            slug="agreement-contract",
+            requires_reporting_month=False,
+            ordering=2,
+            name_de="Vertrag",
+        )
+
+        self._forward()
+
+        contract.refresh_from_db()
+        self.assertEqual(contract.name_de, "Vertrag")
+
+    def test_missing_document_type_does_not_crash(self):
+        DocumentType.objects.filter(slug="agreement-contract").delete()
+
+        self._forward()  # must not raise
+
+    def test_reverse_is_a_safe_no_op(self):
+        contract = DocumentType.objects.create(
+            name="Contract",
+            slug="agreement-contract",
+            requires_reporting_month=False,
+            ordering=2,
+            name_de="",
+        )
+
+        self._forward()
+        self._reverse()
+
+        contract.refresh_from_db()
+        self.assertEqual(contract.name_de, "Contract")
 
 
 class PortalModelTestBase(TestCase):
