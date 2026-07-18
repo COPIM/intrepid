@@ -347,6 +347,23 @@ class EmptyStateTests(EmailQueueTestBase):
         self.assertIn(".DataTable(", content)
 
 
+class DataTablesAssetConsistencyTests(EmailQueueTestBase):
+    """The page must use the Bootstrap 4 DataTables build (matching the
+    Bootstrap 4-era frontend stack) and must not load a second copy of
+    jQuery -- the frontend base already loads jquery.slim site-wide."""
+
+    def test_uses_bootstrap4_datatables_build_and_a_single_jquery(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn("dataTables.bootstrap4.min.css", content)
+        self.assertIn("dataTables.bootstrap4.min.js", content)
+        self.assertNotIn("bootstrap5", content)
+        self.assertNotIn("code.jquery.com", content)
+
+
 class OrderingTests(EmailQueueTestBase):
     def setUp(self):
         super().setUp()

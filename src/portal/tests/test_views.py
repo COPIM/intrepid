@@ -927,6 +927,28 @@ class DocumentsTableUXTests(ViewTestBase):
         self.assertNotIn('id="select-all-documents"', content)
 
 
+class DataTablesAssetConsistencyTests(ViewTestBase):
+    """The page must use the Bootstrap 4 DataTables build (matching the
+    Bootstrap 4-era frontend stack) and must not load a second copy of
+    jQuery -- the frontend base already loads jquery.slim site-wide."""
+
+    def test_uses_bootstrap4_datatables_build_and_a_single_jquery(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn("dataTables.bootstrap4.min.css", content)
+        self.assertIn("dataTables.bootstrap4.min.js", content)
+        self.assertNotIn("bootstrap5", content)
+        self.assertNotIn("code.jquery.com", content)
+
+
 class DocumentsTableEmptyStateTests(ViewTestBase):
     """DataTables 1.10 cannot initialise over a tbody containing a single
     colspan row, which is what the {% empty %} branch renders. The page
