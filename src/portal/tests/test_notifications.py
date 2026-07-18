@@ -243,6 +243,57 @@ class DrainTests(NotificationTestBase):
         )
 
 
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class CancelDrainRaceTests(NotificationTestBase):
+    """A cancellation landing after selection but before send must win.
+
+    The drain selects the pending rows up front. If an admin cancels a row in
+    that window, the drain must not send or mark that row as sent.
+    """
+
+    def test_cancellation_between_selection_and_send_is_honoured(self):
+        canceller = self._contact("daily", first="Canceller")
+        victim = self._contact("daily", first="Victim")
+        self._document("Shared upload")
+
+        canceller_rows = NotificationQueue.objects.filter(recipient=canceller)
+        victim_rows = NotificationQueue.objects.filter(recipient=victim)
+        # Deterministic order: the canceller's group is drained first.
+        self._set_due(canceller_rows, when=timezone.now() - timedelta(hours=2))
+        self._set_due(victim_rows, when=timezone.now() - timedelta(hours=1))
+
+        real_send_group = notifications._send_group
+
+        def send_group_side_effect(recipient, frequency, documents):
+            if recipient.pk == canceller.pk:
+                # The cancellation lands here: after the drain selected the
+                # victim's row, before that row is sent.
+                NotificationQueue.objects.filter(recipient=victim).update(
+                    cancelled_at=timezone.now()
+                )
+            return real_send_group(recipient, frequency, documents)
+
+        django_mail.outbox = []
+        with patch.object(
+            notifications, "_send_group", side_effect=send_group_side_effect
+        ):
+            emails = notifications.send_pending_notifications()
+
+        # Only the canceller's email went out.
+        self.assertEqual(emails, 1)
+        recipients_emailed = [addr for m in django_mail.outbox for addr in m.to]
+        self.assertIn(canceller.email, recipients_emailed)
+        self.assertNotIn(victim.email, recipients_emailed)
+
+        # The victim's row is cancelled and was never marked sent.
+        victim_row = victim_rows.get()
+        self.assertIsNone(victim_row.sent_at)
+        self.assertIsNotNone(victim_row.cancelled_at)
+
+
 class CommandTests(NotificationTestBase):
     @patch("mail.models.EmailTemplate._send_email", return_value=1)
     def test_command_drains_due_rows(self, mock_send):

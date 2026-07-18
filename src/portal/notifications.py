@@ -179,15 +179,20 @@ def send_pending_notifications():
     (each carrying its own document's grace time) are sent individually.
     """
     now = timezone.now()
-    pending = NotificationQueue.objects.filter(
-        sent_at__isnull=True,
-        cancelled_at__isnull=True,
-        eligible_at__lte=now,
-    ).select_related(
-        "recipient",
-        "document",
-        "document__initiative",
-        "document__document_type",
+    pending = (
+        NotificationQueue.objects.filter(
+            sent_at__isnull=True,
+            cancelled_at__isnull=True,
+            eligible_at__lte=now,
+        )
+        .select_related(
+            "recipient",
+            "document",
+            "document__initiative",
+            "document__document_type",
+        )
+        # Deterministic drain order so groups are processed predictably.
+        .order_by("eligible_at", "id")
     )
 
     groups = {}
@@ -198,12 +203,32 @@ def send_pending_notifications():
     emails_sent = 0
     for (_recipient_id, frequency, _eligible_at_value), rows in groups.items():
         recipient = rows[0].recipient
-        documents = [row.document for row in rows]
         try:
             with transaction.atomic():
+                # Re-claim the group's rows inside the transaction, skipping any
+                # that were cancelled or already sent between the initial
+                # selection and now (e.g. an admin cancelling in the safety
+                # window). ``skip_locked`` avoids blocking on rows a concurrent
+                # drain is handling.
+                claimed = list(
+                    NotificationQueue.objects.select_for_update(
+                        skip_locked=True
+                    )
+                    .select_related("document")
+                    .filter(
+                        id__in=[row.id for row in rows],
+                        sent_at__isnull=True,
+                        cancelled_at__isnull=True,
+                    )
+                )
+                if not claimed:
+                    # Every row in this group vanished (cancelled/sent); nothing
+                    # left to send.
+                    continue
+                documents = [row.document for row in claimed]
                 _send_group(recipient, frequency, documents)
                 NotificationQueue.objects.filter(
-                    id__in=[row.id for row in rows]
+                    id__in=[row.id for row in claimed]
                 ).update(sent_at=now)
             emails_sent += 1
         except EmailTemplate.DoesNotExist:
