@@ -64,7 +64,12 @@ with the code) — listed here so a deploy is complete:
 - **Run migrations:** `uv run ./manage.py migrate`. This creates the portal tables
   and seeds the two starter document types, the `OBC Team` / `Provider Members`
   groups, the four email templates, and the portal's translatable UI strings
-  (`cms.SiteText`).
+  (`cms.SiteText`). The `mail` migrations also add the translation columns to
+  `EmailTemplate` (`subject_en/de`, `body_en/de`) and copy each existing
+  template's `subject`/`body` into its English columns, so every existing send
+  path keeps rendering after the upgrade — no manual step is required. OBC staff
+  can then edit and translate the four portal notification emails from
+  **Portal → Email copy** (`/portal/obc/email-templates/`).
 - **Install the cron job** that drains the notification queue every 15 minutes:
   `uv run ./manage.py install_cron` (adds the `send_document_notifications` job).
 - **(Optional) populate translations:** `uv run ./manage.py update_translation_fields`,

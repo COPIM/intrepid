@@ -11,16 +11,17 @@ import tempfile
 import zipfile
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Q
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.dateparse import parse_date
 from django.views.decorators.http import require_POST
 
@@ -33,6 +34,7 @@ from portal.forms import (
     BulkImportZipForm,
     DocumentEditForm,
     DocumentUploadForm,
+    EmailTemplateForm,
     InitiativeAliasForm,
     InitiativeUserForm,
     InviteByEmailForm,
@@ -410,6 +412,78 @@ def obc_email_resend(request, queue_id):
             request, "Only an email that has already been sent can be re-sent."
         )
     return redirect("portal:obc_emails")
+
+
+PORTAL_EMAIL_TEMPLATE_NAMES = [
+    "document_notification_immediate",
+    "document_notification_digest",
+    "contact_change_notification",
+    "provider_invite",
+]
+
+
+@obc_staff_required
+def obc_email_templates(request):
+    """List the four portal notification templates with a per-language edit link.
+
+    Each language in ``settings.LANGUAGES`` gets its own edit link because the
+    subject/body are translated columns (``django-modeltranslation``).
+    """
+    templates = EmailTemplate.objects.filter(
+        name__in=PORTAL_EMAIL_TEMPLATE_NAMES
+    ).order_by("name")
+    languages = [
+        {"code": code, "name": name} for code, name in settings.LANGUAGES
+    ]
+    return render(
+        request,
+        "portal/obc_email_templates.html",
+        {"templates": templates, "languages": languages},
+    )
+
+
+@obc_staff_required
+def obc_email_template_edit(request, template_id, lang_code):
+    """Edit one language's subject/body for a portal notification template.
+
+    The POST saves inside ``translation.override(lang_code)`` so
+    modeltranslation writes the columns for that language only (the same trick
+    as ``cms.views.edit_site_text``). An unknown ``lang_code`` is a 404.
+    """
+    valid_codes = {code for code, _ in settings.LANGUAGES}
+    if lang_code not in valid_codes:
+        raise Http404("Unknown language.")
+
+    template = get_object_or_404(EmailTemplate, pk=template_id)
+    language_name = dict(settings.LANGUAGES).get(lang_code, lang_code)
+
+    with translation.override(lang_code):
+        if request.method == "POST":
+            form = EmailTemplateForm(request.POST)
+            if form.is_valid():
+                template.subject = form.cleaned_data["subject"]
+                template.body = form.cleaned_data["body"]
+                template.save()
+                messages.success(request, "Email template saved.")
+                return redirect("portal:obc_email_templates")
+        else:
+            form = EmailTemplateForm(
+                initial={
+                    "subject": template.subject,
+                    "body": template.body,
+                }
+            )
+
+    return render(
+        request,
+        "portal/obc_email_template_edit.html",
+        {
+            "form": form,
+            "template": template,
+            "lang_code": lang_code,
+            "language_name": language_name,
+        },
+    )
 
 
 @login_required

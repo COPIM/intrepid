@@ -52,6 +52,16 @@ urlpatterns = [
     ),
     path("obc/emails/", views.obc_emails, name="obc_emails"),
     path(
+        "obc/email-templates/",
+        views.obc_email_templates,
+        name="obc_email_templates",
+    ),
+    path(
+        "obc/email-templates/<int:template_id>/<str:lang_code>/",
+        views.obc_email_template_edit,
+        name="obc_email_template_edit",
+    ),
+    path(
         "obc/emails/<int:queue_id>/cancel/",
         views.obc_email_cancel,
         name="obc_email_cancel",

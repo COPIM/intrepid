@@ -245,6 +245,34 @@ class InitiativeAliasForm(forms.Form):
         )
 
 
+class EmailTemplateForm(forms.Form):
+    """Edit one language's copy of a notification email template.
+
+    The ``body`` is a raw Django template string (with variables like
+    ``{{ recipient }}``) — it is deliberately a plain textarea and is NOT run
+    through bleach or a rich-text editor, so template tags survive intact.
+    """
+
+    subject = forms.CharField(max_length=200)
+    body = forms.CharField(widget=forms.Textarea(attrs={"rows": 18}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["subject"].label = site_text(
+            "portal_email_tpl_subject", "Subject"
+        )
+        self.fields["body"].label = site_text(
+            "portal_email_tpl_body", "Body (HTML)"
+        )
+        self.helper = FormHelper()
+        self.helper.add_input(
+            Submit(
+                "submit",
+                site_text("portal_email_tpl_save", "Save"),
+            )
+        )
+
+
 class InviteByEmailForm(forms.Form):
     """Invite a new person by email address alone."""
 
