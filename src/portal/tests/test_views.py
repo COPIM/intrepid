@@ -890,3 +890,47 @@ class StaffManagementTests(ViewTestBase):
             User.objects.filter(is_staff=True).values_list("pk", flat=True)
         )
         self.assertEqual(before, after)
+
+
+class AdminDashboardTileTests(ViewTestBase):
+    def test_staff_user_sees_admin_dashboard_link(self):
+        """Staff user should see the admin dashboard tile with link to /staff/."""
+        # Set is_staff=True to match the requirement in the task
+        self.staff.is_staff = True
+        self.staff.save()
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        # Assert that the response contains a portal-tile with href to /staff/
+        # The tile should have the class "portal-tile" and link to /staff/
+        content = response.content.decode('utf-8')
+        self.assertIn('href="/staff/"', content)
+        # More specifically, check for the admin dashboard tile by looking for
+        # a pattern that combines the tile class with the /staff/ href
+        self.assertRegex(content, r'<a\s+class="portal-tile"[^>]*href="/staff/"')
+
+    def test_non_staff_user_does_not_see_admin_dashboard_link(self):
+        """Non-staff user with doc-type access should not see admin dashboard link."""
+        from portal.models import DocumentTypePermission
+
+        # Create a non-staff user with document-type read access
+        non_staff_user = User.objects.create_user(
+            "doc_reader", password="pw"
+        )
+        reader_group = Group.objects.create(name="Readers")
+        non_staff_user.groups.add(reader_group)
+
+        # Grant read permission on the contract document type
+        DocumentTypePermission.objects.create(
+            group=reader_group,
+            document_type=self.contract,
+            can_read=True,
+            can_write=False,
+        )
+
+        self.client.force_login(non_staff_user)
+        response = self.client.get(reverse("portal:obc_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        # Assert that the response does NOT contain a portal-tile with link to /staff/
+        content = response.content.decode('utf-8')
+        self.assertNotRegex(content, r'<a\s+class="portal-tile"[^>]*href="/staff/"')
