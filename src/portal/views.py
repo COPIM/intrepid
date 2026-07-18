@@ -50,8 +50,11 @@ from portal.models import (
 )
 from portal.permissions import (
     OBC_TEAM_GROUP,
+    can_manage_initiative,
     has_doc_type_access,
+    initiative_access_required,
     is_obc_staff,
+    linked_contact,
     obc_area_required,
     obc_staff_required,
     readable_document_types,
@@ -96,11 +99,25 @@ def _filter_documents(queryset, params):
     return queryset
 
 
+def _accessible_initiatives(user):
+    """Initiatives a Provider/Contact user may reach (managed OR linked).
+
+    A user reaches an initiative either as a manager (member of
+    ``initiative.users``) or as a Contact (a ``ProviderContact`` linking them to
+    it). Returned as a distinct queryset for use by the index/picker screens.
+    """
+    return Initiative.objects.filter(
+        Q(users=user) | Q(provider_contacts__user=user)
+    ).distinct()
+
+
 def _user_can_read_document(user, document):
     """Whether ``user`` may read ``document`` under either permission layer."""
     if is_obc_staff(user):
         return True
     if document.initiative in user.Initiatives.all():
+        return True
+    if linked_contact(user, document.initiative) is not None:
         return True
     return user_can(user, "read", document.document_type)
 
@@ -141,7 +158,7 @@ def _stream_zip(documents, filename="documents.zip"):
 def index(request):
     if is_obc_staff(request.user) or has_doc_type_access(request.user):
         return redirect("portal:obc_dashboard")
-    initiatives = request.user.Initiatives.all()
+    initiatives = _accessible_initiatives(request.user)
     if initiatives.count() == 1:
         return redirect(
             "portal:provider_initiative_documents",
@@ -319,7 +336,7 @@ def obc_contact_changes(request):
 
 @login_required
 def provider_initiative_picker(request):
-    initiatives = request.user.Initiatives.all()
+    initiatives = _accessible_initiatives(request.user)
     if initiatives.count() == 1:
         return redirect(
             "portal:provider_initiative_documents",
@@ -332,7 +349,7 @@ def provider_initiative_picker(request):
     )
 
 
-@user_is_initiative_manager
+@initiative_access_required
 def provider_initiative_documents(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     documents = _filter_documents(
@@ -352,11 +369,22 @@ def provider_initiative_documents(request, initiative_id):
     )
 
 
-@user_is_initiative_manager
+@initiative_access_required
 def provider_manage_contacts(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
+    can_manage = can_manage_initiative(request.user, initiative)
+    own_contact = linked_contact(request.user, initiative)
     if request.method == "POST":
         contact_id = request.POST.get("contact_id")
+        if not can_manage:
+            # A Contact-tier user may only edit their own linked contact row;
+            # creating a new contact (no contact_id) is manager-only.
+            if not contact_id or not own_contact or str(own_contact.pk) != str(
+                contact_id
+            ):
+                raise PermissionDenied(
+                    "You may not manage contacts for this initiative."
+                )
         if contact_id:
             instance = get_object_or_404(
                 ProviderContact, pk=contact_id, initiative=initiative
@@ -387,6 +415,8 @@ def provider_manage_contacts(request, initiative_id):
             "contacts": initiative.provider_contacts.all(),
             "form": form,
             "is_obc": is_obc_staff(request.user),
+            "can_manage": can_manage,
+            "own_contact_id": own_contact.pk if own_contact else None,
         },
     )
 
@@ -563,6 +593,9 @@ def invite_by_email(request, initiative_id):
             first_name="",
             last_name="",
             position=(last.position + 1) if last else 1,
+            # This flow grants portal login/managership, so acceptance should
+            # add the user to initiative.users (Provider-manager tier).
+            is_login_invite=True,
         )
         existing = (
             User.objects.filter(email__iexact=email).first()
@@ -581,10 +614,16 @@ def invite_by_email(request, initiative_id):
     return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
 
 
-@user_is_initiative_manager
+@initiative_access_required
 def provider_notification_prefs(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     contacts = initiative.provider_contacts.all()
+    if not can_manage_initiative(request.user, initiative):
+        # A Contact-tier user sees and edits only their own preference row.
+        own_contact = linked_contact(request.user, initiative)
+        contacts = contacts.filter(pk=own_contact.pk) if own_contact else (
+            contacts.none()
+        )
     if request.method == "POST":
         for contact in contacts:
             frequency = request.POST.get("frequency_{0}".format(contact.pk))
@@ -638,8 +677,16 @@ def bulk_download(request):
 def _link_contact_to_user(
     contact, user, first_name=None, last_name=None, job_title=None
 ):
-    """Attach an accepted contact to a user and grant Provider access."""
-    contact.initiative.users.add(user)
+    """Attach an accepted contact to a user and grant access.
+
+    Only a login invite (created via the OBC Manage-Users flow) confers
+    Provider-manager tier by adding the user to ``initiative.users``. A
+    Contacts-pane invitee is linked to the contact and placed in the "Provider
+    Members" auth group (so template/permission checks resolve) but is NOT made
+    an initiative manager — they get Contact-tier access only.
+    """
+    if contact.is_login_invite:
+        contact.initiative.users.add(user)
     group, _ = Group.objects.get_or_create(name=PROVIDER_MEMBERS_GROUP)
     user.groups.add(group)
     contact.user = user

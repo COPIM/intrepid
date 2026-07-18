@@ -22,7 +22,9 @@
                     <td>{{ contact.email }}</td>
                     <td>{% with freq_key='portal_freq_'|add:contact.notification_frequency %}{% get_site_text freq_key %}{% endwith %}</td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
+                        {% if can_manage or contact.pk == own_contact_id %}
+                            <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
+                        {% endif %}
                         {% if is_obc and not contact.accepted_at %}
                             <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
                                 {% csrf_token %}
@@ -31,7 +33,7 @@
                                 </button>
                             </form>
                         {% endif %}
-                        {% if contact.user_id != request.user.pk %}
+                        {% if can_manage and contact.user_id != request.user.pk %}
                             <form method="post" action="{% url 'portal:delete_contact' initiative.pk contact.pk %}" class="d-inline contact-delete-form">
                                 {% csrf_token %}
                                 <button class="btn btn-sm btn-link text-danger p-0 ml-1">{% get_site_text 'portal_delete' %}</button>
@@ -40,6 +42,7 @@
                     </td>
                 </tr>
                 {# Inline edit form for the contact, hidden until "Edit" is clicked #}
+                {% if can_manage or contact.pk == own_contact_id %}
                 <tr class="contact-edit-row" data-contact-edit-row="{{ contact.pk }}" style="display:none;">
                     <td colspan="5">
                         <form method="post">
@@ -69,6 +72,7 @@
                         </form>
                     </td>
                 </tr>
+                {% endif %}
             {% empty %}
                 <tr><td colspan="5" class="text-muted">{% get_site_text 'portal_contacts_empty' %}</td></tr>
             {% endfor %}
@@ -76,6 +80,7 @@
     </table>
 </div>
 
+{% if can_manage %}
 <h3 class="portal-section-title">{% get_site_text 'portal_contacts_add_heading' %}</h3>
 <p class="portal-section-hint">{% get_site_text 'portal_contacts_notify_only_note' %}</p>
 <div class="portal-card" style="max-width:640px;">
@@ -87,6 +92,7 @@
         <button type="button" class="btn btn-sm btn-obc-outline" id="add-contact-cancel">{% get_site_text 'portal_cancel' %}</button>
     </div>
 </div>
+{% endif %}
 
 <script>
 (function () {

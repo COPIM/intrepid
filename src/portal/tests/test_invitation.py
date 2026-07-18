@@ -63,6 +63,9 @@ class InvitationTests(TestCase):
         self.assertIsNotNone(contact.invited_at)
         self.assertIsNotNone(contact.user)
         self.assertFalse(contact.user.has_usable_password())
+        # The Manage-Users flow grants login/managership, so its invites are
+        # flagged as login invites.
+        self.assertTrue(contact.is_login_invite)
 
     def test_invite_by_email_account_can_be_activated(self):
         staff = User.objects.create_user(
@@ -98,7 +101,10 @@ class InvitationTests(TestCase):
         self.assertTrue(contact.user.check_password("set-up-pass-99"))
         self.assertIn(contact.user, self.initiative.users.all())
 
-    def test_accepting_creates_user_and_links_initiative(self):
+    def test_accepting_contacts_pane_invite_links_but_not_manager(self):
+        """A Contacts-pane invite (is_login_invite False) grants Contact-tier
+        access: the user is linked to the contact and can reach the portal, but
+        is NOT added to initiative.users (so is not a Provider manager)."""
         response = self.client.post(
             self._url(),
             {
@@ -112,11 +118,39 @@ class InvitationTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
         user = User.objects.get(email="grace@example.com")
-        self.assertIn(user, self.initiative.users.all())
+        self.assertNotIn(user, self.initiative.users.all())
 
         self.contact.refresh_from_db()
         self.assertEqual(self.contact.user, user)
         self.assertIsNotNone(self.contact.accepted_at)
+
+    def test_accepted_contact_can_reach_documents_page(self):
+        """After accepting a Contacts-pane invite the user can log in and load
+        their initiative's documents page (Contact-tier access)."""
+        from portal.models import DocumentType
+
+        DocumentType.objects.create(
+            name="Agreement contract", slug="contract", ordering=1
+        )
+        self.client.post(
+            self._url(),
+            {
+                "first_name": "Grace",
+                "last_name": "Hopper",
+                "job_title": "Engineer",
+                "password1": "a-good-password-1",
+                "password2": "a-good-password-1",
+            },
+        )
+        user = User.objects.get(email="grace@example.com")
+        self.client.force_login(user)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
 
     def test_already_accepted_token_shows_notice(self):
         self.contact.accepted_at = timezone.now()
