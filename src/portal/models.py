@@ -213,6 +213,11 @@ class ProviderContact(models.Model):
     invite_token = models.UUIDField(default=uuid.uuid4, editable=False)
     invited_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
+    # True when this contact was created by the OBC "invite by email" flow on
+    # the Manage Users page, whose purpose is to grant portal login/managership.
+    # Contacts created on the Contacts pane leave this False and, on invite
+    # acceptance, get Contact-tier access only (not added to initiative.users).
+    is_login_invite = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("position", "last_name")
