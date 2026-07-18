@@ -1,3 +1,4 @@
+import contextlib
 import datetime
 import logging
 
@@ -123,19 +124,21 @@ class EmailTemplate(models.Model):
             )
             return sent
         else:
-            mailgun_attachments = []
-            opened_files = []
-            for attachment in attachments:
-                file_handle = open(attachment, "rb")
-                opened_files.append(file_handle)
-                mailgun_attachments.append(("attachment", file_handle))
+            # Wrap both the attachment-opening loop and the POST in a single
+            # ExitStack so that if opening a later attachment fails, every
+            # handle already opened for an earlier one is still closed as
+            # the exception propagates.
+            with contextlib.ExitStack() as stack:
+                mailgun_attachments = [
+                    ("attachment", stack.enter_context(open(attachment, "rb")))
+                    for attachment in attachments
+                ]
 
-            logger.debug(
-                "Posting email to Mailgun (%s) to %s.",
-                settings.MAILGUN_SERVER_NAME,
-                to,
-            )
-            try:
+                logger.debug(
+                    "Posting email to Mailgun (%s) to %s.",
+                    settings.MAILGUN_SERVER_NAME,
+                    to,
+                )
                 response = requests.post(
                     settings.MAILGUN_SERVER_NAME + "/messages",
                     auth=("api", settings.MAILGUN_ACCESS_KEY),
@@ -149,9 +152,6 @@ class EmailTemplate(models.Model):
                         "h:Reply-To": "info@openbookcollective.org",
                     },
                 )
-            finally:
-                for file_handle in opened_files:
-                    file_handle.close()
 
             logger.debug(
                 "Mailgun HTTP status %s for email to %s.",

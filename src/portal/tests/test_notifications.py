@@ -4,6 +4,7 @@ Creating a Document enqueues notifications via a post_save signal, so the tests
 create the contacts first and then the document, exercising the real path.
 """
 
+import builtins
 import os
 from datetime import timedelta
 from unittest.mock import MagicMock, patch
@@ -430,3 +431,41 @@ class MailgunAttachmentTests(AttachmentTestBase):
         self.assertEqual(emails, 1)
         sent_files = mock_post.call_args.kwargs["files"]
         self.assertEqual(len(sent_files), 1)
+
+    @patch("mail.models.requests.post")
+    def test_open_failure_mid_loop_closes_already_opened_handles(
+        self, mock_post
+    ):
+        """If the second of three attachments fails to open, the handle
+        already opened for the first attachment must still be closed, and
+        Mailgun must never be posted to with a partial/broken file list."""
+        doc1 = self._document_with_file("First", content=b"first-bytes")
+        doc2 = self._document_with_file("Second", content=b"second-bytes")
+        doc3 = self._document_with_file("Third", content=b"third-bytes")
+
+        opened_handles = []
+        real_open = builtins.open
+
+        def flaky_open(path, *args, **kwargs):
+            if path == doc2.file.path:
+                raise OSError("simulated failure opening the second attachment")
+            handle = real_open(path, *args, **kwargs)
+            opened_handles.append(handle)
+            return handle
+
+        with patch("mail.models.open", side_effect=flaky_open):
+            with self.assertRaises(OSError):
+                EmailTemplate()._send_email(
+                    to="someone@example.com",
+                    subject="Subject",
+                    html="<p>Body</p>",
+                    attachments=[
+                        doc1.file.path,
+                        doc2.file.path,
+                        doc3.file.path,
+                    ],
+                )
+
+        self.assertEqual(len(opened_handles), 1)
+        self.assertTrue(opened_handles[0].closed)
+        mock_post.assert_not_called()
