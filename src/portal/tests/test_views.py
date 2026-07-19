@@ -1241,6 +1241,37 @@ class DocumentsTableEmptyStateTests(ViewTestBase):
         self.assertIn(".DataTable(", content)
 
 
+class SortIndicatorCSSTests(ViewTestBase):
+    """The stock bootstrap4 DataTables CSS renders its sort-direction
+    arrows without ever setting their `color`, so they inherit the portal
+    thead's pale `#6c6f99` and sit at 30% opacity -- effectively invisible
+    on a white background. A scoped override in portal/base.html (shared by
+    every portal DataTable page) must make them visible. This is a
+    structural/CSS-token check, not a wording check, so it stays."""
+
+    def test_provider_documents_page_has_sort_indicator_override(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(
+            reverse(
+                "portal:provider_initiative_documents",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertIn("portal-sort-indicators", content)
+
+    def test_obc_documents_page_has_sort_indicator_override(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertIn("portal-sort-indicators", content)
+
+
 class StaffManagementTests(ViewTestBase):
     def _url(self):
         return reverse("portal:obc_manage_staff")

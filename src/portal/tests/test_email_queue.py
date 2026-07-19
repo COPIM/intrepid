@@ -364,6 +364,22 @@ class DataTablesAssetConsistencyTests(EmailQueueTestBase):
         self.assertNotIn("code.jquery.com", content)
 
 
+class SortIndicatorCSSTests(EmailQueueTestBase):
+    """The stock bootstrap4 DataTables CSS renders its sort-direction
+    arrows without ever setting their `color`, so they inherit the portal
+    thead's pale `#6c6f99` and sit at 30% opacity -- effectively invisible
+    on a white background. A scoped override in portal/base.html (shared by
+    every portal DataTable page) must make them visible."""
+
+    def test_emails_page_has_sort_indicator_override(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(reverse("portal:obc_emails"))
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn("portal-sort-indicators", content)
+
+
 class OrderingTests(EmailQueueTestBase):
     def setUp(self):
         super().setUp()

@@ -97,6 +97,29 @@
         margin-bottom: 1.5rem;
     }
     .portal .table thead th { border-top: 0; color: #6c6f99; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* portal-sort-indicators: DataTables 1.10's bootstrap4 build renders
+       its sort-direction arrows as ::before/::after unicode glyphs but
+       never sets their `color`, so they inherit the thead's pale
+       #6c6f99 above and sit at 30% opacity by default -- effectively
+       invisible on our white table backgrounds. Darken and boost that
+       inherited colour here, scoped to portal DataTables only, so the
+       neutral affordance and the active sort direction are both legible.
+       (Stock CSS already sets cursor:pointer on sortable headers, so
+       that does not need overriding.) */
+    .portal .table thead th.sorting:before,
+    .portal .table thead th.sorting:after,
+    .portal .table thead th.sorting_asc:before,
+    .portal .table thead th.sorting_asc:after,
+    .portal .table thead th.sorting_desc:before,
+    .portal .table thead th.sorting_desc:after {
+        color: #151462;
+        opacity: .5;
+    }
+    .portal .table thead th.sorting_asc:before,
+    .portal .table thead th.sorting_desc:after {
+        opacity: 1;
+    }
     .portal .list-group-item-action:hover { background: #EBF3F9; }
     .portal-mobile-note { padding: 2rem 1rem; text-align: center; color: #6c6f99; }
 
