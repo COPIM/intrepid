@@ -31,6 +31,28 @@ INSTALLED_APPS = [
 ]
 ```
 
+## 1a. Locale middleware (required for the EN/DE switcher and email languages)
+
+`MIDDLEWARE` must contain `django.middleware.locale.LocaleMiddleware`,
+placed **after** `SessionMiddleware` and **before** `CommonMiddleware`:
+
+```python
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",   # <-- add this line
+    "django.middleware.common.CommonMiddleware",
+    ...,
+]
+```
+
+Without it, the site's EN/DE language switcher stores the choice but no
+request ever activates it — every page (and every translated string) is
+served in the default language. **Check `prod_settings.py` on the server at
+deploy time**; settings files are git-ignored, so this line must be added by
+hand, exactly like the constants below. (`portal.tests.test_i18n` guards
+this in any environment where the test suite runs.)
+
 ## 2. Notification timing constants
 
 The portal needs the `datetime` import and four `DOC_*` constants:

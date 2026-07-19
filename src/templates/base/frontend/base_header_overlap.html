@@ -1,6 +1,7 @@
-{% load static %}
+{% load static %}{% load i18n %}
 <!doctype html>
-<html lang="en">
+{% get_current_language as CURRENT_LANGUAGE %}
+<html lang="{{ CURRENT_LANGUAGE }}">
 <head>
     <title>{% block title %}{% get_site_text 'open_book_collective' %}{% endblock title %}</title>
     {% include "base/frontend/header.html" %}
