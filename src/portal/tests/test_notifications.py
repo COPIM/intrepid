@@ -295,6 +295,124 @@ class CancelDrainRaceTests(NotificationTestBase):
         self.assertIsNotNone(victim_row.cancelled_at)
 
 
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class LanguagePreferenceSendTests(NotificationTestBase):
+    """A contact's ``language`` selects which translated EmailTemplate copy is
+    rendered at send time, with an English fallback."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        imm = EmailTemplate.objects.get(
+            name="document_notification_immediate"
+        )
+        imm.subject_en = "New document (EN)"
+        imm.subject_de = "Neues Dokument (DE)"
+        imm.body_en = "English body {{ document.display_name }}"
+        imm.body_de = "Deutscher Text {{ document.display_name }}"
+        imm.save()
+        dig = EmailTemplate.objects.get(name="document_notification_digest")
+        dig.subject_en = "Digest (EN)"
+        dig.subject_de = "Zusammenfassung (DE)"
+        dig.body_en = (
+            "English digest "
+            "{% for d in documents %}[{{ d.display_name }}]{% endfor %}"
+        )
+        dig.body_de = (
+            "Deutsche Zusammenfassung "
+            "{% for d in documents %}[{{ d.display_name }}]{% endfor %}"
+        )
+        dig.save()
+
+    def _contact_lang(self, frequency, language, first):
+        contact = self._contact(frequency, first=first)
+        contact.language = language
+        contact.save()
+        return contact
+
+    def test_immediate_de_contact_gets_german_body_and_subject(self):
+        contact = self._contact_lang("immediate", "de", "De")
+        self._document("March remittance")
+        self._set_due(NotificationQueue.objects.filter(recipient=contact))
+
+        notifications.send_pending_notifications()
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        sent = django_mail.outbox[0]
+        self.assertIn("Deutscher Text", sent.body)
+        self.assertEqual(sent.subject, "Neues Dokument (DE)")
+
+    def test_immediate_en_contact_gets_english_body_and_subject(self):
+        contact = self._contact_lang("immediate", "en", "En")
+        self._document("March remittance")
+        self._set_due(NotificationQueue.objects.filter(recipient=contact))
+
+        notifications.send_pending_notifications()
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        sent = django_mail.outbox[0]
+        self.assertIn("English body", sent.body)
+        self.assertEqual(sent.subject, "New document (EN)")
+
+    def test_de_contact_with_empty_de_copy_falls_back_to_english(self):
+        imm = EmailTemplate.objects.get(
+            name="document_notification_immediate"
+        )
+        imm.subject_de = ""
+        imm.body_de = ""
+        imm.save()
+        contact = self._contact_lang("immediate", "de", "Fb")
+        self._document("March remittance")
+        self._set_due(NotificationQueue.objects.filter(recipient=contact))
+
+        notifications.send_pending_notifications()
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        sent = django_mail.outbox[0]
+        self.assertIn("English body", sent.body)
+        self.assertEqual(sent.subject, "New document (EN)")
+
+    def test_digest_de_contact_renders_german(self):
+        contact = self._contact_lang("daily", "de", "Dig")
+        for n in range(2):
+            self._document("Doc {0}".format(n))
+        self._set_due(NotificationQueue.objects.filter(recipient=contact))
+
+        notifications.send_pending_notifications()
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        sent = django_mail.outbox[0]
+        self.assertIn("Deutsche Zusammenfassung", sent.body)
+        self.assertEqual(sent.subject, "Zusammenfassung (DE)")
+
+    def test_resend_row_honours_contact_language(self):
+        contact = self._contact_lang("immediate", "de", "Re")
+        self._document("Resend me")
+        row = NotificationQueue.objects.get(recipient=contact)
+        django_mail.outbox = []
+
+        notifications.resend_row(row)
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        self.assertIn("Deutscher Text", django_mail.outbox[0].body)
+        self.assertEqual(
+            django_mail.outbox[0].subject, "Neues Dokument (DE)"
+        )
+
+    def test_blank_language_does_not_crash_and_uses_english(self):
+        contact = self._contact_lang("immediate", "", "Blank")
+        self._document("March remittance")
+        self._set_due(NotificationQueue.objects.filter(recipient=contact))
+
+        notifications.send_pending_notifications()
+
+        self.assertEqual(len(django_mail.outbox), 1)
+        self.assertIn("English body", django_mail.outbox[0].body)
+
+
 class CommandTests(NotificationTestBase):
     @patch("mail.models.EmailTemplate._send_email", return_value=1)
     def test_command_drains_due_rows(self, mock_send):

@@ -13,7 +13,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.db import transaction
-from django.utils import timezone
+from django.utils import timezone, translation
 
 from mail.models import EmailTemplate
 from portal.models import NotificationQueue, ProviderContact
@@ -137,27 +137,32 @@ def _document_attachments(documents):
 
 def _send_group(recipient, frequency, documents):
     attachments = _document_attachments(documents)
-    if frequency == "immediate":
-        template = EmailTemplate.objects.get(
-            name="document_notification_immediate"
+    # Render the template's subject/body in the recipient's chosen language.
+    # ``EmailTemplate.subject``/``body`` are modeltranslation fields with an
+    # English fallback, so a blank/unknown preference safely resolves to
+    # English.
+    with translation.override(recipient.language or "en"):
+        if frequency == "immediate":
+            template = EmailTemplate.objects.get(
+                name="document_notification_immediate"
+            )
+            context = {
+                "recipient": recipient,
+                "document": documents[0],
+                "documents": documents,
+            }
+        else:
+            template = EmailTemplate.objects.get(
+                name="document_notification_digest"
+            )
+            context = {
+                "recipient": recipient,
+                "documents": documents,
+                "frequency": frequency,
+            }
+        return template.send(
+            to=recipient.email, context=context, attachments=attachments
         )
-        context = {
-            "recipient": recipient,
-            "document": documents[0],
-            "documents": documents,
-        }
-    else:
-        template = EmailTemplate.objects.get(
-            name="document_notification_digest"
-        )
-        context = {
-            "recipient": recipient,
-            "documents": documents,
-            "frequency": frequency,
-        }
-    return template.send(
-        to=recipient.email, context=context, attachments=attachments
-    )
 
 
 def resend_row(row):

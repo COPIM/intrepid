@@ -1,12 +1,14 @@
 """Tests for the Provider invitation acceptance flow."""
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.core import mail as django_mail
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
 from initiatives.models import Initiative
 from intrepid.models import SiteSetup
+from mail.models import EmailTemplate
 from portal.models import ProviderContact
 from portal.tests._helpers import clear_seed_data
 
@@ -222,3 +224,71 @@ class InvitationTests(TestCase):
             },
         )
         self.assertEqual(User.objects.count(), before)
+
+
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class InviteLanguageTests(TestCase):
+    """The invitation email is rendered in the contact's chosen language."""
+
+    @classmethod
+    def setUpTestData(cls):
+        clear_seed_data()
+        SiteSetup.objects.create(site_name="Test OBC")
+        cls.initiative = Initiative.objects.create(
+            name="Punctum", short_code="PUNC"
+        )
+        cls.staff = User.objects.create_user(
+            "staffer", password="pw", is_staff=True
+        )
+        template = EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="Invitation",
+            body="English invite {{ url }}",
+        )
+        template.subject_en = "You're invited (EN)"
+        template.subject_de = "Sie sind eingeladen (DE)"
+        template.body_en = "English invite {{ url }}"
+        template.body_de = "Deutsche Einladung {{ url }}"
+        template.save()
+
+    def _invite(self, contact):
+        self.client.force_login(self.staff)
+        django_mail.outbox = []
+        return self.client.post(
+            reverse("portal:send_invite", kwargs={"contact_id": contact.pk})
+        )
+
+    def test_invite_email_uses_german_for_de_contact(self):
+        contact = ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Greta",
+            last_name="Weber",
+            email="greta@example.com",
+            notification_frequency="immediate",
+            language="de",
+        )
+        self._invite(contact)
+        self.assertEqual(len(django_mail.outbox), 1)
+        self.assertIn("Deutsche Einladung", django_mail.outbox[0].body)
+        self.assertEqual(
+            django_mail.outbox[0].subject, "Sie sind eingeladen (DE)"
+        )
+
+    def test_invite_email_uses_english_for_en_contact(self):
+        contact = ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Grace",
+            last_name="Hopper",
+            email="grace2@example.com",
+            notification_frequency="immediate",
+            language="en",
+        )
+        self._invite(contact)
+        self.assertEqual(len(django_mail.outbox), 1)
+        self.assertIn("English invite", django_mail.outbox[0].body)
+        self.assertEqual(
+            django_mail.outbox[0].subject, "You're invited (EN)"
+        )

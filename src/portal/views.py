@@ -733,7 +733,11 @@ def _send_invitation(request, contact):
     )
     try:
         template = EmailTemplate.objects.get(name="provider_invite")
-        template.send(to=contact.email, context={"contact": contact, "url": url})
+        # Render the invite in the contact's chosen language (English fallback).
+        with translation.override(contact.language or "en"):
+            template.send(
+                to=contact.email, context={"contact": contact, "url": url}
+            )
     except EmailTemplate.DoesNotExist:
         logger.error("Missing provider_invite email template.")
     contact.invited_at = timezone.now()
