@@ -43,6 +43,7 @@ CONTACT_TRACKED_FIELDS = (
     "job_title",
     "email",
     "notification_frequency",
+    "language",
 )
 
 BULK_ROW_STATUS_CHOICES = (
@@ -209,6 +210,14 @@ class ProviderContact(models.Model):
         max_length=20,
         choices=NOTIFICATION_FREQUENCY_CHOICES,
         default="immediate",
+    )
+    # The language this contact's notification emails are rendered in. The
+    # send path wraps template rendering in ``translation.override`` so the
+    # translated ``EmailTemplate`` columns are used (English fallback).
+    language = models.CharField(
+        max_length=10,
+        choices=settings.LANGUAGES,
+        default="en",
     )
     invite_token = models.UUIDField(default=uuid.uuid4, editable=False)
     invited_at = models.DateTimeField(null=True, blank=True)

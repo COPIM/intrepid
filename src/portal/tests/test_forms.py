@@ -211,6 +211,8 @@ class ProviderContactFormTests(FormTestBase):
                 "email": "ada@example.com",
                 "position": "1",
                 "notification_frequency": "immediate",
+                "language": "de",
             }
         )
         self.assertTrue(form.is_valid(), form.errors)
+        self.assertEqual(form.cleaned_data["language"], "de")

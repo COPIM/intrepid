@@ -173,6 +173,7 @@ class ProviderContactForm(forms.ModelForm):
             "job_title",
             "email",
             "notification_frequency",
+            "language",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -186,6 +187,7 @@ class ProviderContactForm(forms.ModelForm):
                 "portal_form_notification_frequency",
                 "Notification frequency",
             ),
+            "language": ("portal_form_language", "Email language"),
         }
         for field, (key, default) in labels.items():
             self.fields[field].label = site_text(key, default)

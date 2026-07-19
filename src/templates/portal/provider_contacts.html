@@ -11,6 +11,7 @@
             <th>{% get_site_text 'portal_th_job_title' %}</th>
             <th>{% get_site_text 'portal_th_email' %}</th>
             <th>{% get_site_text 'portal_th_notifications' %}</th>
+            <th>{% get_site_text 'portal_th_language' %}</th>
             <th></th>
         </tr></thead>
         <tbody>
@@ -21,6 +22,7 @@
                     <td>{{ contact.job_title }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{% with freq_key='portal_freq_'|add:contact.notification_frequency %}{% get_site_text freq_key %}{% endwith %}</td>
+                    <td>{{ contact.get_language_display }}</td>
                     <td>
                         {% if can_manage or contact.pk == own_contact_id %}
                             <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
@@ -44,7 +46,7 @@
                 {# Inline edit form for the contact, hidden until "Edit" is clicked #}
                 {% if can_manage or contact.pk == own_contact_id %}
                 <tr class="contact-edit-row" data-contact-edit-row="{{ contact.pk }}" style="display:none;">
-                    <td colspan="5">
+                    <td colspan="6">
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="contact_id" value="{{ contact.pk }}">
@@ -66,6 +68,14 @@
                                     <label for="contact-email-{{ contact.pk }}">{% get_site_text 'portal_th_email' %}</label>
                                     <input id="contact-email-{{ contact.pk }}" name="email" type="email" value="{{ contact.email }}" placeholder="{% get_site_text 'portal_th_email' %}" class="form-control form-control-sm">
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-language-{{ contact.pk }}">{% get_site_text 'portal_th_language' %}</label>
+                                    <select id="contact-language-{{ contact.pk }}" name="language" class="form-control form-control-sm">
+                                        {% for code, name in languages %}
+                                            <option value="{{ code }}"{% if code == contact.language %} selected{% endif %}>{{ name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-sm btn-obc-blue">{% get_site_text 'portal_save' %}</button>
                             <button type="button" class="btn btn-sm btn-obc-outline contact-cancel-btn" data-contact-cancel="{{ contact.pk }}">{% get_site_text 'portal_cancel' %}</button>
@@ -74,7 +84,7 @@
                 </tr>
                 {% endif %}
             {% empty %}
-                <tr><td colspan="5" class="text-muted">{% get_site_text 'portal_contacts_empty' %}</td></tr>
+                <tr><td colspan="6" class="text-muted">{% get_site_text 'portal_contacts_empty' %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

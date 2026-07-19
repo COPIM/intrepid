@@ -347,3 +347,38 @@ class ProviderContactChangeLogTests(PortalModelTestBase):
         contact.save()
         log = ContactChangeLog.objects.get()
         self.assertEqual(log.actor_id, self.user.pk)
+
+
+class ProviderContactLanguageTests(PortalModelTestBase):
+    def _make_contact(self, **kwargs):
+        data = dict(
+            initiative=self.initiative,
+            first_name="Ada",
+            last_name="Lovelace",
+            email="ada@example.com",
+            notification_frequency="immediate",
+        )
+        data.update(kwargs)
+        return ProviderContact.objects.create(**data)
+
+    def test_language_defaults_to_en(self):
+        contact = self._make_contact()
+        self.assertEqual(contact.language, "en")
+        contact.refresh_from_db()
+        self.assertEqual(contact.language, "en")
+
+    def test_language_change_is_logged(self):
+        contact = self._make_contact()
+        contact.language = "de"
+        contact.save()
+        self.assertEqual(ContactChangeLog.objects.count(), 1)
+        log = ContactChangeLog.objects.get()
+        self.assertIn("language", log.field_changes)
+        self.assertEqual(log.field_changes["language"]["from"], "en")
+        self.assertEqual(log.field_changes["language"]["to"], "de")
+
+    def test_no_log_when_language_unchanged(self):
+        contact = self._make_contact(language="de")
+        contact.position = 7  # untracked change only
+        contact.save()
+        self.assertEqual(ContactChangeLog.objects.count(), 0)

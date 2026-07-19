@@ -583,6 +583,7 @@ def provider_manage_contacts(request, initiative_id):
             "is_obc": is_obc_staff(request.user),
             "can_manage": can_manage,
             "own_contact_id": own_contact.pk if own_contact else None,
+            "languages": settings.LANGUAGES,
         },
     )
 

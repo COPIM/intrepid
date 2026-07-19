@@ -417,6 +417,7 @@ class ContactManagementTests(ViewTestBase):
                 "email": "ada.new@example.com",
                 "position": "1",
                 "notification_frequency": "immediate",
+                "language": "en",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -486,6 +487,7 @@ class ContactManagementTests(ViewTestBase):
                     "job_title": "",
                     "email": "person{0}@example.com".format(n),
                     "notification_frequency": "immediate",
+                    "language": "en",
                 },
             )
         positions = list(

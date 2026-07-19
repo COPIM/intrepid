@@ -144,6 +144,7 @@ class ObcTeamManagerAccessTests(ContactTierTestBase):
                 "job_title": "",
                 "email": "new@example.com",
                 "notification_frequency": "immediate",
+                "language": "en",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -230,6 +231,7 @@ class ContactContactsPaneTests(ContactTierTestBase):
                 "job_title": "Updated Title",
                 "email": "contact@example.com",
                 "notification_frequency": "immediate",
+                "language": "en",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -284,6 +286,7 @@ class ContactContactsPaneTests(ContactTierTestBase):
                 "job_title": "",
                 "email": "new@example.com",
                 "notification_frequency": "immediate",
+                "language": "en",
             },
         )
         self.assertEqual(response.status_code, 302)
@@ -292,6 +295,77 @@ class ContactContactsPaneTests(ContactTierTestBase):
                 initiative=self.initiative, email="new@example.com"
             ).exists()
         )
+
+    def test_manager_add_contact_saves_chosen_language(self):
+        self.client.force_login(self.manager)
+        response = self.client.post(
+            self._url(),
+            {
+                "first_name": "Deutsch",
+                "last_name": "Sprecher",
+                "job_title": "",
+                "email": "de@example.com",
+                "notification_frequency": "immediate",
+                "language": "de",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        contact = ProviderContact.objects.get(email="de@example.com")
+        self.assertEqual(contact.language, "de")
+
+    def test_manager_inline_edit_updates_language(self):
+        self.client.force_login(self.manager)
+        response = self.client.post(
+            self._url(),
+            {
+                "contact_id": str(self.other_contact.pk),
+                "first_name": "Ada",
+                "last_name": "Lovelace",
+                "job_title": "",
+                "email": "ada@example.com",
+                "notification_frequency": "daily",
+                "language": "de",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.other_contact.refresh_from_db()
+        self.assertEqual(self.other_contact.language, "de")
+
+    def test_contact_can_update_own_language(self):
+        self.client.force_login(self.contact_user)
+        response = self.client.post(
+            self._url(),
+            {
+                "contact_id": str(self.contact.pk),
+                "first_name": "Con",
+                "last_name": "Tact",
+                "job_title": "",
+                "email": "contact@example.com",
+                "notification_frequency": "immediate",
+                "language": "de",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.contact.refresh_from_db()
+        self.assertEqual(self.contact.language, "de")
+
+    def test_contact_cannot_update_another_contact_language(self):
+        self.client.force_login(self.contact_user)
+        response = self.client.post(
+            self._url(),
+            {
+                "contact_id": str(self.other_contact.pk),
+                "first_name": "Ada",
+                "last_name": "Lovelace",
+                "job_title": "",
+                "email": "ada@example.com",
+                "notification_frequency": "daily",
+                "language": "de",
+            },
+        )
+        self.assertEqual(response.status_code, 403)
+        self.other_contact.refresh_from_db()
+        self.assertEqual(self.other_contact.language, "en")
 
 
 class ContactNotificationPrefsTests(ContactTierTestBase):
