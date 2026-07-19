@@ -721,8 +721,16 @@ class InitiativeUserManagementTests(ViewTestBase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.initiative.users.count(), 1)  # unchanged
 
-    def test_provider_cannot_manage_users(self):
+    def test_manager_can_manage_own_users(self):
+        # A Provider manager (in initiative.users, not OBC staff) now has the
+        # same Manage-Users experience for their own initiative.
         self.client.force_login(self.provider)
+        self.assertEqual(self.client.get(self._url()).status_code, 200)
+
+    def test_outsider_cannot_manage_users(self):
+        # A user who neither manages nor is a Contact of the initiative is
+        # still denied.
+        self.client.force_login(self.outsider)
         self.assertEqual(self.client.get(self._url()).status_code, 403)
 
     def test_invite_by_email_form_is_on_manage_users_page(self):
@@ -733,8 +741,8 @@ class InitiativeUserManagementTests(ViewTestBase):
         )
         self.assertContains(self.client.get(self._url()), invite_action)
 
-    def test_provider_cannot_invite_by_email(self):
-        self.client.force_login(self.provider)
+    def test_outsider_cannot_invite_by_email(self):
+        self.client.force_login(self.outsider)
         response = self.client.post(
             reverse(
                 "portal:invite_by_email",
@@ -743,6 +751,150 @@ class InitiativeUserManagementTests(ViewTestBase):
             {"email": "someone@example.com"},
         )
         self.assertEqual(response.status_code, 403)
+
+
+class ManagerSelfServiceUserTests(ViewTestBase):
+    """A Provider manager may self-serve user management for their own
+    initiative, scoped exactly to it, and may not lock themselves out."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        # A Contact-tier user: linked ProviderContact, NOT in initiative.users.
+        cls.contact_user = User.objects.create_user("contactu", password="pw")
+        cls.contact = ProviderContact.objects.create(
+            initiative=cls.initiative,
+            first_name="Con",
+            last_name="Tact",
+            email="contactu@example.com",
+            user=cls.contact_user,
+            notification_frequency="immediate",
+        )
+
+    def _url(self, initiative=None):
+        return reverse(
+            "portal:obc_initiative_users",
+            kwargs={"initiative_id": (initiative or self.initiative).pk},
+        )
+
+    def _docs_url(self, initiative=None):
+        return reverse(
+            "portal:provider_initiative_documents",
+            kwargs={"initiative_id": (initiative or self.initiative).pk},
+        )
+
+    # --- access matrix -----------------------------------------------------
+    def test_manager_gets_own_users_page_with_forms(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 200)
+        # The add-existing and invite-by-email actions are both present.
+        self.assertContains(
+            response,
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+        )
+
+    def test_manager_denied_other_initiative_users_page(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(self._url(self.other_initiative))
+        self.assertEqual(response.status_code, 403)
+
+    def test_contact_tier_denied_users_page(self):
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 403)
+
+    # --- management actions ------------------------------------------------
+    def test_manager_can_add_existing_user(self):
+        newcomer = User.objects.create_user(
+            "newcomer2", email="newcomer2@example.com", password="pw"
+        )
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            self._url(), {"email": "newcomer2@example.com"}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(newcomer, self.initiative.users.all())
+
+    @patch("mail.models.EmailTemplate._send_email", return_value=1)
+    def test_manager_can_invite_by_email(self, mock_send):
+        from mail.models import EmailTemplate
+
+        EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="You are invited",
+            body="Accept here: {{ url }}",
+        )
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "invitee@example.com"},
+        )
+        self.assertEqual(response.status_code, 302)
+        contact = ProviderContact.objects.get(email="invitee@example.com")
+        self.assertTrue(contact.is_login_invite)
+        recipients = [call.kwargs["to"] for call in mock_send.call_args_list]
+        self.assertTrue(
+            any("invitee@example.com" in to for to in recipients)
+        )
+
+    def test_manager_can_remove_another_user(self):
+        other = User.objects.create_user("other2", password="pw")
+        self.initiative.users.add(other)
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            self._url(), {"remove_user": str(other.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn(other, self.initiative.users.all())
+
+    def test_manager_cannot_remove_self(self):
+        self.client.force_login(self.provider)
+        response = self.client.post(
+            self._url(), {"remove_user": str(self.provider.pk)}
+        )
+        # The request is processed (manager has access) but self-removal is
+        # refused: they remain a member.
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(self.provider, self.initiative.users.all())
+
+    def test_manager_cannot_remove_user_from_other_initiative(self):
+        # Cross-initiative forged POST: the manager targets their own URL but
+        # names a user who belongs to another initiative they do not manage.
+        stranger = User.objects.create_user("stranger", password="pw")
+        self.other_initiative.users.add(stranger)
+        self.client.force_login(self.provider)
+        self.client.post(self._url(), {"remove_user": str(stranger.pk)})
+        # The stranger's membership of the OTHER initiative is untouched.
+        self.assertIn(stranger, self.other_initiative.users.all())
+
+    def test_obc_staff_can_remove_self(self):
+        # OBC staff keep unrestricted removal (they manage from outside).
+        self.initiative.users.add(self.staff)
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_user": str(self.staff.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn(self.staff, self.initiative.users.all())
+
+    # --- navigation --------------------------------------------------------
+    def test_manager_documents_nav_links_to_users_page(self):
+        self.client.force_login(self.provider)
+        response = self.client.get(self._docs_url())
+        self.assertContains(response, self._url())
+
+    def test_contact_documents_nav_omits_users_page(self):
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._docs_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self._url())
 
 
 class InitiativeAliasManagementTests(ViewTestBase):

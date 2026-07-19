@@ -7,4 +7,5 @@
     <a href="{% url 'portal:provider_initiative_documents' initiative.pk %}" class="{% if active == 'documents' %}active{% endif %}">{% get_site_text 'portal_nav_documents' %}</a>
 {% endif %}
 <a href="{% url 'portal:provider_manage_contacts' initiative.pk %}" class="{% if active == 'contacts' %}active{% endif %}">{% if is_obc or can_manage %}{% get_site_text 'portal_nav_contacts' %}{% else %}{% get_site_text 'portal_nav_details' %}{% endif %}</a>
+{% if is_obc or can_manage %}<a href="{% url 'portal:obc_initiative_users' initiative.pk %}" class="{% if active == 'users' %}active{% endif %}">{% get_site_text 'portal_nav_users' %}</a>{% endif %}
 <a href="{% url 'portal:provider_notification_prefs' initiative.pk %}" class="{% if active == 'notifications' %}active{% endif %}">{% get_site_text 'portal_th_notifications' %}</a>

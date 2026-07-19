@@ -1,6 +1,6 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
-{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' initiative.pk %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_back_documents' %}</a>{% endblock %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='users' %}{% endblock %}
 {% block portal_title %}{% get_site_text 'portal_users_heading' %} &mdash; {{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_users_subhint_pre' %} <strong>{{ initiative.name }}</strong> {% get_site_text 'portal_users_subhint_post' %}</p>{% endblock %}
 {% block portal_content %}

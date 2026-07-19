@@ -598,14 +598,27 @@ def provider_manage_contacts(request, initiative_id):
     )
 
 
-@obc_staff_required
+@initiative_manager_required
 def obc_manage_initiative_users(request, initiative_id):
-    """OBC action: control which user accounts can see a Provider's portal."""
+    """Control which user accounts can see a Provider's portal.
+
+    Available both to OBC staff (for any Provider) and to a Provider's own
+    managers (for their own initiative only — the decorator scopes this). A
+    non-OBC manager may not remove their own access (self-lockout); OBC staff,
+    who manage from outside, keep unrestricted removal.
+    """
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     form = InitiativeUserForm()
     if request.method == "POST":
         if request.POST.get("remove_user"):
             user = get_object_or_404(User, pk=request.POST["remove_user"])
+            if user == request.user and not is_obc_staff(request.user):
+                messages.error(
+                    request, "You cannot remove your own access."
+                )
+                return redirect(
+                    "portal:obc_initiative_users", initiative_id=initiative.pk
+                )
             initiative.users.remove(user)
             messages.success(
                 request,
@@ -634,7 +647,8 @@ def obc_manage_initiative_users(request, initiative_id):
             "form": form,
             "invite_form": InviteByEmailForm(),
             "members": initiative.users.all().order_by("last_name", "username"),
-            "is_obc": True,
+            "is_obc": is_obc_staff(request.user),
+            "can_manage": can_manage_initiative(request.user, initiative),
         },
     )
 
@@ -754,7 +768,7 @@ def _send_invitation(request, contact):
     contact.save()
 
 
-@obc_staff_required
+@initiative_manager_required
 @require_POST
 def invite_by_email(request, initiative_id):
     """Invite someone by email alone (grants portal login — creates a User).
