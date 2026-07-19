@@ -531,6 +531,7 @@ def provider_initiative_documents(request, initiative_id):
             "document_types": DocumentType.objects.all(),
             "filters": request.GET,
             "is_obc": is_obc_staff(request.user),
+            "can_manage": can_manage_initiative(request.user, initiative),
         },
     )
 
@@ -540,6 +541,14 @@ def provider_manage_contacts(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     can_manage = can_manage_initiative(request.user, initiative)
     own_contact = linked_contact(request.user, initiative)
+    # A Contact-tier user sees only their own row ("Details"); other contacts'
+    # data must never reach the response. Managers/OBC keep the full list.
+    if can_manage:
+        contacts = initiative.provider_contacts.all()
+    elif own_contact is not None:
+        contacts = initiative.provider_contacts.filter(pk=own_contact.pk)
+    else:
+        contacts = initiative.provider_contacts.none()
     if request.method == "POST":
         contact_id = request.POST.get("contact_id")
         if not can_manage:
@@ -578,7 +587,7 @@ def provider_manage_contacts(request, initiative_id):
         "portal/provider_contacts.html",
         {
             "initiative": initiative,
-            "contacts": initiative.provider_contacts.all(),
+            "contacts": contacts,
             "form": form,
             "is_obc": is_obc_staff(request.user),
             "can_manage": can_manage,
@@ -789,7 +798,8 @@ def invite_by_email(request, initiative_id):
 def provider_notification_prefs(request, initiative_id):
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     contacts = initiative.provider_contacts.all()
-    if not can_manage_initiative(request.user, initiative):
+    can_manage = can_manage_initiative(request.user, initiative)
+    if not can_manage:
         # A Contact-tier user sees and edits only their own preference row.
         own_contact = linked_contact(request.user, initiative)
         contacts = contacts.filter(pk=own_contact.pk) if own_contact else (
@@ -814,6 +824,7 @@ def provider_notification_prefs(request, initiative_id):
             "contacts": contacts,
             "choices": NOTIFICATION_FREQUENCY_CHOICES,
             "is_obc": is_obc_staff(request.user),
+            "can_manage": can_manage,
         },
     )
 

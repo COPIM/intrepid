@@ -210,6 +210,27 @@ class ContactContactsPaneTests(ContactTierTestBase):
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
 
+    def test_contact_context_contains_only_own_row(self):
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context["contacts"]), [self.contact])
+
+    def test_contact_page_does_not_leak_other_contact_email(self):
+        # The key data-leak regression: a contact-tier user must see their own
+        # details but never another contact's distinctive email.
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._url())
+        self.assertContains(response, "contact@example.com")
+        self.assertNotContains(response, "ada@example.com")
+
+    def test_manager_page_shows_all_contact_emails(self):
+        # Managers keep the full contacts experience: every contact present.
+        self.client.force_login(self.manager)
+        response = self.client.get(self._url())
+        self.assertContains(response, "contact@example.com")
+        self.assertContains(response, "ada@example.com")
+
     def test_contact_does_not_see_add_contact_form(self):
         self.client.force_login(self.contact_user)
         response = self.client.get(self._url())

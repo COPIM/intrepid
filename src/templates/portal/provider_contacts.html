@@ -1,8 +1,8 @@
 {% extends "portal/base.html" %}
 {% load crispy_forms_tags %}
 {% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='contacts' %}{% endblock %}
-{% block portal_title %}{% get_site_text 'portal_contacts_heading' %} &mdash; {{ initiative.name }}{% endblock %}
-{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_contacts_subhint' %}</p>{% endblock %}
+{% block portal_title %}{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_heading' %}{% else %}{% get_site_text 'portal_details_heading' %}{% endif %} &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_subhint' %}{% else %}{% get_site_text 'portal_details_subhint' %}{% endif %}</p>{% endblock %}
 {% block portal_content %}
 <div class="portal-card">
     <table class="table">
