@@ -1067,9 +1067,11 @@ class DocumentsTableUXTests(ViewTestBase):
         content = response.content.decode()
         self.assertIn('id="select-all-documents"', content)
 
-    def test_obc_documents_page_has_no_select_all_checkbox(self):
-        # Per the brief, only the Provider table gets the DataTables /
-        # select-all treatment; the OBC table is left as a plain list.
+    def test_obc_documents_page_has_its_own_select_all_checkbox(self):
+        # The OBC table gets the same DataTables/select-all treatment as
+        # the Provider table, but with its own checkbox id -- the two
+        # tables are never on the same page, but the ids must stay
+        # distinct so nothing accidentally collides.
         self.client.force_login(self.staff)
         response = self.client.get(
             reverse(
@@ -1078,7 +1080,108 @@ class DocumentsTableUXTests(ViewTestBase):
             )
         )
         content = response.content.decode()
+        self.assertIn('id="select-all-obc-documents"', content)
         self.assertNotIn('id="select-all-documents"', content)
+
+
+class OBCDocumentsTableUXTests(ViewTestBase):
+    """Structural coverage for the OBC table's DataTables wiring and its
+    select-all checkbox (Task 16, items A/B) -- mirrors
+    DocumentsTableUXTests above for the Provider table."""
+
+    def test_obc_documents_table_has_id_for_datatables_init(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="obc-documents-table"', content)
+
+    def test_obc_documents_page_loads_jquery_and_datatables(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode().lower()
+        self.assertIn("jquery", content)
+        self.assertIn("datatables", content)
+
+    def test_obc_documents_table_checkbox_and_action_columns_not_orderable(
+        self,
+    ):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        content = response.content.decode()
+        self.assertIn("orderable", content)
+        self.assertIn("false", content)
+
+
+class OBCDataTablesAssetConsistencyTests(ViewTestBase):
+    """The OBC page must use the same Bootstrap 4 DataTables build as the
+    Provider page and must not load a second copy of jQuery."""
+
+    def test_uses_bootstrap4_datatables_build_and_a_single_jquery(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn("dataTables.bootstrap4.min.css", content)
+        self.assertIn("dataTables.bootstrap4.min.js", content)
+        self.assertNotIn("bootstrap5", content)
+        self.assertNotIn("code.jquery.com", content)
+
+
+class OBCDocumentsTableEmptyStateTests(ViewTestBase):
+    """DataTables 1.10 cannot initialise over a tbody containing a single
+    colspan row, which is what the {% empty %} branch renders. The OBC page
+    must render the empty-state message but skip the DataTable() init call
+    when there are zero documents, and still perform the init when there is
+    at least one."""
+
+    def test_no_datatable_init_when_no_documents_match(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"q": "no-such-document-name"},
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertNotIn(".DataTable(", content)
+        self.assertIn('id="obc-documents-table"', content)
+        self.assertIn('colspan="6"', content)
+
+    def test_datatable_init_present_when_documents_exist(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(
+            reverse(
+                "portal:obc_initiative_detail",
+                kwargs={"initiative_id": self.initiative.pk},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn(".DataTable(", content)
 
 
 class DataTablesAssetConsistencyTests(ViewTestBase):

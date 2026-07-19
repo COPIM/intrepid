@@ -35,9 +35,9 @@
 
     <form method="post" action="{% url 'portal:bulk_download' %}">
         {% csrf_token %}
-        <table class="table">
+        <table id="obc-documents-table" class="table">
             <thead><tr>
-                <th></th>
+                <th><input type="checkbox" id="select-all-obc-documents"></th>
                 <th>{% get_site_text 'portal_th_name' %}</th>
                 <th>{% get_site_text 'portal_th_type' %}</th>
                 <th>{% get_site_text 'portal_th_reporting_month' %}</th>
@@ -66,4 +66,28 @@
         <button class="btn btn-obc-outline btn-sm"><i class="fa-solid fa-download"></i> {% get_site_text 'portal_download_selected' %}</button>
     </form>
 </div>
+{% endblock %}
+
+{% block js %}
+<link crossorigin="anonymous" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    {% if documents %}
+    $('#obc-documents-table').DataTable({
+        paging: false,
+        info: false,
+        searching: false,
+        columnDefs: [
+            {targets: [0, 5], orderable: false}
+        ]
+    });
+    {% endif %}
+
+    $('#select-all-obc-documents').on('change', function() {
+        $('#obc-documents-table tbody input[type="checkbox"][name="document_ids"]').prop('checked', this.checked);
+    });
+});
+</script>
 {% endblock %}
