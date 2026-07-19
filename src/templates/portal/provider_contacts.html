@@ -4,6 +4,7 @@
 {% block portal_title %}{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_heading' %}{% else %}{% get_site_text 'portal_details_heading' %}{% endif %} &mdash; {{ initiative.name }}{% endblock %}
 {% block portal_subhint %}<p class="portal-section-hint">{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_subhint' %}{% else %}{% get_site_text 'portal_details_subhint' %}{% endif %}</p>{% endblock %}
 {% block portal_content %}
+{% if is_obc or can_manage %}
 <div class="portal-card">
     <table class="table">
         <thead><tr>
@@ -168,4 +169,48 @@
     }
 })();
 </script>
+{% else %}
+    {# Contact-tier user: land straight on the always-visible edit form for
+       their own details, no read-only row and no edit toggle. #}
+    {% if own_contact %}
+    <div class="portal-card" style="max-width:640px;">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="contact_id" value="{{ own_contact.pk }}">
+            <input type="hidden" name="notification_frequency" value="{{ own_contact.notification_frequency }}">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="contact-first-name-{{ own_contact.pk }}">{% get_site_text 'portal_th_name' %}</label>
+                    <input id="contact-first-name-{{ own_contact.pk }}" name="first_name" value="{{ own_contact.first_name }}" placeholder="{% get_site_text 'portal_contacts_first_name' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-last-name-{{ own_contact.pk }}">{% get_site_text 'portal_contacts_last_name' %}</label>
+                    <input id="contact-last-name-{{ own_contact.pk }}" name="last_name" value="{{ own_contact.last_name }}" placeholder="{% get_site_text 'portal_contacts_last_name' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-job-title-{{ own_contact.pk }}">{% get_site_text 'portal_th_job_title' %}</label>
+                    <input id="contact-job-title-{{ own_contact.pk }}" name="job_title" value="{{ own_contact.job_title }}" placeholder="{% get_site_text 'portal_th_job_title' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-email-{{ own_contact.pk }}">{% get_site_text 'portal_th_email' %}</label>
+                    <input id="contact-email-{{ own_contact.pk }}" name="email" type="email" value="{{ own_contact.email }}" placeholder="{% get_site_text 'portal_th_email' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-language-{{ own_contact.pk }}">{% get_site_text 'portal_th_language' %}</label>
+                    <select id="contact-language-{{ own_contact.pk }}" name="language" class="form-control form-control-sm">
+                        {% for code, name in languages %}
+                            <option value="{{ code }}"{% if code == own_contact.language %} selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-obc-blue">{% get_site_text 'portal_save' %}</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="portal-card">
+        <p class="text-muted">{% get_site_text 'portal_contacts_empty' %}</p>
+    </div>
+    {% endif %}
+{% endif %}
 {% endblock %}

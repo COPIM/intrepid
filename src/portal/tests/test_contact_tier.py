@@ -231,6 +231,23 @@ class ContactContactsPaneTests(ContactTierTestBase):
         self.assertContains(response, "contact@example.com")
         self.assertContains(response, "ada@example.com")
 
+    def test_contact_lands_on_prefilled_edit_form(self):
+        # A contact-tier user opens straight into their own edit form, with
+        # their email pre-filled in an input, and none of the read-only table /
+        # inline-edit-toggle scaffolding.
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._url())
+        self.assertContains(response, 'value="contact@example.com"')
+        self.assertNotContains(response, "data-contact-row")
+        self.assertNotContains(response, "data-contact-edit")
+
+    def test_manager_page_keeps_readonly_table_and_edit_buttons(self):
+        # Managers keep the read-only table plus inline-edit toggles.
+        self.client.force_login(self.manager)
+        response = self.client.get(self._url())
+        self.assertContains(response, "data-contact-row")
+        self.assertContains(response, "data-contact-edit")
+
     def test_contact_does_not_see_add_contact_form(self):
         self.client.force_login(self.contact_user)
         response = self.client.get(self._url())
