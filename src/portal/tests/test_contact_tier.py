@@ -241,6 +241,14 @@ class ContactContactsPaneTests(ContactTierTestBase):
         self.assertNotContains(response, "data-contact-row")
         self.assertNotContains(response, "data-contact-edit")
 
+    def test_contact_page_does_not_leak_django_comment_syntax(self):
+        # Regression: a multi-line {# ... #} comment in the template is not
+        # valid Django comment syntax (that form is single-line only), so the
+        # parser was leaving the literal comment text in the rendered page.
+        self.client.force_login(self.contact_user)
+        response = self.client.get(self._url())
+        self.assertNotContains(response, "{#")
+
     def test_manager_page_keeps_readonly_table_and_edit_buttons(self):
         # Managers keep the read-only table plus inline-edit toggles.
         self.client.force_login(self.manager)
