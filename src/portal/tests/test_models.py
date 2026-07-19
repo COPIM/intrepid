@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from cms.models import SiteText
 from initiatives.models import Initiative
 from portal.tests._helpers import clear_seed_data
 from portal.models import (
@@ -24,6 +25,9 @@ _contract_other_migration = importlib.import_module(
 )
 _refresh_name_de_migration = importlib.import_module(
     "portal.migrations.0019_refresh_stale_contract_name_de"
+)
+_contacts_note_migration = importlib.import_module(
+    "portal.migrations.0023_refresh_contacts_notify_only_note"
 )
 
 
@@ -198,6 +202,54 @@ class RefreshStaleNameDeMigrationTests(TestCase):
 
         contract.refresh_from_db()
         self.assertEqual(contract.name_de, "Contract")
+
+
+class RefreshContactsNotifyOnlyNoteMigrationTests(TestCase):
+    """0023 corrects the stale "contacts cannot sign in" SiteText copy.
+
+    Calls the migration's forward RunPython callable directly (against the
+    real ``apps`` registry), following the same pattern as the other
+    migration-function tests in this module.
+    """
+
+    def setUp(self):
+        clear_seed_data()
+
+    def _forward(self):
+        _contacts_note_migration.refresh_contacts_notify_only_note(
+            django_apps, None
+        )
+
+    def test_stale_cannot_sign_in_phrase_is_removed(self):
+        SiteText.objects.filter(
+            key="portal_contacts_notify_only_note"
+        ).delete()
+        SiteText.objects.create(
+            key="portal_contacts_notify_only_note",
+            body="stale",
+            body_en="Contacts only receive email notifications about "
+            "documents — they cannot sign in to the portal.",
+            help_text="Note clarifying that contacts are notifications-only.",
+        )
+
+        self._forward()
+
+        site_text = SiteText.objects.get(key="portal_contacts_notify_only_note")
+        self.assertNotIn("cannot sign in", site_text.body_en)
+        self.assertTrue(site_text.body_de)
+
+    def test_missing_row_does_not_crash(self):
+        SiteText.objects.filter(
+            key="portal_contacts_notify_only_note"
+        ).delete()
+
+        self._forward()  # must not raise
+
+        self.assertFalse(
+            SiteText.objects.filter(
+                key="portal_contacts_notify_only_note"
+            ).exists()
+        )
 
 
 class PortalModelTestBase(TestCase):
