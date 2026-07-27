@@ -79,7 +79,7 @@
                     <td><a href="{% url 'portal:download_document' document.pk %}">{{ document.display_name }}</a></td>
                     <td>{{ document.initiative.name }}</td>
                     <td>{{ document.document_type }}</td>
-                    <td>{{ document.uploaded_at|date:'Y-m-d H:i' }}</td>
+                    <td>{{ document.uploaded_at|date:'Y-m-d H:i' }} GMT</td>
                 </tr>
             {% empty %}
                 <tr><td colspan="4" class="text-muted">{% get_site_text 'portal_recent_empty' %}</td></tr>
