@@ -12,13 +12,77 @@ import os
 from datetime import timedelta
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import transaction
+from django.template import Context, Template
+from django.urls import reverse
 from django.utils import timezone, translation
 
 from mail.models import EmailTemplate
 from portal.models import NotificationQueue, ProviderContact
 
 logger = logging.getLogger(__name__)
+
+
+def notify_admin_change(initiative, subject_user, action, request=None):
+    """Notify a Provider's other admins and OBC staff of an admin change.
+
+    ``action`` is ``"added"`` or ``"removed"``: ``subject_user`` has just been
+    added to (or removed from) ``initiative.users``. The recipients are the
+    Provider's OTHER admins (never the person just added or removed) plus all
+    OBC staff accounts, deduplicated, skipping anyone without an email
+    address. Each email is rendered in the recipient's language when a linked
+    ``ProviderContact`` for this initiative declares one (English otherwise).
+
+    A missing ``provider_admin_change`` template must never break the request
+    that changed the membership, so it is logged and swallowed.
+    """
+    try:
+        template = EmailTemplate.objects.get(name="provider_admin_change")
+    except EmailTemplate.DoesNotExist:
+        logger.error("Missing provider_admin_change email template.")
+        return
+
+    path = reverse(
+        "portal:obc_initiative_users",
+        kwargs={"initiative_id": initiative.pk},
+    )
+    url = request.build_absolute_uri(path) if request is not None else path
+
+    recipients = {user.pk: user for user in initiative.users.all()}
+    for user in User.objects.filter(is_staff=True):
+        recipients.setdefault(user.pk, user)
+    # The person who was just added/removed never needs telling.
+    recipients.pop(subject_user.pk, None)
+
+    admin_label = (
+        subject_user.get_full_name()
+        or subject_user.email
+        or subject_user.username
+    )
+    # A recipient's language preference lives on their linked contact row.
+    languages = dict(
+        ProviderContact.objects.filter(
+            initiative=initiative, user_id__in=recipients.keys()
+        ).values_list("user_id", "language")
+    )
+
+    for user in recipients.values():
+        if not user.email:
+            continue
+        context = {
+            "recipient": user,
+            "initiative": initiative,
+            "action": action,
+            "admin_label": admin_label,
+            "admin_email": subject_user.email,
+            "url": url,
+        }
+        with translation.override(languages.get(user.pk) or "en"):
+            # The subject is a template too, so "{{ initiative.name }}"
+            # resolves; the body is rendered by ``template.send`` itself.
+            subject = Template(template.subject).render(Context(context))
+            template.send(to=user.email, subject=subject, context=context)
 
 
 def _next_daily(reference):

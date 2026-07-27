@@ -9,13 +9,16 @@ import os
 from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
+from django.contrib.auth.models import User
 from django.core import mail as django_mail
 from django.core.files.base import ContentFile
 from django.core.management import call_command
 from django.test import TestCase, override_settings
+from django.urls import reverse
 from django.utils import timezone
 
 from initiatives.models import Initiative
+from intrepid.models import SiteSetup
 from mail.models import EmailTemplate
 from portal import notifications
 from portal.tests._helpers import clear_seed_data
@@ -587,3 +590,229 @@ class MailgunAttachmentTests(AttachmentTestBase):
         self.assertEqual(len(opened_handles), 1)
         self.assertTrue(opened_handles[0].closed)
         mock_post.assert_not_called()
+
+
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class AdminChangeNotificationTests(TestCase):
+    """Adding/removing a Provider admin notifies the other admins + OBC staff.
+
+    Every path that changes ``initiative.users`` membership (removal on the
+    Manage Users page, direct addition via invite-by-email, acceptance of a
+    login invite) must email the Provider's OTHER admins plus OBC staff,
+    deduplicated, skipping anyone without an email address, and never the
+    person who was just added or removed.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        clear_seed_data()
+        SiteSetup.objects.create(site_name="Test OBC")
+        cls.initiative = Initiative.objects.create(
+            name="Punctum", short_code="PUNC"
+        )
+        cls.alice = User.objects.create_user(
+            "alice", email="alice@example.com", password="pw"
+        )
+        cls.bob = User.objects.create_user(
+            "bob", email="bob@example.com", password="pw"
+        )
+        cls.initiative.users.add(cls.alice, cls.bob)
+        # Sam is OBC staff and performs the changes in these tests.
+        cls.sam = User.objects.create_user(
+            "sam", email="sam@example.com", password="pw", is_staff=True
+        )
+        template = EmailTemplate.objects.create(
+            name="provider_admin_change",
+            subject="Admin change for {{ initiative.name }}",
+            body=(
+                "{{ admin_label }} was {{ action }} as an admin for "
+                "{{ initiative.name }}: {{ url }}"
+            ),
+        )
+        template.subject_en = "Admin change for {{ initiative.name }}"
+        template.subject_de = (
+            "Admin-Aenderung fuer {{ initiative.name }} (DE)"
+        )
+        template.body_en = (
+            "{{ admin_label }} was {{ action }} as an admin for "
+            "{{ initiative.name }}: {{ url }}"
+        )
+        template.body_de = (
+            "{{ admin_label }} wurde geaendert fuer "
+            "{{ initiative.name }}: {{ url }}"
+        )
+        template.save()
+        EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="Invitation",
+            body="Invite {{ url }}",
+        )
+
+    def _recipients(self):
+        """All addresses across the outbox, flattened, in send order."""
+        addresses = []
+        for message in django_mail.outbox:
+            addresses.extend(message.to)
+        return addresses
+
+    def _remove_url(self):
+        return reverse(
+            "portal:obc_initiative_users",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def _invite_url(self):
+        return reverse(
+            "portal:invite_by_email",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def test_removal_notifies_remaining_admins_and_staff(self):
+        carol = User.objects.create_user(
+            "carol", email="carol@example.com", password="pw"
+        )
+        self.initiative.users.add(carol)
+        # A staff account with no email address must be skipped, not crash.
+        User.objects.create_user("noemail", password="pw", is_staff=True)
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._remove_url(), {"remove_user": carol.pk}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn(carol, self.initiative.users.all())
+        self.assertEqual(
+            sorted(self._recipients()),
+            ["alice@example.com", "bob@example.com", "sam@example.com"],
+        )
+
+    def test_removal_email_names_the_removed_admin(self):
+        carol = User.objects.create_user(
+            "carol", email="carol@example.com", password="pw"
+        )
+        self.initiative.users.add(carol)
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        self.client.post(self._remove_url(), {"remove_user": carol.pk})
+
+        self.assertTrue(django_mail.outbox)
+        self.assertIn("carol@example.com", django_mail.outbox[0].body)
+        self.assertIn("Punctum", django_mail.outbox[0].subject)
+
+    def test_direct_add_notifies_preexisting_admins_and_staff(self):
+        User.objects.create_user(
+            "dana", email="dana@example.com", password="pw"
+        )
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._invite_url(), {"email": "dana@example.com"}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            self.initiative.users.filter(email="dana@example.com").exists()
+        )
+        self.assertEqual(
+            sorted(self._recipients()),
+            ["alice@example.com", "bob@example.com", "sam@example.com"],
+        )
+
+    def test_login_invite_acceptance_notifies_admins_and_staff(self):
+        self.client.force_login(self.sam)
+        self.client.post(self._invite_url(), {"email": "fresh@example.com"})
+        self.client.logout()
+        contact = ProviderContact.objects.get(email="fresh@example.com")
+        django_mail.outbox = []
+
+        response = self.client.post(
+            reverse(
+                "portal:accept_invite",
+                kwargs={"token": contact.invite_token},
+            ),
+            {
+                "first_name": "Fresh",
+                "last_name": "Face",
+                "password1": "set-up-pass-99",
+                "password2": "set-up-pass-99",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            sorted(self._recipients()),
+            ["alice@example.com", "bob@example.com", "sam@example.com"],
+        )
+
+    def test_admin_who_is_also_staff_gets_one_email(self):
+        self.alice.is_staff = True
+        self.alice.save()
+        carol = User.objects.create_user(
+            "carol", email="carol@example.com", password="pw"
+        )
+        self.initiative.users.add(carol)
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        self.client.post(self._remove_url(), {"remove_user": carol.pk})
+
+        recipients = self._recipients()
+        self.assertEqual(
+            recipients.count("alice@example.com"),
+            1,
+            "an admin who is also OBC staff must receive exactly one email",
+        )
+        self.assertEqual(
+            sorted(recipients),
+            ["alice@example.com", "bob@example.com", "sam@example.com"],
+        )
+
+    def test_missing_template_does_not_break_the_request(self):
+        EmailTemplate.objects.filter(name="provider_admin_change").delete()
+        carol = User.objects.create_user(
+            "carol", email="carol@example.com", password="pw"
+        )
+        self.initiative.users.add(carol)
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._remove_url(), {"remove_user": carol.pk}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn(carol, self.initiative.users.all())
+        self.assertEqual(django_mail.outbox, [])
+
+    def test_recipient_language_follows_linked_contact(self):
+        ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Alice",
+            last_name="Admin",
+            email="alice@example.com",
+            notification_frequency="immediate",
+            language="de",
+            user=self.alice,
+        )
+        carol = User.objects.create_user(
+            "carol", email="carol@example.com", password="pw"
+        )
+        self.initiative.users.add(carol)
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        self.client.post(self._remove_url(), {"remove_user": carol.pk})
+
+        by_recipient = {
+            message.to[0]: message for message in django_mail.outbox
+        }
+        self.assertIn("(DE)", by_recipient["alice@example.com"].subject)
+        self.assertNotIn("(DE)", by_recipient["bob@example.com"].subject)
+        self.assertIn("Punctum", by_recipient["alice@example.com"].subject)

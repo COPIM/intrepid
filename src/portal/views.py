@@ -617,6 +617,9 @@ def obc_manage_initiative_users(request, initiative_id):
                 "portal:obc_initiative_users", initiative_id=initiative.pk
             )
         initiative.users.remove(user)
+        notifications.notify_admin_change(
+            initiative, user, "removed", request=request
+        )
         messages.success(
             request,
             "Removed {0} from {1}.".format(
@@ -790,6 +793,9 @@ def invite_by_email(request, initiative_id):
         if existing.is_active and existing.has_usable_password():
             # A working account: grant access directly, no invitation needed.
             initiative.users.add(existing)
+            notifications.notify_admin_change(
+                initiative, existing, "added", request=request
+            )
             messages.success(
                 request,
                 "Added {0} to {1}.".format(email, initiative.name),
@@ -901,6 +907,7 @@ def _link_contact_to_user(
     """
     if contact.is_login_invite:
         contact.initiative.users.add(user)
+        notifications.notify_admin_change(contact.initiative, user, "added")
     group, _ = Group.objects.get_or_create(name=PROVIDER_MEMBERS_GROUP)
     user.groups.add(group)
     contact.user = user
