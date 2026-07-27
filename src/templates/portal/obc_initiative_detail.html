@@ -51,7 +51,7 @@
                         <td>{{ document.display_name }}</td>
                         <td>{{ document.document_type }}</td>
                         <td>{% if document.reporting_month %}{{ document.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
-                        <td>{{ document.uploaded_at|date:'Y-m-d H:i' }} GMT</td>
+                        <td>{{ document.uploaded_at|date:'Y-m-d H:i T' }}</td>
                         <td>
                             <a href="{% url 'portal:download_document' document.pk %}">{% get_site_text 'portal_download' %}</a> ·
                             <a href="{% url 'portal:obc_document_edit' document.pk %}">{% get_site_text 'portal_edit' %}</a> ·
