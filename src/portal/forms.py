@@ -204,33 +204,6 @@ class NotificationPreferencesForm(forms.ModelForm):
         widgets = {"notification_frequency": forms.RadioSelect}
 
 
-class InitiativeUserForm(forms.Form):
-    """Add an existing user account to a Provider by email address."""
-
-    email = forms.EmailField(label="User's email address")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user = None
-        self.fields["email"].label = site_text(
-            "portal_form_user_email", "User's email address"
-        )
-        self.helper = FormHelper()
-        self.helper.add_input(
-            Submit("submit", site_text("portal_form_add_user", "Add user"))
-        )
-
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        self.user = User.objects.filter(email__iexact=email).first()
-        if self.user is None:
-            raise ValidationError(
-                "No user account exists with that email address. Invite them "
-                "from the Provider's contacts instead."
-            )
-        return email
-
-
 class InitiativeAliasForm(forms.Form):
     """Add an alternative name (alias) for a Provider."""
 

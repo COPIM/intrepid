@@ -6,9 +6,10 @@ from unittest.mock import patch
 
 from django.conf import settings
 from django.contrib.auth.models import Group, User
+from django.core import mail as django_mail
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from initiatives.models import Initiative
@@ -694,16 +695,21 @@ class InitiativeUserManagementTests(ViewTestBase):
             kwargs={"initiative_id": self.initiative.pk},
         )
 
-    def test_obc_can_add_user_to_initiative(self):
+    def test_posting_email_to_users_page_no_longer_adds_user(self):
+        # The old add-existing-account panel posted an email to this URL.
+        # That branch is gone: posting the old form data adds nobody.
         newcomer = User.objects.create_user(
             "newcomer", email="newcomer@example.com", password="pw"
         )
         self.client.force_login(self.staff)
-        response = self.client.post(
-            self._url(), {"email": "newcomer@example.com"}
-        )
-        self.assertEqual(response.status_code, 302)
-        self.assertIn(newcomer, self.initiative.users.all())
+        self.client.post(self._url(), {"email": "newcomer@example.com"})
+        self.assertNotIn(newcomer, self.initiative.users.all())
+
+    def test_users_page_has_no_add_existing_panel(self):
+        self.client.force_login(self.staff)
+        response = self.client.get(self._url())
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "existing OBC account")
 
     def test_obc_can_remove_user_from_initiative(self):
         self.client.force_login(self.staff)
@@ -713,7 +719,7 @@ class InitiativeUserManagementTests(ViewTestBase):
         self.assertEqual(response.status_code, 302)
         self.assertNotIn(self.provider, self.initiative.users.all())
 
-    def test_unknown_email_is_rejected(self):
+    def test_stray_post_leaves_membership_unchanged(self):
         self.client.force_login(self.staff)
         response = self.client.post(
             self._url(), {"email": "nobody@example.com"}
@@ -788,7 +794,7 @@ class ManagerSelfServiceUserTests(ViewTestBase):
         self.client.force_login(self.provider)
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
-        # The add-existing and invite-by-email actions are both present.
+        # The invite-by-email action is present.
         self.assertContains(
             response,
             reverse(
@@ -808,13 +814,19 @@ class ManagerSelfServiceUserTests(ViewTestBase):
         self.assertEqual(response.status_code, 403)
 
     # --- management actions ------------------------------------------------
-    def test_manager_can_add_existing_user(self):
+    def test_manager_can_add_existing_user_via_invite(self):
+        # Inviting an email that belongs to an active account adds that
+        # account directly (the unified invite flow).
         newcomer = User.objects.create_user(
             "newcomer2", email="newcomer2@example.com", password="pw"
         )
         self.client.force_login(self.provider)
         response = self.client.post(
-            self._url(), {"email": "newcomer2@example.com"}
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "newcomer2@example.com"},
         )
         self.assertEqual(response.status_code, 302)
         self.assertIn(newcomer, self.initiative.users.all())
@@ -895,6 +907,138 @@ class ManagerSelfServiceUserTests(ViewTestBase):
         response = self.client.get(self._docs_url())
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self._url())
+
+
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class UnifiedInviteTests(ViewTestBase):
+    """The single invite-by-email flow covers every way of granting access:
+    active accounts are added directly, everyone else gets an invitation."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        from mail.models import EmailTemplate
+
+        EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="You are invited",
+            body="Accept here: {{ url }}",
+        )
+
+    def setUp(self):
+        super().setUp()
+        django_mail.outbox = []
+        self.client.force_login(self.staff)
+
+    def _invite(self, email, follow=False):
+        return self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": email},
+            follow=follow,
+        )
+
+    def test_existing_active_user_is_added_directly(self):
+        newcomer = User.objects.create_user(
+            "direct", email="direct@example.com", password="pw"
+        )
+        response = self._invite("direct@example.com", follow=True)
+        self.assertIn(newcomer, self.initiative.users.all())
+        self.assertContains(
+            response,
+            "Added direct@example.com to {0}.".format(self.initiative.name),
+        )
+        # No invitation email and no contact row for a direct add.
+        self.assertEqual(len(django_mail.outbox), 0)
+        self.assertFalse(
+            ProviderContact.objects.filter(
+                email__iexact="direct@example.com"
+            ).exists()
+        )
+
+    def test_existing_active_user_matched_case_insensitively(self):
+        newcomer = User.objects.create_user(
+            "cased", email="Cased@Example.com", password="pw"
+        )
+        self._invite("cased@example.com")
+        self.assertIn(newcomer, self.initiative.users.all())
+        self.assertEqual(len(django_mail.outbox), 0)
+
+    def test_unknown_email_gets_invitation(self):
+        response = self._invite("fresh@example.com", follow=True)
+        self.assertContains(
+            response, "Invitation sent to fresh@example.com."
+        )
+        contact = ProviderContact.objects.get(email="fresh@example.com")
+        self.assertTrue(contact.is_login_invite)
+        self.assertIsNotNone(contact.user)
+        self.assertFalse(contact.user.has_usable_password())
+        self.assertEqual(len(django_mail.outbox), 1)
+        self.assertIn("fresh@example.com", django_mail.outbox[0].to)
+        # The invitee is not a member until they accept.
+        self.assertEqual(self.initiative.users.count(), 1)
+
+    def test_never_activated_account_gets_invitation_not_direct_add(self):
+        dormant = User.objects.create_user(
+            username="dormant@example.com", email="dormant@example.com"
+        )
+        dormant.set_unusable_password()
+        dormant.save()
+        before = User.objects.count()
+        self._invite("dormant@example.com")
+        # Invited, not added: they cannot sign in yet.
+        self.assertNotIn(dormant, self.initiative.users.all())
+        self.assertEqual(len(django_mail.outbox), 1)
+        # The existing account is reused, not duplicated.
+        self.assertEqual(User.objects.count(), before)
+        contact = ProviderContact.objects.get(email="dormant@example.com")
+        self.assertTrue(contact.is_login_invite)
+        self.assertEqual(contact.user, dormant)
+
+    def test_existing_contact_row_is_reused(self):
+        ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Pre",
+            last_name="Existing",
+            email="Pre@Example.com",
+            notification_frequency="immediate",
+        )
+        self._invite("pre@example.com")
+        contacts = ProviderContact.objects.filter(
+            initiative=self.initiative, email__iexact="pre@example.com"
+        )
+        self.assertEqual(contacts.count(), 1)
+        contact = contacts.first()
+        self.assertTrue(contact.is_login_invite)
+        self.assertIsNotNone(contact.user)
+        self.assertEqual(len(django_mail.outbox), 1)
+
+    def test_existing_member_is_not_re_added_or_invited(self):
+        member = User.objects.create_user(
+            "member", email="member@example.com", password="pw"
+        )
+        self.initiative.users.add(member)
+        response = self._invite("member@example.com", follow=True)
+        self.assertContains(
+            response,
+            "member@example.com already has access to {0}.".format(
+                self.initiative.name
+            ),
+        )
+        self.assertEqual(len(django_mail.outbox), 0)
+        self.assertFalse(
+            ProviderContact.objects.filter(
+                email__iexact="member@example.com"
+            ).exists()
+        )
+        self.assertEqual(
+            self.initiative.users.filter(pk=member.pk).count(), 1
+        )
 
 
 class InitiativeAliasManagementTests(ViewTestBase):

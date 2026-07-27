@@ -35,7 +35,6 @@ from portal.forms import (
     DocumentUploadForm,
     EmailTemplateForm,
     InitiativeAliasForm,
-    InitiativeUserForm,
     InviteByEmailForm,
     ProviderContactForm,
     StaffUserForm,
@@ -608,43 +607,28 @@ def obc_manage_initiative_users(request, initiative_id):
     who manage from outside, keep unrestricted removal.
     """
     initiative = get_object_or_404(Initiative, pk=initiative_id)
-    form = InitiativeUserForm()
-    if request.method == "POST":
-        if request.POST.get("remove_user"):
-            user = get_object_or_404(User, pk=request.POST["remove_user"])
-            if user == request.user and not is_obc_staff(request.user):
-                messages.error(
-                    request, "You cannot remove your own access."
-                )
-                return redirect(
-                    "portal:obc_initiative_users", initiative_id=initiative.pk
-                )
-            initiative.users.remove(user)
-            messages.success(
-                request,
-                "Removed {0} from {1}.".format(
-                    user.email or user.username, initiative.name
-                ),
-            )
-            return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
-        form = InitiativeUserForm(request.POST)
-        if form.is_valid():
-            initiative.users.add(form.user)
-            messages.success(
-                request,
-                "Added {0} to {1}.".format(
-                    form.user.email or form.user.username, initiative.name
-                ),
+    if request.method == "POST" and request.POST.get("remove_user"):
+        user = get_object_or_404(User, pk=request.POST["remove_user"])
+        if user == request.user and not is_obc_staff(request.user):
+            messages.error(
+                request, "You cannot remove your own access."
             )
             return redirect(
                 "portal:obc_initiative_users", initiative_id=initiative.pk
             )
+        initiative.users.remove(user)
+        messages.success(
+            request,
+            "Removed {0} from {1}.".format(
+                user.email or user.username, initiative.name
+            ),
+        )
+        return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
     return render(
         request,
         "portal/obc_initiative_users.html",
         {
             "initiative": initiative,
-            "form": form,
             "invite_form": InviteByEmailForm(),
             "members": initiative.users.all().order_by("last_name", "username"),
             "is_obc": is_obc_staff(request.user),
@@ -771,16 +755,53 @@ def _send_invitation(request, contact):
 @initiative_manager_required
 @require_POST
 def invite_by_email(request, initiative_id):
-    """Invite someone by email alone (grants portal login — creates a User).
+    """Give someone access to a Provider by email address alone.
 
-    Creates a contact (with no details yet) and, unless an account already
-    exists for that email, a detail-less user account, then sends the
-    invitation. The invitee fills in their name and password when they land.
+    A single flow covers every case. If an account already exists for the
+    email and can sign in, it is added to ``initiative.users`` straight away
+    (no email is sent). Otherwise an invitation is sent: a contact row is
+    created (or an existing one for this initiative reused) and, unless a
+    dormant account already exists, a detail-less user account is created.
+    The invitee fills in their name and password when they land.
     """
     initiative = get_object_or_404(Initiative, pk=initiative_id)
     form = InviteByEmailForm(request.POST)
-    if form.is_valid():
-        email = form.cleaned_data["email"]
+    if not form.is_valid():
+        messages.error(request, "Please enter a valid email address.")
+        return redirect(
+            "portal:obc_initiative_users", initiative_id=initiative.pk
+        )
+    email = form.cleaned_data["email"]
+    existing = (
+        User.objects.filter(email__iexact=email).first()
+        or User.objects.filter(username__iexact=email).first()
+    )
+    if existing is not None:
+        if initiative.users.filter(pk=existing.pk).exists():
+            messages.info(
+                request,
+                "{0} already has access to {1}.".format(
+                    email, initiative.name
+                ),
+            )
+            return redirect(
+                "portal:obc_initiative_users", initiative_id=initiative.pk
+            )
+        if existing.is_active and existing.has_usable_password():
+            # A working account: grant access directly, no invitation needed.
+            initiative.users.add(existing)
+            messages.success(
+                request,
+                "Added {0} to {1}.".format(email, initiative.name),
+            )
+            return redirect(
+                "portal:obc_initiative_users", initiative_id=initiative.pk
+            )
+    # No account, or a dormant one that has never been activated: invite.
+    contact = initiative.provider_contacts.filter(
+        email__iexact=email
+    ).first()
+    if contact is None:
         last = initiative.provider_contacts.order_by("-position").first()
         contact = ProviderContact.objects.create(
             initiative=initiative,
@@ -788,24 +809,20 @@ def invite_by_email(request, initiative_id):
             first_name="",
             last_name="",
             position=(last.position + 1) if last else 1,
-            # This flow grants portal login/managership, so acceptance should
-            # add the user to initiative.users (Provider-manager tier).
-            is_login_invite=True,
         )
-        existing = (
-            User.objects.filter(email__iexact=email).first()
-            or User.objects.filter(username__iexact=email).first()
-        )
-        if existing is None:
-            user = User.objects.create_user(username=email, email=email)
-            user.set_unusable_password()
-            user.save()
-            contact.user = user
-            contact.save()
-        _send_invitation(request, contact)
-        messages.success(request, "Invitation sent to {0}.".format(email))
-    else:
-        messages.error(request, "Please enter a valid email address.")
+    # This flow grants portal login/managership, so acceptance should add
+    # the user to initiative.users (Provider-manager tier).
+    contact.is_login_invite = True
+    if existing is None:
+        user = User.objects.create_user(username=email, email=email)
+        user.set_unusable_password()
+        user.save()
+        contact.user = user
+    elif contact.user_id is None:
+        contact.user = existing
+    contact.save()
+    _send_invitation(request, contact)
+    messages.success(request, "Invitation sent to {0}.".format(email))
     return redirect("portal:obc_initiative_users", initiative_id=initiative.pk)
 
 

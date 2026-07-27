@@ -39,13 +39,6 @@
 <div class="row">
     <div class="col-md-6 mb-3 d-flex">
         <div class="portal-card w-100">
-            <h4 class="portal-section-title mt-0">{% get_site_text 'portal_users_add_existing_heading' %}</h4>
-            <p class="portal-section-hint">{% get_site_text 'portal_users_add_existing_desc' %}</p>
-            {% crispy form %}
-        </div>
-    </div>
-    <div class="col-md-6 mb-3 d-flex">
-        <div class="portal-card w-100">
             <h4 class="portal-section-title mt-0">{% get_site_text 'portal_users_invite_heading' %}</h4>
             <p class="portal-section-hint">{% get_site_text 'portal_users_invite_desc' %}</p>
             <form method="post" action="{% url 'portal:invite_by_email' initiative.pk %}">

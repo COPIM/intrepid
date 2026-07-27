@@ -103,6 +103,45 @@ class InvitationTests(TestCase):
         self.assertTrue(contact.user.check_password("set-up-pass-99"))
         self.assertIn(contact.user, self.initiative.users.all())
 
+    def test_invite_to_dormant_account_can_be_activated(self):
+        """Inviting an email whose account exists but has never been
+        activated (no usable password) re-invites that account; accepting
+        sets the password and grants manager access."""
+        dormant = User.objects.create_user(
+            username="dormant@example.com", email="dormant@example.com"
+        )
+        dormant.set_unusable_password()
+        dormant.save()
+        staff = User.objects.create_user(
+            "staffer3", password="pw", is_staff=True
+        )
+        self.client.force_login(staff)
+        self.client.post(
+            reverse(
+                "portal:invite_by_email",
+                kwargs={"initiative_id": self.initiative.pk},
+            ),
+            {"email": "dormant@example.com"},
+        )
+        self.client.logout()
+        contact = ProviderContact.objects.get(email="dormant@example.com")
+        response = self.client.post(
+            reverse(
+                "portal:accept_invite",
+                kwargs={"token": contact.invite_token},
+            ),
+            {
+                "first_name": "Dora",
+                "last_name": "Mant",
+                "password1": "set-up-pass-77",
+                "password2": "set-up-pass-77",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        dormant.refresh_from_db()
+        self.assertTrue(dormant.check_password("set-up-pass-77"))
+        self.assertIn(dormant, self.initiative.users.all())
+
     def test_accepting_contacts_pane_invite_links_but_not_manager(self):
         """A Contacts-pane invite (is_login_invite False) grants Contact-tier
         access: the user is linked to the contact and can reach the portal, but
