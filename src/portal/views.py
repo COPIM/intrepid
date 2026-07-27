@@ -1022,12 +1022,12 @@ def obc_manage_staff(request):
             if user == request.user:
                 messages.warning(
                     request,
-                    "You cannot remove your own staff access.",
+                    "You cannot remove your own super admin access.",
                 )
             elif user.is_superuser:
                 messages.warning(
                     request,
-                    "You cannot remove staff access from a superuser.",
+                    "You cannot remove super admin access from a superuser.",
                 )
             else:
                 user.is_staff = False
@@ -1035,7 +1035,7 @@ def obc_manage_staff(request):
                 user.groups.remove(obc_group)
                 messages.success(
                     request,
-                    "Removed staff access from {0}.".format(
+                    "Removed super admin access from {0}.".format(
                         user.email or user.username
                     ),
                 )
@@ -1047,7 +1047,7 @@ def obc_manage_staff(request):
             form.user.groups.add(obc_group)
             messages.success(
                 request,
-                "Made {0} a member of staff.".format(
+                "Made {0} a super admin.".format(
                     form.user.email or form.user.username
                 ),
             )

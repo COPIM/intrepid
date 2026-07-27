@@ -103,7 +103,9 @@ def obc_staff_required(view):
     def wrapper(request, *args, **kwargs):
         if is_obc_staff(request.user):
             return view(request, *args, **kwargs)
-        raise PermissionDenied("This action is restricted to OBC staff.")
+        raise PermissionDenied(
+            "This action is restricted to OBC super admins."
+        )
 
     return wrapper
 

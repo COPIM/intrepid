@@ -270,17 +270,20 @@ class InviteByEmailForm(forms.Form):
 class StaffUserForm(forms.Form):
     """Grant an existing user account OBC staff (backend) access by email."""
 
-    email = forms.EmailField(label="User's email address")
+    email = forms.EmailField(label="Admin's email address")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
         self.fields["email"].label = site_text(
-            "portal_form_staff_email", "User's email address"
+            "portal_form_staff_email", "Admin's email address"
         )
         self.helper = FormHelper()
         self.helper.add_input(
-            Submit("submit", site_text("portal_form_add_staff", "Make staff"))
+            Submit(
+                "submit",
+                site_text("portal_form_add_staff", "Make super admin"),
+            )
         )
 
     def clean_email(self):
@@ -288,7 +291,7 @@ class StaffUserForm(forms.Form):
         self.user = User.objects.filter(email__iexact=email).first()
         if self.user is None:
             raise ValidationError(
-                "No user account exists with that email address. They need an "
+                "No account exists with that email address. They need an "
                 "account first — invite them from a Provider's contacts."
             )
         return email
