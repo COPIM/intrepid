@@ -85,6 +85,47 @@ def notify_admin_change(initiative, subject_user, action, request=None):
             template.send(to=user.email, subject=subject, context=context)
 
 
+def notify_access_granted(initiative, user, request=None):
+    """Tell an existing account it was granted admin access to a Provider.
+
+    When invite-by-email matches an existing, working account, that person is
+    added straight to ``initiative.users`` with no invitation email — so this
+    tells them it happened and where to sign in. The email is rendered in
+    their language when a linked ``ProviderContact`` for this initiative
+    declares one (English otherwise).
+
+    A missing ``provider_access_granted`` template must never break the
+    request that granted the access, so it is logged and swallowed.
+    """
+    try:
+        template = EmailTemplate.objects.get(name="provider_access_granted")
+    except EmailTemplate.DoesNotExist:
+        logger.error("Missing provider_access_granted email template.")
+        return
+    if not user.email:
+        return
+
+    path = reverse("portal:index")
+    url = request.build_absolute_uri(path) if request is not None else path
+
+    # The recipient's language preference lives on their linked contact row.
+    language = (
+        ProviderContact.objects.filter(initiative=initiative, user=user)
+        .values_list("language", flat=True)
+        .first()
+    )
+    context = {
+        "recipient": user,
+        "initiative": initiative,
+        "url": url,
+    }
+    with translation.override(language or "en"):
+        # The subject is a template too, so "{{ initiative.name }}"
+        # resolves; the body is rendered by ``template.send`` itself.
+        subject = Template(template.subject).render(Context(context))
+        template.send(to=user.email, subject=subject, context=context)
+
+
 def _next_daily(reference):
     local = timezone.localtime(reference)
     target = local.replace(

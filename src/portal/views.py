@@ -796,6 +796,9 @@ def invite_by_email(request, initiative_id):
             notifications.notify_admin_change(
                 initiative, existing, "added", request=request
             )
+            notifications.notify_access_granted(
+                initiative, existing, request=request
+            )
             messages.success(
                 request,
                 "Added {0} to {1}.".format(email, initiative.name),

@@ -816,3 +816,220 @@ class AdminChangeNotificationTests(TestCase):
         self.assertIn("(DE)", by_recipient["alice@example.com"].subject)
         self.assertNotIn("(DE)", by_recipient["bob@example.com"].subject)
         self.assertIn("Punctum", by_recipient["alice@example.com"].subject)
+
+
+@override_settings(
+    USE_MAILGUN=False,
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class AccessGrantedNotificationTests(TestCase):
+    """Directly adding an existing account also emails that person.
+
+    When invite-by-email matches an existing, active account with a usable
+    password, the person is added straight to ``initiative.users`` without an
+    invitation. They must be told this happened — one access-granted email to
+    them, alongside (not instead of) the admin-change notifications to the
+    Provider's other admins and OBC staff. The invite-acceptance and
+    already-a-member paths must NOT send it.
+    """
+
+    ACCESS_SUBJECT_EN = "You now have access to {{ initiative.name }}"
+    ACCESS_SUBJECT_DE = "Zugriff auf {{ initiative.name }} (DE)"
+
+    @classmethod
+    def setUpTestData(cls):
+        clear_seed_data()
+        SiteSetup.objects.create(site_name="Test OBC")
+        cls.initiative = Initiative.objects.create(
+            name="Punctum", short_code="PUNC"
+        )
+        cls.alice = User.objects.create_user(
+            "alice", email="alice@example.com", password="pw"
+        )
+        cls.bob = User.objects.create_user(
+            "bob", email="bob@example.com", password="pw"
+        )
+        cls.initiative.users.add(cls.alice, cls.bob)
+        cls.sam = User.objects.create_user(
+            "sam", email="sam@example.com", password="pw", is_staff=True
+        )
+        EmailTemplate.objects.create(
+            name="provider_admin_change",
+            subject="Admin change for {{ initiative.name }}",
+            body=(
+                "{{ admin_label }} was {{ action }} as an admin for "
+                "{{ initiative.name }}: {{ url }}"
+            ),
+        )
+        access = EmailTemplate.objects.create(
+            name="provider_access_granted",
+            subject=cls.ACCESS_SUBJECT_EN,
+            body=(
+                "You have admin access to {{ initiative.name }}: {{ url }}"
+            ),
+        )
+        access.subject_en = cls.ACCESS_SUBJECT_EN
+        access.subject_de = cls.ACCESS_SUBJECT_DE
+        access.body_en = (
+            "You have admin access to {{ initiative.name }}: {{ url }}"
+        )
+        access.body_de = (
+            "Sie haben Admin-Zugriff auf {{ initiative.name }}: {{ url }}"
+        )
+        access.save()
+        EmailTemplate.objects.create(
+            name="provider_invite",
+            subject="Invitation",
+            body="Invite {{ url }}",
+        )
+
+    def _invite_url(self):
+        return reverse(
+            "portal:invite_by_email",
+            kwargs={"initiative_id": self.initiative.pk},
+        )
+
+    def _by_recipient(self):
+        """Map each outbox address to the list of messages sent to it."""
+        mapping = {}
+        for message in django_mail.outbox:
+            for address in message.to:
+                mapping.setdefault(address, []).append(message)
+        return mapping
+
+    def test_direct_add_emails_the_added_person_once(self):
+        User.objects.create_user(
+            "dana", email="dana@example.com", password="pw"
+        )
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._invite_url(), {"email": "dana@example.com"}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            self.initiative.users.filter(email="dana@example.com").exists()
+        )
+        by_recipient = self._by_recipient()
+        # Full outbox partition: exactly one access-granted email to Dana,
+        # plus one admin-change email each to the other admins and staff.
+        self.assertEqual(
+            sorted(by_recipient.keys()),
+            [
+                "alice@example.com",
+                "bob@example.com",
+                "dana@example.com",
+                "sam@example.com",
+            ],
+        )
+        self.assertEqual(len(by_recipient["dana@example.com"]), 1)
+        self.assertEqual(
+            by_recipient["dana@example.com"][0].subject,
+            "You now have access to Punctum",
+        )
+        for address in (
+            "alice@example.com",
+            "bob@example.com",
+            "sam@example.com",
+        ):
+            self.assertEqual(len(by_recipient[address]), 1)
+            self.assertEqual(
+                by_recipient[address][0].subject,
+                "Admin change for Punctum",
+            )
+
+    def test_invite_acceptance_does_not_send_access_granted(self):
+        self.client.force_login(self.sam)
+        self.client.post(self._invite_url(), {"email": "fresh@example.com"})
+        self.client.logout()
+        contact = ProviderContact.objects.get(email="fresh@example.com")
+        django_mail.outbox = []
+
+        response = self.client.post(
+            reverse(
+                "portal:accept_invite",
+                kwargs={"token": contact.invite_token},
+            ),
+            {
+                "first_name": "Fresh",
+                "last_name": "Face",
+                "password1": "set-up-pass-99",
+                "password2": "set-up-pass-99",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        by_recipient = self._by_recipient()
+        self.assertNotIn("fresh@example.com", by_recipient)
+        for messages_for in by_recipient.values():
+            for message in messages_for:
+                self.assertNotIn("access to Punctum", message.subject)
+
+    def test_already_a_member_sends_nothing(self):
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._invite_url(), {"email": "alice@example.com"}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(django_mail.outbox, [])
+
+    def test_german_contact_gets_german_subject(self):
+        dana = User.objects.create_user(
+            "dana", email="dana@example.com", password="pw"
+        )
+        ProviderContact.objects.create(
+            initiative=self.initiative,
+            first_name="Dana",
+            last_name="Deutsch",
+            email="dana@example.com",
+            notification_frequency="immediate",
+            language="de",
+            user=dana,
+        )
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._invite_url(), {"email": "dana@example.com"}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        by_recipient = self._by_recipient()
+        self.assertEqual(len(by_recipient["dana@example.com"]), 1)
+        self.assertIn(
+            "(DE)", by_recipient["dana@example.com"][0].subject
+        )
+        self.assertIn(
+            "Punctum", by_recipient["dana@example.com"][0].subject
+        )
+
+    def test_missing_template_still_redirects(self):
+        EmailTemplate.objects.filter(
+            name="provider_access_granted"
+        ).delete()
+        User.objects.create_user(
+            "dana", email="dana@example.com", password="pw"
+        )
+        self.client.force_login(self.sam)
+        django_mail.outbox = []
+
+        response = self.client.post(
+            self._invite_url(), {"email": "dana@example.com"}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            self.initiative.users.filter(email="dana@example.com").exists()
+        )
+        by_recipient = self._by_recipient()
+        self.assertNotIn("dana@example.com", by_recipient)
+        # The admin-change notifications still go out untouched.
+        self.assertEqual(
+            sorted(by_recipient.keys()),
+            ["alice@example.com", "bob@example.com", "sam@example.com"],
+        )
