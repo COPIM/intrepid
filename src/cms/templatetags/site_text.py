@@ -6,6 +6,30 @@ from cms import models
 register = template.Library()
 
 
+def _prefetched_site_text(context):
+    """
+    Return the cached dictionary of site text objects for this render,
+    fetching it once if needed. The cache lives on the request when one
+    is in context; otherwise (emails, management commands) it lives on
+    the template's render_context so the render still does one query.
+    :param context: the template context.
+    :return: a dictionary mapping site text keys to SiteText objects.
+    """
+    request = context.get("request")
+    if request is not None:
+        if not hasattr(request, "cms_prefetched"):
+            request.cms_prefetched = {
+                o.key: o for o in models.SiteText.objects.all()
+            }
+        return request.cms_prefetched
+
+    if "cms_prefetched" not in context.render_context:
+        context.render_context["cms_prefetched"] = {
+            o.key: o for o in models.SiteText.objects.all()
+        }
+    return context.render_context["cms_prefetched"]
+
+
 @register.simple_tag(takes_context=True)
 def get_site_text(context, site_text_key, cms_prefetched=None):
     """
@@ -15,29 +39,17 @@ def get_site_text(context, site_text_key, cms_prefetched=None):
     :param cms_prefetched: A dictionary of prefetched site text objects.
     :return: The rendered site text.
     """
-    if cms_prefetched:
-        context["request"].cms_prefetched = cms_prefetched
-        if site_text_key in cms_prefetched:
-            return mark_safe(cms_prefetched[site_text_key].display(context))
-        else:
-            return "!!{}".format(site_text_key)
-
+    if not cms_prefetched:
+        cms_prefetched = _prefetched_site_text(context)
     else:
-        if hasattr(context["request"], "cms_prefetched"):
-            return get_site_text(
-                context,
-                site_text_key,
-                cms_prefetched=context["request"].cms_prefetched,
-            )
+        request = context.get("request")
+        if request is not None:
+            request.cms_prefetched = cms_prefetched
 
-        else:
-            return get_site_text(
-                context,
-                site_text_key,
-                cms_prefetched={
-                    o.key: o for o in models.SiteText.objects.all()
-                },
-            )
+    if site_text_key in cms_prefetched:
+        return mark_safe(cms_prefetched[site_text_key].display(context))
+
+    return "!!{}".format(site_text_key)
 
 
 @register.simple_tag(takes_context=True)
