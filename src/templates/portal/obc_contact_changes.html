@@ -1,0 +1,45 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_dashboard' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_contact_changes_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_contact_changes_subhint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <form method="get" class="form-inline mb-3">
+        <label class="small text-muted mr-2">{% get_site_text 'portal_th_provider' %}</label>
+        <select name="initiative" class="form-control mr-2">
+            <option value="">{% get_site_text 'portal_all_providers' %}</option>
+            {% for initiative in initiatives %}
+                <option value="{{ initiative.pk }}">{{ initiative.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button>
+    </form>
+
+    <table class="table mb-0">
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_when' %}</th>
+            <th>{% get_site_text 'portal_th_provider' %}</th>
+            <th>{% get_site_text 'portal_th_contact' %}</th>
+            <th>{% get_site_text 'portal_th_changed_by' %}</th>
+            <th>{% get_site_text 'portal_th_changes' %}</th>
+        </tr></thead>
+        <tbody>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.created_at|date:'Y-m-d H:i' }}</td>
+                    <td>{{ log.initiative.name }}</td>
+                    <td>{{ log.provider_contact }}</td>
+                    <td>{% if log.actor %}{{ log.actor }}{% else %}&mdash;{% endif %}</td>
+                    <td>
+                        {% for field, change in log.field_changes.items %}
+                            <div><span class="text-muted">{{ field }}:</span> &ldquo;{{ change.from }}&rdquo; &rarr; &ldquo;{{ change.to }}&rdquo;</div>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-muted">{% get_site_text 'portal_contact_changes_empty' %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

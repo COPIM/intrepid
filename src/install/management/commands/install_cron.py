@@ -52,6 +52,11 @@ class Command(BaseCommand):
                 "day": 1,
                 "task": "sync_thoth",
             },
+            {
+                "name": "{}_intrepid_send_document_notifications".format(cwd),
+                "time": 15,  # run every 15 minutes
+                "task": "send_document_notifications",
+            },
         ]
 
         for job in jobs:

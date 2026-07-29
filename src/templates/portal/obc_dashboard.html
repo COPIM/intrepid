@@ -1,0 +1,88 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}{% get_site_text 'portal_dashboard_title' %}{% endblock %}
+{% block portal_content %}
+<div class="portal-tiles">
+    <a class="portal-tile" href="#providers">
+        <div class="tile-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_documents_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_documents_desc' %}</p>
+    </a>
+    {% if can_manage_portal %}
+    <a class="portal-tile" href="{% url 'portal:obc_bulk_import' %}">
+        <div class="tile-icon"><i class="fa-solid fa-file-zipper"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_bulk_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_bulk_desc' %}</p>
+    </a>
+    {% endif %}
+    <a class="portal-tile" href="{% url 'portal:obc_contact_changes' %}">
+        <div class="tile-icon"><i class="fa-solid fa-user-pen"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_contacts_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_contacts_desc' %}</p>
+    </a>
+    {% if can_manage_portal %}
+    <a class="portal-tile" href="{% url 'portal:obc_manage_staff' %}">
+        <div class="tile-icon"><i class="fa-solid fa-user-shield"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_staff_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_staff_desc' %}</p>
+    </a>
+    <a class="portal-tile" href="{% url 'portal:obc_emails' %}">
+        <div class="tile-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_emails_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_emails_desc' %}</p>
+    </a>
+    <a class="portal-tile" href="{% url 'portal:obc_email_templates' %}">
+        <div class="tile-icon"><i class="fa-solid fa-pen-nib"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_email_tpls_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_email_tpls_desc' %}</p>
+    </a>
+    {% endif %}
+    {% if request.user.is_staff %}
+    <a class="portal-tile" href="{% url 'dashboard_index' %}">
+        <div class="tile-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div class="tile-title">{% get_site_text 'portal_tile_admin_dashboard_title' %}</div>
+        <p class="tile-desc">{% get_site_text 'portal_tile_admin_dashboard_desc' %}</p>
+    </a>
+    {% endif %}
+</div>
+
+<h3 class="portal-section-title" id="providers">{% get_site_text 'portal_providers_heading' %}</h3>
+<p class="portal-section-hint">{% get_site_text 'portal_providers_hint' %}</p>
+<div class="list-group mb-2">
+    {% for initiative in initiatives %}
+        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+           href="{% url 'portal:obc_initiative_detail' initiative.pk %}">
+            <span>{{ initiative.name }}</span>
+            <span class="badge badge-pill" style="background:#EBF3F9;color:#151462;font-weight:600;">
+                {{ initiative.document_count }} {% get_site_text 'portal_documents_label' %}
+            </span>
+        </a>
+    {% empty %}
+        <div class="text-muted">{% get_site_text 'portal_providers_empty' %}</div>
+    {% endfor %}
+</div>
+
+<h3 class="portal-section-title">{% get_site_text 'portal_recent_heading' %}</h3>
+<p class="portal-section-hint">{% get_site_text 'portal_recent_hint' %}</p>
+<div class="portal-card">
+    <table class="table mb-0">
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_document' %}</th>
+            <th>{% get_site_text 'portal_th_provider' %}</th>
+            <th>{% get_site_text 'portal_th_type' %}</th>
+            <th>{% get_site_text 'portal_th_uploaded' %}</th>
+        </tr></thead>
+        <tbody>
+            {% for document in recent_documents %}
+                <tr>
+                    <td><a href="{% url 'portal:download_document' document.pk %}">{{ document.display_name }}</a></td>
+                    <td>{{ document.initiative.name }}</td>
+                    <td>{{ document.document_type }}</td>
+                    <td>{{ document.uploaded_at|date:'Y-m-d H:i T' }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4" class="text-muted">{% get_site_text 'portal_recent_empty' %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

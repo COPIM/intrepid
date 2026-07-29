@@ -1,0 +1,13 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' document.initiative_id %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_back_documents' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_delete_title' %}{% endblock %}
+{% block portal_content %}
+<div class="portal-card" style="max-width:640px;">
+    <p>{% get_site_text 'portal_delete_confirm_pre' %} <strong>{{ document.display_name }}</strong>{% get_site_text 'portal_delete_confirm_post' %}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">{% get_site_text 'portal_delete' %}</button>
+        <a class="btn btn-obc-outline" href="{% url 'portal:obc_initiative_detail' document.initiative_id %}">{% get_site_text 'portal_cancel' %}</a>
+    </form>
+</div>
+{% endblock %}

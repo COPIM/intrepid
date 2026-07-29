@@ -14,7 +14,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("view/", include("summary.urls")),
     path("backups/", include("backup.urls")),
-    path("dashboard/", include("dashboard.urls")),
+    # The new document portal is the primary entry point for OBC and Providers.
+    path("portal/", include("portal.urls")),
+    # The older configuration dashboard moves to /staff/ and is reachable only
+    # by visiting the URL directly (its internal links resolve by name).
+    path("staff/", include("dashboard.urls")),
     path("accounts/", include("accounts.urls")),
     path("initiatives/", include("initiatives.urls")),
     path("packages/", include("package.urls")),

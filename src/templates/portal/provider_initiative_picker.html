@@ -1,0 +1,16 @@
+{% extends "portal/base.html" %}
+{% block portal_title %}{% get_site_text 'portal_picker_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_picker_subhint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-tiles">
+    {% for initiative in initiatives %}
+        <a class="portal-tile" href="{% url 'portal:provider_initiative_documents' initiative.pk %}">
+            <div class="tile-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="tile-title">{{ initiative.name }}</div>
+            <p class="tile-desc">{% get_site_text 'portal_picker_tile_desc' %}</p>
+        </a>
+    {% empty %}
+        <p class="text-muted">{% get_site_text 'portal_picker_empty' %}</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_nav %}<a href="{% url 'portal:obc_email_templates' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_email_tpls_title' %}</a>{% endblock %}
+{% block portal_title %}{{ template.name }} &mdash; {{ language_name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_email_tpl_edit_hint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="alert alert-warning">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    {% get_site_text 'portal_email_tpl_warning' %}
+</div>
+<div class="portal-card" style="max-width:760px;">
+    {% crispy form %}
+</div>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends "base/frontend/base.html" %}
+{% block title %}Document portal{% endblock title %}
+
+{% block css %}
+<style>
+    .portal {
+        padding: 2.5rem 0 4rem;
+        color: #151462;
+    }
+    .portal h1, .portal h2, .portal h3,
+    .portal .portal-display {
+        font-family: "rubrik-edge-new", "Helvetica Neue", Arial, sans-serif;
+        color: #151462;
+        text-align: left;
+    }
+    .portal-masthead {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid #EA1585;
+    }
+    .portal-masthead .portal-home {
+        color: #151462;
+        text-decoration: none;
+    }
+    .portal-masthead .portal-home:hover { color: #EA1585; }
+    .portal-masthead .portal-eyebrow {
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        font-size: .72rem;
+        font-weight: 700;
+        color: #EA1585;
+        margin-bottom: .15rem;
+    }
+    .portal-nav a {
+        margin-left: 1.25rem;
+        color: #151462;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .portal-nav a:hover { color: #EA1585; }
+    .portal-nav a.active { border-bottom: 2px solid #EA1585; }
+
+    .portal-lead {
+        font-size: 1.05rem;
+        color: #3b3f73;
+        max-width: 60ch;
+        margin-bottom: 2rem;
+    }
+    .portal-section-title {
+        margin: 2.5rem 0 .5rem;
+        font-size: 1.4rem;
+    }
+    .portal-section-hint { color: #6c6f99; margin-bottom: 1.25rem; }
+
+    /* Navigation tiles on the landing pages */
+    .portal-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .portal-tile {
+        display: block;
+        background: #fff;
+        border: 1px solid #e3e6f3;
+        border-radius: .6rem;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: #151462;
+        transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
+    }
+    .portal-tile:hover {
+        text-decoration: none;
+        transform: translateY(-3px);
+        box-shadow: 0 .65rem 1.5rem rgba(21, 20, 98, .12);
+        border-color: #EA1585;
+        color: #151462;
+    }
+    .portal-tile .tile-icon {
+        width: 48px; height: 48px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%;
+        background: #EBF3F9;
+        color: #EA1585;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    .portal-tile .tile-title { font-weight: 700; font-size: 1.1rem; margin-bottom: .35rem; }
+    .portal-tile .tile-desc { color: #6c6f99; font-size: .9rem; margin-bottom: 0; }
+
+    .portal-card {
+        background: #fff;
+        border: 1px solid #e3e6f3;
+        border-radius: .6rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .portal .table thead th { border-top: 0; color: #6c6f99; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* portal-sort-indicators: DataTables 1.10's bootstrap4 build renders
+       its sort-direction arrows as ::before/::after unicode glyphs but
+       never sets their `color`, so they inherit the thead's pale
+       #6c6f99 above and sit at 30% opacity by default -- effectively
+       invisible on our white table backgrounds. Darken and boost that
+       inherited colour here, scoped to portal DataTables only, so the
+       neutral affordance and the active sort direction are both legible.
+       (Stock CSS already sets cursor:pointer on sortable headers, so
+       that does not need overriding.) */
+    .portal .table thead th.sorting:before,
+    .portal .table thead th.sorting:after,
+    .portal .table thead th.sorting_asc:before,
+    .portal .table thead th.sorting_asc:after,
+    .portal .table thead th.sorting_desc:before,
+    .portal .table thead th.sorting_desc:after {
+        color: #151462;
+        opacity: .5;
+    }
+    .portal .table thead th.sorting_asc:before,
+    .portal .table thead th.sorting_desc:after {
+        opacity: 1;
+    }
+    .portal .list-group-item-action:hover { background: #EBF3F9; }
+    .portal-mobile-note { padding: 2rem 1rem; text-align: center; color: #6c6f99; }
+
+    /* btn-obc-blue lives in packages.css (not loaded site-wide); define it here. */
+    .btn-obc-blue { background-color: #151462; border-color: #151462; color: #fff !important; }
+    .btn-obc-blue:hover, .btn-obc-blue:focus, .btn-obc-blue:active {
+        background-color: #363D91; border-color: #363D91; color: #fff !important;
+    }
+    .btn-obc-outline {
+        background-color: transparent; border: 1px solid #151462; color: #151462 !important;
+    }
+    .btn-obc-outline:hover { background-color: #151462; color: #fff !important; }
+
+    /* Responsive: make the portal fully usable on mobile.
+       This style block only loads on portal pages, so these rules are
+       scoped to the portal and do not affect the rest of the site. */
+    @media (max-width: 767.98px) {
+        /* The parent base hides .container-main below md; show it for the portal. */
+        .container-main { display: block !important; }
+
+        .portal {
+            padding: 1.25rem 0 2.5rem;
+        }
+
+        /* Masthead: let the nav drop below the title, full width. */
+        .portal-masthead {
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        .portal-masthead > div { width: 100%; }
+        .portal-nav {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .portal-nav a {
+            margin-left: 0;
+            margin-right: 1rem;
+            margin-top: .5rem;
+        }
+
+        /* Tables: scroll horizontally so wide columns don't overflow. */
+        .portal .table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Tiles: allow narrower cards so a single column fits small phones. */
+        .portal-tiles {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        /* Filter rows: stack inputs full width. */
+        .portal .form-row > [class*="col"] {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .portal .form-row .form-control,
+        .portal .form-row .custom-select {
+            width: 100%;
+        }
+
+        /* Display heading: shrink so it doesn't overflow. */
+        .portal .portal-display {
+            font-size: 1.3rem !important;
+        }
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container">
+<div class="portal">
+    <header class="portal-masthead">
+        <div>
+            <div class="portal-eyebrow">{% get_site_text 'portal_eyebrow' %}</div>
+            <h1 class="h3 mb-0">
+                <a href="{% url 'portal:index' %}" class="portal-home">{% get_site_text 'portal_brand_name' %}</a>
+            </h1>
+        </div>
+        <nav class="portal-nav">{% block portal_nav %}{% endblock %}</nav>
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <h2 class="portal-display mb-2" style="font-size:1.7rem;">{% block portal_title %}{% endblock %}</h2>
+    {% block portal_subhint %}{% endblock %}
+
+    {% block portal_content %}{% endblock %}
+</div>
+</div>
+{% endblock body %}
+
+{% block body-mobile %}{% endblock body-mobile %}

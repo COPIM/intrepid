@@ -1,0 +1,218 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='contacts' %}{% endblock %}
+{% block portal_title %}{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_heading' %}{% else %}{% get_site_text 'portal_details_heading' %}{% endif %} &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% if is_obc or can_manage %}{% get_site_text 'portal_contacts_subhint' %}{% else %}{% get_site_text 'portal_details_subhint' %}{% endif %}</p>{% endblock %}
+{% block portal_content %}
+{% if is_obc or can_manage %}
+<div class="portal-card">
+    <table class="table">
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_name' %}</th>
+            <th>{% get_site_text 'portal_th_job_title' %}</th>
+            <th>{% get_site_text 'portal_th_email' %}</th>
+            <th>{% get_site_text 'portal_th_notifications' %}</th>
+            <th>{% get_site_text 'portal_th_language' %}</th>
+            <th></th>
+        </tr></thead>
+        <tbody>
+            {% for contact in contacts %}
+                {# Read-only view of the contact #}
+                <tr class="contact-readonly" data-contact-row="{{ contact.pk }}">
+                    <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+                    <td>{{ contact.job_title }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{% with freq_key='portal_freq_'|add:contact.notification_frequency %}{% get_site_text freq_key %}{% endwith %}</td>
+                    <td>{{ contact.get_language_display }}</td>
+                    <td>
+                        {% if can_manage or contact.pk == own_contact_id %}
+                            <button type="button" class="btn btn-sm btn-obc-outline contact-edit-btn" data-contact-edit="{{ contact.pk }}">{% get_site_text 'portal_edit' %}</button>
+                        {% endif %}
+                        {% if is_obc and not contact.accepted_at %}
+                            <form method="post" action="{% url 'portal:send_invite' contact.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-link p-0 ml-1">
+                                    {% if contact.invited_at %}{% get_site_text 'portal_resend_invite' %}{% else %}{% get_site_text 'portal_send_invitation' %}{% endif %}
+                                </button>
+                            </form>
+                        {% endif %}
+                        {% if can_manage and contact.user_id != request.user.pk %}
+                            <form method="post" action="{% url 'portal:delete_contact' initiative.pk contact.pk %}" class="d-inline contact-delete-form">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-link text-danger p-0 ml-1">{% get_site_text 'portal_delete' %}</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {# Inline edit form for the contact, hidden until "Edit" is clicked #}
+                {% if can_manage or contact.pk == own_contact_id %}
+                <tr class="contact-edit-row" data-contact-edit-row="{{ contact.pk }}" style="display:none;">
+                    <td colspan="6">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="contact_id" value="{{ contact.pk }}">
+                            <input type="hidden" name="notification_frequency" value="{{ contact.notification_frequency }}">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="contact-first-name-{{ contact.pk }}">{% get_site_text 'portal_th_name' %}</label>
+                                    <input id="contact-first-name-{{ contact.pk }}" name="first_name" value="{{ contact.first_name }}" placeholder="{% get_site_text 'portal_contacts_first_name' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-last-name-{{ contact.pk }}">{% get_site_text 'portal_contacts_last_name' %}</label>
+                                    <input id="contact-last-name-{{ contact.pk }}" name="last_name" value="{{ contact.last_name }}" placeholder="{% get_site_text 'portal_contacts_last_name' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-job-title-{{ contact.pk }}">{% get_site_text 'portal_th_job_title' %}</label>
+                                    <input id="contact-job-title-{{ contact.pk }}" name="job_title" value="{{ contact.job_title }}" placeholder="{% get_site_text 'portal_th_job_title' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-email-{{ contact.pk }}">{% get_site_text 'portal_th_email' %}</label>
+                                    <input id="contact-email-{{ contact.pk }}" name="email" type="email" value="{{ contact.email }}" placeholder="{% get_site_text 'portal_th_email' %}" class="form-control form-control-sm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="contact-language-{{ contact.pk }}">{% get_site_text 'portal_th_language' %}</label>
+                                    <select id="contact-language-{{ contact.pk }}" name="language" class="form-control form-control-sm">
+                                        {% for code, name in languages %}
+                                            <option value="{{ code }}"{% if code == contact.language %} selected{% endif %}>{{ name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-obc-blue">{% get_site_text 'portal_save' %}</button>
+                            <button type="button" class="btn btn-sm btn-obc-outline contact-cancel-btn" data-contact-cancel="{{ contact.pk }}">{% get_site_text 'portal_cancel' %}</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+            {% empty %}
+                <tr><td colspan="6" class="text-muted">{% get_site_text 'portal_contacts_empty' %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if can_manage %}
+<h3 class="portal-section-title">{% get_site_text 'portal_contacts_add_heading' %}</h3>
+<p class="portal-section-hint">{% get_site_text 'portal_contacts_notify_only_note' %}</p>
+<div class="portal-card" style="max-width:640px;">
+    <button type="button" class="btn btn-obc-blue" id="add-contact-toggle">{% get_site_text 'portal_contacts_add_button' %}</button>
+    <div id="add-contact-wrapper" style="display:none;margin-top:1rem;">
+        <form method="post" id="add-contact-form">
+            {% crispy form %}
+        </form>
+        <button type="button" class="btn btn-sm btn-obc-outline" id="add-contact-cancel">{% get_site_text 'portal_cancel' %}</button>
+    </div>
+</div>
+{% endif %}
+
+{% get_site_text 'portal_contacts_delete_confirm' as contacts_delete_confirm_text %}
+{% get_site_text 'portal_contacts_softwarn' as contacts_softwarn_text %}
+<script>
+(function () {
+    // Per-row toggling between the read-only view and the inline edit form.
+    function setRow(pk, editing) {
+        var readonly = document.querySelector('[data-contact-row="' + pk + '"]');
+        var editRow = document.querySelector('[data-contact-edit-row="' + pk + '"]');
+        if (readonly) { readonly.style.display = editing ? 'none' : ''; }
+        if (editRow) { editRow.style.display = editing ? '' : 'none'; }
+    }
+
+    document.querySelectorAll('.contact-edit-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            setRow(btn.getAttribute('data-contact-edit'), true);
+        });
+    });
+
+    document.querySelectorAll('.contact-cancel-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            setRow(btn.getAttribute('data-contact-cancel'), false);
+        });
+    });
+
+    // Show/hide the "Add a contact" form behind a button.
+    var addToggle = document.getElementById('add-contact-toggle');
+    var addWrapper = document.getElementById('add-contact-wrapper');
+    var addCancel = document.getElementById('add-contact-cancel');
+    if (addToggle && addWrapper) {
+        addToggle.addEventListener('click', function () {
+            addWrapper.style.display = '';
+            addToggle.style.display = 'none';
+        });
+    }
+    if (addCancel && addWrapper && addToggle) {
+        addCancel.addEventListener('click', function () {
+            addWrapper.style.display = 'none';
+            addToggle.style.display = '';
+        });
+    }
+
+    // Confirm before deleting a contact.
+    document.querySelectorAll('.contact-delete-form').forEach(function (f) {
+        f.addEventListener('submit', function (event) {
+            if (!window.confirm("{{ contacts_delete_confirm_text|escapejs }}")) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    // Warn when adding a 6th contact via the add form.
+    var existing = {{ contacts.count }};
+    var form = document.getElementById('add-contact-form');
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            if (existing >= 5) {
+                if (!window.confirm("{{ contacts_softwarn_text|escapejs }}")) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+})();
+</script>
+{% else %}
+    {% comment %}
+    Contact-tier user: land straight on the always-visible edit form for
+    their own details, no read-only row and no edit toggle.
+    {% endcomment %}
+    {% if own_contact %}
+    <div class="portal-card" style="max-width:640px;">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="contact_id" value="{{ own_contact.pk }}">
+            <input type="hidden" name="notification_frequency" value="{{ own_contact.notification_frequency }}">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="contact-first-name-{{ own_contact.pk }}">{% get_site_text 'portal_th_name' %}</label>
+                    <input id="contact-first-name-{{ own_contact.pk }}" name="first_name" value="{{ own_contact.first_name }}" placeholder="{% get_site_text 'portal_contacts_first_name' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-last-name-{{ own_contact.pk }}">{% get_site_text 'portal_contacts_last_name' %}</label>
+                    <input id="contact-last-name-{{ own_contact.pk }}" name="last_name" value="{{ own_contact.last_name }}" placeholder="{% get_site_text 'portal_contacts_last_name' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-job-title-{{ own_contact.pk }}">{% get_site_text 'portal_th_job_title' %}</label>
+                    <input id="contact-job-title-{{ own_contact.pk }}" name="job_title" value="{{ own_contact.job_title }}" placeholder="{% get_site_text 'portal_th_job_title' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-email-{{ own_contact.pk }}">{% get_site_text 'portal_th_email' %}</label>
+                    <input id="contact-email-{{ own_contact.pk }}" name="email" type="email" value="{{ own_contact.email }}" placeholder="{% get_site_text 'portal_th_email' %}" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact-language-{{ own_contact.pk }}">{% get_site_text 'portal_th_language' %}</label>
+                    <select id="contact-language-{{ own_contact.pk }}" name="language" class="form-control form-control-sm">
+                        {% for code, name in languages %}
+                            <option value="{{ code }}"{% if code == own_contact.language %} selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-sm btn-obc-blue">{% get_site_text 'portal_save' %}</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="portal-card">
+        <p class="text-muted">{% get_site_text 'portal_contacts_empty' %}</p>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

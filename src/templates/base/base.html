@@ -1,6 +1,7 @@
 {% load django_bootstrap5 %}
-{% load static %}
-<html lang="en">
+{% load static %}{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+<html lang="{{ CURRENT_LANGUAGE }}">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock title %}</title>

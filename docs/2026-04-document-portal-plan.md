@@ -7,17 +7,32 @@ OBC's client (Open Book Collective) needs a per-Provider document management por
 In codebase terms, "Provider" maps to the existing `initiatives.Initiative` model (`src/initiatives/models.py:41`). Initiatives already have an `Initiative.users` M2M to Django's `User`, so user→Provider scoping has a foundation. The codebase already uses `fluid_permissions` for granular per-view access, `mail.EmailTemplate` for templated email, native cron via `install/management/commands/install_cron.py` for scheduled jobs, and `modeltranslation` for i18n. The plan reuses each of these.
 
 The end state:
-- New `documents` Django app exposing a portal at `/documents/` for both audiences (one UI, permission-gated visibility).
+- New `portal` Django app exposing a portal at `/portal/` for both audiences (one UI, permission-gated visibility).
 - Per-document-type, per-user fluid permissions for OBC team granularity.
 - Provider Members are scoped to their own Initiative(s) by `Initiative.users`.
-- Manual single + multi + bulk-folder upload (with `<short_code>/YYYY-MM/*.pdf` ZIP convention auto-mapping to Initiative + reporting month).
+- Manual single + multi + bulk-folder upload (with `YYYY-MM/<date> ... - <Provider>.pdf` ZIP convention auto-mapping to Initiative — by name or admin-editable alias — + reporting month).
 - Provider notifications: immediate (delayed 2h), daily digest, weekly digest, monthly digest — implemented via a DB queue drained by a 15-minute cron job. If a document is deleted, its notifications should be, also.
 - Provider self-service contact management with an OBC change-notification email + persistent audit log.
 - An invitation flow that reuses the existing `Contact.access_code` UUID pattern to onboard Provider Members.
+- A small tidy of the site's top-level navigation: the existing (redundant-to-most-users) top-right **"Dashboard"** link is re-pointed at the new portal, the old configuration dashboard is moved from `/dashboard/` to `/staff/`, and that older area is left reachable only by typing its URL directly. This is the lightest-touch way to give OBC and Providers a single obvious entry point without disturbing the existing dashboard's internals.
 
 The dashboard tidy-up mentioned in the spec is intentionally deferred to a follow-up issue, since which admin models OBC vs Provider users actually need is best inventoried after the portal is in use. Further, it will be quicker and cleaner to build this as a new dashboard, completely separate to the main admin system, which is complex to accommodate the design spec.
 
+**Engineering note on framework version.** The OBC site runs **Django 3.2** (not Django 5.x). Two consequences are reflected throughout this plan: (a) multi-file upload uses the Django 3.2 idiom — a `ClearableFileInput(attrs={"multiple": True})` widget plus iteration over `request.FILES.getlist(...)` — rather than the Django ≥ 5.0 `MultipleFileField`; and (b) `JSONField` and other model features used below are all available in 3.2.
+
 No GitHub issues exist yet; commits will not carry a footer reference until one is created.
+
+---
+
+## Client clarifications incorporated
+
+During review the client raised five questions. The answers are folded into the relevant sections below; they are summarised here so the decision trail is in one place.
+
+1. **Can the redundant top-right "Dashboard" link become the login/entry point for the new backend, and does OBC still need a separate way into the old areas?** Yes. We re-point that link at the new portal (`/portal/`). We move the *old* configuration dashboard from `/dashboard/` to `/staff/` and stop linking to it from the navigation, so it remains fully functional but is only reached by visiting `/staff/` directly. OBC keeps full access to both; everyday users see one clean entry point. (See §1 and §15.)
+2. **How precise must the bulk-upload ZIP naming be?** Confirmed against the real sample archive (`2026-04.zip`): files are laid out as one `YYYY-MM` month folder containing one file per Provider, with the Provider's full name as the last ` - `-separated part of the filename — e.g. `2026-04/2026-04 OBC Accounts Report - Open Book Publishers.pdf`. The Provider name is matched case-insensitively against an `Initiative`'s name **or any admin-added alias** (so an "OBP" alias resolves to *Open Book Publishers*), and the month folder must be a real `YYYY-MM` date. A filename that doesn't follow the `<date> ... - <Provider>` convention (e.g. `OLD VERSION 2026-04 ...`) or names an unknown Provider appears in the dry-run preview under "Skipped — please review" rather than being silently dropped. (See §5.)
+3. **Six document types are listed now — can we add more later?** Yes, fully. `DocumentType` is its own admin-editable model (§2); the data migration only seeds two starter rows ("Remittance advice", "Agreement contract"). OBC can add any number more from the admin, each with its own name, description, `requires_reporting_month` flag, `default` flag and display order. Read/write access to each new type is then assignable per team member via `DocumentTypePermission`. (See §2 and §3.)
+4. **What does "up to 5 contacts (soft)" mean?** "Soft" is a friendly warning, not a hard cap. The data model places no limit on `ProviderContact` rows per Initiative; the contact form simply shows a JavaScript warning when a Provider adds a sixth contact, but still saves it. A Provider that genuinely needs 7 or 12 contacts can add them with no engineering change. (See §2 and §6.)
+5. **Is the notification frequency per-user, or one global setting per Provider?** Per-user. `notification_frequency` lives on each `ProviderContact` row (§2), and the preferences screen shows one choice (immediate / daily / weekly / monthly / off) per contact (§4, §6). Three people at the same Provider can each pick a different cadence without affecting the others.
 
 ---
 
@@ -85,7 +100,7 @@ A quick reference so a non-technical reader can verify, at a glance, that every 
 
 | Specification line | Where it is implemented                                                                                                                                                                                                                                                                                |
 |---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Tidy-up of the existing backend / hide irrelevant info for Providers | This dashboard will be an entirely new section that is clean and minimal; it will do what is needed and keep the complexity of the previous dashboard confined to admins. See §17. We build a **separate, purpose-built dashboard** at `/documents/`, sidestepping the existing admin clutter entirely |
+| Tidy-up of the existing backend / hide irrelevant info for Providers | This dashboard will be an entirely new section that is clean and minimal; it will do what is needed and keep the complexity of the previous dashboard confined to admins. See §17. We build a **separate, purpose-built dashboard** at `/portal/`, sidestepping the existing admin clutter entirely |
 | OBC team has full access; Provider Members have partial access | §3 Permissions (two-layer model: per-Provider scope + per-document-type read/write)                                                                                                                                                                                                                    |
 | Read/write permissions assignable to different OBC team members per area | §3 Permissions, `DocumentTypePermission`                                                                                                                                                                                                                                                               |
 | OBC manually uploads documents per Provider | §4 Views (`obc_upload`) and §6 Forms (`DocumentUploadForm`)                                                                                                                                                                                                                                            |
@@ -93,7 +108,7 @@ A quick reference so a non-technical reader can verify, at a glance, that every 
 | Filters: type, name, date of upload, reporting month | §4 (shared QuerySet builder); §6 forms                                                                                                                                                                                                                                                                 |
 | Reporting month greyed out unless type requires it | §2 `DocumentType.requires_reporting_month`; §6 form (JS-gated)                                                                                                                                                                                                                                         |
 | Upload individual files OR multiple files/folders | §4 (`obc_upload` multi-file) and §5 (bulk import)                                                                                                                                                                                                                                                      |
-| Bulk upload of historic remittance advice from month-folder structure | §5 Bulk import pipeline (`<short_code>/YYYY-MM/*.pdf` ZIP)                                                                                                                                                                                                                                             |
+| Bulk upload of historic remittance advice from month-folder structure | §5 Bulk import pipeline (`YYYY-MM/<date> ... - <Provider>.pdf` ZIP, matched by name/alias)                                                                                                                                                                                                          |
 | Invite Provider Members to set up accounts | §10 Invitation flow                                                                                                                                                                                                                                                                                    |
 | Multiple accounts per Provider | §2 `ProviderContact` (many-per-Initiative)                                                                                                                                                                                                                                                             |
 | Per-contact details: first name, surname, job title, email, provider(s) | §2 `ProviderContact`                                                                                                                                                                                                                                                                                   |
@@ -106,17 +121,18 @@ A quick reference so a non-technical reader can verify, at a glance, that every 
 | Choose immediate / daily / weekly / monthly digest | §2 `ProviderContact.notification_frequency` and §8 cron drain                                                                                                                                                                                                                                          |
 | Immediate delayed by 2 hours so OBC can correct mis-uploads | §2 `Document.notification_eligible_at` and §8 trigger logic                                                                                                                                                                                                                                            |
 | Individual + bulk download | §4 (`download_document`, `bulk_download` streamed ZIP)                                                                                                                                                                                                                                                 |
+| Single, obvious entry point; redundant "Dashboard" link repurposed (client clarification 1) | §1 URL restructure: portal at `/portal/`, old dashboard moved to `/staff/`, nav link re-pointed                                                                                                                                                                       |
 
 ---
 
-## 1. New `documents` Django app
+## 1. New `portal` Django app
 
-**In plain language.** A "Django app" is the engineering name for a self-contained area of the website. We are creating a brand-new one called *documents* that lives entirely on its own, side-by-side with the existing parts of the OBC site. This is what makes the spec's "tidy-up" feasible without weeks of unpicking the current backend: by working in a fresh space, we get to design every screen for OBC team and Provider Members from scratch, and they will only ever see information relevant to documents — nothing else from the wider OBC system bleeds in. Once finished it will be reachable at the URL `/documents/` on the OBC site.
+**In plain language.** A "Django app" is the engineering name for a self-contained area of the website. We are creating a brand-new one called *portal* that lives entirely on its own, side-by-side with the existing parts of the OBC site. This is what makes the spec's "tidy-up" feasible without weeks of unpicking the current backend: by working in a fresh space, we get to design every screen for OBC team and Provider Members from scratch, and they will only ever see information relevant to documents — nothing else from the wider OBC system bleeds in. Once finished it will be reachable at the URL `/portal/` on the OBC site.
 
-Create `src/documents/` with the standard layout used by `access`, `vocab`, `mail`:
+Create `src/portal/` with the standard layout used by `access`, `vocab`, `mail`:
 
 ```
-src/documents/
+src/portal/
     __init__.py
     apps.py
     admin.py
@@ -129,12 +145,23 @@ src/documents/
     notifications.py      # queue/digest helpers
     permissions.py        # per-area decorators / helpers
     migrations/
-    management/commands/
-        send_document_notifications.py      # the notification handler
-    tests.py
+    management/
+        commands/
+            send_document_notifications.py  # the notification handler
+    tests/                  # a test package (one module per area) rather than a single tests.py,
+        __init__.py         #   so the modules can be developed independently
+        test_models.py
+        test_permissions.py
+        test_bulk_import.py
+        test_notifications.py
+        test_forms.py
+        test_views.py
+        test_invitation.py
 ```
 
-Add `"documents"` to `INSTALLED_APPS` in `src/intrepid/settings.py:34-72` and register `path("documents/", include("documents.urls"))` in `src/intrepid/urls.py:10`.
+Add `"portal"` to `INSTALLED_APPS` in `src/intrepid/settings.py` and register `path("portal/", include("portal.urls"))` in `src/intrepid/urls.py`.
+
+**URL restructure (client clarification 1).** In the same `src/intrepid/urls.py`, the existing line `path("dashboard/", include("dashboard.urls"))` becomes `path("staff/", include("dashboard.urls"))`. This is safe because every old-dashboard URL is referenced by *name* (`dashboard_index`, `dashboard_setup`, …) and resolved with `{% url %}`/`reverse()`, not by hard-coded path — so the mount point can move without breaking internal links. The redundant top-right **"Dashboard"** link (`src/templates/base/frontend/nav.html`, and the equivalent in `src/templates/base/admin_nav.html`) is re-pointed from `{% url 'dashboard_index' %}` to the new portal index. The old dashboard at `/staff/` is intentionally left unlinked — OBC reaches it by typing the URL.
 
 ---
 
@@ -153,7 +180,7 @@ Where files are physically stored: we reuse the OBC site's existing private-file
 All file uploads use the existing `upload_storage = FileSystemStorage(location=settings.FILE_ROOT, base_url="/files")` declared in `src/package/models.py:28-30`, so files land outside `MEDIA_ROOT` and require an authenticated view to serve — matching the `MediaFile` precedent (`src/package/models.py:2091`).
 
 ### `DocumentType`
-Admin-editable type list (translatable via `modeltranslation`, mirroring `vocab/translation.py:6-9`).
+Admin-editable type list (translatable via `modeltranslation`, mirroring `vocab/translation.py`). **Fully extensible (client clarification 3):** the six types referenced in discussion are not hard-coded — `DocumentType` is its own model, the migration seeds only two starter rows, and OBC can add any number more from the admin, each with its own `name`, `description`, `requires_reporting_month`, `default` and `ordering`. Adding a type immediately makes it assignable per team member through `DocumentTypePermission`.
 
 | Field | Type | Notes |
 |---|---|---|
@@ -173,7 +200,7 @@ The core uploaded file.
 |---|---|---|
 | `initiative` | FK → `initiatives.Initiative`, on_delete=CASCADE | The owning Provider |
 | `document_type` | FK → `DocumentType`, on_delete=PROTECT |  |
-| `file` | FileField(upload_to=`documents_upload_path`, storage=upload_storage) | UUID-renamed under `provider_documents/<initiative_pk>/` |
+| `file` | FileField(upload_to=`portal_documents_upload_path`, storage=upload_storage) | UUID-renamed under `provider_documents/<initiative_pk>/` |
 | `display_name` | CharField(255) | Defaults to original filename minus extension; provider-editable by OBC at upload time |
 | `original_filename` | CharField(255) | Captured at save for display alongside `display_name` |
 | `reporting_month` | DateField(null=True, blank=True) | Stored as the first day of that month; null when type doesn't require it |
@@ -184,9 +211,9 @@ The core uploaded file.
 
 `Meta.ordering = ("-uploaded_at",)`.
 `__str__` returns `display_name`.
-`file_size`, `mime_type` properties use `mimetypes` and `os.path.getsize`, mirroring `MediaFile.mime()` (`src/package/models.py:2116`).
+`file_size` returns `self.file.size` and `mime_type` mirrors `MediaFile.mime()` (`src/package/models.py:2116`), which uses `magic.from_file(self.file.path, mime=True)` — matching house style rather than the stdlib `mimetypes`.
 
-Helper `documents_upload_path(instance, filename)` lives at module top (UUID rename, same idiom as `profile_images_upload_path` at `src/initiatives/models.py:9-22`).
+Helper `portal_documents_upload_path(instance, filename)` lives at module top (UUID rename, same idiom as `profile_images_upload_path` at `src/initiatives/models.py:9-22`).
 
 ### `DocumentTypePermission`
 Bridges `DocumentType` ↔ `auth.Group` for read/write granularity within OBC. Uses `auth.Group` directly — `fluid_permissions` operates on `Group`s already (`src/accounts/utils.py:10-23`), so existing group management UI keeps working.
@@ -201,7 +228,7 @@ Bridges `DocumentType` ↔ `auth.Group` for read/write granularity within OBC. U
 `unique_together = ("document_type", "group")`.
 
 ### `ProviderContact`
-Replaces the spec's "First/Secondary/Tertiary contacts" with a flexible per-Initiative table. The existing `access.Contact` is **kept** (it's used by signup access codes on the customer side), but a new `ProviderContact` represents the editable directory of provider-side staff who manage documents and notifications.
+Replaces the spec's "First/Secondary/Tertiary contacts" with a flexible per-Initiative table. The existing `access.Contact` is **kept** (it's used by signup access codes on the customer side), but a new `ProviderContact` represents the editable directory of provider-side staff who manage documents and notifications. There is deliberately **no database limit** on the number of `ProviderContact` rows per Initiative — the "up to 5" is a soft, form-level warning only (client clarification 4), and `notification_frequency` is stored **per contact**, so contacts at the same Provider notify independently (client clarification 5).
 
 | Field | Type | Notes |
 |---|---|---|
@@ -244,6 +271,16 @@ DB-queue drained by cron.
 
 `Meta.indexes = [("eligible_at", "sent_at"), ("document",)]`.
 
+### `InitiativeAlias`
+An admin-editable list of alternative names for a Provider, used so bulk import can resolve a file to the right `Initiative` even when the filename uses a short form. For example, *Open Book Publishers* can carry an "OBP" alias so a file named `... - OBP.pdf` still matches. Aliases are managed by OBC staff from the "Manage users" screen for each Provider (and from the Django admin); the bulk importer matches a filename's Provider against `Initiative.name` first, then any alias.
+
+| Field | Type | Notes |
+|---|---|---|
+| `initiative` | FK → `initiatives.Initiative`, on_delete=CASCADE, related_name="aliases" | The Provider this name refers to |
+| `alias` | CharField(255) | An alternative name, matched case-insensitively on import |
+
+`Meta.ordering = ("alias",)`, `unique_together = ("initiative", "alias")`.
+
 ---
 
 ## 3. Permissions
@@ -259,11 +296,19 @@ Two complementary layers.
 
 **Layer A — per-Provider scoping (Provider Members):** the existing `intrepid.security.user_is_initiative_manager` decorator (`src/intrepid/security.py:8`) already enforces "user must be in `Initiative.users` or be staff". Apply it to every per-initiative view in the new app, identical to how `package.media_views.list_media_files` does (`src/package/media_views.py:10`).
 
-**Layer B — per-document-type, read/write (OBC team):** wrapped by a new `documents.permissions.user_can_for_doc_type(action, doc_type)` helper:
+**Layer B — per-document-type, read/write (OBC team):** wrapped by a new `portal.permissions.user_can(user, action, doc_type)` helper. (Note: the codebase has **no** existing `is_staff_obc` method — that was a placeholder in an earlier draft. We add a small `is_obc_staff(user)` helper in `portal/permissions.py` that treats Django superusers, `is_staff` users, and members of the seeded **"OBC Team"** group as full-access OBC staff. This mirrors the existing `_is_initiative_manager` convention at `src/intrepid/security.py:60`, which already grants `is_staff`/`is_superuser` blanket access, while additionally honouring the dedicated OBC group.)
 
 ```python
+def is_obc_staff(user) -> bool:
+    return (
+        user.is_superuser
+        or user.is_staff
+        or user.groups.filter(name="OBC Team").exists()
+    )
+
+
 def user_can(user, action: str, doc_type: DocumentType) -> bool:
-    if user.is_superuser or user.is_staff_obc(user):
+    if is_obc_staff(user):
         return True
     qs = DocumentTypePermission.objects.filter(
         document_type=doc_type,
@@ -299,7 +344,7 @@ For Provider Members:
 
 Shared: a download button on each row, plus a "select multiple → download ZIP" action that satisfies the spec's bulk-download requirement. Behind the scenes, every download re-checks both permission layers before serving a single byte.
 
-All under `/documents/`, namespace `documents`. URL list (in execution order in `src/documents/urls.py`):
+All under `/portal/`, namespace `portal`. URL list (in execution order in `src/portal/urls.py`):
 
 | Path | View | Audience |
 |---|---|---|
@@ -316,7 +361,7 @@ All under `/documents/`, namespace `documents`. URL list (in execution order in 
 | `provider/initiative/<int:initiative_id>/contacts/` | `provider_manage_contacts` | Provider |
 | `provider/initiative/<int:initiative_id>/notifications/` | `provider_notification_prefs` | Provider |
 | `document/<int:doc_id>/download/` | `download_document` (auth-checked stream) | both |
-| `documents/bulk-download/` | `bulk_download` (POSTed ID list → streamed ZIP) | both |
+| `bulk-download/` | `bulk_download` (POSTed ID list → streamed ZIP) | both |
 | `invite/accept/<uuid:token>/` | `accept_invite` (sets password, links user→Initiative) | invitee |
 
 `obc_initiative_detail` and `provider_initiative_documents` share a common QuerySet builder accepting filters: `document_type`, `reporting_month`, `uploaded_after`, `uploaded_before`, `q` (filename/display_name search). Provider view wraps it with `Document.objects.filter(initiative__in=request.user.Initiatives.all())` to enforce scoping at the QuerySet boundary.
@@ -327,28 +372,31 @@ All under `/documents/`, namespace `documents`. URL list (in execution order in 
 
 ---
 
-## 5. Bulk import pipeline (`documents/bulk_import.py`)
+## 5. Bulk import pipeline (`portal/bulk_import.py`)
 
-**In plain language.** This directly answers the spec's "Request/advice appreciated" question about historical remittance advice already sitting in monthly folders. The proposal is:
+**In plain language.** This directly answers the spec's "Request/advice appreciated" question about historical remittance advice already sitting in monthly folders. The convention here was confirmed against the real OBC sample archive (`2026-04.zip`), which laid the files out by month with the Provider's *full name* in each filename — not by short code. The proposal therefore is:
 
-1. Each Provider already has a four-letter "short code" in the OBC system (e.g. *PUNC* for Punctum Books). This is something the OBC team already manages.
-2. OBC zips up the historical archive so the *folders inside the ZIP* are named like `PUNC/2024-03/` and `OPEN/2024-03/` etc., with the actual PDFs sitting inside those month folders.
-3. OBC uploads the ZIP through the new "Bulk import" screen. **Nothing is saved yet.** The system shows OBC a preview table — "I found 47 files; here's which Provider and which reporting month I'd assign each one to". OBC can scan it, spot any mistakes (typos in folder names, files in wrong months), and either fix the ZIP and try again, or click Confirm to commit.
+1. OBC zips up the archive as one folder per reporting month, named like `2026-04/`, with one file per Provider inside it. Each file is named so the Provider's name is the last ` - `-separated part — e.g. `2026-04/2026-04 OBC Accounts Report - Open Book Publishers.pdf`. The leaf filename is preserved as-is for display and download.
+2. The Provider is identified by the name in the filename, matched (case-insensitively) against an `Initiative`'s name **or any of its aliases**. Aliases are an admin-editable list of alternative names for a Provider, so a file that says *OBP* still resolves to *Open Book Publishers* once an "OBP" alias has been added. (Aliases are managed from each Provider's "Manage users" screen and the Django admin; the model is `portal.InitiativeAlias`, defined in §2.)
+3. OBC uploads the ZIP through the new "Bulk import" screen. **Nothing is saved yet.** The system shows OBC a preview table — "I found 47 files; here's which Provider and which reporting month I'd assign each one to". OBC can scan it, spot any mistakes, and either fix the ZIP and try again, or click Confirm to commit.
 4. On Confirm, every file gets stored against the right Provider with the right reporting month — automatically.
 
-Two safety features: (a) any file we don't recognise (wrong folder shape, unknown short code, malformed date) is *listed* but never silently committed — OBC always sees it; (b) historical bulk imports default to *not* sending notifications, since these are old records, not new alerts. OBC can tick a box if they really do want notifications to fire.
+Two safety features: (a) any file we don't recognise (not inside a `YYYY-MM` month folder, a filename that doesn't follow the `<date> ... - <Provider>` convention, an unknown Provider name, or a malformed date) is *listed* but never silently committed — OBC always sees it; (b) historical bulk imports default to *not* sending notifications, since these are old records, not new alerts. OBC can tick a box if they really do want notifications to fire.
+
+A real example from the sample archive: `OLD VERSION 2026-04 OBC Accounts Report - LSE Press.pdf` names a real Provider but does not start with the report date, so it does not follow the convention. Rather than guess, the importer defers it to OBC under "Skipped — please review" for a human decision.
 
 Two-step UX so OBC reviews mappings before files persist.
 
-**Step 1 — upload & dry-run.** OBC uploads a ZIP. Server extracts to a temp directory, walks paths matching `^(?P<short_code>[A-Z0-9]{1,4})/(?P<year>\d{4})-(?P<month>\d{2})/.+\.(pdf|docx?|xlsx?|csv)$` (case-insensitive). For each match:
-- Look up `Initiative.objects.get(short_code__iexact=short_code)` (the field already exists at `src/initiatives/models.py:67`).
-- Validate `year`/`month` form a real date.
+**Step 1 — upload & dry-run.** OBC uploads a ZIP. Server walks each entry, matching its path against `^(?P<year>\d{4})-(?P<month>\d{2})/(?P<basename>.+)\.(?:pdf|docx?|xlsx?|csv)$` (case-insensitive, so the extension may be `.PDF` or `.pdf`). For each file inside a month folder:
+- Validate `year`/`month` form a real calendar date (e.g. `2024-13` is rejected as a bad date).
+- Parse the Provider from the basename: it must start with the date and end with ` - <Provider>` (`^\d{4}-\d{2}.*\s-\s(?P<provider>.+)$`). A basename that doesn't match is deferred for review.
+- Resolve the Provider to an `Initiative` by `name__iexact`, falling back to `InitiativeAlias.alias__iexact`. An unmatched name is skipped with "Add the Provider, or an alias, first".
 - Default `document_type` = the seeded "Remittance advice" type (`requires_reporting_month=True`).
 - Build a `BulkImportRow` (in-memory dataclass; persisted as `BulkImportJob` + `BulkImportRow` rows for resume/preview).
 
-Dry-run renders a table: Filename → Initiative → Reporting month → Document type → Status (OK / unknown short_code / bad date / duplicate). Unrecognised paths are listed under "Skipped — please review".
+Dry-run renders a table: Filename → Initiative → Reporting month → Document type → Status (OK / skipped — review / bad date / duplicate). Unrecognised paths are listed under "Skipped — please review".
 
-**Step 2 — commit.** OBC clicks Confirm; the server creates `Document` rows from staged `BulkImportRow`s, copies files into the `documents` storage, and enqueues notifications via the same path as a single upload.
+**Step 2 — commit.** OBC clicks Confirm; the server creates `Document` rows from staged `BulkImportRow`s, copies files into the portal's private document storage (`upload_storage`), and enqueues notifications via the same path as a single upload.
 
 Bulk imports default to `notify=False` for historical backfill (the spec implies historical data was already shared out-of-band). A checkbox lets OBC opt back in if they're importing recent activity.
 
@@ -362,14 +410,14 @@ Bulk imports default to `notify=False` for historical backfill (the spec implies
 
 | Form | Notes |
 |---|---|
-| `DocumentUploadForm` | Multi-file via `<input multiple>` and a custom `MultipleFileField` (Django ≥ 5.0 idiom). Fields: `document_type`, `reporting_month` (gated by JS on the type's `requires_reporting_month` flag), per-file `display_name` overrides. ModelForm-flavoured but loops over `request.FILES.getlist("file")` |
+| `DocumentUploadForm` | Multi-file via `<input multiple>`. Because the site is on **Django 3.2** (no `MultipleFileField`), we add a tiny `MultipleFileInput(ClearableFileInput)` with `allow_multiple_selected = True` and a `MultipleFileField(forms.FileField)` that validates each item in `data` — the standard Django 3.2 pattern — and the view loops over `request.FILES.getlist("file")`. Fields: `document_type`, `reporting_month` (gated by JS on the type's `requires_reporting_month` flag), per-file `display_name` overrides |
 | `DocumentEditForm` | Edit `display_name`, `document_type`, `reporting_month`, `notes`. File replacement creates a new Document row (we don't version in this iteration; deletion + re-upload covers correction during the 2h grace window) |
 | `BulkImportZipForm` | Single ZIP upload + `notify_on_commit` checkbox |
-| `ProviderContactForm` | Per-row inline form. Position auto-numbered. JS warns when adding a 6th contact |
-| `NotificationPreferencesForm` | One radio per ProviderContact: immediate / daily / weekly / monthly / off |
+| `ProviderContactForm` | Per-row inline form. Position auto-numbered. JS warns when adding a 6th contact but never blocks the save — the "up to 5" guidance is *soft* (client clarification 4); the model imposes no cap |
+| `NotificationPreferencesForm` | One radio **per `ProviderContact`** (not per Provider): immediate / daily / weekly / monthly / off — so each contact at a Provider sets their own cadence (client clarification 5) |
 | `AcceptInviteForm` | Sets password, optionally edits name/job_title; on save creates `User`, links to `Initiative.users`, marks `ProviderContact.user`/`accepted_at` |
 
-The codebase uses `crispy_forms` (`src/intrepid/settings.py:74`); these forms follow that convention.
+The codebase uses `crispy_forms` with `CRISPY_TEMPLATE_PACK = "bootstrap4"` (`src/intrepid/settings.py`); these forms follow that convention (`FormHelper` + `Layout` + `Submit`).
 
 ---
 
@@ -377,11 +425,11 @@ The codebase uses `crispy_forms` (`src/intrepid/settings.py:74`); these forms fo
 
 **In plain language.** "Templates" are the HTML files that produce the rendered web pages — the actual screens that OBC and Provider Members see in their browser. They reuse the existing OBC site styling so the new portal looks like part of OBC, not a bolt-on. The list below names each screen plus the four email layouts (one per email type the system can send). Email content is also editable via the existing OBC admin email-template system, so OBC can refine wording without involving an engineer for every word change.
 
-Under `src/templates/documents/`. Reuses the bootstrap4 base in `src/templates/base/` (already loaded site-wide via `intrepid.context_processors`).
+Under `src/templates/portal/`. Reuses the bootstrap4 base in `src/templates/base/` (shared page context is injected by `intrepid.middleware.variables_middleware`, not classic context processors).
 
 ```
-documents/
-    base.html                # extends elements/base.html, adds left-nav for Documents
+portal/
+    base.html                # extends base/frontend/base.html, adds left-nav for Documents
     obc_dashboard.html       # cards: per-Initiative doc counts, recent uploads
     obc_initiative_detail.html  # filter form + paginated table
     obc_upload.html          # drag-and-drop multi-file
@@ -393,6 +441,8 @@ documents/
     provider_initiative_documents.html  # filter + table + bulk-download form
     provider_contacts.html
     provider_notification_prefs.html
+    obc_contact_changes.html            # OBC view of the provider contact-change log (§9)
+    obc_initiative_users.html           # OBC screen to manage which users can access a Provider
     accept_invite.html
     emails/
         document_notification_immediate.html
@@ -401,7 +451,7 @@ documents/
         provider_invite.html
 ```
 
-Email templates are primarily driven through `mail.EmailTemplate` rows (admin-editable subjects/bodies, per existing pattern at `src/mail/models.py:35`). The HTML files above are loaded as the *initial* `body` content during a data migration that creates the `EmailTemplate` rows by `name` slug; runtime renders use `EmailTemplate.send(to, context)` (`src/mail/models.py:159`).
+Email templates are primarily driven through `mail.EmailTemplate` rows (admin-editable subjects/bodies, per existing pattern at `src/mail/models.py:35`). The `EmailTemplate` model has just three fields — `name`, `subject`, `body` (no separate slug column), so rows are looked up by `name`. The HTML files above are loaded as the *initial* `body` content during a data migration that creates the `EmailTemplate` rows via `get_or_create(name=...)`; runtime renders use `EmailTemplate.send(to, context)` (`src/mail/models.py:159`), which accepts a single address or a list and returns whatever the underlying transport returns (an int for Django SMTP, a dict/str for Mailgun) — so tests assert on persisted state, not on this return value.
 
 ---
 
@@ -429,7 +479,7 @@ The "every 15 minutes" rhythm is a deliberate trade-off: it's frequent enough th
 
 ### Cron drain
 
-New management command: `src/documents/management/commands/send_document_notifications.py`.
+New management command: `src/portal/management/commands/send_document_notifications.py`.
 
 Logic per run:
 1. Select `NotificationQueue` rows where `sent_at IS NULL AND cancelled_at IS NULL AND eligible_at ≤ now()`.
@@ -438,17 +488,17 @@ Logic per run:
 4. Mark all queue rows in the group `sent_at = now()`.
 5. Atomic per-group transaction so a render failure doesn't half-mark the bucket.
 
-Add the job to the existing cron installer at `src/install/management/commands/install_cron.py:48-55`:
+Add the job to the existing cron installer at `src/install/management/commands/install_cron.py`:
 
 ```python
 {
     "name": "{}_intrepid_send_document_notifications".format(cwd),
-    "minutes": 15,           # every 15 min
+    "time": 15,              # run every 15 minutes
     "task": "send_document_notifications",
 },
 ```
 
-The current installer's job dict shape supports `time` for `minute.every(...)` (`install_cron.py:70-73`); a small extension reads `minutes` and dispatches to `cron_job.minute.every(minutes)` to make the intent explicit.
+No installer change beyond this dict is needed: the existing loop already calls `cron_job.minute.every(job["time"])` whenever `time != -1` (the `-1` sentinel is reserved for the monthly `sync_thoth` job), so a `time` of `15` schedules the job every 15 minutes. The crontab line it writes invokes `{BASE_DIR}/manage.py send_document_notifications` (via the virtualenv's `python3` when one is active).
 
 ### Settings
 
@@ -466,13 +516,13 @@ DOC_DIGEST_MONTHLY_DAY = 1
 
 **In plain language.** The spec is explicit: Provider Members can edit their own contact details, but OBC must be alerted when they do. Two things happen whenever a Provider edits their name, surname, job title, email, or notification frequency:
 1. An email is sent to the OBC team's main address listing exactly what changed (old value → new value).
-2. A permanent record is written to the *contact change log*, viewable from OBC's portal under "/documents/obc/contact-changes/", so even if an email is missed, OBC has an auditable history.
+2. A permanent record is written to the *contact change log*, viewable from OBC's portal under "/portal/obc/contact-changes/", so even if an email is missed, OBC has an auditable history.
 
 `ProviderContact.save()` overridden to diff against `__class__.objects.get(pk=self.pk)` for existing rows. When tracked fields (`first_name`, `last_name`, `job_title`, `email`, `notification_frequency`) change:
 1. Persist a `ContactChangeLog` row.
 2. Send `EmailTemplate.objects.get(name="contact_change_notification").send(to=settings.FROM_EMAIL, context={...})`. (`FROM_EMAIL` is set at `src/intrepid/settings.py:228-235`.)
 
-The change log is exposed at `/documents/obc/contact-changes/` (filterable by Initiative) and via `admin.py`.
+The change log is exposed at `/portal/obc/contact-changes/` (filterable by Initiative) and via `admin.py`.
 
 ---
 
@@ -482,13 +532,13 @@ The change log is exposed at `/documents/obc/contact-changes/` (filterable by In
 
 The one-time link is unique and can only be used once; if it's already been accepted, anyone who follows it later sees a polite "already accepted" page rather than being able to hijack the account.
 
-OBC creates a `ProviderContact` row (no `user` yet, `invite_token` auto-generated). A "Send invitation" action emails the contact a link `/documents/invite/accept/<uuid:token>/`.
+OBC creates a `ProviderContact` row (no `user` yet, `invite_token` auto-generated). A "Send invitation" action emails the contact a link `/portal/invite/accept/<uuid:token>/`.
 
 `accept_invite` view:
 1. Looks up `ProviderContact` by token; 404 on miss; gone-message if `accepted_at` already set.
 2. If the email already matches an existing `User`, presents a "log in to accept" path; otherwise shows `AcceptInviteForm`.
 3. On accept: creates the `User`, adds them to `Initiative.users`, adds them to the `Provider Members` Group, fills `ProviderContact.user` + `accepted_at`, and logs them in.
-4. Redirects to `/documents/provider/initiative/<id>/`.
+4. Redirects to `/portal/provider/initiative/<id>/`.
 
 ---
 
@@ -496,12 +546,18 @@ OBC creates a `ProviderContact` row (no `user` yet, `invite_token` auto-generate
 
 **In plain language.** The OBC site is already bilingual (English + German). The new portal joins that arrangement. The names and descriptions of document types — the things OBC will actually want translated, since they're the labels Provider Members see in the type filter — can be edited in both languages from the existing OBC translation tooling. Document filenames, free-text notes, and email *bodies* remain in their original language; translating those is out of scope for v1 (and likely never desired for filenames anyway).
 
-`src/documents/translation.py` registers translatable fields, mirroring `src/vocab/translation.py`:
+`src/portal/translation.py` registers translatable fields, mirroring `src/vocab/translation.py` — which uses the module-level `translator.register(Model, Options)` form (not the `@register` decorator), so we follow that house convention:
 
 ```python
-@register(DocumentType)
+from modeltranslation.translator import translator, TranslationOptions
+from portal import models
+
+
 class DocumentTypeTranslation(TranslationOptions):
     fields = ("name", "description")
+
+
+translator.register(models.DocumentType, DocumentTypeTranslation)
 ```
 
 `Document.display_name` is **not** translated (it's user-supplied per upload). Email template rows in `mail.EmailTemplate` are not translated by modeltranslation today; following spec scope, they remain English-only and a follow-up issue can address per-language email bodies.
@@ -512,7 +568,7 @@ class DocumentTypeTranslation(TranslationOptions):
 
 **In plain language.** There are 2x backends: Django (the framework the OBC site uses) ships with a generic backend it calls "the admin". Then there is "the dashboard", which allows OBC staff to configure how the site works. This is the cluttered area the spec's GENERAL note asks to be tidied up. We are *not* using it as the home for the documents portal — that lives in §1's bespoke screens — but every model still gets a small, minimal entry in "the admin" as a developer fallback for emergency database fixes. Day-to-day, neither OBC team nor Provider Members will need to look at the admin. Cleaning up the rest of the Dashboard is deferred to a separate, follow-up issue — see §17.
 
-Minimal — the portal is the primary UI, not the Django Admin or the existing dashboard. `src/documents/admin.py` registers:
+Minimal — the portal is the primary UI, not the Django Admin or the existing dashboard. `src/portal/admin.py` registers:
 
 - `DocumentTypeAdmin` (list_display: name, slug, requires_reporting_month, default, ordering)
 - `DocumentAdmin` (raw_id_fields: initiative, document_type, uploaded_by; list_filter: document_type, initiative; search_fields: display_name, original_filename)
@@ -531,13 +587,13 @@ Follows the registration idiom at `src/initiatives/admin.py:24-29`.
 
 A small but important piece of discipline (per OBC's standing engineering convention): tests deliberately don't pin down *exact wording* of email subject lines or button labels — those should remain easy to refine later — but they do pin down behaviour like "an email was sent", "the queue row was marked sent", "permission was denied".
 
-Write failing tests first against stubs, then implement until green. Each module under test gets a `NotImplementedError`-raising stub before its real body exists.
+Write failing tests first against stubs, then implement until green. Each behavioural function/method under test gets a `NotImplementedError`-raising stub before its real body exists (model *fields* are defined up-front so the test database can be built, but the behavioural methods — `clean()`, the `save()` diff, the upload-path helper, the permission helpers, the parser, the queue logic — start as stubs that raise, so the first test run fails for the right reason).
 
-`src/documents/tests.py` — Django `TestCase` subclasses, no live network/email (`mail.EmailTemplate._send_email` is mocked via `unittest.mock.patch` so we test return values, not call counts). Coverage:
+Tests live in a `src/portal/tests/` **package** (one module per area: `test_models.py`, `test_permissions.py`, `test_bulk_import.py`, `test_notifications.py`, `test_forms.py`, `test_views.py`, `test_invitation.py`) rather than a single `tests.py`, so the areas can be built independently. They are Django `TestCase` subclasses with no live network/email: the active settings have `USE_MAILGUN=True`, so every test path that could send mail patches `mail.EmailTemplate._send_email` (or `EmailTemplate.send`) via `unittest.mock.patch` — otherwise a test would attempt a real Mailgun HTTP call. Run them with `uv run ./manage.py test portal --settings=intrepid.test_settings` (the test settings swap in the in-repo `fluid_permissions` migrations). Coverage:
 
 **Models**
 - `Document.notification_eligible_at` is set to `uploaded_at + DOC_NOTIFICATION_DELAY`.
-- `documents_upload_path()` produces a UUID-renamed path under `provider_documents/<initiative_pk>/`.
+- `portal_documents_upload_path()` produces a UUID-renamed path under `provider_documents/<initiative_pk>/`.
 - `DocumentType.requires_reporting_month=True` causes `Document.clean()` to require `reporting_month`.
 - `ProviderContact.save()` emits a `ContactChangeLog` row when tracked fields change, and not when untracked fields change.
 
@@ -548,8 +604,10 @@ Write failing tests first against stubs, then implement until green. Each module
 - `download_document` returns 403 when user lacks both Layer A and Layer B access.
 
 **Bulk import**
-- `parse_zip(<sample.zip>)` with valid `<short_code>/YYYY-MM/file.pdf` yields the expected `(initiative, reporting_month, type)` tuples.
-- Unknown short_code → row marked `skipped`.
+- `parse_zip(<sample.zip>)` with a valid `YYYY-MM/<date> ... - <Provider>.pdf` file yields the expected `(initiative, reporting_month, type)` tuple.
+- A Provider name matching only an `InitiativeAlias` still resolves to its `Initiative`.
+- Unknown Provider name → row marked `skipped`.
+- A filename not following the `<date> ... - <Provider>` convention (e.g. `OLD VERSION ...`) → row marked `skipped` (deferred to the user).
 - Bad date → row marked `error`.
 - Commit creates the right number of `Document` rows and queues no notifications when `notify_on_commit=False`.
 
@@ -557,8 +615,8 @@ Write failing tests first against stubs, then implement until green. Each module
 - Enqueueing on `post_save` produces one `NotificationQueue` row per active `ProviderContact`.
 - Deleting a `Document` cancels its unsent queue rows.
 - The `send_document_notifications` command, run with `eligible_at` in the past, marks rows `sent_at`.
-- Digest grouping: 3 documents → 1 digest email (asserted via the mocked `EmailTemplate.send` return).
-- A digest contact gets one email; an immediate contact gets per-doc emails.
+- Digest grouping: 3 documents for one daily-digest recipient resolve to a single send whose context carries all three documents (asserted by capturing the context handed to the mocked send and checking it lists three documents — i.e. behaviour, not a raw call-count).
+- A digest contact's three documents collapse to one grouped send; an immediate contact's three documents resolve to three. (Asserted via persisted `sent_at` state and the captured render context, so the assertions survive a change of email backend.)
 
 **Invitation**
 - Accepting an invite creates the User, links to Initiative.users, sets `accepted_at`.
@@ -579,28 +637,32 @@ Important note: tests around exact wording (email subject text, button labels) a
 
 These run automatically when the new code is deployed. OBC doesn't need to do anything manual to "switch the portal on".
 
-A single initial migration (`0001_initial.py`) creates all six models. A second data migration (`0002_seed.py`) populates:
-- Two `DocumentType` rows ("Remittance advice", "Agreement contract").
-- The `OBC Team` and `Provider Members` `auth.Group` rows (idempotent `get_or_create`).
-- `EmailTemplate` rows by name slug (`document_notification_immediate`, `document_notification_digest`, `contact_change_notification`, `provider_invite`) using the HTML files in `templates/documents/emails/` as the initial `body`.
-- `fluid_permissions.ViewGroup` rows for the new view names so the existing permission UI at `/accounts/manage_fluid_permissions/` (`src/accounts/views.py:179`) immediately surfaces the new views.
+The initial migration (`0001_initial.py`) creates the six core models; `0002` adds the bulk-import staging models and `0003` the modeltranslation fields. The seed data migration (`0004_seed.py`) then populates (all steps idempotent via `get_or_create`, so re-running is safe):
+- Two `DocumentType` rows ("Remittance advice" with `requires_reporting_month=True, default=True`; "Agreement contract" with `requires_reporting_month=False`).
+- The `OBC Team` and `Provider Members` `auth.Group` rows.
+- `EmailTemplate` rows looked up by `name` (`document_notification_immediate`, `document_notification_digest`, `contact_change_notification`, `provider_invite`), using the HTML files in `templates/portal/emails/` as the initial `subject`/`body`. (`EmailTemplate` has no slug field — `name` is the key.)
+- *(Deferred.)* The portal gates the OBC area with its own `obc_area_required`/`obc_staff_required` decorators plus per-type `DocumentTypePermission`, rather than `fluid_permissions.ViewGroup` per-view gating. Seeding `ViewGroup` rows would surface the portal views in `/accounts/manage_fluid_permissions/` but, because the portal views do not use `user_in_authorised_group`, those rows would not actually restrict access — so they are intentionally **not** seeded, to avoid misleading, non-functional configuration. Layering `fluid_permissions` on top is a small, self-contained follow-up if per-view gating is later wanted.
+
+The seed migration uses `apps.get_model(...)` for `DocumentType`/`Group`/`EmailTemplate` (the historical-model pattern), reading the seed email bodies with Django's template loader so the HTML files remain the single source of truth. Three further data migrations (`0005`–`0007`) seed the portal's translatable UI strings, form labels, and notification-frequency labels into the existing `cms.SiteText` system (so the whole portal can be translated alongside the rest of the site).
 
 ---
 
 ## 15. Critical files — to be created or modified
 
-**In plain language.** This is essentially a "scope of works" inventory: the complete list of files the engineer will touch to deliver everything above. Almost all of the work is *new* files (in the new `documents/` area), with only three existing files needing small additions. This is a useful sanity check on the size of the change — the new portal is a self-contained body of work, not a sprawling rewrite of the existing site.
+**In plain language.** This is essentially a "scope of works" inventory: the complete list of files the engineer will touch to deliver everything above. Almost all of the work is *new* files (in the new `portal/` area), with only three existing files needing small additions. This is a useful sanity check on the size of the change — the new portal is a self-contained body of work, not a sprawling rewrite of the existing site.
 
 **Created**
-- `src/documents/__init__.py`, `apps.py`, `models.py`, `admin.py`, `forms.py`, `views.py`, `urls.py`, `translation.py`, `bulk_import.py`, `notifications.py`, `permissions.py`, `tests.py`
-- `src/documents/management/__init__.py`, `management/commands/__init__.py`, `management/commands/send_document_notifications.py`
-- `src/documents/migrations/0001_initial.py`, `0002_seed.py`
-- `src/templates/documents/*` (per §7)
+- `src/portal/__init__.py`, `apps.py`, `models.py`, `admin.py`, `forms.py`, `views.py`, `urls.py`, `translation.py`, `bulk_import.py`, `notifications.py`, `permissions.py`, `signals.py`
+- `src/portal/tests/__init__.py` + `test_models.py`, `test_permissions.py`, `test_bulk_import.py`, `test_notifications.py`, `test_forms.py`, `test_views.py`, `test_invitation.py` (+ `_helpers.py`)
+- `src/portal/management/__init__.py`, `management/commands/__init__.py`, `management/commands/send_document_notifications.py`
+- `src/portal/migrations/0001_initial.py`, `0002_bulkimportjob_bulkimportrow.py`, `0003_*` (modeltranslation fields), `0004_seed.py`
+- `src/templates/portal/*` (per §7)
 
 **Modified**
-- `src/intrepid/settings.py` — add `documents` to `INSTALLED_APPS` (line 34-72); add `DOC_NOTIFICATION_DELAY`, `DOC_DIGEST_*` constants
-- `src/intrepid/urls.py` — add `path("documents/", include("documents.urls"))` (line 10)
-- `src/install/management/commands/install_cron.py` — add the `send_document_notifications` job (line 48-55) and extend the dispatcher to read `minutes` (line 70-73)
+- `src/intrepid/settings.py` — add `portal` to `INSTALLED_APPS`; add `DOC_NOTIFICATION_DELAY`, `DOC_DIGEST_*` constants
+- `src/intrepid/urls.py` — add `path("portal/", include("portal.urls"))`; change the existing `path("dashboard/", …)` to `path("staff/", …)` (URL restructure, client clarification 1)
+- `src/templates/base/frontend/nav.html` — re-point the top-right "Dashboard" link from `dashboard_index` to the new portal index. (The old dashboard's own sidebar in `src/templates/base/admin_nav.html` is intentionally left pointing at `dashboard_index`: it is the navigation *inside* the old dashboard, now at `/staff/`, and must keep working there.)
+- `src/install/management/commands/install_cron.py` — add the `send_document_notifications` job dict (`time: 15`); no dispatcher change is needed (the existing `time`-based path already schedules `minute.every(...)`)
 
 ---
 
@@ -610,19 +672,20 @@ A single initial migration (`0001_initial.py`) creates all six models. A second 
 
 End-to-end checks before declaring done:
 
-1. **Migrations apply cleanly:** `uv run ./manage.py makemigrations documents && uv run ./manage.py migrate`. Re-run on a copy of `obc_db.sqlite3` to confirm no clashes with existing data.
-2. **Tests pass:** `uv run ./manage.py test documents` — all green.
+1. **Migrations apply cleanly:** `uv run ./manage.py makemigrations portal && uv run ./manage.py migrate`. Re-run on a copy of `obc_db.sqlite3` to confirm no clashes with existing data.
+2. **Tests pass:** `uv run ./manage.py test portal --settings=intrepid.test_settings` — all green.
 3. **Translations:** `uv run ./manage.py update_translation_fields` (modeltranslation pattern used for `BandingVocab` recently — see commit `b9a48e0`) followed by `uv run ./manage.py makemessages -l de && compilemessages`.
 4. **Cron install:** `uv run ./manage.py install_cron --action test` shows the new job alongside `sync_thoth`.
 5. **Browser walkthrough** (Django dev server on `https://localhost`, self-signed cert):
    - Sign in as superuser → upload a single PDF for an Initiative → confirm it appears in the OBC list.
    - Upload a multi-file batch → confirm all rows created.
-   - ZIP a fixture matching `<short_code>/YYYY-MM/*.pdf` for two Initiatives → bulk-import dry-run preview shows correct mapping → commit → both `Document` rows appear.
+   - ZIP a fixture matching `YYYY-MM/<date> ... - <Provider>.pdf` for two Initiatives (one matched by name, one by alias) → bulk-import dry-run preview shows correct mapping → commit → both `Document` rows appear.
    - Create a `ProviderContact`, send invitation, accept the invitation as a fresh user, log in, view the documents list scoped to that Initiative, change frequency to "daily", edit name → confirm OBC inbox receives `contact_change_notification`.
    - Manually `update NotificationQueue set eligible_at = '2020-01-01'` then run `uv run ./manage.py send_document_notifications` → confirm rows marked sent and (mock) email rendered.
    - Bulk-download three documents from the provider view → confirm streamed ZIP contains the three files at their `original_filename`.
-6. **Permission probes:** log in as a non-staff user with no Initiative membership → verify 403 on every `/documents/obc/*` and on `/documents/provider/initiative/<other>/`.
-7. **Lint/format:** `uv run ruff check src/documents` and any pre-commit hooks defined for the repo. Fix and re-stage before committing.
+6. **Permission probes:** log in as a non-staff user with no Initiative membership → verify 403 on every `/portal/obc/*` and on `/portal/provider/initiative/<other>/`.
+7. **URL restructure:** confirm the top-right "Dashboard" link now lands on `/portal/`; confirm the old dashboard still works when visited directly at `/staff/` and that its internal links (which resolve by name) are intact; confirm `/dashboard/` no longer resolves.
+8. **Lint/format:** `uv run ruff check src/portal` and any pre-commit hooks defined for the repo. Fix and re-stage before committing.
 
 ---
 

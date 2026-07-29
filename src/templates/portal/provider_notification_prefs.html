@@ -1,0 +1,27 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='notifications' %}{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_notif_heading' %} &mdash; {{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_notif_subhint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for contact in contacts %}
+            <fieldset class="mb-4 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                <legend class="h6 mb-2">{{ contact.first_name }} {{ contact.last_name }}
+                    <span class="text-muted">({{ contact.email }})</span></legend>
+                {% for value, label in choices %}
+                    <label class="mr-3">
+                        <input type="radio" name="frequency_{{ contact.pk }}" value="{{ value }}"
+                               {% if contact.notification_frequency == value %}checked{% endif %}>
+                        {% with freq_key='portal_freq_'|add:value %}{% get_site_text freq_key %}{% endwith %}
+                    </label>
+                {% endfor %}
+            </fieldset>
+        {% empty %}
+            <p class="text-muted">{% get_site_text 'portal_notif_no_contacts' %}</p>
+        {% endfor %}
+        {% if contacts %}<button class="btn btn-obc-blue">{% get_site_text 'portal_btn_save_prefs' %}</button>{% endif %}
+    </form>
+</div>
+{% endblock %}

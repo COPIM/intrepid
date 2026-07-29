@@ -1,4 +1,6 @@
+import contextlib
 import datetime
+import logging
 
 import requests
 from django.conf import settings
@@ -6,6 +8,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template import Template, Context
 from django.utils.html import strip_tags
+
+logger = logging.getLogger(__name__)
 
 MESSAGE_STATUS = [
     ("no_information", "No Information"),
@@ -103,45 +107,71 @@ class EmailTemplate(models.Model):
         if type(to) not in [list, tuple]:
             to = [to]
 
-        if settings.DEBUG:
-            print(f"Sending email with subject {subject} to {to}.")
-            print(html)
+        logger.debug("Sending email with subject %r to %s.", subject, to)
+        logger.debug("Email body: %s", html)
 
         if not settings.USE_MAILGUN:
             msg = EmailMultiAlternatives(
                 subject, strip_tags(html), from_email, to
             )
             msg.attach_alternative(html, "text/html")
-
-            return msg.send()
-        else:
-            mailgun_attachments = []
             for attachment in attachments:
-                mailgun_attachments.append(
-                    ("attachment", open(attachment, "rb"))
+                msg.attach_file(attachment)
+
+            sent = msg.send()
+            logger.info(
+                "Sent email via Django backend to %s (sent=%s).", to, sent
+            )
+            return sent
+        else:
+            # Wrap both the attachment-opening loop and the POST in a single
+            # ExitStack so that if opening a later attachment fails, every
+            # handle already opened for an earlier one is still closed as
+            # the exception propagates.
+            with contextlib.ExitStack() as stack:
+                mailgun_attachments = [
+                    ("attachment", stack.enter_context(open(attachment, "rb")))
+                    for attachment in attachments
+                ]
+
+                logger.debug(
+                    "Posting email to Mailgun (%s) to %s.",
+                    settings.MAILGUN_SERVER_NAME,
+                    to,
+                )
+                response = requests.post(
+                    settings.MAILGUN_SERVER_NAME + "/messages",
+                    auth=("api", settings.MAILGUN_ACCESS_KEY),
+                    files=mailgun_attachments,
+                    data={
+                        "from": settings.FROM_EMAIL,
+                        "to": to,
+                        "subject": subject,
+                        "html": html,
+                        "bcc": bcc,
+                        "h:Reply-To": "info@openbookcollective.org",
+                    },
                 )
 
-            response = requests.post(
-                settings.MAILGUN_SERVER_NAME + "/messages",
-                auth=("api", settings.MAILGUN_ACCESS_KEY),
-                files=mailgun_attachments,
-                data={
-                    "from": settings.FROM_EMAIL,
-                    "to": to,
-                    "subject": subject,
-                    "html": html,
-                    "bcc": bcc,
-                    "h:Reply-To": "info@openbookcollective.org",
-                },
+            logger.debug(
+                "Mailgun HTTP status %s for email to %s.",
+                response.status_code,
+                to,
             )
 
             try:
                 json_response = response.json()
             except requests.exceptions.JSONDecodeError:
+                logger.error(
+                    "Mailgun returned a non-JSON response (status %s) for "
+                    "email to %s: %s",
+                    response.status_code,
+                    to,
+                    response.text,
+                )
                 return ""
 
-            if settings.DEBUG:
-                print(json_response)
+            logger.debug("Mailgun response for email to %s: %s", to, json_response)
 
             try:
                 EmailTemplate._create_email_log(
@@ -152,8 +182,21 @@ class EmailTemplate(models.Model):
                     from_email=settings.FROM_EMAIL,
                 )
 
+                logger.info(
+                    "Mailgun accepted email to %s (id=%s).",
+                    to,
+                    json_response["id"],
+                )
                 return json_response
             except KeyError:
+                logger.error(
+                    "Mailgun did NOT accept the email to %s — no message id in "
+                    "response. This commonly means the recipient is not an "
+                    "authorised recipient on a Mailgun sandbox domain, or the "
+                    "domain/API key is wrong. Full response: %s",
+                    to,
+                    json_response,
+                )
                 return ""
 
     def send(

@@ -1,0 +1,11 @@
+<p>A provider contact's details were changed in the document portal.</p>
+
+<p><strong>Provider:</strong> {{ initiative.name }}<br>
+<strong>Contact:</strong> {{ contact.first_name }} {{ contact.last_name }} ({{ contact.email }})</p>
+
+<p>Changes:</p>
+<ul>
+    {% for field, change in changes.items %}
+        <li>{{ field }}: &ldquo;{{ change.from }}&rdquo; &rarr; &ldquo;{{ change.to }}&rdquo;</li>
+    {% endfor %}
+</ul>

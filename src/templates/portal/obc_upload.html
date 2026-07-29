@@ -1,0 +1,56 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_initiative_detail' initiative.pk %}"><i class="fa-solid fa-arrow-left"></i> {{ initiative.name }}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_upload_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_upload_for' %} <strong>{{ initiative.name }}</strong>. {% get_site_text 'portal_upload_multiselect' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card" style="max-width:640px;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+        <div class="form-group">
+            <label for="id_document_type">{% get_site_text 'portal_label_document_type' %}</label>
+            <select name="document_type" id="id_document_type" class="form-control">
+                {% for type in form.fields.document_type.queryset %}
+                    <option value="{{ type.pk }}" data-requires="{{ type.requires_reporting_month|yesno:'1,0' }}">{{ type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" id="reporting_month_group">
+            <label for="id_reporting_month">{% get_site_text 'portal_th_reporting_month' %}</label>
+            <input type="month" name="reporting_month" id="id_reporting_month" class="form-control"
+                   value="{{ form.reporting_month.value|default_if_none:'' }}">
+            <small class="form-text text-muted">{% get_site_text 'portal_upload_month_help' %}</small>
+            {% if form.reporting_month.errors %}<div class="text-danger">{{ form.reporting_month.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_file">{% get_site_text 'portal_label_files' %}</label>
+            <input type="file" name="file" id="id_file" multiple class="form-control-file">
+            {% if form.file.errors %}<div class="text-danger">{{ form.file.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" name="send_notification" id="id_send_notification" class="form-check-input"
+                   {% if form.send_notification.value|default_if_none:True %}checked{% endif %}>
+            <label class="form-check-label" for="id_send_notification">{% get_site_text 'portal_form_send_notification' %}</label>
+        </div>
+
+        <button class="btn btn-obc-blue" type="submit"><i class="fa-solid fa-upload"></i> {% get_site_text 'portal_btn_upload_short' %}</button>
+    </form>
+</div>
+
+<script>
+(function () {
+    var select = document.getElementById('id_document_type');
+    var group = document.getElementById('reporting_month_group');
+    function toggle() {
+        var option = select.options[select.selectedIndex];
+        group.style.display = (option && option.dataset.requires === '1') ? 'block' : 'none';
+    }
+    select.addEventListener('change', toggle);
+    toggle();
+})();
+</script>
+{% endblock %}

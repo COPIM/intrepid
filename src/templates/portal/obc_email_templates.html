@@ -1,0 +1,33 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_nav_dashboard' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_email_tpls_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_email_tpls_hint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <table class="table mb-0">
+        <thead><tr>
+            <th>{% get_site_text 'portal_email_tpls_th_name' %}</th>
+            <th>{% get_site_text 'portal_email_tpls_th_subject' %}</th>
+            <th>{% get_site_text 'portal_email_tpls_th_edit' %}</th>
+        </tr></thead>
+        <tbody>
+            {% for template in templates %}
+                <tr>
+                    <td><code>{{ template.name }}</code></td>
+                    <td>{{ template.subject }}</td>
+                    <td>
+                        {% for language in languages %}
+                            <a class="btn btn-obc-outline btn-sm mr-1"
+                               href="{% url 'portal:obc_email_template_edit' template.pk language.code %}">
+                                {{ language.name }}
+                            </a>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3" class="text-muted">{% get_site_text 'portal_email_tpls_empty' %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

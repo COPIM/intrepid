@@ -1,0 +1,39 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}<a href="{% url 'portal:obc_bulk_import' %}"><i class="fa-solid fa-arrow-left"></i> {% get_site_text 'portal_bulk_startover' %}</a>{% endblock %}
+{% block portal_title %}{% get_site_text 'portal_bulk_preview_title' %}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_bulk_preview_subhint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <table class="table">
+        <thead><tr>
+            <th>{% get_site_text 'portal_th_file' %}</th>
+            <th>{% get_site_text 'portal_th_provider' %}</th>
+            <th>{% get_site_text 'portal_th_reporting_month' %}</th>
+            <th>{% get_site_text 'portal_th_type' %}</th>
+            <th>{% get_site_text 'portal_th_status' %}</th>
+            <th>{% get_site_text 'portal_th_note' %}</th>
+        </tr></thead>
+        <tbody>
+            {% for row in rows %}
+                <tr class="{% if row.status != 'ok' %}table-warning{% endif %}">
+                    <td>{{ row.archive_path }}</td>
+                    <td>{% if row.initiative %}{{ row.initiative.name }}{% else %}&mdash;{% endif %}</td>
+                    <td>{% if row.reporting_month %}{{ row.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
+                    <td>{% if row.document_type %}{{ row.document_type }}{% else %}&mdash;{% endif %}</td>
+                    <td>{{ row.get_status_display }}</td>
+                    <td>{{ row.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not job.committed_at %}
+        <form method="post" action="{% url 'portal:obc_bulk_commit' job.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-obc-blue">{% get_site_text 'portal_bulk_confirm' %}</button>
+        </form>
+    {% else %}
+        <p class="text-success mb-0">{% get_site_text 'portal_bulk_already_committed' %}</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% block portal_title %}{% get_site_text 'portal_invite_title' %}{% endblock %}
+{% block portal_content %}
+{% if already_accepted %}
+    <div class="alert alert-warning">
+        {% get_site_text 'portal_invite_already_pre' %}
+        <a href="{% url 'portal:index' %}">{% get_site_text 'portal_invite_login' %}</a>
+        {% get_site_text 'portal_invite_already_post' %}
+    </div>
+{% elif existing_account %}
+    <div class="alert alert-info">
+        {% get_site_text 'portal_invite_existing_pre' %}
+        <a href="{% url 'two_factor:login' %}?next={{ request.path|urlencode }}">{% get_site_text 'portal_invite_signin' %}</a>
+        {% get_site_text 'portal_invite_existing_post' %}
+    </div>
+{% elif confirm_only %}
+    <p>{% get_site_text 'portal_invite_welcome' %}{% if contact.initiative %} ({{ contact.initiative.name }}){% endif %}.
+    {% get_site_text 'portal_invite_confirm_hint' %}</p>
+    <div class="portal-card" style="max-width:520px;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-obc-blue">
+                <i class="fa-solid fa-circle-check"></i> {% get_site_text 'portal_invite_confirm_btn' %}
+            </button>
+        </form>
+    </div>
+{% else %}
+    <p>{% get_site_text 'portal_invite_welcome' %}{% if contact.initiative %} ({{ contact.initiative.name }}){% endif %}.
+    {% get_site_text 'portal_invite_setup_hint' %}</p>
+    <div class="portal-card" style="max-width:560px;">
+        {% crispy form %}
+    </div>
+{% endif %}
+{% endblock %}

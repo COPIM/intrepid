@@ -1,0 +1,19 @@
+<p>Hello,</p>
+
+{% if action == "added" %}
+<p>{{ admin_label }} was added as an admin for {{ initiative.name }} on the
+Open Book Collective document portal.</p>
+{% else %}
+<p>{{ admin_label }} was removed as an admin for {{ initiative.name }} on the
+Open Book Collective document portal.</p>
+{% endif %}
+
+<p>If you didn't request this change, please either log in to manage your
+admins or contact the OBC.</p>
+
+<p>
+    <a href="{{ url }}" style="display:inline-block;background:#151462;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:bold;">Manage admins</a>
+</p>
+
+<p>If the button doesn't work, copy and paste this link into your browser:<br>
+<a href="{{ url }}">{{ url }}</a></p>

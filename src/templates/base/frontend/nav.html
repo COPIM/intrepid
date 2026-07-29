@@ -15,10 +15,14 @@
                         <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="de" class="lang-btn{% if CURRENT_LANGUAGE == 'de' %} lang-btn--active{% endif %}">DE</button></form>
                     </li>
                     {% if request.basket %}<li><a href="{% url 'basket_detail' request.basket.pk %}"><i class="fa fa-shopping-basket" style="color:black"></i><sup>{{ request.basket_count }}</sup></a></li>{% endif %}
-                    <li><a href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
+                    <li><a href="{% url 'portal:index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
                     </li>
                     {% if request.site.enable_your_quotes_link %}
                     <li><a href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
+                    </li>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> {% get_site_text 'logout' prefetched %}</a>
                     </li>
                     {% endif %}
 
@@ -125,7 +129,7 @@
         <hr/>
 
         <li class="nav-item">
-            <a class="nav-link nav-small" href="{% url 'dashboard_index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
+            <a class="nav-link nav-small" href="{% url 'portal:index' %}"><i class="fa-solid fa-circle-user"></i> {% get_site_text 'dashboard' prefetched %}</a>
         </li>
 
         <hr/>
@@ -133,9 +137,15 @@
         <li class="nav-item">
             <a class="nav-link nav-small" href="{% url 'basket_list' %}"><i class="fa-solid fa-square-check"></i> {% get_site_text 'your_quotes' prefetched %}</a>
         </li>
+        <hr/>
         {% endif %}
 
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link nav-small" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> {% get_site_text 'logout' prefetched %}</a>
+        </li>
         <hr/>
+        {% endif %}
 
         <li class="nav-item lang-switcher" style="padding-left: 1rem;">
             <form action="{% url 'set_language' %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button type="submit" name="language" value="en" class="lang-btn lang-btn--mobile{% if CURRENT_LANGUAGE == 'en' %} lang-btn--active{% endif %}">EN</button></form>

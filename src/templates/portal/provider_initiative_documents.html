@@ -1,0 +1,84 @@
+{% extends "portal/base.html" %}
+{% block portal_nav %}{% include "portal/_initiative_tabs.html" with active='documents' %}{% endblock %}
+{% block portal_title %}{{ initiative.name }}{% endblock %}
+{% block portal_subhint %}<p class="portal-section-hint">{% get_site_text 'portal_provider_docs_subhint' %}</p>{% endblock %}
+{% block portal_content %}
+<div class="portal-card">
+    <form method="get" class="form-row mb-3">
+        <div class="col-md">
+            <label class="small text-muted mb-1">{% get_site_text 'portal_th_type' %}</label>
+            <select name="document_type" class="form-control">
+                <option value="">{% get_site_text 'portal_all_types' %}</option>
+                {% for type in document_types %}
+                    <option value="{{ type.pk }}" {% if filters.document_type == type.pk|stringformat:'s' %}selected{% endif %}>{{ type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md">
+            <label class="small text-muted mb-1">{% get_site_text 'portal_th_reporting_month' %}</label>
+            <input type="month" name="reporting_month" value="{{ filters.reporting_month }}" class="form-control">
+        </div>
+        <div class="col-md">
+            <label class="small text-muted mb-1">{% get_site_text 'portal_search_name' %}</label>
+            <input type="text" name="q" value="{{ filters.q }}" class="form-control">
+        </div>
+        <div class="col-md-auto align-self-end">
+            <button class="btn btn-obc-outline">{% get_site_text 'portal_filter' %}</button>
+            <a id="clear-filters" class="btn btn-obc-outline" href="{% url 'portal:provider_initiative_documents' initiative.pk %}">{% get_site_text 'portal_clear_filter' %}</a>
+        </div>
+    </form>
+
+    <form method="post" action="{% url 'portal:bulk_download' %}">
+        {% csrf_token %}
+        <table id="documents-table" class="table">
+            <thead><tr>
+                <th><input type="checkbox" id="select-all-documents"></th>
+                <th>{% get_site_text 'portal_th_name' %}</th>
+                <th>{% get_site_text 'portal_th_type' %}</th>
+                <th>{% get_site_text 'portal_th_reporting_month' %}</th>
+                <th>{% get_site_text 'portal_th_uploaded' %}</th>
+                <th></th>
+            </tr></thead>
+            <tbody>
+                {% for document in documents %}
+                    <tr>
+                        <td><input type="checkbox" name="document_ids" value="{{ document.pk }}"></td>
+                        <td>{{ document.display_name }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>{% if document.reporting_month %}{{ document.reporting_month|date:'Y-m' }}{% else %}&mdash;{% endif %}</td>
+                        <td>{{ document.uploaded_at|date:'Y-m-d H:i T' }}</td>
+                        <td><a href="{% url 'portal:download_document' document.pk %}">{% get_site_text 'portal_download' %}</a></td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6" class="text-muted">{% get_site_text 'portal_provider_docs_empty' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn btn-obc-outline btn-sm"><i class="fa-solid fa-download"></i> {% get_site_text 'portal_download_selected' %}</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<link crossorigin="anonymous" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    {% if documents %}
+    $('#documents-table').DataTable({
+        paging: false,
+        info: false,
+        searching: false,
+        columnDefs: [
+            {targets: [0, 5], orderable: false}
+        ]
+    });
+    {% endif %}
+
+    $('#select-all-documents').on('change', function() {
+        $('#documents-table tbody input[type="checkbox"][name="document_ids"]').prop('checked', this.checked);
+    });
+});
+</script>
+{% endblock %}
