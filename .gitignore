@@ -201,3 +201,4 @@ deploy_key_ed.pub
 src/currency/**
 src/intrepid/prod_settings.py
 .aider*
+src/translation_snapshots/
