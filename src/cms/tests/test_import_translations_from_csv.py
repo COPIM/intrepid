@@ -73,20 +73,40 @@ class ImportBehaviourTests(ImportTranslationsFromCsvTestBase):
         self.text.refresh_from_db()
         self.assertEqual(self.text.body_de, "Hallo")
 
-    def test_english_column_does_not_overwrite_existing_english(self):
+    def test_english_column_is_written_to_en_field(self):
         path = self.write_csv(
             [
                 {
                     "Key": "index_header",
-                    "English": "Different English",
+                    "English": "Updated English",
                     "German": "Hallo",
                 }
             ]
         )
         self.run_command(path)
         self.text.refresh_from_db()
+        self.assertEqual(self.text.body_en, "Updated English")
+        self.assertEqual(self.text.body, "Updated English")
+
+    def test_empty_english_cell_leaves_existing_english_alone(self):
+        path = self.write_csv(
+            [{"Key": "index_header", "English": "", "German": "Hallo"}]
+        )
+        self.run_command(path)
+        self.text.refresh_from_db()
         self.assertEqual(self.text.body_en, "Hello")
-        self.assertEqual(self.text.body, "Hello")
+        self.assertEqual(self.text.body_de, "Hallo")
+
+    def test_row_with_both_cells_empty_changes_nothing(self):
+        self.text.body_de = "Bestehende"
+        self.text.save()
+        path = self.write_csv(
+            [{"Key": "index_header", "English": "", "German": ""}]
+        )
+        self.run_command(path)
+        self.text.refresh_from_db()
+        self.assertEqual(self.text.body_en, "Hello")
+        self.assertEqual(self.text.body_de, "Bestehende")
 
     def test_empty_german_cell_leaves_existing_translation_alone(self):
         self.text.body_de = "Bestehende"
@@ -156,16 +176,24 @@ class SnapshotAndRestoreTests(ImportTranslationsFromCsvTestBase):
 
     def test_restore_reverts_an_import(self):
         path = self.write_csv(
-            [{"Key": "index_header", "English": "Hello", "German": "Neu"}]
+            [
+                {
+                    "Key": "index_header",
+                    "English": "New English",
+                    "German": "Neu",
+                }
+            ]
         )
         self.run_command(path)
         self.text.refresh_from_db()
         self.assertEqual(self.text.body_de, "Neu")
+        self.assertEqual(self.text.body_en, "New English")
 
         snapshot_path = self.snapshot_files()[0]
         self.run_command(restore=snapshot_path)
         self.text.refresh_from_db()
         self.assertEqual(self.text.body_de, "Alte Fassung")
+        self.assertEqual(self.text.body_en, "Hello")
 
     def test_restore_and_csv_path_together_is_an_error(self):
         from django.core.management.base import CommandError

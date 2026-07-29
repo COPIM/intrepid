@@ -1,10 +1,11 @@
 """Import SiteText translations from a CSV file.
 
 The CSV is expected to have the columns "Key", "English", and "German".
-The German column is written into the ``body_de`` modeltranslation field
-of the matching :class:`cms.models.SiteText` row. Before any change is
-made, a JSON snapshot of every SiteText row is written to disk so the
-import can be reverted with ``--restore``.
+The English column is written into the ``body``/``body_en``
+modeltranslation fields and the German column into ``body_de`` on the
+matching :class:`cms.models.SiteText` row. Before any change is made, a
+JSON snapshot of every SiteText row is written to disk so the import
+can be reverted with ``--restore``.
 """
 
 import csv
@@ -83,8 +84,8 @@ class Command(BaseCommand):
 
     def import_csv(self, csv_path, snapshot_dir=None, dry_run=False):
         """
-        Import German translations from the CSV into SiteText.body_de,
-        snapshotting the current table state first.
+        Import English and German translations from the CSV into
+        SiteText, snapshotting the current table state first.
         :param csv_path: path to the CSV file
         :param snapshot_dir: directory for the pre-import snapshot
         :param dry_run: if True, report without writing anything
@@ -105,12 +106,13 @@ class Command(BaseCommand):
 
             for row in reader:
                 key = (row.get("Key") or "").strip()
+                english = (row.get("English") or "").strip()
                 german = (row.get("German") or "").strip()
 
                 if not key:
                     continue
 
-                if not german:
+                if not english and not german:
                     skipped_empty += 1
                     continue
 
@@ -120,7 +122,7 @@ class Command(BaseCommand):
                     missing_keys.append(key)
                     continue
 
-                updates.append((site_text, german))
+                updates.append((site_text, english, german))
 
         if dry_run:
             self.report(updates, missing_keys, skipped_empty, dry_run=True)
@@ -136,8 +138,12 @@ class Command(BaseCommand):
         )
 
         with transaction.atomic():
-            for site_text, german in updates:
-                site_text.body_de = german
+            for site_text, english, german in updates:
+                if english:
+                    site_text.body = english
+                    site_text.body_en = english
+                if german:
+                    site_text.body_de = german
                 site_text.save()
 
         self.report(updates, missing_keys, skipped_empty, dry_run=False)
@@ -195,16 +201,17 @@ class Command(BaseCommand):
     def report(self, updates, missing_keys, skipped_empty, dry_run):
         """
         Print a summary of the import.
-        :param updates: list of (SiteText, german) pairs applied
+        :param updates: list of (SiteText, english, german) tuples applied
         :param missing_keys: CSV keys with no matching SiteText row
-        :param skipped_empty: count of rows with an empty German cell
+        :param skipped_empty: count of rows with both cells empty
         :param dry_run: whether this was a dry run
         """
         prefix = "Would update" if dry_run else "Updated"
         self.stdout.write(
             self.style.SUCCESS(
-                f"{prefix} {len(updates)} translation(s). Skipped {skipped_empty} row(s) with an empty "
-                "German cell."
+                f"{prefix} {len(updates)} translation(s). Skipped "
+                f"{skipped_empty} row(s) with empty English and German "
+                "cells."
             )
         )
         if missing_keys:
