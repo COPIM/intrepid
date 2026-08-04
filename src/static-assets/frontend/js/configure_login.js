@@ -1,7 +1,10 @@
 
 $( document ).ready(function() {
-    $('#id_auth-username').attr('placeholder','Username');
-    $('#id_auth-password').attr('placeholder','Password');
+    // mirror the (translatable) field labels into the placeholders
+    $('#id_auth-username').attr('placeholder',
+        $('label[for="id_auth-username"]').text().trim().replace(/:$/, ''));
+    $('#id_auth-password').attr('placeholder',
+        $('label[for="id_auth-password"]').text().trim().replace(/:$/, ''));
 
     // add an ID attribute to the 2FA elements
     // this lets us then use CSS to style them

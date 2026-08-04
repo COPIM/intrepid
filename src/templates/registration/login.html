@@ -22,7 +22,10 @@
 
                 <form method="post" action="{% url 'two_factor:login' %}">
                 {% csrf_token %}
-                {% bootstrap_form form %}
+                {% bootstrap_form_errors form %}
+                <label class="form-label" for="{{ form.username.id_for_label }}">{% get_site_text 'login_username_label' %}</label>
+                {% bootstrap_field form.username show_label='skip' %}
+                {% bootstrap_field form.password %}
                 <input type="hidden" name="next" value="{{ next }}">
                 <div class="d-grid gap-2">
                     <button value="Login" class="btn btn-primary">{% get_site_text 'login' %}</button>

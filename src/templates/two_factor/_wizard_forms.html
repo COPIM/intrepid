@@ -1,3 +1,24 @@
 {{ wizard.management_form }}
-{{ wizard.form }}
-
+{% if wizard.steps.current == 'auth' %}
+    {# Render the auth step manually, mirroring the default as_table #}
+    {# markup, so the username label can come from an editable, #}
+    {# translatable site text instead of the form's hardcoded label. #}
+    {% if wizard.form.non_field_errors %}
+        <tr><td colspan="2">{{ wizard.form.non_field_errors }}</td></tr>
+    {% endif %}
+    {% for field in wizard.form.visible_fields %}
+        <tr>
+            <th>
+                {% if field.name == 'username' %}
+                    <label for="{{ field.id_for_label }}">{% get_site_text 'login_username_label' %}:</label>
+                {% else %}
+                    {{ field.label_tag }}
+                {% endif %}
+            </th>
+            <td>{{ field.errors }}{{ field }}</td>
+        </tr>
+    {% endfor %}
+    {% for field in wizard.form.hidden_fields %}{{ field }}{% endfor %}
+{% else %}
+    {{ wizard.form }}
+{% endif %}
