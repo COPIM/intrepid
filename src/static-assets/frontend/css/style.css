@@ -2381,7 +2381,7 @@ nav a, nav a:hover {
 
 #id_auth-username, #id_email, .username {
 	color: var(--obc-input-pale-blue) !important;
-	background: url("/static/frontend/img/user.svg") no-repeat left !important;
+	background: url("/static/frontend/img/email.svg") no-repeat left !important;
 	background-color: white !important;
 	background-size: 50px !important;
 	padding-left: 60px;
