@@ -1027,13 +1027,9 @@ def obc_manage_staff(request):
                     request,
                     "You cannot remove your own super admin access.",
                 )
-            elif user.is_superuser:
-                messages.warning(
-                    request,
-                    "You cannot remove super admin access from a superuser.",
-                )
             else:
                 user.is_staff = False
+                user.is_superuser = False
                 user.save()
                 user.groups.remove(obc_group)
                 messages.success(

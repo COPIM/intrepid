@@ -1449,6 +1449,49 @@ class StaffManagementTests(ViewTestBase):
         self.assertFalse(target.is_staff)
         self.assertNotIn(target, self.obc_group.user_set.all())
 
+    def test_obc_can_remove_superuser_staff(self):
+        target = User.objects.create_user(
+            "superadmin", email="superadmin@example.com", password="pw"
+        )
+        target.is_staff = True
+        target.is_superuser = True
+        target.save()
+        target.groups.add(self.obc_group)
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_user": str(target.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        target.refresh_from_db()
+        self.assertFalse(target.is_staff)
+        self.assertFalse(target.is_superuser)
+        self.assertNotIn(target, self.obc_group.user_set.all())
+
+    def test_removing_regular_staff_clears_superuser_flag_only_if_set(self):
+        target = User.objects.create_user(
+            "plainstaff", email="plainstaff@example.com", password="pw"
+        )
+        target.is_staff = True
+        target.save()
+        target.groups.add(self.obc_group)
+        self.client.force_login(self.staff)
+        self.client.post(self._url(), {"remove_user": str(target.pk)})
+        target.refresh_from_db()
+        self.assertFalse(target.is_staff)
+        self.assertFalse(target.is_superuser)
+
+    def test_cannot_remove_own_access(self):
+        self.staff.is_staff = True
+        self.staff.save()
+        self.client.force_login(self.staff)
+        response = self.client.post(
+            self._url(), {"remove_user": str(self.staff.pk)}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.staff.refresh_from_db()
+        self.assertTrue(self.staff.is_staff)
+        self.assertIn(self.staff, self.obc_group.user_set.all())
+
     def test_provider_denied_staff_screen(self):
         self.client.force_login(self.provider)
         self.assertEqual(self.client.get(self._url()).status_code, 403)
