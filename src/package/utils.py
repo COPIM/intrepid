@@ -1367,19 +1367,22 @@ def get_user_currency(identifier, identifier_type) -> "models.Country":
 
 def _package_min_max(package) -> dict:
     """
-    Works out the lowest and highest price a package has in each country.
+    Works out the lowest and highest price a package has in each country,
+    across all of its banding types.
     :param package: a Package
     :return: a dictionary of Country -> (min, max)
     """
-    min_max = {}
+    values = {}
     for country_prices in package.price_bandings.values():
         for country, prices in country_prices.items():
-            if prices:
-                min_max[country] = (
-                    min(price.value for price in prices),
-                    max(price.value for price in prices),
-                )
-    return min_max
+            values.setdefault(country, []).extend(
+                price.value for price in prices
+            )
+    return {
+        country: (min(country_values), max(country_values))
+        for country, country_values in values.items()
+        if country_values
+    }
 
 
 def _converted_default_min_max(package, currency_code):
