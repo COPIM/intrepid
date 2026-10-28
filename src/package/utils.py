@@ -7,6 +7,7 @@ from typing import Any
 import babel.numbers
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import reverse
 from django.template.loader import render_to_string
@@ -1364,64 +1365,222 @@ def get_user_currency(identifier, identifier_type) -> "models.Country":
     return country
 
 
+def _package_min_max(package) -> dict:
+    """
+    Works out the lowest and highest price a package has in each country,
+    across all of its banding types.
+    :param package: a Package
+    :return: a dictionary of Country -> (min, max)
+    """
+    values = {}
+    for country_prices in package.price_bandings.values():
+        for country, prices in country_prices.items():
+            values.setdefault(country, []).extend(
+                price.value for price in prices
+            )
+    return {
+        country: (min(country_values), max(country_values))
+        for country, country_values in values.items()
+        if country_values
+    }
+
+
+def _converted_default_min_max(package, currency_code):
+    """
+    Converts a package's default country prices into another currency.
+    :param package: a Package
+    :param currency_code: the currency to convert into
+    :return: a (min, max) tuple or None if it can't be converted
+    """
+    from package.currency import convert
+
+    default_country = package.default_country
+    if not default_country:
+        return None
+
+    values = list(
+        models.Price.objects.filter(
+            banding__package=package,
+            country=default_country,
+        ).values_list("value", flat=True)
+    )
+    if not values:
+        return None
+
+    try:
+        return (
+            round(convert(default_country.currency, currency_code, min(values))),
+            round(convert(default_country.currency, currency_code, max(values))),
+        )
+    except Exception:
+        return None
+
+
+def _meta_package_min_max(
+    meta_package, package_min_max, convert_currencies=False
+) -> dict:
+    """
+    Totals the min and max prices of a meta package's packages per country.
+    A country is only included if every package has a price for it.
+    :param meta_package: a MetaPackage
+    :param package_min_max: a dictionary of Package -> Country -> (min, max)
+    :param convert_currencies: fall back to converted default prices
+    :return: a dictionary of Country -> (min, max)
+    """
+    packages = list(meta_package.packages.all())
+
+    countries = set()
+    for package in packages:
+        countries.update(package_min_max.get(package, {}).keys())
+
+    min_max = {}
+    for country in countries:
+        min_total = 0
+        max_total = 0
+        for package in packages:
+            values = package_min_max.get(package, {}).get(country)
+            if not values and convert_currencies:
+                values = _converted_default_min_max(package, country.currency)
+            if not values:
+                break
+            min_total += values[0]
+            max_total += values[1]
+        else:
+            min_max[country] = (min_total, max_total)
+    return min_max
+
+
+def _store_pre_calc(min_max, package=None, meta_package=None) -> None:
+    """
+    Saves PreCalcMinMax rows, skipping countries covered by a catch all
+    country of the same currency.
+    """
+    catch_all_currencies = set(
+        models.Country.objects.filter(
+            catch_all=True,
+        ).values_list("currency", flat=True)
+    )
+    models.PreCalcMinMax.objects.bulk_create(
+        [
+            models.PreCalcMinMax(
+                package=package,
+                meta_package=meta_package,
+                country=country,
+                min_amount=min_amount,
+                max_amount=max_amount,
+            )
+            for country, (min_amount, max_amount) in min_max.items()
+            if country.catch_all or country.currency not in catch_all_currencies
+        ]
+    )
+
+
+def regenerate_pre_calc_prices(convert_currencies=False) -> None:
+    """
+    Rebuilds every PreCalcMinMax row. Runs in a transaction so pages never
+    see an empty table part way through.
+    :param convert_currencies: fall back to converted default prices for
+    meta packages when a package has no price in a country
+    """
+    package_min_max = {
+        package: _package_min_max(package)
+        for package in models.Package.objects.all()
+    }
+    meta_package_min_max = {
+        meta_package: _meta_package_min_max(
+            meta_package,
+            package_min_max,
+            convert_currencies,
+        )
+        for meta_package in models.MetaPackage.objects.all()
+    }
+
+    with transaction.atomic():
+        models.PreCalcMinMax.objects.all().delete()
+        for package, min_max in package_min_max.items():
+            _store_pre_calc(min_max, package=package)
+        for meta_package, min_max in meta_package_min_max.items():
+            _store_pre_calc(min_max, meta_package=meta_package)
+
+
+def _find_pre_calc(country, default_country, **lookup):
+    """
+    Finds the best PreCalcMinMax for a package: the country itself, then the
+    catch all country for its currency, then the package's default country.
+    :return: a PreCalcMinMax or None
+    """
+    pre_calcs = models.PreCalcMinMax.objects.filter(
+        **lookup,
+    ).select_related("country")
+
+    if country:
+        pre_calc = (
+            pre_calcs.filter(country=country).first()
+            or pre_calcs.filter(
+                country__catch_all=True,
+                country__currency=country.currency,
+            ).first()
+        )
+        if pre_calc:
+            return pre_calc
+
+    if default_country:
+        return pre_calcs.filter(country=default_country).first()
+
+    return None
+
+
 def add_pre_calc_to_objects(country_code, packages):
+    """
+    Sets package.pre_calc on each package, calculating prices for any
+    package that has none yet (e.g. one made active since the nightly
+    pregenerate_prices run). pre_calc is None if no price can be found.
+    """
     country = models.Country.objects.filter(code=country_code).first()
+    packages_with_pre_calc = set(
+        models.PreCalcMinMax.objects.filter(
+            package__in=[package.pk for package in packages],
+        ).values_list("package_id", flat=True)
+    )
 
     for package in packages:
-        try:
-            package.pre_calc = models.PreCalcMinMax.objects.get(
-                country=country,
-                package=package,
-            )
-        except models.PreCalcMinMax.DoesNotExist:
-            try:
-                catch_all_country = models.Country.objects.get(
-                    catch_all=True,
-                    currency=country.currency,
-                )
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country=catch_all_country,
-                    package=package,
-                )
-            except (
-                models.Country.DoesNotExist,
-                models.PreCalcMinMax.DoesNotExist,
-            ):
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country=package.default_country,
-                    package=package,
-                )
+        if package.pk not in packages_with_pre_calc:
+            _store_pre_calc(_package_min_max(package), package=package)
+        package.pre_calc = _find_pre_calc(
+            country,
+            package.default_country,
+            package=package,
+        )
     return packages
 
 
 def add_pre_calc_to_meta_objects(country_code, packages):
+    """
+    Sets meta_package.pre_calc on each meta package, calculating prices for
+    any that have none yet. pre_calc is None if no price can be found.
+    """
     country = models.Country.objects.filter(code=country_code).first()
+    packages_with_pre_calc = set(
+        models.PreCalcMinMax.objects.filter(
+            meta_package__in=[package.pk for package in packages],
+        ).values_list("meta_package_id", flat=True)
+    )
 
     for package in packages:
-        try:
-            package.pre_calc = models.PreCalcMinMax.objects.get(
-                country=country,
+        if package.pk not in packages_with_pre_calc:
+            package_min_max = {
+                child: _package_min_max(child)
+                for child in package.packages.all()
+            }
+            _store_pre_calc(
+                _meta_package_min_max(package, package_min_max),
                 meta_package=package,
             )
-        except models.PreCalcMinMax.DoesNotExist:
-            try:
-                catch_all_country = models.Country.objects.get(
-                    catch_all=True,
-                    currency=country.currency,
-                )
-                package.pre_calc = models.PreCalcMinMax.objects.get(
-                    country=catch_all_country,
-                    meta_package=package,
-                )
-            except (
-                models.Country.DoesNotExist,
-                models.PreCalcMinMax.DoesNotExist,
-            ):
-                if hasattr(package, "default_country"):
-                    package.pre_calc = models.PreCalcMinMax.objects.get(
-                        country=package.default_country,
-                        meta_package=package,
-                    )
+        package.pre_calc = _find_pre_calc(
+            country,
+            getattr(package, "default_country", None),
+            meta_package=package,
+        )
     return packages
 
 

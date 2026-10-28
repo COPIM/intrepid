@@ -20,6 +20,7 @@ Additional objects (SiteSetup, SiteText, User, Profile,
 AccountBandingChoices) are created programmatically in setUpTestData.
 """
 
+import io
 import re
 import time
 from decimal import Decimal
@@ -29,6 +30,7 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.management import call_command
 from django.test import TestCase, RequestFactory
+from django.urls import reverse
 
 from accounts.models import AccountBandingChoices, Profile
 from cms.models import SiteText
@@ -1179,3 +1181,178 @@ class TestRenderedOutputSessionComparison(
         )
         basket.meta_packages.add(*self.all_metas)
         self._compare_html(basket, label="10 metas / no direct (anon)")
+
+
+# ---------------------------------------------------------------------------
+# Pre-calculated price ranges
+# ---------------------------------------------------------------------------
+
+
+class TestPreCalcPrices(TestCase):
+    """
+    Pages showing a package's price range must not crash when no
+    PreCalcMinMax rows exist yet, e.g. for an initiative made active
+    since the nightly pregenerate_prices run.
+    """
+
+    fixtures = ["test_package.json"]
+
+    @classmethod
+    def setUpTestData(cls):
+        SiteSetup.objects.create(
+            site_name="Test Site",
+            enable_signup=True,
+            enable_meta_package_signup=True,
+            enable_individual_package_signup=True,
+            fee_amount=5,
+            fallback_currency="GBP",
+        )
+        SiteText.objects.get_or_create(key="to", defaults={"body": "to"})
+        # pk 100: FTE+Choice in GBP, USD and EUR, default country DE.
+        cls.package = models.Package.objects.get(pk=100)
+        cls.meta_package = models.MetaPackage.objects.get(pk=308)
+
+    def test_missing_package_prices_are_calculated(self):
+        self.assertFalse(models.PreCalcMinMax.objects.exists())
+
+        utils.add_pre_calc_to_objects("GB", [self.package])
+
+        gb_values = models.Price.objects.filter(
+            banding__package=self.package,
+            country__code="GB",
+        ).values_list("value", flat=True)
+        self.assertEqual(self.package.pre_calc.country.code, "GB")
+        self.assertEqual(
+            (self.package.pre_calc.min_amount, self.package.pre_calc.max_amount),
+            (min(gb_values), max(gb_values)),
+        )
+        self.assertEqual(
+            models.PreCalcMinMax.objects.filter(package=self.package).count(),
+            3,
+        )
+
+    def test_existing_package_prices_are_not_recalculated(self):
+        utils.add_pre_calc_to_objects("GB", [self.package])
+        utils.add_pre_calc_to_objects("GB", [self.package])
+
+        self.assertEqual(
+            models.PreCalcMinMax.objects.filter(package=self.package).count(),
+            3,
+        )
+
+    def test_unknown_country_falls_back_to_default_country(self):
+        utils.add_pre_calc_to_objects("ZZ", [self.package])
+
+        self.assertEqual(self.package.pre_calc.country.code, "DE")
+
+    def test_package_without_prices_gets_no_pre_calc(self):
+        models.Price.objects.filter(banding__package=self.package).delete()
+
+        utils.add_pre_calc_to_objects("GB", [self.package])
+
+        self.assertIsNone(self.package.pre_calc)
+
+    def test_missing_meta_package_prices_are_calculated(self):
+        utils.add_pre_calc_to_meta_objects("GB", [self.meta_package])
+
+        expected_min = 0
+        expected_max = 0
+        for package in self.meta_package.packages.all():
+            gb_values = models.Price.objects.filter(
+                banding__package=package,
+                country__code="GB",
+            ).values_list("value", flat=True)
+            expected_min += min(gb_values)
+            expected_max += max(gb_values)
+
+        self.assertEqual(
+            (
+                self.meta_package.pre_calc.min_amount,
+                self.meta_package.pre_calc.max_amount,
+            ),
+            (expected_min, expected_max),
+        )
+
+    def test_range_covers_every_banding_type(self):
+        # pk 100 has both FTE and Choice bandings priced in GBP.
+        utils.add_pre_calc_to_objects("GB", [self.package])
+
+        for banding_type in models.BandingType.objects.filter(
+            banding__package=self.package,
+        ).distinct():
+            gb_values = models.Price.objects.filter(
+                banding__package=self.package,
+                banding__banding_type=banding_type,
+                country__code="GB",
+            ).values_list("value", flat=True)
+            with self.subTest(banding_type=banding_type.pk):
+                self.assertLessEqual(
+                    self.package.pre_calc.min_amount, min(gb_values),
+                )
+                self.assertGreaterEqual(
+                    self.package.pre_calc.max_amount, max(gb_values),
+                )
+
+    def test_regenerate_matches_on_demand_rows(self):
+        utils.add_pre_calc_to_objects("GB", [self.package])
+        on_demand = set(
+            models.PreCalcMinMax.objects.filter(
+                package=self.package,
+            ).values_list("country_id", "min_amount", "max_amount")
+        )
+
+        call_command("pregenerate_prices", stdout=io.StringIO())
+
+        self.assertEqual(
+            set(
+                models.PreCalcMinMax.objects.filter(
+                    package=self.package,
+                ).values_list("country_id", "min_amount", "max_amount")
+            ),
+            on_demand,
+        )
+
+    def test_catch_all_country_prunes_same_currency_rows(self):
+        models.Country.objects.create(
+            name="Rest of Europe",
+            code="EU",
+            currency="EUR",
+            catch_all=True,
+        )
+
+        utils.add_pre_calc_to_objects("GB", [self.package])
+
+        self.assertFalse(
+            models.PreCalcMinMax.objects.filter(
+                package=self.package,
+                country__code="DE",
+            ).exists()
+        )
+
+    def test_pages_render_without_pre_calc_rows(self):
+        initiative = self.package.initiative
+        for url in (
+            reverse("initiative_list"),
+            reverse("package_list"),
+            reverse(
+                "summary_package_initiative",
+                args=["initiative", initiative.pk],
+            ),
+            reverse("summary_meta_package", args=[self.meta_package.pk]),
+        ):
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_initiative_without_active_package_renders(self):
+        initiative = self.package.initiative
+        initiative.packages.update(active=False)
+        for name in (
+            "summary_package_initiative",
+            "summary_more_info",
+            "summary_pricing",
+        ):
+            with self.subTest(name=name):
+                response = self.client.get(
+                    reverse(name, args=["initiative", initiative.pk]),
+                )
+                self.assertEqual(response.status_code, 200)

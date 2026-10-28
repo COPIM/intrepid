@@ -79,8 +79,7 @@ def summary_package_initiative(
     ).order_by("sequence")
 
     package = initiative.packages.filter(active=True).first()
-    request.session.get('country')
-    if request.session.get('country', None):
+    if package and request.session.get('country', None):
         pu.add_pre_calc_to_objects(
             request.session.get('country'),
             [package],
